@@ -11,7 +11,7 @@ public class AppApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		context=this;
-		Log.d("dddddddddd","fffffffff");
+		Log.d("dddddddddd","fffffffffggg");
 	}
 
 	//获取全局Context
