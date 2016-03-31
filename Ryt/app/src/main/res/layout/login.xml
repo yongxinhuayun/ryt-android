@@ -55,12 +55,18 @@
                 android:layout_marginTop="20dp"
                 android:hint="请输入手机号/e飞蚁账号"
                 android:background="@drawable/login_reg_et_bg"
+                android:maxLength="11"
+                android:inputType="number"
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <EditText
                 android:id="@+id/et_center_two"
                 android:layout_marginTop="20dp"
                 android:hint="请输入密码"
+                android:maxLength="16"
+                android:inputType="textPassword"
+                android:singleLine="true"
                 android:background="@drawable/login_reg_et_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

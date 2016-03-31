@@ -2,6 +2,8 @@ package com.yxh.ryt.activity;
 
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -13,6 +15,10 @@ import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Sha1;
+import com.yxh.ryt.util.avalidations.EditTextValidator;
+import com.yxh.ryt.util.avalidations.ValidationModel;
+import com.yxh.ryt.validations.PasswordValidation;
+import com.yxh.ryt.validations.UserNameValidation;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.util.HashMap;
@@ -21,6 +27,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnFocusChange;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -34,19 +41,28 @@ public class LoginActivity extends BaseActivity {
     EditText etUsername;
     @Bind(R.id.et_center_two)
     EditText etPassword;
+    private  EditTextValidator editTextValidator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         ButterKnife.bind(this);/*启用注解绑定*/
     }
+
     /*登录点击事件*/
     @OnClick(R.id.btn_center_login)
     public void loginClick(){
-
+       AppApplication.getSingleEditTextValidator()
+                .add(new ValidationModel(etUsername,new UserNameValidation()))
+                .add(new ValidationModel(etPassword,new PasswordValidation()))
+                .execute();
+        //表单没有检验通过直接退出方法
+        if(!AppApplication.getSingleEditTextValidator().validate()){
+            return;
+        }
         Map<String,Object> paramsMap=new HashMap<>();
-        paramsMap.put("username","18510251819");
-        paramsMap.put("password", Sha1.encodePassword("123456","SHA"));
+        paramsMap.put("username",etUsername.getText().toString());
+        paramsMap.put("password", Sha1.encodePassword(etPassword.getText().toString(),"SHA"));
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
@@ -56,12 +72,12 @@ public class LoginActivity extends BaseActivity {
         NetRequestUtil.post(Constants.BASE_PATH + "login.do",  paramsMap, new LoginCallBack() {
             @Override
             public void onError(Call call, Exception e) {
-                e.printStackTrace();
+                System.out.println("失败了");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-
+                System.out.println("成功了");
             }
         });
     }
