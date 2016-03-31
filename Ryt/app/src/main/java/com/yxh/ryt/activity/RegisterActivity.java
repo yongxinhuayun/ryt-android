@@ -115,6 +115,7 @@ public class RegisterActivity extends BaseActivity {
                                 Toast.makeText(RegisterActivity.this, "验证码验证成功", Toast.LENGTH_LONG).show();
                             } else {
                                 Toast.makeText(RegisterActivity.this, "验证码验证失败", Toast.LENGTH_LONG).show();
+                                eTVerfyCode.setText("");
                             }
                         }
                     });
