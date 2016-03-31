@@ -24,6 +24,8 @@ import butterknife.OnClick;
 public class RegisterScActivity extends BaseActivity{
     @Bind(R.id.rs_tv_sexInput)
     TextView sexInput;
+    @Bind(R.id.rs_et_nickName)
+    TextView nickName;
     PopupWindow window;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +33,16 @@ public class RegisterScActivity extends BaseActivity{
         setContentView(R.layout.registersucced);
         ButterKnife.bind(this);/*启用注解绑定*/
     }
-    /*登录点击事件*/
+
     @OnClick(R.id.rs_rl_sex)
     public void sexSelect(){
         showPopwindow();
     }
 
+    @OnClick(R.id.rs_tv_complete)
+    public void complete(){
+
+    }
     private void showPopwindow() {
 
         // 利用layoutInflater获得View
