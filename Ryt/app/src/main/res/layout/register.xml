@@ -89,7 +89,7 @@
             android:layout_below="@id/rg_et_passwordAgain"
             android:layout_marginTop="15dp"
             android:background="@drawable/register_shape"
-            android:onClick="commit"
+            android:onClick="register"
             android:text="注册" />
         <TextView
             android:layout_below="@id/rg_bt_register"
