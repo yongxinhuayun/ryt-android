@@ -4,7 +4,6 @@
         android:duration="50"
         android:fromYDelta="0"
         android:toYDelta="50%p" />
-
     <alpha
         android:duration="50"
         android:fromAlpha="1.0"
