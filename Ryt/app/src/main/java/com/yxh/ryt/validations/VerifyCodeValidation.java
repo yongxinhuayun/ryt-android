@@ -15,6 +15,7 @@ public class VerifyCodeValidation extends ValidationExecutor {
     @Override
     public boolean doValidate(Context context, String text) {
         String regex = "^[0-9]{6}$";
+
         boolean result = Pattern.compile(regex).matcher(text).find();
         if (!result) {
             Toast.makeText(AppApplication.getSingleContext(), "验证码格式不正确！", Toast.LENGTH_SHORT).show();
