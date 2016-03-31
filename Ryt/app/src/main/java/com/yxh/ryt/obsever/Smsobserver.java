@@ -49,7 +49,6 @@ public class Smsobserver extends ContentObserver {
         this.activity = activity;
         this.callBack = callBack;
     }
-
     @Override
     public void onChange(boolean selfChange) {
         super.onChange(selfChange);
