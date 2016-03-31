@@ -1,5 +1,6 @@
 package com.yxh.ryt.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -87,10 +88,10 @@ public class RegisterActivity extends BaseActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     AppApplication.getSingleEditTextValidator()
-                            .add(new ValidationModel(eTPhone,new UserNameValidation()))
+                            .add(new ValidationModel(eTPhone, new UserNameValidation()))
                             .execute();
                     //表单没有检验通过直接退出方法
-                    if(!AppApplication.getSingleEditTextValidator().validate()){
+                    if (!AppApplication.getSingleEditTextValidator().validate()) {
                         return;
                     }
                     Map<String, Object> paramsMap = new HashMap<>();
@@ -110,10 +111,10 @@ public class RegisterActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(Map<String, Object> response) {
-                            if (response.get("resultCode").equals("0")){
-                                Toast.makeText(RegisterActivity.this,"验证码验证成功",Toast.LENGTH_LONG).show();
-                            }else {
-                                Toast.makeText(RegisterActivity.this,"验证码验证失败",Toast.LENGTH_LONG).show();
+                            if (response.get("resultCode").equals("0")) {
+                                Toast.makeText(RegisterActivity.this, "验证码验证成功", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "验证码验证失败", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -135,7 +136,11 @@ public class RegisterActivity extends BaseActivity {
         getContentResolver().registerContentObserver(SMS_INBOX, true,
                 smsObserver);
     }
-
+    @OnClick(R.id.rg_tv_login)
+    public void login(){
+        Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
+        startActivity(intent);
+    }
     @OnClick(R.id.rg_bt_register)
     public void register(){
         AppApplication.getSingleEditTextValidator()
