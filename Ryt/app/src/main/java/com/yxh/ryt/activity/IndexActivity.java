@@ -1,7 +1,6 @@
 package com.yxh.ryt.activity;
 
 import android.os.Bundle;
-import android.view.View;
 
 public class IndexActivity extends BaseActivity {
 

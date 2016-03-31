@@ -2,7 +2,6 @@ package com.yxh.ryt.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by dev on 2015/12/28.
