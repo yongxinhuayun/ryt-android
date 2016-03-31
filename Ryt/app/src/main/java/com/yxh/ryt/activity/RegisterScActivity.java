@@ -75,6 +75,7 @@ public class RegisterScActivity extends BaseActivity{
                 return false;
             }
         });
+
         TextView man= (TextView) view.findViewById(R.id.pds_tv_man);
         man.setOnClickListener(new View.OnClickListener() {
             @Override
