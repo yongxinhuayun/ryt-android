@@ -3,17 +3,17 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
-        android:id="@+id/rg_rl_top"
+        android:id="@+id/fp_rl_top"
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <ImageView
-            android:id="@+id/rg_ib_back"
+            android:id="@+id/fp_ib_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/back"
-            android:layout_alignBottom="@+id/rg_tv_title"/>
+            android:layout_alignBottom="@+id/fp_tv_title"/>
         <TextView
-            android:id="@+id/rg_tv_title"
+            android:id="@+id/fp_tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="忘记密码"
@@ -26,28 +26,28 @@
         android:layout_height="1dp"
         android:background="#000000"/>
     <RelativeLayout
-        android:id="@+id/rg_rl_center"
+        android:id="@+id/fp_rl_center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="20dp">
         <EditText
-            android:id="@+id/rg_et_phone"
+            android:id="@+id/fp_et_phone"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/register_shape"
             android:hint="请输入手机号"/>
         <LinearLayout
-            android:layout_below="@id/rg_et_phone"
+            android:layout_below="@id/fp_et_phone"
             android:orientation="horizontal"
-            android:id="@+id/rg_ll_verifyCode"
+            android:id="@+id/fp_ll_verifyCode"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/register_shape"
             android:layout_marginTop="15dp">
             <EditText
-                android:id="@+id/rg_et_verifyCode"
+                android:id="@+id/fp_et_verifyCode"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
@@ -58,34 +58,32 @@
                 android:layout_height="match_parent"
                 android:background="#000000"/>
             <Button
-                android:id="@+id/rg_bt_verifyCode"
+                android:id="@+id/fp_bt_verifyCode"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:background="@null"
                 android:hint="发送验证码"
                 android:textSize="18sp"
-                android:onClick="getCode"/>
+                android:onClick="sendCode"/>
         </LinearLayout>
         <EditText
-            android:id="@+id/rg_et_password"
+            android:id="@+id/fp_et_password"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/register_shape"
             android:hint="设置密码"
-            android:layout_below="@id/rg_ll_verifyCode"
+            android:layout_below="@id/fp_ll_verifyCode"
             android:layout_marginTop="15dp"/>
         <Button
-            android:id="@+id/rg_bt_register"
+            android:id="@+id/fp_bt_register"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@id/rg_et_password"
+            android:layout_below="@id/fp_et_password"
             android:layout_marginTop="15dp"
             android:background="@drawable/register_shape"
             android:onClick="commit"
             android:textSize="18sp"
             android:text="确定" />
     </RelativeLayout>
-
-
 </LinearLayout>
