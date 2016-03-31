@@ -76,7 +76,7 @@
             android:layout_below="@id/fp_ll_verifyCode"
             android:layout_marginTop="15dp"/>
         <Button
-            android:id="@+id/fp_bt_register"
+            android:id="@+id/fp_bt_commit"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@id/fp_et_password"
