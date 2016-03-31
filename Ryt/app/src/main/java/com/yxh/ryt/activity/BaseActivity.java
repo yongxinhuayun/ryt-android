@@ -2,12 +2,9 @@ package com.yxh.ryt.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-
-import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends Activity {
 
@@ -42,13 +39,6 @@ public abstract class BaseActivity extends Activity {
     public void onBackPressed() {
         super.onBackPressed();
     }
-
-
-    protected void reloadData() {
-    }
-
-    ;
-
 
     protected void closeSoftInputMethod() {
         try {

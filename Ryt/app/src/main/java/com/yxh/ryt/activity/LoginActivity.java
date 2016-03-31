@@ -1,13 +1,9 @@
 package com.yxh.ryt.activity;
 
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
@@ -19,7 +15,6 @@ import com.yxh.ryt.util.avalidations.EditTextValidator;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.PasswordValidation;
 import com.yxh.ryt.validations.UserNameValidation;
-import com.zhy.http.okhttp.callback.Callback;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +22,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnFocusChange;
 import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * Created by Administrator on 2016/3/30.
@@ -42,6 +35,7 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.et_center_two)
     EditText etPassword;
     private  EditTextValidator editTextValidator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,16 +54,21 @@ public class LoginActivity extends BaseActivity {
         if(!AppApplication.getSingleEditTextValidator().validate()){
             return;
         }
+        LoginRequst();/*调用登录具体实现*/
+    }
+
+    //登录具体实现
+    private void LoginRequst() {
         Map<String,Object> paramsMap=new HashMap<>();
         paramsMap.put("username",etUsername.getText().toString());
-        paramsMap.put("password", Sha1.encodePassword(etPassword.getText().toString(),"SHA"));
+        paramsMap.put("password", Sha1.encodePassword(etPassword.getText().toString(), "SHA"));
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        NetRequestUtil.post(Constants.BASE_PATH + "login.do",  paramsMap, new LoginCallBack() {
+        NetRequestUtil.post(Constants.BASE_PATH + "login.do", paramsMap, new LoginCallBack() {
             @Override
             public void onError(Call call, Exception e) {
                 System.out.println("失败了");

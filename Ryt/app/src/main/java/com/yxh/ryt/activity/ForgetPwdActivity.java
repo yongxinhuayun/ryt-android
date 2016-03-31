@@ -19,6 +19,7 @@ public class ForgetPwdActivity extends BaseActivity {
     @Bind(R.id.fp_et_verifyCode)
     EditText eTVerfyCode;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
