@@ -4,6 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.squareup.okhttp.OkHttpClient;
+
+import java.util.concurrent.TimeUnit;
+
 public class AppApplication extends Application {
 
 	private  static Context context;
