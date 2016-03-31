@@ -27,4 +27,5 @@ dependencies {
     compile files('src/main/libs/universal-image-loader-1.9.4-SNAPSHOT.jar')
     compile files('src/main/libs/butterknife-7.0.1.jar')
     compile 'com.zhy:okhttputils:2.3.8'
+    compile files('src/main/libs/libammsdk.jar')
 }

@@ -21,8 +21,11 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
             android:text="登录"/>
         <TextView
+            android:visibility="gone"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
@@ -32,7 +35,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
-            android:background="@android:color/darker_gray"
+            android:background="#E9E9E9"
             android:layout_height="1dp"></View>
     </RelativeLayout>
 
@@ -115,7 +118,7 @@
             <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:background="@android:color/darker_gray"
+                android:background="#E9E9E9"
                 android:layout_height="1dp" />
             <TextView
                 android:layout_width="0dp"
@@ -127,7 +130,7 @@
             <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:background="@android:color/darker_gray"
+                android:background="#E9E9E9"
                 android:layout_height="1dp" />
         </LinearLayout>
 
@@ -139,7 +142,9 @@
             android:paddingRight="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView android:layout_weight="1"
+            <ImageView
+                android:id="@+id/iv_center_wx"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/logo_weixin"/>

@@ -2,7 +2,6 @@ package com.yxh.ryt.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 import android.text.SpannableStringBuilder;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.yxh.ryt.R;
 
 
 public class ViewHolder

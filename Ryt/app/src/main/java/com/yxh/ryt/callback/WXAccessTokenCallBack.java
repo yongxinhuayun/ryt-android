@@ -11,7 +11,7 @@ import okhttp3.Response;
 /**
  * Created by Administrator on 2016/3/31.
  */
-public  abstract  class LoginCallBack extends Callback<Map<String,Object>> {
+public  abstract  class WXAccessTokenCallBack extends Callback<Map<String,Object>> {
     @Override
     public Map<String,Object> parseNetworkResponse(Response response) throws Exception {
         String string = response.body().string();

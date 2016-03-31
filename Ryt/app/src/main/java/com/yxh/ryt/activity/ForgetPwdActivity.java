@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+
 import com.yxh.ryt.R;
 
 import butterknife.Bind;
@@ -18,6 +19,7 @@ public class ForgetPwdActivity extends BaseActivity {
     EditText eTPassword;
     @Bind(R.id.fp_et_verifyCode)
     EditText eTVerfyCode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

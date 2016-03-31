@@ -19,9 +19,9 @@ package com.yxh.ryt.validations;
 import java.util.regex.Pattern;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.yxh.ryt.AppApplication;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationExecutor;
 
 /**
@@ -38,7 +38,7 @@ public class UserNameValidation extends ValidationExecutor {
 		String regex = "^((13[0-9])|(15[^4,\\D])|(18[0,2,5-9]))\\d{8}$";
 		boolean result = Pattern.compile(regex).matcher(text).find();
 		if (!result) {
-			Toast.makeText(AppApplication.getSingleContext(),"手机格式不正确！", Toast.LENGTH_SHORT).show();
+			ToastUtil.showShort(AppApplication.getSingleContext(), "手机格式不正确！");
 			return false;
 		}
 		return true;
