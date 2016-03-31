@@ -223,7 +223,6 @@ public class RegisterActivity extends BaseActivity {
                 }
             }
         });
-
     }
     private void startThrad() {
         new Thread(new Runnable() {
