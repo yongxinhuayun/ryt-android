@@ -28,7 +28,6 @@ public class ForgetPwdActivity extends BaseActivity {
     }
     public void sendCode(View view){
 
-
     }
     public void commit(View view){
 
