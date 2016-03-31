@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Sha1;
@@ -52,16 +53,7 @@ public class LoginActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        NetRequestUtil.post(Constants.BASE_PATH + "login.do",  paramsMap, new Callback<Map<String,Object>>() {
-            //
-            @Override
-            public Map<String,Object> parseNetworkResponse(Response response) throws Exception {
-                String string = response.body().string();
-                Map<String, Object> resultMap = AppApplication.getSingleGson().fromJson(string, new TypeToken<Map<String, Object>>() {
-                }.getType());
-                return resultMap;
-            }
-
+        NetRequestUtil.post(Constants.BASE_PATH + "login.do",  paramsMap, new LoginCallBack() {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
