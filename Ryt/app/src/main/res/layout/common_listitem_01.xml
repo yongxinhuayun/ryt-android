@@ -35,6 +35,7 @@
                 android:singleLine="false"/>
         </RelativeLayout>
     </FrameLayout>
+
     <LinearLayout
         android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"
