@@ -23,6 +23,7 @@ public class NetRequestUtil<T> {
                 .build()
                 .execute(callback);
     }
+
     public static <T> void get(String url,Map<String,String> paramsMap,Callback<T> callback){
         GetBuilder getBuilder = OkHttpUtils.get();
         getBuilder.url(url);
