@@ -213,7 +213,7 @@ public class RegisterScActivity extends BaseActivity{
                 if (data == null) {
                     return;
                 }
-                Bitmap bitmap = getBitmap(data);
+                Bitmap bitmap = getBitmap(data.getData());
 //                Bitmap bitmap=getBitmapFromUri(data.getData());
                 circleImageView.setImageBitmap(bitmap);
 //                saveFile(bitmap);
@@ -222,7 +222,8 @@ public class RegisterScActivity extends BaseActivity{
             case CAMERA_REQUEST_CODE:
                 File picture = new File(Environment.getExternalStorageDirectory()
                         + "/temp.jpg");
-                Bitmap bitmap1 = getBitmap(data);
+                Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
+                circleImageView.setImageBitmap(bitmap1);
 //                saveFile(bitmap1);
 //                startCrop(Uri.fromFile(picture));
                 break;
@@ -252,15 +253,15 @@ public class RegisterScActivity extends BaseActivity{
         }
     }
 
-    public Bitmap getBitmap(Intent data){
+    public Bitmap getBitmap(Uri data){
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inSampleSize = 4;
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            filePath=GetPathFromUri4kitkat.getPath(data.getData());
-        }else{
-            filePath=ImageUtils.getRealPathByUriOld(data);
-        }
+//        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            filePath=GetPathFromUri4kitkat.getPath(data);
+//        }else{
+//            filePath=ImageUtils.getRealPathByUriOld(data);
+//        }
         Bitmap bm = BitmapFactory.decodeFile(filePath, options);
         options.inJustDecodeBounds = false;
         bm = BitmapFactory.decodeFile(filePath, options);
