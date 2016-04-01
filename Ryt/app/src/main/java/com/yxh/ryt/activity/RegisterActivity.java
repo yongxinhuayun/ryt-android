@@ -253,5 +253,4 @@ public class RegisterActivity extends BaseActivity {
             }
         }).start();
     }
-
 }
