@@ -185,6 +185,9 @@ public class RegisterActivity extends BaseActivity {
                 }
                 if (response.get("resultCode").equals("0")) {
                     ToastUtil.showShort(AppApplication.getSingleContext(), "注册成功!");
+                    Intent intent=new Intent(RegisterActivity.this,RegisterScActivity.class);
+                    RegisterActivity.this.startActivity(intent);
+                    RegisterActivity.this.finish();
                 }
 
             }
