@@ -50,7 +50,7 @@ public class ForgetPwdActivity extends BaseActivity {
     TextView sendCode;
     private Uri SMS_INBOX = Uri.parse("content://sms/");
     private Smsobserver smsObserver;
-    private Map<String,Object> paramsMap;
+    private Map<String,String> paramsMap;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -95,7 +95,7 @@ public class ForgetPwdActivity extends BaseActivity {
                     if (!AppApplication.getSingleEditTextValidator().validate()) {
                         return;
                     }
-                    Map<String, Object> paramsMap = new HashMap<>();
+                    Map<String, String> paramsMap = new HashMap<>();
                     paramsMap.put("username", eTPhone.getText().toString());
                     paramsMap.put("code", eTVerfyCode.getText().toString());
                     paramsMap.put("timestamp", System.currentTimeMillis() + "");

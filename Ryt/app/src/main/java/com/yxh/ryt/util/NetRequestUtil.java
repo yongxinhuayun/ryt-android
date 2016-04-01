@@ -3,9 +3,11 @@ package com.yxh.ryt.util;
 import com.yxh.ryt.AppApplication;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.GetBuilder;
+import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.request.RequestCall;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -14,7 +16,7 @@ import java.util.Map;
  */
 public class NetRequestUtil<T> {
 
-    public static <T> void post(String url,T t,Callback<T> callback){
+    public static <T> void post(String url,Map<String,String> t,Callback<T> callback){
         System.out.println(AppApplication.getSingleGson().toJson(t));
         OkHttpUtils
                 .postString()
@@ -33,6 +35,19 @@ public class NetRequestUtil<T> {
             getBuilder.addParams(entry.getKey(),  entry.getValue());
         }
         RequestCall build = getBuilder.build();
+        build.execute(callback);
+    }
+    public static <T> void postFile(String url,String fileKey,Map<String,File> fileMap,Map<String,String> paramsMap,  Map<String, String> headers,Callback<T> callback){
+        PostFormBuilder post = OkHttpUtils.post();
+        Iterator<Map.Entry<String, File>> it = fileMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, File> entry = it.next();
+            post.addFile(fileKey,entry.getKey(),  entry.getValue());
+        }
+        post.url(url);
+        post.params(paramsMap);
+        post.headers(headers);
+        RequestCall build = post.build();
         build.execute(callback);
     }
 }

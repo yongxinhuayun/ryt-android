@@ -103,12 +103,13 @@ public class LoginActivity extends BaseActivity {
 
     //登录具体实现
     private void LoginRequst() {
-        Map<String,Object> paramsMap=new HashMap<>();
+        Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("username",etUsername.getText().toString());
         paramsMap.put("password", Sha1.encodePassword(etPassword.getText().toString(), "SHA"));
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
         try {
-            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+            AppApplication.signmsg=EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
         } catch (Exception e) {
             e.printStackTrace();
         }
