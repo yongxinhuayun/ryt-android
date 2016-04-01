@@ -22,6 +22,7 @@ import com.yxh.ryt.obsever.Smsobserver;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Sha1;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.PasswordValidation;
 import com.yxh.ryt.validations.UserNameValidation;
@@ -112,10 +113,9 @@ public class RegisterActivity extends BaseActivity {
                         @Override
                         public void onResponse(Map<String, Object> response) {
                             if (response.get("resultCode").equals("0")) {
-                                Toast.makeText(RegisterActivity.this, "验证码验证成功", Toast.LENGTH_LONG).show();
+                                ToastUtil.showShort(AppApplication.getSingleContext(), "验证码验证成功!");
                             } else {
-                                Toast.makeText(RegisterActivity.this, "验证码验证失败", Toast.LENGTH_LONG).show();
-                                eTVerfyCode.setText("");
+                                ToastUtil.showShort(AppApplication.getSingleContext(), "验证码验证失败!");
                             }
                         }
                     });
@@ -144,6 +144,7 @@ public class RegisterActivity extends BaseActivity {
     }
     @OnClick(R.id.rg_bt_register)
     public void register(){
+
         AppApplication.getSingleEditTextValidator()
                 .add(new ValidationModel(eTPhone, new UserNameValidation()))
                 .add(new ValidationModel(eTPassword,new PasswordValidation()))
@@ -153,37 +154,37 @@ public class RegisterActivity extends BaseActivity {
             return;
         }
         if (eTVerfyCode.getText().toString().equals("")){
-            Toast.makeText(this,"验证码不能为空",Toast.LENGTH_LONG).show();
-        }else {
-            if (eTPassword.getText().toString().equals(eTPasswordAgain.getText().toString())){
-                Toast.makeText(this,"两次输入的密码不一致,请重新输入",Toast.LENGTH_LONG).show();
-            }else {
-                Map<String,Object> paramsMap=new HashMap<>();
-                paramsMap.put("username", eTPhone.getText().toString());
-                paramsMap.put("password", eTPassword.getText().toString());
-                paramsMap.put("timestamp", System.currentTimeMillis() + "");
-                try {
-                    paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                NetRequestUtil.post(Constants.BASE_PATH + "register.do", paramsMap, new RegisterCallBack() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        System.out.println("失败了");
-                    }
-
-                    @Override
-                    public void onResponse(Map<String, Object> response) {
-                        if (response.get("resultCode").equals("0")){
-                            Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_LONG).show();
-                        }else {
-                            Toast.makeText(RegisterActivity.this,"注册失败",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-            }
+            ToastUtil.showShort(this,"验证码不能为空!");
+            return;
         }
+        if (eTPassword.getText().toString().equals(eTPasswordAgain.getText().toString())){
+            ToastUtil.showShort(this, "两次输入的密码不一致,请重新输入!");
+            return;
+        }
+        Map<String,Object> paramsMap=new HashMap<>();
+        paramsMap.put("username", eTPhone.getText().toString());
+        paramsMap.put("password", eTPassword.getText().toString());
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "register.do", paramsMap, new RegisterCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                System.out.println("失败了");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if (response.get("resultCode").equals("0")){
+                    ToastUtil.showShort(AppApplication.getSingleContext(), "注册成功!");
+                }else {
+                    ToastUtil.showShort(AppApplication.getSingleContext(), "注册失败!");
+                }
+            }
+        });
     }
     @OnClick(R.id.rg_bt_verifyCode)
     public void sendCode(){
@@ -219,13 +220,13 @@ public class RegisterActivity extends BaseActivity {
                         }
                         @Override
                         public void onResponse(Map<String, Object> response) {
-                            Toast.makeText(RegisterActivity.this, "验证码发送成功", Toast.LENGTH_LONG);
+                            ToastUtil.showShort(AppApplication.getSingleContext(), "验证码发送成功!");
                             startThrad();
                             getVerifyCode.setEnabled(false);
                         }
                     });
                 } else {
-                    Toast.makeText(RegisterActivity.this, "该手机号已经注册,请重新输入", Toast.LENGTH_LONG).show();
+                    ToastUtil.showShort(AppApplication.getSingleContext(), "该手机号已经注册,请重新输入!");
                 }
             }
         });
