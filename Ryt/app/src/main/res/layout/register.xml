@@ -74,6 +74,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/login_reg_et_bg"
             android:hint="请输入密码"
+            android:inputType="textPassword"
             android:layout_below="@id/rg_ll_verifyCode"
             android:layout_marginTop="15dp"/>
         <EditText
