@@ -108,10 +108,6 @@ public class RegisterScActivity extends BaseActivity{
         showPopwindowSex();
     }
 
-    @OnClick(R.id.rs_tv_complete)
-    public void complete(){
-
-    }
 
     @OnClick(R.id.rs_iv_headPortrait)
     public void headPortrait(){
