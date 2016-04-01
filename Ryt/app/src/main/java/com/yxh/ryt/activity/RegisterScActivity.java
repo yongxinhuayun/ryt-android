@@ -36,21 +36,68 @@ public class RegisterScActivity extends BaseActivity{
 
     @OnClick(R.id.rs_rl_sex)
     public void sexSelect(){
-        showPopwindow();
+        showPopwindowSex();
     }
 
     @OnClick(R.id.rs_tv_complete)
     public void complete(){
 
     }
-    private void showPopwindow() {
+
+    @OnClick(R.id.rs_iv_headPortrait)
+    public void headPortrait(){
+        showPopwindowHead();
+    }
+
+    private void showPopwindowHead() {
+        // 利用layoutInflater获得View
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View view = inflater.inflate(R.layout.popwindowhead, null);
+        // 下面是两种方法得到宽度和高度 getWindow().getDecorView().getWidth()
+        common(view);
+        TextView man= (TextView) view.findViewById(R.id.pdh_tv_takePhoto);
+        man.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dismiss();
+            }
+        });
+        TextView woMan= (TextView) view.findViewById(R.id.pdh_tv_gallery);
+        woMan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dismiss();
+            }
+        });
+    }
+
+    private void showPopwindowSex() {
 
         // 利用layoutInflater获得View
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.popwindowsex, null);
         // 下面是两种方法得到宽度和高度 getWindow().getDecorView().getWidth()
-
+        common(view);
+        TextView man= (TextView) view.findViewById(R.id.pds_tv_man);
+        man.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sexInput.setText("男");
+                window.dismiss();
+            }
+        });
+        TextView woMan= (TextView) view.findViewById(R.id.pds_tv_woman);
+        woMan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sexInput.setText("女");
+                window.dismiss();
+            }
+        });
+    }
+    private void common(View view){
         window = new PopupWindow(view,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT);
@@ -82,22 +129,6 @@ public class RegisterScActivity extends BaseActivity{
             }
         });
 
-        TextView man= (TextView) view.findViewById(R.id.pds_tv_man);
-        man.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sexInput.setText("男");
-                window.dismiss();
-            }
-        });
-        TextView woMan= (TextView) view.findViewById(R.id.pds_tv_woman);
-        woMan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sexInput.setText("女");
-                window.dismiss();
-            }
-        });
     }
 
 }
