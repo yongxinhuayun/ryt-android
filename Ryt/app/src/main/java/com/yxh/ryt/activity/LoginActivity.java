@@ -58,6 +58,12 @@ public class LoginActivity extends BaseActivity {
     public void backClick(){
 
     }
+    /*注册按钮事件触发*/
+    @OnClick(R.id.tv_center_reg)
+    public void regClick(){
+        Intent intent=new Intent(this,RegisterActivity.class);
+        startActivity(intent);
+    }
     /*返回按钮事件触发*/
     @OnClick(R.id.iv_center_wx)
     public void wxLoginClick(){
