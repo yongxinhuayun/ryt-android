@@ -43,7 +43,7 @@
             android:orientation="horizontal"
             android:id="@+id/fp_ll_verifyCode"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/register_shape"
             android:layout_marginTop="15dp">
             <EditText
@@ -52,19 +52,21 @@
                 android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:hint="请输入验证码"
+                android:gravity="center_vertical"
                 android:background="@null"/>
             <TextView
                 android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="#000000"/>
-            <Button
+                android:layout_height="40dp"
+                android:background="#000000"
+                android:gravity="center_vertical"/>
+            <TextView
                 android:id="@+id/fp_bt_verifyCode"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:background="@null"
-                android:hint="发送验证码"
-                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:text="发送验证码"
                 />
         </LinearLayout>
         <EditText
@@ -73,6 +75,7 @@
             android:layout_height="50dp"
             android:background="@drawable/register_shape"
             android:hint="设置密码"
+            android:inputType="textPassword"
             android:layout_below="@id/fp_ll_verifyCode"
             android:layout_marginTop="15dp"/>
         <Button
