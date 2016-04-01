@@ -1,5 +1,6 @@
 package com.yxh.ryt.activity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -18,6 +20,8 @@ import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.obsever.Smsobserver;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Sha1;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.PasswordValidation;
 import com.yxh.ryt.validations.UserNameValidation;
@@ -43,7 +47,7 @@ public class ForgetPwdActivity extends BaseActivity {
     EditText eTVerfyCode;
 
     @Bind(R.id.fp_bt_verifyCode)
-    Button sendCode;
+    TextView sendCode;
     private Uri SMS_INBOX = Uri.parse("content://sms/");
     private Smsobserver smsObserver;
     private Map<String,Object> paramsMap;
@@ -83,7 +87,7 @@ public class ForgetPwdActivity extends BaseActivity {
         eTVerfyCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
+                if (!hasFocus) {
                     AppApplication.getSingleEditTextValidator()
                             .add(new ValidationModel(eTPhone, new UserNameValidation()))
                             .execute();
@@ -109,9 +113,9 @@ public class ForgetPwdActivity extends BaseActivity {
                         @Override
                         public void onResponse(Map<String, Object> response) {
                             if (response.get("resultCode").equals("0")) {
-                                Toast.makeText(ForgetPwdActivity.this, "验证码验证成功", Toast.LENGTH_LONG).show();
+                                ToastUtil.showShort(AppApplication.getSingleContext(), "验证码验证成功!");
                             } else {
-                                Toast.makeText(ForgetPwdActivity.this, "验证码验证失败", Toast.LENGTH_LONG).show();
+                                ToastUtil.showShort(AppApplication.getSingleContext(), "验证码验证失败!");
                                 eTVerfyCode.setText("");
                             }
                         }
@@ -137,20 +141,9 @@ public class ForgetPwdActivity extends BaseActivity {
     @OnClick(R.id.fp_bt_commit)
     public void commit(){
         AppApplication.getSingleEditTextValidator()
-                .add(new ValidationModel(eTPhone,new UserNameValidation()))
-                .execute();
-        //表单没有检验通过直接退出方法
-        if(!AppApplication.getSingleEditTextValidator().validate()){
-            return;
-        }
-    }
-
-    @OnClick(R.id.fp_bt_verifyCode)
-    public void sendCode(){
-        AppApplication.getSingleEditTextValidator()
                 .add(new ValidationModel(eTPhone, new UserNameValidation()))
-                .add(new ValidationModel(eTVerfyCode,new VerifyCodeValidation()))
                 .add(new ValidationModel(eTPassword,new PasswordValidation()))
+                .add(new ValidationModel(eTVerfyCode,new VerifyCodeValidation()))
                 .execute();
         //表单没有检验通过直接退出方法
         if(!AppApplication.getSingleEditTextValidator().validate()){
@@ -158,7 +151,7 @@ public class ForgetPwdActivity extends BaseActivity {
         }
         paramsMap=new HashMap<>();
         paramsMap.put("username", eTPhone.getText().toString());
-        paramsMap.put("password", eTPassword.getText().toString());
+        paramsMap.put("password", Sha1.encodePassword(eTPassword.getText().toString(),"SHA"));
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
@@ -174,6 +167,45 @@ public class ForgetPwdActivity extends BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                 if (response.get("resultCode").equals("0")) {
+                    ToastUtil.showShort(AppApplication.getSingleContext(), "修改密码成功!");
+                } else {
+                    ToastUtil.showShort(AppApplication.getSingleContext(), "修改密码失败!");
+                }
+            }
+        });
+    }
+
+    @OnClick(R.id.fp_bt_verifyCode)
+    public void sendCode(){
+        AppApplication.getSingleEditTextValidator()
+                .add(new ValidationModel(eTPhone, new UserNameValidation()))
+                .execute();
+        //表单没有检验通过直接退出方法
+        if(!AppApplication.getSingleEditTextValidator().validate()){
+            return;
+        }
+        paramsMap=new HashMap<>();
+        paramsMap.put("username", eTPhone.getText().toString());
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "checkUserName.do", paramsMap, new RegisterCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                System.out.println("失败了");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if (response.get("resultCode").equals("0")) {
+                    ToastUtil.showShort(AppApplication.getSingleContext(), "该手机号未注册!");
+                    Intent intent=new Intent(ForgetPwdActivity.this,RegisterActivity.class);
+                    startActivity(intent);
+                    ForgetPwdActivity.this.finish();
+                } else {
                     NetRequestUtil.post(Constants.BASE_PATH + "sendCode.do", paramsMap, new RegisterCallBack() {
                         @Override
                         public void onError(Call call, Exception e) {
@@ -182,13 +214,11 @@ public class ForgetPwdActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(Map<String, Object> response) {
-                            Toast.makeText(ForgetPwdActivity.this, "验证码发送成功", Toast.LENGTH_LONG);
+                            ToastUtil.showShort(AppApplication.getSingleContext(), "验证码发送成功!");
                             startThrad();
                             sendCode.setEnabled(false);
                         }
                     });
-                } else {
-                    Toast.makeText(ForgetPwdActivity.this, "该手机号已经注册,请重新输入", Toast.LENGTH_LONG).show();
                 }
             }
         });
