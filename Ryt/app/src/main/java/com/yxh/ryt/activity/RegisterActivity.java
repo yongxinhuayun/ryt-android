@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yxh.ryt.AppApplication;
@@ -46,7 +47,7 @@ public class RegisterActivity extends BaseActivity {
     @Bind(R.id.rg_et_passwordAgain)
     EditText eTPasswordAgain;
     @Bind(R.id.rg_bt_verifyCode)
-    Button getVerifyCode;
+    TextView getVerifyCode;
     private Map<String,Object> paramsMap;
     private Handler handler = new Handler() {
         @Override
@@ -157,13 +158,13 @@ public class RegisterActivity extends BaseActivity {
             ToastUtil.showShort(this,"验证码不能为空!");
             return;
         }
-        if (eTPassword.getText().toString().equals(eTPasswordAgain.getText().toString())){
+        if (!eTPassword.getText().toString().equals(eTPasswordAgain.getText().toString())){
             ToastUtil.showShort(this, "两次输入的密码不一致,请重新输入!");
             return;
         }
         Map<String,Object> paramsMap=new HashMap<>();
         paramsMap.put("username", eTPhone.getText().toString());
-        paramsMap.put("password", eTPassword.getText().toString());
+        paramsMap.put("password", Sha1.encodePassword(eTPassword.getText().toString(),"SHA"));
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
@@ -178,11 +179,14 @@ public class RegisterActivity extends BaseActivity {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if (response.get("resultCode").equals("0")){
-                    ToastUtil.showShort(AppApplication.getSingleContext(), "注册成功!");
-                }else {
+                if (!response.get("resultCode").equals("0")) {
                     ToastUtil.showShort(AppApplication.getSingleContext(), "注册失败!");
+                    return;
                 }
+                if (response.get("resultCode").equals("0")) {
+                    ToastUtil.showShort(AppApplication.getSingleContext(), "注册成功!");
+                }
+
             }
         });
     }
