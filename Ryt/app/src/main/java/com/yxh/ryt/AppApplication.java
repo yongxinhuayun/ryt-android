@@ -16,6 +16,7 @@ public class AppApplication extends Application {
 	public static PayReq req;
 	private  static Context context;
 	private  static Gson gson;
+	public static  String signmsg;
 	private static EditTextValidator editTextValidator;
 	@Override
 	public void onCreate() {

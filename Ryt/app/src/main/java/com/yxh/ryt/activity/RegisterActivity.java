@@ -48,7 +48,7 @@ public class RegisterActivity extends BaseActivity {
     EditText eTPasswordAgain;
     @Bind(R.id.rg_bt_verifyCode)
     TextView getVerifyCode;
-    private Map<String,Object> paramsMap;
+    private Map<String,String> paramsMap;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -96,7 +96,7 @@ public class RegisterActivity extends BaseActivity {
                     if (!AppApplication.getSingleEditTextValidator().validate()) {
                         return;
                     }
-                    Map<String, Object> paramsMap = new HashMap<>();
+                    Map<String, String> paramsMap = new HashMap<>();
                     paramsMap.put("username", eTPhone.getText().toString());
                     paramsMap.put("code", eTVerfyCode.getText().toString());
                     paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -162,9 +162,9 @@ public class RegisterActivity extends BaseActivity {
             ToastUtil.showShort(this, "两次输入的密码不一致,请重新输入!");
             return;
         }
-        Map<String,Object> paramsMap=new HashMap<>();
+        Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("username", eTPhone.getText().toString());
-        paramsMap.put("password", Sha1.encodePassword(eTPassword.getText().toString(),"SHA"));
+        paramsMap.put("password", Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));

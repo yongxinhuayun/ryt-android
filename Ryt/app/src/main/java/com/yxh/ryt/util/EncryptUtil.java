@@ -5,23 +5,24 @@ import com.yxh.ryt.Constants;
 import java.security.MessageDigest;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 /**
  * Created by dev on 2015/12/28.
  */
 public class EncryptUtil {
-    public static String encrypt(Map<String,Object> map)throws  Exception{
-        TreeMap map2 = new TreeMap();
-        for(Iterator it = map.keySet().iterator();it.hasNext();){
-            Object key = it.next();
-            Object Value = map.get(key);
+    public static String encrypt(Map<String,String> map)throws  Exception{
+        TreeMap<String,String> map2 = new TreeMap();
+        for(Iterator<String> it = map.keySet().iterator();it.hasNext();){
+            String key = it.next();
+            String Value = map.get(key);
             map2.put(key,Value);
         }
         StringBuffer str = new StringBuffer();
-        for(Iterator it = map2.keySet().iterator();it.hasNext();){
-            Object key = it.next();
-            Object Value = map2.get(key);
+        for(Iterator<String> it = map2.keySet().iterator();it.hasNext();){
+            String key = it.next();
+            String Value = map2.get(key);
             str.append(key).append("=").append(Value).append("&");
         }
         str.append("key=" + Constants.APP_KEY);
