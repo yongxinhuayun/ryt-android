@@ -10,14 +10,16 @@
             android:id="@+id/rg_ib_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:src="@mipmap/back"
-            android:layout_alignBottom="@+id/rg_tv_title"/>
+            />
         <TextView
             android:id="@+id/rg_tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:text="快速注册"
-            android:textSize="25sp"
+            android:textSize="18sp"
             android:layout_centerInParent="true"
             />
     </RelativeLayout>
