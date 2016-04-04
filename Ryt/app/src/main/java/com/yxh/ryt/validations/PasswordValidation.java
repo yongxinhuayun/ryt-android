@@ -36,7 +36,10 @@ public class PasswordValidation extends ValidationExecutor {
 
 	@Override
 	public boolean doValidate(Context context, String text) {
-
+		if(text.isEmpty()){
+			ToastUtil.showShort(AppApplication.getSingleContext(), "密码不能为空！");
+			return false;
+		}
 		String regex = "^[a-zA-Z]|[0-9]{6,16}$";
 		boolean result = Pattern.compile(regex).matcher(text).find();
 		if (!result) {

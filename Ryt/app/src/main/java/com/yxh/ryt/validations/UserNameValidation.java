@@ -35,6 +35,10 @@ public class UserNameValidation extends ValidationExecutor {
 
 	@Override
 	public boolean doValidate(Context context, String text) {
+		if(text.isEmpty()){
+			ToastUtil.showShort(AppApplication.getSingleContext(), "账号不能为空！");
+			return false;
+		}
 		String regex = "^((13[0-9])|(15[^4,\\D])|(18[0,2,5-9]))\\d{8}$";
 		boolean result = Pattern.compile(regex).matcher(text).find();
 		if (!result) {
