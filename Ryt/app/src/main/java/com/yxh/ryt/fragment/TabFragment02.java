@@ -18,4 +18,9 @@ public class TabFragment02 extends  BaseFragment {
         View view = inflater.inflate(R.layout.tab_02, null);
         return view;
     }
+
+    @Override
+    protected void lazyLoad() {
+
+    }
 }

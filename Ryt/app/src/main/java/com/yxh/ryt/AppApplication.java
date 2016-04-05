@@ -3,6 +3,8 @@ package com.yxh.ryt;
 import android.app.Application;
 import android.content.Context;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.yxh.ryt.util.avalidations.EditTextValidator;
 import com.google.gson.Gson;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -24,7 +26,7 @@ public class AppApplication extends Application {
 		context=this;
 		gson=new Gson();
 		editTextValidator=new EditTextValidator(this);
-
+		ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
 	}
 
 	//获取全局Context

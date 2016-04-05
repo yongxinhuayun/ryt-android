@@ -4,11 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:textSize="18sp"
-        android:gravity="center" />
+    <com.yxh.ryt.custemview.AutoListView
+        android:id="@+id/lstv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
