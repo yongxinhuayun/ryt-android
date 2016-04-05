@@ -28,4 +28,6 @@ dependencies {
     compile files('src/main/libs/butterknife-7.0.1.jar')
     compile 'com.zhy:okhttputils:2.3.8'
     compile files('src/main/libs/libammsdk.jar')
+    compile project(':library')
+    compile 'com.android.support:support-v4:23.1.1'
 }

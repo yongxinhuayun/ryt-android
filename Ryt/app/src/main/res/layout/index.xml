@@ -17,6 +17,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:background="@android:color/black"
         android:layout_height="50dp">
         <RelativeLayout
             android:id="@+id/rl_tab_01"
@@ -36,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
+                android:textColor="@android:color/white"
                 android:text="首页"/>
         </RelativeLayout>
         <RelativeLayout
@@ -55,6 +57,7 @@
                 android:layout_below="@id/iv_tab_02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
                 android:textSize="14sp"
                 android:text="发现"/>
         </RelativeLayout>
@@ -75,6 +78,7 @@
                 android:layout_below="@id/iv_tab_03"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
                 android:textSize="14sp"
                 android:text="消息"/>
         </RelativeLayout>
@@ -95,6 +99,7 @@
                 android:layout_below="@id/iv_tab_04"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
                 android:textSize="14sp"
                 android:text="我的"/>
         </RelativeLayout>

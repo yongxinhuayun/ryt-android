@@ -1,9 +1,9 @@
 package com.yxh.ryt.activity;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
 
@@ -37,7 +37,7 @@ public class IndexActivity extends BaseActivity {
                 textView.setTextColor(Color.RED);//可以将选择和未选择的color抽出
                 return;
             }
-            textView.setTextColor(Color.BLACK);
+            textView.setTextColor(Color.WHITE);
         }
     };
     @Override
@@ -52,8 +52,8 @@ public class IndexActivity extends BaseActivity {
 
     private void setDefaultFragment()
     {
-        fm = getFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
+        fm =getSupportFragmentManager();
+        transaction = fm.beginTransaction();
         tabFragment01 = new TabFragment01();
         transaction.replace(R.id.fl_tab, tabFragment01);
         ButterKnife.apply(tabTvs, SETCOLOR, 0);
@@ -63,7 +63,7 @@ public class IndexActivity extends BaseActivity {
     @OnClick({R.id.rl_tab_01,R.id.rl_tab_02,R.id.rl_tab_03,R.id.rl_tab_04})
     public void onClick(View v)
     {
-        fm = getFragmentManager();
+        fm = getSupportFragmentManager();
         // 开启Fragment事务
         transaction = fm.beginTransaction();
 
