@@ -115,7 +115,7 @@
             android:id="@+id/ft3_iv_privateLetter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/privateletter"
+            android:src="@mipmap/priletter"
             android:layout_centerVertical="true"/>
         <TextView
             android:layout_width="wrap_content"
