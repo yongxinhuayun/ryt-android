@@ -23,4 +23,5 @@ public class Constants {
     public static final String WX_INSTALL_ACTION = "wx_install_action";
     public static final String WX_NOTINSTALL_ACTION = "wx_notinstall_action";
     public static final String[] TITLE = new String[] { "融资", "创作", "拍卖" };
+
 }
