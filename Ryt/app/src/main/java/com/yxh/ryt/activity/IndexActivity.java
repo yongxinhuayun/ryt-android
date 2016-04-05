@@ -7,13 +7,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
 
+
 import com.yxh.ryt.R;
 import com.yxh.ryt.fragment.TabFragment01;
 import com.yxh.ryt.fragment.TabFragment02;
 import com.yxh.ryt.fragment.TabFragment03;
 import com.yxh.ryt.fragment.TabFragment04;
 
-import org.w3c.dom.Text;
 
 import java.util.List;
 
