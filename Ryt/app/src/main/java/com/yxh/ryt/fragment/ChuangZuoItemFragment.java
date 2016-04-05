@@ -11,12 +11,10 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
-import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.vo.RongZi;
 
 import java.util.ArrayList;
@@ -27,7 +25,7 @@ import java.util.Map;
 import okhttp3.Call;
 
 
-public class RongZiItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
+public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener {
 	private AutoListView lstv;
 	private CommonAdapter<RongZi> rongZiCommonAdapter;
@@ -57,7 +55,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "investorIndex.do", paramsMap, new RongZiListCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "artWorkCreationList.do", paramsMap, new RongZiListCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
@@ -102,7 +100,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 			Bundle savedInstanceState) {
 		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
-		rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.finance_list_item) {
+		rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.create_list_item) {
 			@Override
 			public void convert(ViewHolder helper, RongZi item) {
 				helper.setText(R.id.cl_01_tv_title,item.getTitle());

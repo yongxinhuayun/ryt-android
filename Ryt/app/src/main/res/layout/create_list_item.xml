@@ -20,12 +20,12 @@
             android:layout_alignBottom="@id/cli_tv_update"
             android:layout_alignTop="@id/cli_tv_update"
             android:layout_toRightOf="@id/cli_tv_update">
-            <ImageView
-                android:id="@+id/cli_iv_redPoint"
-                android:layout_width="wrap_content"
-                android:layout_height="10dp"
-                android:layout_alignParentTop="true"
-                android:src="@mipmap/smallredpoint"/>
+            <!--<ImageView-->
+                <!--android:id="@+id/cli_iv_redPoint"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="10dp"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:src="@mipmap/smallredpoint"/>-->
         </RelativeLayout>
         <LinearLayout
             android:layout_width="wrap_content"

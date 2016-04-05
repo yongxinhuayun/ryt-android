@@ -27,7 +27,7 @@ public class TabFragment01 extends  BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fragments.add(new RongZiItemFragment());
-        fragments.add(new RongZiItemFragment());
+        fragments.add(new ChuangZuoItemFragment());
         fragments.add(new RongZiItemFragment());
     }
 

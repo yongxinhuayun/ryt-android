@@ -17,7 +17,7 @@ public class User {
     private String status;
     protected Date createDatetime;
     private String type; //00000 普通用户 10000 艺术家
-//    private Master master; //用户关联的大师
+    private Master master; //用户关联的大师
 
 
     public String getId() {
