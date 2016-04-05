@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
-                android:text="发现"/>
+                android:text="排行"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_tab_03"
