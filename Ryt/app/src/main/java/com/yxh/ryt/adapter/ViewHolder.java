@@ -81,7 +81,13 @@ public class ViewHolder
 	        TextView view = getView(viewId);  
 	        view.setText(text);  
 	        return this;
-	    }  
+	    }
+		public ViewHolder setColor(int viewId, int color)
+		{
+			TextView view = getView(viewId);
+			view.setBackgroundColor(color);
+			return this;
+		}
 	    public ViewHolder setText(int viewId, SpannableStringBuilder text)  
 	    {  
 	    	TextView view = getView(viewId);  
