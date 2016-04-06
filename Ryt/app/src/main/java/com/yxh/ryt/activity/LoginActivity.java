@@ -41,8 +41,8 @@ public class LoginActivity extends BaseActivity {
     EditText etUsername;
     @Bind(R.id.et_center_two)
     EditText etPassword;
-    @Bind(R.id.ib_top_lf)
-    ImageButton ibLeft;
+    @Bind(R.id.ib_top_rt)
+    ImageButton ibRight;
     @Bind(R.id.iv_center_wx)
     ImageView ivWxLogin;
     private  EditTextValidator editTextValidator;
@@ -54,9 +54,9 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);/*启用注解绑定*/
     }
     /*返回按钮事件触发*/
-    @OnClick(R.id.ib_top_lf)
-    public void backClick(){
-
+    @OnClick(R.id.ib_top_rt)
+    public void closeClick(){
+        finish();
     }
     /*注册按钮事件触发*/
     @OnClick(R.id.tv_center_reg)
