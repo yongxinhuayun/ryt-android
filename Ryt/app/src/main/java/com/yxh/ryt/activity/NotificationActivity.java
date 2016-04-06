@@ -109,9 +109,10 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
                     List<Notification> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<Notification>>() {
                     }.getType());
                     if(null==notificationList||notificationList.size()==0){
-                        ntflistview.setResultSize(0);
+                        ntflistview.setResultSize(1);
                     }
                     if (null!=notificationList&&notificationList.size()>0) {
+                        ntflistview.setResultSize(ntflistview.getPageSize());
                         notificationDatas.addAll(notificationList);
                         ntfAdapter.notifyDataSetChanged();
                     }
