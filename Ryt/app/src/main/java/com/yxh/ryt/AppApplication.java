@@ -11,6 +11,8 @@ import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class AppApplication extends Application {
 
 	public static BaseResp resp;
@@ -27,6 +29,9 @@ public class AppApplication extends Application {
 		gson=new Gson();
 		editTextValidator=new EditTextValidator(this);
 		ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
+
+		JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+		JPushInterface.init(this);     		// 初始化 JPush
 	}
 
 	//获取全局Context
