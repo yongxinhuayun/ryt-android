@@ -13,6 +13,10 @@ import java.util.Locale;
 
 public class Utils {
 
+	public static String timeToFormatTemp(long time){
+		SimpleDateFormat sdf = new SimpleDateFormat("HH时MM分SS秒");
+		return sdf.format(new Date(time));
+	}
 	public static String getCurrentTime(String format) {
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());

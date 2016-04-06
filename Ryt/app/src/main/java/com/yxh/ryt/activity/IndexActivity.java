@@ -2,9 +2,7 @@ package com.yxh.ryt.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
@@ -12,12 +10,8 @@ import android.widget.TextView;
 
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.TabPageAdapter;
-import com.yxh.ryt.adapter.TabPageIndicatorAdapter;
 import com.yxh.ryt.custemview.CustomViewPager;
 import com.yxh.ryt.fragment.BaseFragment;
-import com.yxh.ryt.fragment.ChuangZuoItemFragment;
-import com.yxh.ryt.fragment.PaiMaiItemFragment;
-import com.yxh.ryt.fragment.RongZiItemFragment;
 import com.yxh.ryt.fragment.TabFragment01;
 import com.yxh.ryt.fragment.TabFragment02;
 import com.yxh.ryt.fragment.TabFragment03;

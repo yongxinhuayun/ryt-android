@@ -7,13 +7,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.viewpagerindicator.TabPageIndicator;
-import com.yxh.ryt.AppApplication;
-import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
-import com.yxh.ryt.adapter.TabPageIndicatorAdapter;
+import com.yxh.ryt.adapter.IndexTabPageIndicatorAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +39,7 @@ public class TabFragment01 extends  BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_01, null);
-        indexChildAdapter = new TabPageIndicatorAdapter(getActivity().getSupportFragmentManager(),indexChildFragments);
+        indexChildAdapter = new IndexTabPageIndicatorAdapter(getActivity().getSupportFragmentManager(),indexChildFragments);
         ViewPager pager = (ViewPager)view.findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
         pager.setAdapter(indexChildAdapter);

@@ -13,10 +13,10 @@ import java.util.List;
 /**
  * Created by 吴洪杰 on 2016/4/5.
  */
-public class TabPageIndicatorAdapter extends FragmentPagerAdapter {
+public class IndexTabPageIndicatorAdapter extends FragmentPagerAdapter {
 
     List<BaseFragment> fragments;
-    public TabPageIndicatorAdapter(FragmentManager fm,List<BaseFragment> fragments) {
+    public IndexTabPageIndicatorAdapter(FragmentManager fm, List<BaseFragment> fragments) {
         super(fm);
         this.fragments=fragments;
     }
@@ -26,18 +26,18 @@ public class TabPageIndicatorAdapter extends FragmentPagerAdapter {
         //新建一个Fragment来展示ViewPager item的内容，并传递参数
         BaseFragment fragment = this.fragments.get(position);
         Bundle args = new Bundle();
-        args.putString("arg", Constants.TITLE[position]);
+        args.putString("arg", Constants.INDEX_TITLE[position]);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return Constants.TITLE[position % Constants.TITLE.length];
+        return Constants.INDEX_TITLE[position % Constants.INDEX_TITLE.length];
     }
 
     @Override
     public int getCount() {
-        return Constants.TITLE.length;
+        return Constants.INDEX_TITLE.length;
     }
 }

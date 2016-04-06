@@ -17,6 +17,7 @@ import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Sha1;
+import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.RongZi;
 
 import java.util.ArrayList;
@@ -102,6 +103,10 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 			public void convert(ViewHolder helper, RongZi item) {
 				helper.setText(R.id.cl_01_tv_title,item.getTitle());
 				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
+				helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());
+				helper.setText(R.id.fli_ll_tv_investGoalMoney,item.getInvestGoalMoney().intValue()+"元");
+				helper.setText(R.id.fli_ll_tv_remainingTime, Utils.timeToFormatTemp(item.getInvestEndDatetime()-item.getInvestStartDatetime()));
+				helper.setText(R.id.fli_ll_tv_investGoalPeople,item.getInvestorsNum()+"");
 				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
 				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
 			}

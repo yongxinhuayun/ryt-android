@@ -25,21 +25,18 @@ import java.util.Map;
 import okhttp3.Call;
 
 
-public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
+public class PaiHangItemFragment01 extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener {
 	private AutoListView lstv;
-	private CommonAdapter<RongZi> paiMaiCommonAdapter;
-	private List<RongZi> paiMaiDatas;
+	private CommonAdapter<RongZi> rongZiCommonAdapter;
+	private List<RongZi> rongZiDatas;
 	private int currentPage=1;
 	private int pageSize=5;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		paiMaiDatas=new ArrayList<RongZi>();
+		rongZiDatas=new ArrayList<RongZi>();
 	}
-
-
-
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("pageSize",pageSize+"");
@@ -51,7 +48,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "artWorkAuctionList.do", paramsMap, new RongZiListCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "investorIndex.do", paramsMap, new RongZiListCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
@@ -62,7 +59,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 			public void onResponse(Map<String, Object> response) {
 				if (state==AutoListView.REFRESH){
 					lstv.onRefreshComplete();
-					paiMaiDatas.clear();
+					rongZiDatas.clear();
 					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
 					}.getType());
 					if(null==objectList||objectList.size()==0){
@@ -70,8 +67,8 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 					}
 					if (null!=objectList&&objectList.size()>0){
 						lstv.setResultSize(lstv.getPageSize());
-						paiMaiDatas.addAll(objectList);
-						paiMaiCommonAdapter.notifyDataSetChanged();
+						rongZiDatas.addAll(objectList);
+						rongZiCommonAdapter.notifyDataSetChanged();
 					}
 					return;
 				}
@@ -84,8 +81,8 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 					}
 					if (null!=objectList&&objectList.size()>0) {
 						lstv.setResultSize(lstv.getPageSize());
-						paiMaiDatas.addAll(objectList);
-						paiMaiCommonAdapter.notifyDataSetChanged();
+						rongZiDatas.addAll(objectList);
+						rongZiCommonAdapter.notifyDataSetChanged();
 					}
 					return;
 				}
@@ -98,33 +95,31 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 			Bundle savedInstanceState) {
 		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
-		paiMaiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),paiMaiDatas,R.layout.auction_list_item) {
+		rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.finance_list_item) {
 			@Override
 			public void convert(ViewHolder helper, RongZi item) {
 				helper.setText(R.id.cl_01_tv_title,item.getTitle());
 				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
-				helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());
 				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
 				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
 			}
 		};
-		lstv.setAdapter(paiMaiCommonAdapter);
+		lstv.setAdapter(rongZiCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
 		return contextView;
 	}
 
 	@Override
-	protected void lazyLoad() {
-			if(paiMaiDatas!=null&&paiMaiDatas.size()>0)return;
-			LoadData(AutoListView.REFRESH, currentPage);
-	}
-
-	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-	}
 
+	}
+	@Override
+	protected void lazyLoad() {
+		if(rongZiDatas!=null&&rongZiDatas.size()>0)return;
+		LoadData(AutoListView.REFRESH, currentPage);
+	}
 	@Override
 	public void onRefresh() {
 		currentPage=1;

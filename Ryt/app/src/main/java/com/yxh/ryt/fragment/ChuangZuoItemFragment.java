@@ -103,7 +103,9 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 			public void convert(ViewHolder helper, RongZi item) {
 				helper.setText(R.id.cl_01_tv_title,item.getTitle());
 				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
-				helper.setImageByUrl(R.id.cl_01_tv_prc,item.getPicture_url());
+				helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());
+				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
+				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
 			}
 		};
 		lstv.setAdapter(chuangZuoCommonAdapter);
