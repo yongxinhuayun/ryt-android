@@ -1,6 +1,7 @@
 package com.yxh.ryt.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.obsever.Smsobserver;
+import com.yxh.ryt.receiver.WxLoginBroadcastReciver;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Sha1;
@@ -27,6 +30,7 @@ import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.PasswordValidation;
 import com.yxh.ryt.validations.UserNameValidation;
+import com.yxh.ryt.wxapi.WxUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,11 +48,14 @@ public class RegisterActivity extends BaseActivity {
     EditText eTPassword;
     @Bind(R.id.rg_et_verifyCode)
     EditText eTVerfyCode;
-    @Bind(R.id.rg_et_passwordAgain)
-    EditText eTPasswordAgain;
+    @Bind(R.id.iv_center_wx)
+    ImageView ivWxLogin;
+//    @Bind(R.id.rg_et_passwordAgain)
+//    EditText eTPasswordAgain;
     @Bind(R.id.rg_bt_verifyCode)
     TextView getVerifyCode;
     private Map<String,String> paramsMap;
+    WxLoginBroadcastReciver mReciver;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -82,7 +89,17 @@ public class RegisterActivity extends BaseActivity {
         smsBackfill();
         event();
     }
-
+    /*返回按钮事件触发*/
+    @OnClick(R.id.iv_center_wx)
+    public void wxLoginClick(){
+        if(WxUtil.regAndCheckWx(RegisterActivity.this)){
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Constants.WX_LOGIN_ACTION);
+            mReciver = new WxLoginBroadcastReciver();
+            registerReceiver(mReciver, intentFilter);
+            WxUtil.wxlogin();
+        }
+    }
     private void event() {
 
         eTVerfyCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -140,6 +157,7 @@ public class RegisterActivity extends BaseActivity {
     }
     @OnClick(R.id.rg_tv_login)
     public void login(){
+        finish();
         Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
         startActivity(intent);
     }
@@ -158,10 +176,10 @@ public class RegisterActivity extends BaseActivity {
             ToastUtil.showShort(this,"验证码不能为空!");
             return;
         }
-        if (!eTPassword.getText().toString().equals(eTPasswordAgain.getText().toString())){
-            ToastUtil.showShort(this, "两次输入的密码不一致,请重新输入!");
-            return;
-        }
+//        if (!eTPassword.getText().toString().equals(eTPasswordAgain.getText().toString())){
+//            ToastUtil.showShort(this, "两次输入的密码不一致,请重新输入!");
+//            return;
+//        }
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("username", eTPhone.getText().toString());
         paramsMap.put("password", Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));
@@ -255,5 +273,12 @@ public class RegisterActivity extends BaseActivity {
                 }
             }
         }).start();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mReciver!=null){
+            unregisterReceiver(mReciver);
+        }
     }
 }
