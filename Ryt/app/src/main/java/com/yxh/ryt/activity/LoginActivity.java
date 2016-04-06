@@ -9,11 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.LoginCallBack;
+import com.yxh.ryt.receiver.WxLoginBroadcastReciver;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Sha1;
@@ -45,7 +47,10 @@ public class LoginActivity extends BaseActivity {
     ImageButton ibRight;
     @Bind(R.id.iv_center_wx)
     ImageView ivWxLogin;
+    @Bind(R.id.tv_center_forget)
+    TextView tvForget;
     private  EditTextValidator editTextValidator;
+    WxLoginBroadcastReciver mReciver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +66,15 @@ public class LoginActivity extends BaseActivity {
     /*注册按钮事件触发*/
     @OnClick(R.id.tv_center_reg)
     public void regClick(){
+        finish();
         Intent intent=new Intent(this,RegisterActivity.class);
+        startActivity(intent);
+    }
+    /*忘记密码按钮事件触发*/
+    @OnClick(R.id.tv_center_forget)
+    public void forgetClick(){
+        finish();
+        Intent intent=new Intent(this,ForgetPwdActivity.class);
         startActivity(intent);
     }
     /*返回按钮事件触发*/
@@ -70,23 +83,12 @@ public class LoginActivity extends BaseActivity {
         if(WxUtil.regAndCheckWx(LoginActivity.this)){
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.WX_LOGIN_ACTION);
-            WxLoginBroadcastReciver mReciver = new WxLoginBroadcastReciver();
+            mReciver = new WxLoginBroadcastReciver();
             registerReceiver(mReciver, intentFilter);
             WxUtil.wxlogin();
         }
     }
-    class WxLoginBroadcastReciver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (Constants.WX_LOGIN_ACTION.equals(action)) {
-                String wxuserStr = intent.getExtras().getString("wxuser");
-                System.out.println(wxuserStr);
-//                AppApplication.gwxuser = AppApplication.getSingleGson().fromJson(wxuserStr, Wxuser.class);
-            }
-        }
 
-    }
     /*登录按钮点击事件触发*/
     @OnClick(R.id.btn_center_login)
     public void loginClick(){
@@ -124,5 +126,13 @@ public class LoginActivity extends BaseActivity {
                 System.out.println("成功了");
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mReciver!=null){
+            unregisterReceiver(mReciver);
+        }
     }
 }
