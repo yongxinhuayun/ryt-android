@@ -87,7 +87,7 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
                     privateLetterDatas.clear();
                     List<PrivateLetter> notificationList = null;
                     try {
-                        notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<Notification>>() {
+                        notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<PrivateLetter>>() {
                         }.getType());
                     } catch (JsonSyntaxException e) {
                         e.printStackTrace();
@@ -104,7 +104,7 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
                 }
                 if (state==AutoListView.LOAD){
                     plflistview.onLoadComplete();
-                    List<PrivateLetter> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<Notification>>() {
+                    List<PrivateLetter> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<PrivateLetter>>() {
                     }.getType());
                     if(null==notificationList||notificationList.size()==0){
                         plflistview.setResultSize(1);
