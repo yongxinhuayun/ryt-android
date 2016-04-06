@@ -84,7 +84,7 @@ public class ViewHolder
 	    }
 		public ViewHolder setColor(int viewId, int color)
 		{
-			TextView view = getView(viewId);
+			View view = getView(viewId);
 			view.setBackgroundColor(color);
 			return this;
 		}

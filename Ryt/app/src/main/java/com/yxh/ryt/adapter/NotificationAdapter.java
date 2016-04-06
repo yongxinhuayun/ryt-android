@@ -19,8 +19,8 @@ public class NotificationAdapter extends CommonAdapter<Notification> {
 
     @Override
     public void convert(ViewHolder helper, Notification item) {
-        if (item.getIsWatch().equals("0")){
-            helper.setColor(R.id.cl_01_tv_title, Color.BLACK);
+        if (item.getIsWatch()==0){
+            helper.setColor(R.id.cl_01_tv_title, Color.YELLOW);
         }
     }
 }

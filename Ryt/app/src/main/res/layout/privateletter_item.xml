@@ -2,32 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/ni_ll_top">
+    android:id="@+id/pi_ll_top">
     <RelativeLayout
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/ni_iv_icon"
+            android:id="@+id/pi_iv_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_launcher"/>
         <TextView
             android:layout_marginLeft="5dp"
-            android:id="@+id/ni_tv_content"
+            android:id="@+id/pi_tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/ni_iv_icon"
-            android:text="您投资的项目大师发表了新动态"
+            android:layout_toRightOf="@id/pi_iv_icon"
+            android:text="三毛猫"
             android:layout_marginBottom="5dp"
             android:layout_alignParentTop="true"/>
         <TextView
             android:layout_marginLeft="5dp"
-            android:id="@+id/ni_tv_date"
+            android:id="@+id/pi_tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2016-02-19  14:00"
-            android:layout_toRightOf="@id/ni_iv_icon"
-            android:layout_alignBottom="@id/ni_iv_icon"/>
+            android:layout_toRightOf="@id/pi_iv_icon"
+            android:layout_alignBottom="@id/pi_iv_icon"/>
     </RelativeLayout>
 </LinearLayout>
