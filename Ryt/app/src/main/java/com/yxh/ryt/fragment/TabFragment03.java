@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.NotificationActivity;
 import com.yxh.ryt.custemview.BadgeView;
 import com.yxh.ryt.custemview.CircleImageView;
 
@@ -29,7 +30,7 @@ public class TabFragment03 extends  BaseFragment {
         bv.setText("5");
         bv.setTextColor(Color.WHITE);
         bv.setTextSize(7);
-        bv.setBadgePosition(BadgeView.POSITION_TOP_RIGHT); //Ĭ��ֵ
+        bv.setBadgePosition(BadgeView.POSITION_TOP_RIGHT); //Ĭ��ֵ
         bv.show();
         return view;
     }
@@ -43,6 +44,8 @@ public class TabFragment03 extends  BaseFragment {
         Intent intent=null;
         switch (view.getId()){
             case R.id.ft3_ll_notification:
+                intent=new Intent(getActivity(), NotificationActivity.class);
+                getActivity().startActivity(intent);
                 break;
             case R.id.ft3_ll_comment:
                 break;
