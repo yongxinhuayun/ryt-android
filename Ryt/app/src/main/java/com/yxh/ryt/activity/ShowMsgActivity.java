@@ -10,7 +10,7 @@ import com.yxh.ryt.R;
 
 import cn.jpush.android.api.JPushInterface;
 
-public class ShowMsgActivity extends AppCompatActivity {
+public class ShowMsgActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
