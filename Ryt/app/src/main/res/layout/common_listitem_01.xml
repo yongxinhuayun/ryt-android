@@ -6,17 +6,18 @@
     android:layout_height="wrap_content">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/cl_01_tv_prc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@mipmap/ic_launcher"/>
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
-            android:layout_marginLeft="15dp">
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/cl_01_tv_title"
                 android:layout_width="wrap_content"
@@ -24,7 +25,6 @@
                 android:text="逐鹿顺意铜雕"
                 android:textSize="25sp"/>
             <TextView
-                android:layout_below="@id/cl_01_tv_title"
                 android:id="@+id/cl_01_tv_brief"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                 android:maxLength="100"
                 android:layout_marginTop="15dp"
                 android:singleLine="false"/>
-        </RelativeLayout>
+        </LinearLayout>
     </FrameLayout>
 
     <LinearLayout
