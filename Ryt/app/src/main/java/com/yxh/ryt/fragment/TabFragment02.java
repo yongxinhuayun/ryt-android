@@ -23,4 +23,5 @@ public class TabFragment02 extends  BaseFragment {
     protected void lazyLoad() {
 
     }
+
 }

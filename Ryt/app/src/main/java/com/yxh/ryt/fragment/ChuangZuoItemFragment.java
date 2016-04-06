@@ -28,21 +28,17 @@ import okhttp3.Call;
 public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener {
 	private AutoListView lstv;
-	private CommonAdapter<RongZi> rongZiCommonAdapter;
-	private List<RongZi> rongZiDatas;
+	private CommonAdapter<RongZi> chuangZuoCommonAdapter;
+	private List<RongZi> chuangZuoDatas;
 	private int currentPage=1;
 	private int pageSize=5;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		rongZiDatas=new ArrayList<RongZi>();
+		chuangZuoDatas=new ArrayList<RongZi>();
 	}
 
 
-	@Override
-	protected void lazyLoad() {
-		LoadData(AutoListView.REFRESH,currentPage);
-	}
 
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
@@ -66,15 +62,16 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 			public void onResponse(Map<String, Object> response) {
 				if (state==AutoListView.REFRESH){
 					lstv.onRefreshComplete();
-					rongZiDatas.clear();
+					chuangZuoDatas.clear();
 					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
 					}.getType());
 					if(null==objectList||objectList.size()==0){
-						lstv.setResultSize(0);
+						lstv.setResultSize(1);
 					}
 					if (null!=objectList&&objectList.size()>0){
-						rongZiDatas.addAll(objectList);
-						rongZiCommonAdapter.notifyDataSetChanged();
+						lstv.setResultSize(lstv.getPageSize());
+						chuangZuoDatas.addAll(objectList);
+						chuangZuoCommonAdapter.notifyDataSetChanged();
 					}
 					return;
 				}
@@ -83,11 +80,12 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
 					}.getType());
 					if(null==objectList||objectList.size()==0){
-						lstv.setResultSize(0);
+						lstv.setResultSize(1);
 					}
 					if (null!=objectList&&objectList.size()>0) {
-						rongZiDatas.addAll(objectList);
-						rongZiCommonAdapter.notifyDataSetChanged();
+						lstv.setResultSize(lstv.getPageSize());
+						chuangZuoDatas.addAll(objectList);
+						chuangZuoCommonAdapter.notifyDataSetChanged();
 					}
 					return;
 				}
@@ -100,7 +98,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 			Bundle savedInstanceState) {
 		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
-		rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.create_list_item) {
+		chuangZuoCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),chuangZuoDatas,R.layout.create_list_item) {
 			@Override
 			public void convert(ViewHolder helper, RongZi item) {
 				helper.setText(R.id.cl_01_tv_title,item.getTitle());
@@ -108,10 +106,16 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 				helper.setImageByUrl(R.id.cl_01_tv_prc,item.getPicture_url());
 			}
 		};
-		lstv.setAdapter(rongZiCommonAdapter);
+		lstv.setAdapter(chuangZuoCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
 		return contextView;
+	}
+
+	@Override
+	protected void lazyLoad() {
+		if(chuangZuoDatas!=null&&chuangZuoDatas.size()>0)return;
+		LoadData(AutoListView.REFRESH, currentPage);
 	}
 
 	@Override
@@ -127,9 +131,8 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 
 	@Override
 	public void onLoad() {
-		System.out.println(currentPage+"=============");
-		LoadData(AutoListView.LOAD,currentPage);
 		currentPage++;
+		LoadData(AutoListView.LOAD,currentPage);
 	}
 
 }

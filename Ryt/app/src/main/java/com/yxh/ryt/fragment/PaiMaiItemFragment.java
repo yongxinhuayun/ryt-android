@@ -11,12 +11,10 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
-import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.vo.RongZi;
 
 import java.util.ArrayList;
@@ -27,18 +25,21 @@ import java.util.Map;
 import okhttp3.Call;
 
 
-public class RongZiItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
+public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener {
 	private AutoListView lstv;
-	private CommonAdapter<RongZi> rongZiCommonAdapter;
-	private List<RongZi> rongZiDatas;
+	private CommonAdapter<RongZi> paiMaiCommonAdapter;
+	private List<RongZi> paiMaiDatas;
 	private int currentPage=1;
 	private int pageSize=5;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		rongZiDatas=new ArrayList<RongZi>();
+		paiMaiDatas=new ArrayList<RongZi>();
 	}
+
+
+
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("pageSize",pageSize+"");
@@ -50,7 +51,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "investorIndex.do", paramsMap, new RongZiListCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "artWorkAuctionList.do", paramsMap, new RongZiListCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
@@ -61,7 +62,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 			public void onResponse(Map<String, Object> response) {
 				if (state==AutoListView.REFRESH){
 					lstv.onRefreshComplete();
-					rongZiDatas.clear();
+					paiMaiDatas.clear();
 					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
 					}.getType());
 					if(null==objectList||objectList.size()==0){
@@ -69,8 +70,8 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 					}
 					if (null!=objectList&&objectList.size()>0){
 						lstv.setResultSize(lstv.getPageSize());
-						rongZiDatas.addAll(objectList);
-						rongZiCommonAdapter.notifyDataSetChanged();
+						paiMaiDatas.addAll(objectList);
+						paiMaiCommonAdapter.notifyDataSetChanged();
 					}
 					return;
 				}
@@ -83,8 +84,8 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 					}
 					if (null!=objectList&&objectList.size()>0) {
 						lstv.setResultSize(lstv.getPageSize());
-						rongZiDatas.addAll(objectList);
-						rongZiCommonAdapter.notifyDataSetChanged();
+						paiMaiDatas.addAll(objectList);
+						paiMaiCommonAdapter.notifyDataSetChanged();
 					}
 					return;
 				}
@@ -97,31 +98,31 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 			Bundle savedInstanceState) {
 		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
-		rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.finance_list_item) {
+		paiMaiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),paiMaiDatas,R.layout.auction_list_item) {
 			@Override
 			public void convert(ViewHolder helper, RongZi item) {
 				helper.setText(R.id.cl_01_tv_title,item.getTitle());
 				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
-				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
-				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
+				helper.setImageByUrl(R.id.cl_01_tv_prc,item.getPicture_url());
 			}
 		};
-		lstv.setAdapter(rongZiCommonAdapter);
+		lstv.setAdapter(paiMaiCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
 		return contextView;
 	}
 
 	@Override
+	protected void lazyLoad() {
+			if(paiMaiDatas!=null&&paiMaiDatas.size()>0)return;
+			LoadData(AutoListView.REFRESH, currentPage);
+	}
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+	}
 
-	}
-	@Override
-	protected void lazyLoad() {
-		if(rongZiDatas!=null&&rongZiDatas.size()>0)return;
-		LoadData(AutoListView.REFRESH, currentPage);
-	}
 	@Override
 	public void onRefresh() {
 		currentPage=1;
