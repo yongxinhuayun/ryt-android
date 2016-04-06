@@ -53,8 +53,8 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
                 /*if (item.getIsWatch()==0){
                     helper.setColor(R.id.ni_ll_top, Color.RED);
                 }*/
-                helper.setText(R.id.ni_tv_content,item.getContent());
-                helper.setText(R.id.ni_tv_date, item.getCreateDatetime()+"");
+                helper.setText(R.id.pi_tv_content,item.getContent());
+                helper.setText(R.id.pi_tv_date, item.getCreateDatetime()+"");
             }
         };
         plflistview.setAdapter(plfAdapter);
