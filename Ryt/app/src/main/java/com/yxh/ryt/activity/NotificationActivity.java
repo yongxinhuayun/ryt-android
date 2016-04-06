@@ -17,6 +17,7 @@ import com.yxh.ryt.callback.NotifaicationCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Notification;
 
 import java.util.ArrayList;
