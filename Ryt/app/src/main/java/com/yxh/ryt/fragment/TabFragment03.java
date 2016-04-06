@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.NotificationActivity;
+import com.yxh.ryt.activity.PrivateLetterActivity;
 import com.yxh.ryt.custemview.BadgeView;
 import com.yxh.ryt.custemview.CircleImageView;
 
@@ -50,6 +51,8 @@ public class TabFragment03 extends  BaseFragment {
             case R.id.ft3_ll_comment:
                 break;
             case R.id.ft3_ll_privateLetter:
+                intent=new Intent(getActivity(), PrivateLetterActivity.class);
+                getActivity().startActivity(intent);
                 break;
         }
     }
