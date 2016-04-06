@@ -31,7 +31,7 @@ public class TabFragment03 extends  BaseFragment {
         bv.setText("5");
         bv.setTextColor(Color.WHITE);
         bv.setTextSize(7);
-        bv.setBadgePosition(BadgeView.POSITION_TOP_RIGHT); //Ĭ��ֵ
+        bv.setBadgePosition(BadgeView.POSITION_TOP_RIGHT); //默认
         bv.show();
         return view;
     }
