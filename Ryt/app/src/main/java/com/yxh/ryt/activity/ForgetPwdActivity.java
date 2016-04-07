@@ -45,7 +45,6 @@ public class ForgetPwdActivity extends BaseActivity {
     EditText eTPassword;
     @Bind(R.id.fp_et_verifyCode)
     EditText eTVerfyCode;
-
     @Bind(R.id.fp_bt_verifyCode)
     TextView sendCode;
     private Uri SMS_INBOX = Uri.parse("content://sms/");
