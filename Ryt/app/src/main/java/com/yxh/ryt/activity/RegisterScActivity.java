@@ -30,7 +30,8 @@ import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationModel;
-import com.yxh.ryt.validations.NicknameValidation;
+import com.yxh.ryt.validations.UserNameValidation;
+
 
 import java.io.File;
 import java.util.HashMap;
@@ -79,7 +80,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         System.out.println(file.getName() + "==========================");
         fileMap.put(file.getName(),file);
         AppApplication.getSingleEditTextValidator()
-                .add(new ValidationModel(nickName, new NicknameValidation()))
+                .add(new ValidationModel(nickName, new UserNameValidation()))
                 .execute();
         //表单没有检验通过直接退出方法
         if (!AppApplication.getSingleEditTextValidator().validate()) {
