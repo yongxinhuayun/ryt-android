@@ -24,6 +24,7 @@ public class nickNameValidation extends ValidationExecutor {
         }
         return true;
 
+
     }
 
 }
