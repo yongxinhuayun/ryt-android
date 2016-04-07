@@ -36,7 +36,6 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
     private CommonAdapter<Notification> ntfAdapter;
     private List<Notification> notificationDatas;
     private int currentPage=1;
-    private int pageSize=5;
     @Bind(R.id.nl_message_listView)
     AutoListView ntflistview;
     @Override
@@ -46,7 +45,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
         ButterKnife.bind(this);/*启用注解绑定*/
         notificationDatas=new ArrayList<Notification>();
         initView();
-        ntflistview.setPageSize(pageSize);
+        ntflistview.setPageSize(Constants.pageSize);
         LoadData(AutoListView.REFRESH, currentPage);
     }
 
@@ -54,12 +53,17 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
         ntfAdapter=new CommonAdapter<Notification>(AppApplication.getSingleContext(),notificationDatas,R.layout.notification_item) {
             @Override
             public void convert(ViewHolder helper, Notification item) {
-                Log.d("Notification",item.toString());
+                Log.d("Notification", item.toString());
                 if (item.getIsWatch()==0){
                     helper.setColor(R.id.ni_ll_top, Color.RED);
                 }
                 helper.setText(R.id.ni_tv_content,item.getContent());
-                helper.setText(R.id.ni_tv_date, item.getCreateDatetime()+"");
+                helper.setText(R.id.ni_tv_date, Utils.timeTrans(item.getCreateDatetime()));
+                if (!(item.getNotifaction_user()==null)){
+                    helper.setVisible(R.id.ni_iv_prijectIcon);
+                    helper.setVisible(R.id.ni_tv_Projectcontent);
+                    helper.setText(R.id.ni_tv_Projectcontent, item.getNotifaction_user().getUserName() + "");
+                }
             }
         };
         ntflistview.setAdapter(ntfAdapter);
@@ -71,7 +75,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("userId","iijq9f1r7apprtab");
         paramsMap.put("type","0");
-        paramsMap.put("pageSize",pageSize+"");
+        paramsMap.put("pageSize",Constants.pageSize+"");
         paramsMap.put("pageNum", pageNum+"");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {

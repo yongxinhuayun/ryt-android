@@ -15,6 +15,7 @@ import com.yxh.ryt.callback.NotifaicationCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Notification;
 import com.yxh.ryt.vo.PrivateLetter;
 
@@ -43,6 +44,7 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
         ButterKnife.bind(this);/*启用注解绑定*/
         privateLetterDatas=new ArrayList<PrivateLetter>();
         initView();
+        plflistview.setPageSize(Constants.pageSize);
         LoadData(AutoListView.REFRESH, currentPage);
     }
 
@@ -50,11 +52,11 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
         plfAdapter=new CommonAdapter<PrivateLetter>(AppApplication.getSingleContext(),privateLetterDatas,R.layout.privateletter_item) {
             @Override
             public void convert(ViewHolder helper, PrivateLetter item) {
-                /*if (item.getIsWatch()==0){
-                    helper.setColor(R.id.ni_ll_top, Color.RED);
-                }*/
+                if (item.getIsWatch()==0){
+                    helper.setColor(R.id.pi_ll_top, Color.RED);
+                }
                 helper.setText(R.id.pi_tv_content,item.getContent());
-                helper.setText(R.id.pi_tv_date, item.getCreateDatetime()+"");
+                helper.setText(R.id.pi_tv_date, Utils.timeTrans(item.getCreateDatetime()));
             }
         };
         plflistview.setAdapter(plfAdapter);
@@ -66,7 +68,7 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("userId","iijq9f1r7apprtab");
         paramsMap.put("type","0");
-        paramsMap.put("pageSize",2+"");
+        paramsMap.put("pageSize",Constants.pageSize+"");
         paramsMap.put("pageNum", pageNum+"");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
