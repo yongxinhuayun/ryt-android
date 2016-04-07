@@ -36,6 +36,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
     private CommonAdapter<Notification> ntfAdapter;
     private List<Notification> notificationDatas;
     private int currentPage=1;
+    private int pageSize=5;
     @Bind(R.id.nl_message_listView)
     AutoListView ntflistview;
     @Override
@@ -45,6 +46,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
         ButterKnife.bind(this);/*启用注解绑定*/
         notificationDatas=new ArrayList<Notification>();
         initView();
+        ntflistview.setPageSize(pageSize);
         LoadData(AutoListView.REFRESH, currentPage);
     }
 
@@ -69,7 +71,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("userId","iijq9f1r7apprtab");
         paramsMap.put("type","0");
-        paramsMap.put("pageSize",2+"");
+        paramsMap.put("pageSize",pageSize+"");
         paramsMap.put("pageNum", pageNum+"");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -96,10 +98,10 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
                         e.printStackTrace();
                     }
                     if(null==notificationList||notificationList.size()==0){
-                        ntflistview.setResultSize(1);
+                        ntflistview.setResultSize(0);
                     }
                     if (null!=notificationList&&notificationList.size()>0){
-                        ntflistview.setResultSize(ntflistview.getPageSize());
+                        ntflistview.setResultSize(notificationList.size());
                         notificationDatas.addAll(notificationList);
                         ntfAdapter.notifyDataSetChanged();
                     }
@@ -113,7 +115,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
                         ntflistview.setResultSize(1);
                     }
                     if (null!=notificationList&&notificationList.size()>0) {
-                        ntflistview.setResultSize(ntflistview.getPageSize());
+                        ntflistview.setResultSize(notificationList.size());
                         notificationDatas.addAll(notificationList);
                         ntfAdapter.notifyDataSetChanged();
                     }

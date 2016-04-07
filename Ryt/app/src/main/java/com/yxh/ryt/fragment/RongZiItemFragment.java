@@ -66,10 +66,10 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
 					}.getType());
 					if(null==objectList||objectList.size()==0){
-						lstv.setResultSize(1);
+						lstv.setResultSize(0);
 					}
 					if (null!=objectList&&objectList.size()>0){
-						lstv.setResultSize(lstv.getPageSize());
+						lstv.setResultSize(objectList.size());
 						rongZiDatas.addAll(objectList);
 						rongZiCommonAdapter.notifyDataSetChanged();
 					}
@@ -98,6 +98,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 			Bundle savedInstanceState) {
 		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
+		lstv.setPageSize(pageSize);
 		rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.finance_list_item) {
 			@Override
 			public void convert(ViewHolder helper, RongZi item) {

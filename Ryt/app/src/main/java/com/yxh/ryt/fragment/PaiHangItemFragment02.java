@@ -67,7 +67,7 @@ public class PaiHangItemFragment02 extends BaseFragment implements AutoListView.
 						lstv.setResultSize(0);
 					}
 					if (null!=objectList&&objectList.size()>0){
-						lstv.setResultSize(1);
+						lstv.setResultSize(objectList.size());
 						artistDatas.addAll(objectList);
 						artistCommonAdapter.notifyDataSetChanged();
 					}
@@ -81,7 +81,7 @@ public class PaiHangItemFragment02 extends BaseFragment implements AutoListView.
 						lstv.setResultSize(1);
 					}
 					if (null!=objectList&&objectList.size()>0) {
-						lstv.setResultSize(lstv.getPageSize());
+						lstv.setResultSize(objectList.size());
 						artistDatas.addAll(objectList);
 						artistCommonAdapter.notifyDataSetChanged();
 					}
@@ -97,6 +97,7 @@ public class PaiHangItemFragment02 extends BaseFragment implements AutoListView.
 		final java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#.00");
 		View contextView = inflater.inflate(R.layout.paihang_yishujia, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
+		lstv.setPageSize(pageSize);
 		artistCommonAdapter=new CommonAdapter<Artist>(AppApplication.getSingleContext(),artistDatas,R.layout.paihang_yishujia_lv_item) {
 			@Override
 			public void convert(ViewHolder helper, Artist item) {
