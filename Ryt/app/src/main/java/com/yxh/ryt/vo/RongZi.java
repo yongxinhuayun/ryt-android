@@ -28,6 +28,15 @@ public class RongZi {
     private String picture_url;
     private int investorsNum;
     private User author;
+    private int auctionNum;
+
+    public int getAuctionNum() {
+        return auctionNum;
+    }
+
+    public void setAuctionNum(int auctionNum) {
+        this.auctionNum = auctionNum;
+    }
 
     public String getId() {
         return id;
