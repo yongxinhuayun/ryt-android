@@ -53,12 +53,17 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
         ntfAdapter=new CommonAdapter<Notification>(AppApplication.getSingleContext(),notificationDatas,R.layout.notification_item) {
             @Override
             public void convert(ViewHolder helper, Notification item) {
-                Log.d("Notification",item.toString());
+                Log.d("Notification", item.toString());
                 if (item.getIsWatch()==0){
                     helper.setColor(R.id.ni_ll_top, Color.RED);
                 }
                 helper.setText(R.id.ni_tv_content,item.getContent());
                 helper.setText(R.id.ni_tv_date, item.getCreateDatetime()+"");
+                if (!(item.getNotifaction_user()==null)){
+                    helper.setVisible(R.id.ni_iv_prijectIcon);
+                    helper.setVisible(R.id.ni_tv_Projectcontent);
+                    helper.setText(R.id.ni_tv_Projectcontent, item.getNotifaction_user().getUserName() + "");
+                }
             }
         };
         ntflistview.setAdapter(ntfAdapter);
