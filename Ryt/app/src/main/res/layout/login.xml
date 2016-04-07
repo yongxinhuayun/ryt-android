@@ -64,8 +64,8 @@
             android:orientation="vertical"
             android:layout_marginTop="100dp"
             android:layout_centerHorizontal="true"
-            android:layout_width="300dp"
-            android:layout_height="200dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/et_center_one"
                 android:layout_marginTop="20dp"

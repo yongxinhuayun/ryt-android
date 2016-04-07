@@ -42,8 +42,8 @@
         android:background="#E9E9E9"/>
     <RelativeLayout
         android:id="@+id/rg_rl_center"
-        android:layout_width="300dp"
-        android:layout_height="220dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
