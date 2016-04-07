@@ -95,10 +95,10 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
                         e.printStackTrace();
                     }
                     if(null==notificationList||notificationList.size()==0){
-                        plflistview.setResultSize(1);
+                        plflistview.setResultSize(0);
                     }
                     if (null!=notificationList&&notificationList.size()>0){
-                        plflistview.setResultSize(plflistview.getPageSize());
+                        plflistview.setResultSize(notificationList.size());
                         privateLetterDatas.addAll(notificationList);
                         plfAdapter.notifyDataSetChanged();
                     }
@@ -112,7 +112,7 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
                         plflistview.setResultSize(1);
                     }
                     if (null!=notificationList&&notificationList.size()>0) {
-                        plflistview.setResultSize(plflistview.getPageSize());
+                        plflistview.setResultSize(notificationList.size());
                         privateLetterDatas.addAll(notificationList);
                         plfAdapter.notifyDataSetChanged();
                     }
