@@ -35,11 +35,12 @@
             android:layout_centerVertical="true"
             android:layout_height="match_parent"
             />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E9E9E9"/>
     </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#E9E9E9"/>
+
     <RelativeLayout
         android:id="@+id/rg_rl_center"
         android:layout_width="match_parent"
