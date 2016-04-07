@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:textColor="#333333"
             android:textSize="20sp"
-            android:text="忘记密码"/>
+            android:text="基本资料"/>
         <ImageButton
             android:id="@+id/rs_ib_guanbi"
             android:layout_width="50dp"
