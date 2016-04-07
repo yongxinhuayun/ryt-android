@@ -38,10 +38,9 @@
             android:layout_width="50dp"
             android:background="@null"
             android:layout_alignParentRight="true"
+            android:scaleType="center"
             android:src="@mipmap/denglu_guanbi"
             android:layout_centerVertical="true"
-            android:layout_marginTop="13dp"
-            android:layout_marginRight="15dp"
             android:layout_height="match_parent"
             />
         <View
@@ -159,7 +158,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:textSize="11sp"
+                android:textSize="14sp"
                 android:textColor="#CCCCCC"
                 android:text="快速登录"/>
             <ImageView
