@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp" >
+        >
 
         <LinearLayout
             android:id="@+id/layout"
@@ -47,10 +47,6 @@
             android:src="@mipmap/pull_to_refresh_arrow" />
     </RelativeLayout>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/h_line"
-         />
+
 
 </LinearLayout>

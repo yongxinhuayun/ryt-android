@@ -42,10 +42,10 @@ public class ViewHolder
 			builder.cacheOnDisk(true);
 			builder.considerExifParams(true);
 //	        if(id==0){
-//	        	builder.imageScaleType(ImageScaleType.EXACTLY_STRETCHED);
+	        	builder.imageScaleType(ImageScaleType.EXACTLY_STRETCHED);
 //	        }
 //	        if(id==1){
-	        	builder.imageScaleType(ImageScaleType.EXACTLY);
+//	        	builder.imageScaleType(ImageScaleType.EXACTLY);
 //	        }
 			options=builder.build();
 	    }  

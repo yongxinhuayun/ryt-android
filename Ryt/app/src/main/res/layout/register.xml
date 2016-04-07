@@ -14,8 +14,6 @@
             android:layout_alignParentLeft="true"
             android:src="@mipmap/zhuce_fanhui"
             android:layout_centerVertical="true"
-            android:layout_marginTop="13dp"
-            android:layout_marginLeft="15dp"
             android:layout_height="match_parent"
             />
         <TextView
@@ -35,8 +33,6 @@
             android:layout_alignParentRight="true"
             android:src="@mipmap/denglu_guanbi"
             android:layout_centerVertical="true"
-            android:layout_marginTop="13dp"
-            android:layout_marginRight="15dp"
             android:layout_height="match_parent"
             />
     </RelativeLayout>
@@ -46,12 +42,12 @@
         android:background="#E9E9E9"/>
     <RelativeLayout
         android:id="@+id/rg_rl_center"
-        android:layout_width="180dp"
+        android:layout_width="300dp"
         android:layout_height="220dp"
         android:layout_gravity="center"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="150dp">
+        android:layout_marginTop="100dp">
         <EditText
             android:id="@+id/rg_et_phone"
             android:layout_width="match_parent"
@@ -153,7 +149,7 @@
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:gravity="center"
-            android:textSize="11sp"
+            android:textSize="14sp"
             android:textColor="#4D4D4D"
             android:layout_alignParentRight="true"
             android:text="立即登录"/>
@@ -178,7 +174,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:textSize="11sp"
+            android:textSize="14sp"
             android:textColor="#CCCCCC"
             android:text="快速登录"/>
         <ImageView

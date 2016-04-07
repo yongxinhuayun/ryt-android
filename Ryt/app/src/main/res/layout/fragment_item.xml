@@ -7,6 +7,7 @@
     <com.yxh.ryt.custemview.AutoListView
         android:id="@+id/lstv"
         android:scrollbars="none"
+        android:divider="@null"
         android:background="@null"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
