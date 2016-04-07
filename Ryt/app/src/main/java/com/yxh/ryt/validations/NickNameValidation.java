@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Administrator on 2016/3/31.
  */
-public class nickNameValidation extends ValidationExecutor {
+public class NickNameValidation extends ValidationExecutor {
 
     @Override
     public boolean doValidate(Context context, String text) {
@@ -23,8 +23,6 @@ public class nickNameValidation extends ValidationExecutor {
             return false;
         }
         return true;
-
-
     }
 
 }
