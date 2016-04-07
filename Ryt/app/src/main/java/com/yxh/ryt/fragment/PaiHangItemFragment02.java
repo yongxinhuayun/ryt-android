@@ -105,6 +105,7 @@ public class PaiHangItemFragment02 extends BaseFragment implements AutoListView.
 				helper.setText(R.id.cl_01_civ_name, item.getTruename());
 				helper.setText(R.id.cl_01_civ_price,df.format(item.getInvest_goal_money()));
 				helper.setText(R.id.cl_01_civ_turnover,df.format(item.getTurnover()));
+				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, "http://rongyitou2.efeiyi.com/headPortrait/" + item.getUsername() + ".jpg");
 //				helper.setText(R.id.cl_01_civ_rois,df.format(item.getRois().doubleValue()));
 //				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, "http://rongyitou2.efeiyi.com/headPortrait/" + item.getUser_id() + ".jpg");
 //				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());

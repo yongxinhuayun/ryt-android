@@ -8,11 +8,20 @@ import java.math.BigDecimal;
 public class Investor {
     private String user_id;
     private String truename;
+    private String username;
     private BigDecimal price;
     private BigDecimal rois;
 
     public BigDecimal getRois() {
         return rois;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setRois(BigDecimal rois) {
