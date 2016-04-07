@@ -31,7 +31,6 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 	private CommonAdapter<RongZi> chuangZuoCommonAdapter;
 	private List<RongZi> chuangZuoDatas;
 	private int currentPage=1;
-	private int pageSize=5;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,7 +41,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("pageSize",pageSize+"");
+		paramsMap.put("pageSize",Constants.pageSize+"");
 		paramsMap.put("pageNum", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
@@ -98,7 +97,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 			Bundle savedInstanceState) {
 		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
-		lstv.setPageSize(pageSize);
+		lstv.setPageSize(Constants.pageSize);
 		chuangZuoCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),chuangZuoDatas,R.layout.create_list_item) {
 			@Override
 			public void convert(ViewHolder helper, RongZi item) {

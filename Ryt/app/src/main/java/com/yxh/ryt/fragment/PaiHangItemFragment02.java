@@ -32,7 +32,6 @@ public class PaiHangItemFragment02 extends BaseFragment implements AutoListView.
 	private CommonAdapter<Artist> artistCommonAdapter;
 	private List<Artist> artistDatas;
 	private int currentPage=1;
-	private int pageSize=5;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,7 +39,7 @@ public class PaiHangItemFragment02 extends BaseFragment implements AutoListView.
 	}
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("pageSize",pageSize+"");
+		paramsMap.put("pageSize",Constants.pageSize+"");
 		paramsMap.put("pageNum", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
@@ -97,7 +96,7 @@ public class PaiHangItemFragment02 extends BaseFragment implements AutoListView.
 		final java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#.00");
 		View contextView = inflater.inflate(R.layout.paihang_yishujia, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
-		lstv.setPageSize(pageSize);
+		lstv.setPageSize(Constants.pageSize);
 		artistCommonAdapter=new CommonAdapter<Artist>(AppApplication.getSingleContext(),artistDatas,R.layout.paihang_yishujia_lv_item) {
 			@Override
 			public void convert(ViewHolder helper, Artist item) {
