@@ -16,9 +16,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
@@ -30,6 +34,10 @@ import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.ImageUtils;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Sha1;
+import com.yxh.ryt.util.ToastUtil;
+import com.yxh.ryt.util.avalidations.ValidationModel;
+import com.yxh.ryt.validations.NickNameValidation;
+import com.yxh.ryt.validations.UserNameValidation;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -50,16 +58,20 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016/3/31.
  */
-public class RegisterScActivity extends BaseActivity{
-    @Bind(R.id.rs_tv_sexInput)
-    TextView sexInput;
+public class RegisterScActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
     @Bind(R.id.rs_et_nickName)
-    TextView nickName;
+    EditText nickName;
+    @Bind(R.id.rs_rg_sex)
+    RadioGroup sexGroup;
     @Bind(R.id.rs_iv_headPortrait)
     CircleImageView  circleImageView;
-    @Bind(R.id.rs_tv_complete)
-    TextView tvComplete;
+    @Bind(R.id.rs_rb_nan)
+    RadioButton nan;
+    @Bind(R.id.rs_rb_nv)
+    RadioButton nv;
     PopupWindow window;
+    private int sex=-1;
+    private boolean flag=false;
     private static final String IMAGE_UNSPECIFIED = "image/*";
     private static final int PHOTO_RESOULT = 4;
     private static final int ALBUM_REQUEST_CODE = 1;
@@ -71,17 +83,34 @@ public class RegisterScActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registersucced);
         ButterKnife.bind(this);/*启用注解绑定*/
+        sexGroup.setOnCheckedChangeListener(this);
     }
-    @OnClick(R.id.rs_tv_complete)
+    @OnClick(R.id.rs_bt_commit)
     public void completeClick(){
+
         Map<String,File> fileMap=new HashMap<>();
         File file = new File(filePath);
         System.out.println(file.getName() + "==========================");
         fileMap.put(file.getName(),file);
+        AppApplication.getSingleEditTextValidator()
+                .add(new ValidationModel(nickName, new NickNameValidation()))
+                .execute();
+        //表单没有检验通过直接退出方法
+        if (!AppApplication.getSingleEditTextValidator().validate()) {
+            return;
+        }
+        if(!flag){
+            ToastUtil.show(this,"请选择头像", Toast.LENGTH_LONG);
+            return;
+        }
+        if (sex==-1){
+            ToastUtil.show(this,"请选择性别", Toast.LENGTH_LONG);
+            return;
+        }
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("username","13466636718");
-        paramsMap.put("nickname","吴洪杰");
-        paramsMap.put("sex","1");
+        paramsMap.put("nickname",nickName.getText().toString());
+        paramsMap.put("sex",sex+"");
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
@@ -103,12 +132,16 @@ public class RegisterScActivity extends BaseActivity{
             }
         });
     }
-    @OnClick(R.id.rs_rl_sex)
-    public void sexSelect(){
-        showPopwindowSex();
+
+
+    @OnClick(R.id.rs_ib_back)
+    public void back(){
+        finish();
     }
-
-
+    @OnClick(R.id.rs_ib_guanbi)
+    public void guanbi(){
+        finish();
+    }
     @OnClick(R.id.rs_iv_headPortrait)
     public void headPortrait(){
         showPopwindowHead();
@@ -144,31 +177,6 @@ public class RegisterScActivity extends BaseActivity{
         });
     }
 
-    private void showPopwindowSex() {
-
-        // 利用layoutInflater获得View
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View view = inflater.inflate(R.layout.popwindowsex, null);
-        // 下面是两种方法得到宽度和高度 getWindow().getDecorView().getWidth()
-        common(view);
-        TextView man= (TextView) view.findViewById(R.id.pds_tv_man);
-        man.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sexInput.setText("男");
-                window.dismiss();
-            }
-        });
-        TextView woMan = (TextView) view.findViewById(R.id.pds_tv_woman);
-        woMan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sexInput.setText("女");
-                window.dismiss();
-            }
-        });
-    }
     private void common(View view){
         window = new PopupWindow(view,
                 WindowManager.LayoutParams.MATCH_PARENT,
@@ -213,7 +221,7 @@ public class RegisterScActivity extends BaseActivity{
 //                Bitmap bitmap=getBitmapFromUri(data.getData());
                 circleImageView.setImageBitmap(bitmap);
 //                saveFile(bitmap);
-
+                flag=true;
                 break;
             case CAMERA_REQUEST_CODE:
                 File picture = new File(Environment.getExternalStorageDirectory()
@@ -222,6 +230,7 @@ public class RegisterScActivity extends BaseActivity{
                 circleImageView.setImageBitmap(bitmap1);
 //                saveFile(bitmap1);
 //                startCrop(Uri.fromFile(picture));
+                flag=true;
                 break;
             case CROP_REQUEST_CODE:
 //                if (data == null) {
@@ -279,33 +288,14 @@ public class RegisterScActivity extends BaseActivity{
             return null;
         }
     }
-//    public void saveFile(Bitmap bm){
-//        try {
-//            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
-////            bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-//            bos.flush();
-//            bos.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-    /**
-     * 开始裁剪
-     *
-     * @param uri
-     */
-//    private void startCrop(Uri uri) {
-//        Intent intent = new Intent("com.android.camera.action.CROP");//调用Android系统自带的一个图片剪裁页面,
-//        intent.setDataAndType(uri, IMAGE_UNSPECIFIED);
-//        intent.putExtra("crop", "true");//进行修剪
-//        // aspectX aspectY 是宽高的比例
-//        intent.putExtra("aspectX",1);
-//        intent.putExtra("aspectY", 1);
-//        // outputX outputY 是裁剪图片宽高
-//        intent.putExtra("outputX", 300);
-//        intent.putExtra("outputY", 300);
-//        intent.putExtra("return-data", true);
-//        startActivityForResult(intent, CROP_REQUEST_CODE);
-//    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        if (checkedId==nan.getId()){
+            sex=1;
+        }else {
+            sex=2;
+        }
+    }
 
 }
