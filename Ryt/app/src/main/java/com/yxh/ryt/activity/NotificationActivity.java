@@ -58,7 +58,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
                     helper.setColor(R.id.ni_ll_top, Color.RED);
                 }
                 helper.setText(R.id.ni_tv_content,item.getContent());
-                helper.setText(R.id.ni_tv_date, item.getCreateDatetime()+"");
+                helper.setText(R.id.ni_tv_date, Utils.timeTrans(item.getCreateDatetime()));
                 if (!(item.getNotifaction_user()==null)){
                     helper.setVisible(R.id.ni_iv_prijectIcon);
                     helper.setVisible(R.id.ni_tv_Projectcontent);
