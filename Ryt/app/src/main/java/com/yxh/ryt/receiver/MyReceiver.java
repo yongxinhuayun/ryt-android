@@ -1,4 +1,4 @@
-package com.yxh.ryt.util;
+package com.yxh.ryt.receiver;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -8,11 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
 import android.util.Log;
-import android.widget.RemoteViews;
 
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.CustomMsgActivity;
@@ -22,8 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import cn.jpush.android.api.JPushInterface;
 
