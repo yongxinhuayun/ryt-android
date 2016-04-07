@@ -91,4 +91,12 @@ public class User {
     public void setType(String type) {
         this.type = type;
     }
+
+    public Master getMaster() {
+        return master;
+    }
+
+    public void setMaster(Master master) {
+        this.master = master;
+    }
 }

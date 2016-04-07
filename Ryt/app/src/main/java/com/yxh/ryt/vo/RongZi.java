@@ -15,6 +15,7 @@ public class RongZi {
     private String type;
     private String step;
     private BigDecimal investGoalMoney;
+    private BigDecimal investsMoney;
     private Long investStartDatetime;
     private Long investEndDatetime;
     private Long creationEndDatetime;
@@ -186,5 +187,13 @@ public class RongZi {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public BigDecimal getInvestsMoney() {
+        return investsMoney;
+    }
+
+    public void setInvestsMoney(BigDecimal investsMoney) {
+        this.investsMoney = investsMoney;
     }
 }

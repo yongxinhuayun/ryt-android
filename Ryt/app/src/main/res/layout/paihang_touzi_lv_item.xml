@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
     android:orientation="vertical"
     android:layout_height="match_parent">
     <LinearLayout
@@ -11,19 +9,36 @@
         android:gravity="center"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/cl_01_civ_pm"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="18sp"
             android:text="排名"/>
-        <TextView
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="1.2"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="用户昵称"/>
+            android:layout_height="wrap_content">
+            <com.yxh.ryt.custemview.CircleImageView
+                android:id="@+id/cl_01_civ_headPortrait"
+                android:layout_width="30dp"
+                android:layout_centerVertical="true"
+                android:layout_height="30dp"
+                android:src="@mipmap/ic_launcher"
+                />
+            <TextView
+                android:id="@+id/cl_01_civ_name"
+                android:layout_toRightOf="@id/cl_01_civ_headPortrait"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:textSize="18sp"
+                android:text="用户昵"/>
+        </RelativeLayout>
         <TextView
+            android:id="@+id/cl_01_civ_rois"
             android:layout_width="0dp"
             android:layout_weight="1.2"
             android:gravity="center"
@@ -35,5 +50,4 @@
         android:layout_width="match_parent"
         android:background="#E9E9E9"
         android:layout_height="1dp"></View>
-    <include layout="@layout/fragment_item" />
 </LinearLayout>

@@ -11,14 +11,12 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
-import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Sha1;
-import com.yxh.ryt.util.Utils;
-import com.yxh.ryt.vo.RongZi;
+import com.yxh.ryt.vo.Artist;
+import com.yxh.ryt.vo.Investor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,17 +26,17 @@ import java.util.Map;
 import okhttp3.Call;
 
 
-public class RongZiItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
+public class PaiHangItemFragment02 extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener {
 	private AutoListView lstv;
-	private CommonAdapter<RongZi> rongZiCommonAdapter;
-	private List<RongZi> rongZiDatas;
+	private CommonAdapter<Artist> artistCommonAdapter;
+	private List<Artist> artistDatas;
 	private int currentPage=1;
 	private int pageSize=5;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		rongZiDatas=new ArrayList<RongZi>();
+		artistDatas=new ArrayList<Artist>();
 	}
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
@@ -51,7 +49,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "investorIndex.do", paramsMap, new RongZiListCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "getArtistTopList.do", paramsMap, new RongZiListCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
@@ -62,30 +60,30 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 			public void onResponse(Map<String, Object> response) {
 				if (state==AutoListView.REFRESH){
 					lstv.onRefreshComplete();
-					rongZiDatas.clear();
-					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
+					artistDatas.clear();
+					List<Artist> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("ArtistTopList")), new TypeToken<List<Artist>>() {
 					}.getType());
 					if(null==objectList||objectList.size()==0){
-						lstv.setResultSize(1);
+						lstv.setResultSize(0);
 					}
 					if (null!=objectList&&objectList.size()>0){
-						lstv.setResultSize(lstv.getPageSize());
-						rongZiDatas.addAll(objectList);
-						rongZiCommonAdapter.notifyDataSetChanged();
+						lstv.setResultSize(1);
+						artistDatas.addAll(objectList);
+						artistCommonAdapter.notifyDataSetChanged();
 					}
 					return;
 				}
 				if (state==AutoListView.LOAD){
 					lstv.onLoadComplete();
-					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
+					List<Artist> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("ArtistTopList")), new TypeToken<List<Artist>>() {
 					}.getType());
 					if(null==objectList||objectList.size()==0){
 						lstv.setResultSize(1);
 					}
 					if (null!=objectList&&objectList.size()>0) {
 						lstv.setResultSize(lstv.getPageSize());
-						rongZiDatas.addAll(objectList);
-						rongZiCommonAdapter.notifyDataSetChanged();
+						artistDatas.addAll(objectList);
+						artistCommonAdapter.notifyDataSetChanged();
 					}
 					return;
 				}
@@ -96,31 +94,23 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
+		final java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#.00");
+		View contextView = inflater.inflate(R.layout.paihang_yishujia, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
-		rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.finance_list_item) {
+		artistCommonAdapter=new CommonAdapter<Artist>(AppApplication.getSingleContext(),artistDatas,R.layout.paihang_yishujia_lv_item) {
 			@Override
-			public void convert(ViewHolder helper, RongZi item) {
-				helper.setText(R.id.cl_01_tv_title,item.getTitle());
-				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
-				helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());
-				helper.setText(R.id.fli_ll_tv_investGoalMoney,item.getInvestGoalMoney().intValue()+"元");
-				helper.setText(R.id.fli_ll_tv_remainingTime, Utils.timeToFormatTemp(item.getInvestEndDatetime()-item.getInvestStartDatetime()));
-				helper.setText(R.id.fli_ll_tv_investGoalPeople, item.getInvestorsNum() + "");
-				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
-				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
-				if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){
-					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.VISIBLE);
-					helper.setText(R.id.cl_01_tv_zhicheng, item.getAuthor().getMaster().getTitle());
-				}else{
-					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.GONE);
-				}
-//				double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-//				helper.setProgress(R.id.progressBar1, ((int)(value*100)));
-//				helper.setText(R.id.tv_pb_value, ((int)(value*100))+"%");
+			public void convert(ViewHolder helper, Artist item) {
+
+				helper.setText(R.id.cl_01_civ_pm,(helper.getPosition()+1)+"");
+				helper.setText(R.id.cl_01_civ_name, item.getTruename());
+				helper.setText(R.id.cl_01_civ_price,df.format(item.getInvest_goal_money()));
+				helper.setText(R.id.cl_01_civ_turnover,df.format(item.getTurnover()));
+//				helper.setText(R.id.cl_01_civ_rois,df.format(item.getRois().doubleValue()));
+//				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, "http://rongyitou2.efeiyi.com/headPortrait/" + item.getUser_id() + ".jpg");
+//				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
 			}
 		};
-		lstv.setAdapter(rongZiCommonAdapter);
+		lstv.setAdapter(artistCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
 		return contextView;
@@ -133,7 +123,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 	}
 	@Override
 	protected void lazyLoad() {
-		if(rongZiDatas!=null&&rongZiDatas.size()>0)return;
+		if(artistDatas!=null&&artistDatas.size()>0)return;
 		LoadData(AutoListView.REFRESH, currentPage);
 	}
 	@Override

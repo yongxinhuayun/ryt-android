@@ -26,7 +26,7 @@ public class TabFragment02 extends  BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         paiHangChildFragments.add(new PaiHangItemFragment01());
-        paiHangChildFragments.add(new PaiHangItemFragment01());
+        paiHangChildFragments.add(new PaiHangItemFragment02());
     }
 
 
@@ -40,7 +40,7 @@ public class TabFragment02 extends  BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_02, null);
         paiHangChildAdapter = new PaiHangTabPageIndicatorAdapter(getActivity().getSupportFragmentManager(),paiHangChildFragments);
-        ViewPager pager = (ViewPager)view.findViewById(R.id.pager);
+        ViewPager pager = (ViewPager)view.findViewById(R.id.pager1);
         pager.setOffscreenPageLimit(2);
         pager.setAdapter(paiHangChildAdapter);
         TabPageIndicator indicator = (TabPageIndicator)view.findViewById(R.id.indicator);
