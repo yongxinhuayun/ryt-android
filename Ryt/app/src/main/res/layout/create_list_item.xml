@@ -11,6 +11,8 @@
             android:id="@+id/cli_tv_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
             android:text="最新一次更新:5分钟前"
             />
         <RelativeLayout
@@ -36,13 +38,9 @@
                 android:id="@+id/cli_tv_predictComplete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="预计完工:"
-                />
-            <TextView
-                android:id="@+id/cli_tv_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1月24日"
+                android:text="预计完工:1月24日"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
                 />
         </LinearLayout>
 

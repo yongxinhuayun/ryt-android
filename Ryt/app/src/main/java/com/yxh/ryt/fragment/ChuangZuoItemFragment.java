@@ -65,10 +65,10 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
 					}.getType());
 					if(null==objectList||objectList.size()==0){
-						lstv.setResultSize(0);
+						lstv.setResultSize(0);     //暂无数据
 					}
 					if (null!=objectList&&objectList.size()>0){
-						lstv.setResultSize(objectList.size());
+						lstv.setResultSize(objectList.size()); //还有数据加载。。。
 						chuangZuoDatas.addAll(objectList);
 						chuangZuoCommonAdapter.notifyDataSetChanged();
 					}
@@ -79,10 +79,10 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
 					}.getType());
 					if(null==objectList||objectList.size()==0){
-						lstv.setResultSize(1);
+						lstv.setResultSize(1);   //已全部加载完毕
 					}
 					if (null!=objectList&&objectList.size()>0) {
-						lstv.setResultSize(objectList.size());
+						lstv.setResultSize(objectList.size());  //还有数据加载。。。
 						chuangZuoDatas.addAll(objectList);
 						chuangZuoCommonAdapter.notifyDataSetChanged();
 					}
