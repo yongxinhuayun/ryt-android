@@ -15,19 +15,19 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:text="排名"/>
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1.2"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:text="用户昵称"/>
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1.2"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:layout_height="wrap_content"
             android:text="回报总金额"/>
     </LinearLayout>

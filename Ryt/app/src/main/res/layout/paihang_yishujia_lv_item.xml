@@ -14,7 +14,8 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
             android:text="排名"/>
         <RelativeLayout
             android:layout_width="0dp"
@@ -34,7 +35,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_centerVertical="true"
-                android:textSize="18sp"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
                 android:text="用户昵"/>
         </RelativeLayout>
         <TextView
@@ -42,7 +44,8 @@
             android:layout_width="0dp"
             android:layout_weight="1.1"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
             android:layout_height="wrap_content"
             android:text="项目总金额"/>
         <TextView
@@ -50,7 +53,8 @@
             android:layout_width="0dp"
             android:layout_weight="1.1"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
             android:layout_height="wrap_content"
             android:text="总成交价"/>
     </LinearLayout>
