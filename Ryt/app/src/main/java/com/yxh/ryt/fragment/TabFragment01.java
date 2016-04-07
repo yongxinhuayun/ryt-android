@@ -27,6 +27,7 @@ public class TabFragment01 extends  BaseFragment {
         indexChildFragments.add(new RongZiItemFragment());
         indexChildFragments.add(new ChuangZuoItemFragment());
         indexChildFragments.add(new PaiMaiItemFragment());
+
     }
 
 
@@ -43,7 +44,6 @@ public class TabFragment01 extends  BaseFragment {
         ViewPager pager = (ViewPager)view.findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
         pager.setAdapter(indexChildAdapter);
-
         //实例化TabPageIndicator然后设置ViewPager与之关联
         TabPageIndicator indicator = (TabPageIndicator)view.findViewById(R.id.indicator);
         indicator.setViewPager(pager);
