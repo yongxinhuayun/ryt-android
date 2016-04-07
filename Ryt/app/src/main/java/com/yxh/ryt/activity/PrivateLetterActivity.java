@@ -15,6 +15,7 @@ import com.yxh.ryt.callback.NotifaicationCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Notification;
 import com.yxh.ryt.vo.PrivateLetter;
 
@@ -55,7 +56,7 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
                     helper.setColor(R.id.pi_ll_top, Color.RED);
                 }
                 helper.setText(R.id.pi_tv_content,item.getContent());
-                helper.setText(R.id.pi_tv_date, item.getCreateDatetime()+"");
+                helper.setText(R.id.pi_tv_date, Utils.timeTrans(item.getCreateDatetime()));
             }
         };
         plflistview.setAdapter(plfAdapter);
