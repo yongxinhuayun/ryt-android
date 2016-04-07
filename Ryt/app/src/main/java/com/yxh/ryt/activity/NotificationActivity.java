@@ -59,10 +59,10 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
                 }
                 helper.setText(R.id.ni_tv_content,item.getContent());
                 helper.setText(R.id.ni_tv_date, Utils.timeTrans(item.getCreateDatetime()));
-                if (!(item.getNotifaction_user()==null)){
+                if (!(item.getFromUser()==null)){
                     helper.setVisible(R.id.ni_iv_prijectIcon);
                     helper.setVisible(R.id.ni_tv_Projectcontent);
-                    helper.setText(R.id.ni_tv_Projectcontent, item.getNotifaction_user().getUserName() + "");
+                    helper.setText(R.id.ni_tv_Projectcontent, item.getFromUser().getUserName() + "");
                 }
             }
         };
