@@ -126,10 +126,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     public void back(){
         finish();
     }
-    @OnClick(R.id.rs_ib_guanbi)
-    public void guanbi(){
-        finish();
-    }
     @OnClick(R.id.rs_iv_headPortrait)
     public void headPortrait(){
         showPopwindowHead();
