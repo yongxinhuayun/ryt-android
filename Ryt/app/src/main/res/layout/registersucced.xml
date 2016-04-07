@@ -27,16 +27,6 @@
             android:textColor="#333333"
             android:textSize="20sp"
             android:text="基本资料"/>
-        <ImageButton
-            android:id="@+id/rs_ib_guanbi"
-            android:layout_width="50dp"
-            android:background="@null"
-            android:layout_alignParentRight="true"
-            android:scaleType="center"
-            android:src="@mipmap/denglu_guanbi"
-            android:layout_centerVertical="true"
-            android:layout_height="match_parent"
-            />
         <View
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
