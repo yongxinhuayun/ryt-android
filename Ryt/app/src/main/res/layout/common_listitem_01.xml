@@ -24,12 +24,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="逐鹿顺意铜雕"
+                android:textColor="@android:color/white"
                 android:textSize="25sp"/>
             <TextView
                 android:id="@+id/cl_01_tv_brief"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="100dp"
+                android:textColor="@android:color/white"
                 android:text="逐鹿顺意铜雕逐鹿顺意铜雕逐鹿顺意铜雕逐鹿顺意铜雕逐鹿顺意铜雕逐鹿顺意铜雕逐鹿顺意铜雕顺意"
                 android:textSize="15sp"
                 android:maxLength="100"
@@ -55,19 +57,30 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="朱炳仁"
+            android:textColor="@android:color/black"
             android:gravity="center"
             android:layout_marginLeft="10dp"/>
-        <TextView
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="#E9E9E9"
-            android:gravity="center"
-            android:layout_marginLeft="10dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="铜雕技艺国家级传承人"
-            android:gravity="center"
-            android:layout_marginLeft="10dp"/>
+        <LinearLayout
+            android:id="@+id/cl_01_ll_zhicheng"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#E9E9E9"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:id="@+id/cl_01_tv_zhicheng"
+                android:layout_width="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_height="match_parent"
+                android:text="铜雕技艺国家级传承人"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

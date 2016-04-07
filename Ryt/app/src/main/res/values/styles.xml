@@ -37,4 +37,7 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
+    <style name="mProgress_horizontal" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/custem_h_progess</item>
+    </style>
 </resources>

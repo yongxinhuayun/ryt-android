@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -86,6 +87,12 @@ public class ViewHolder
 		{
 			View view = getView(viewId);
 			view.setBackgroundColor(color);
+			return this;
+		}
+		public ViewHolder setProgress(int viewId, int value)
+		{
+			View view = getView(viewId);
+			((ProgressBar)view).setProgress(value);
 			return this;
 		}
 	    public ViewHolder setText(int viewId, SpannableStringBuilder text)  
