@@ -27,4 +27,8 @@ public class Utils {
 	public static String getCurrentTime() {
 		return getCurrentTime("yyyy-MM-dd  HH:mm:ss");
 	}
+	public static String timeTrans(long time){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
+		return sdf.format(new Date(time));
+	}
 }
