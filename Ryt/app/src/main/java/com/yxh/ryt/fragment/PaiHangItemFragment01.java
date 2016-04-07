@@ -32,7 +32,6 @@ public class PaiHangItemFragment01 extends BaseFragment implements AutoListView.
 	private CommonAdapter<Investor> investorCommonAdapter;
 	private List<Investor> investorDatas;
 	private int currentPage=1;
-	private int pageSize=5;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,7 +39,7 @@ public class PaiHangItemFragment01 extends BaseFragment implements AutoListView.
 	}
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("pageSize",pageSize+"");
+		paramsMap.put("pageSize",Constants.pageSize+"");
 		paramsMap.put("pageNum", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
@@ -97,7 +96,7 @@ public class PaiHangItemFragment01 extends BaseFragment implements AutoListView.
 		final java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#.00");
 		View contextView = inflater.inflate(R.layout.paihang_touzi, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
-		lstv.setPageSize(pageSize);
+		lstv.setPageSize(Constants.pageSize);
 		investorCommonAdapter=new CommonAdapter<Investor>(AppApplication.getSingleContext(),investorDatas,R.layout.paihang_touzi_lv_item) {
 			@Override
 			public void convert(ViewHolder helper, Investor item) {
