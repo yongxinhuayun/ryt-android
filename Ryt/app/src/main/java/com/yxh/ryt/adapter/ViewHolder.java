@@ -101,7 +101,11 @@ public class ViewHolder
 	    	view.setText(text);  
 	    	return this;  
 	    }  
-	  
+	  	public ViewHolder setVisible(int viewId){
+			View view=getView(viewId);
+			view.setVisibility(View.VISIBLE);
+			return this;
+		}
 	    public ViewHolder setCheck(int viewId,boolean checked){
 	    	CheckBox view = getView(viewId);  
 	    	view.setChecked(checked);
