@@ -67,7 +67,7 @@ public class PaiHangItemFragment01 extends BaseFragment implements AutoListView.
 						lstv.setResultSize(0);
 					}
 					if (null!=objectList&&objectList.size()>0){
-						lstv.setResultSize(1);
+						lstv.setResultSize(objectList.size());
 						investorDatas.addAll(objectList);
 						investorCommonAdapter.notifyDataSetChanged();
 					}
@@ -81,7 +81,7 @@ public class PaiHangItemFragment01 extends BaseFragment implements AutoListView.
 						lstv.setResultSize(1);
 					}
 					if (null!=objectList&&objectList.size()>0) {
-						lstv.setResultSize(lstv.getPageSize());
+						lstv.setResultSize(objectList.size());
 						investorDatas.addAll(objectList);
 						investorCommonAdapter.notifyDataSetChanged();
 					}
@@ -97,13 +97,14 @@ public class PaiHangItemFragment01 extends BaseFragment implements AutoListView.
 		final java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#.00");
 		View contextView = inflater.inflate(R.layout.paihang_touzi, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
+		lstv.setPageSize(pageSize);
 		investorCommonAdapter=new CommonAdapter<Investor>(AppApplication.getSingleContext(),investorDatas,R.layout.paihang_touzi_lv_item) {
 			@Override
 			public void convert(ViewHolder helper, Investor item) {
 
 				helper.setText(R.id.cl_01_civ_pm,(helper.getPosition()+1)+"");
 				helper.setText(R.id.cl_01_civ_name, item.getTruename());
-				helper.setText(R.id.cl_01_civ_rois,df.format(item.getRois().doubleValue()));
+				helper.setText(R.id.cl_01_civ_rois, df.format(item.getRois().doubleValue()));
 				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, "http://rongyitou2.efeiyi.com/headPortrait/" + item.getUsername() + ".jpg");
 //				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
 			}
