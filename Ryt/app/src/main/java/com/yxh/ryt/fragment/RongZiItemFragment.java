@@ -82,7 +82,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 						lstv.setResultSize(1);
 					}
 					if (null!=objectList&&objectList.size()>0) {
-						lstv.setResultSize(lstv.getPageSize());
+						lstv.setResultSize(objectList.size());
 						rongZiDatas.addAll(objectList);
 						rongZiCommonAdapter.notifyDataSetChanged();
 					}
