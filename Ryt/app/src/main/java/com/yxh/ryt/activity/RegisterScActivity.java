@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -15,9 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -31,24 +27,14 @@ import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
-import com.yxh.ryt.util.ImageUtils;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationModel;
-import com.yxh.ryt.validations.NickNameValidation;
-import com.yxh.ryt.validations.UserNameValidation;
+import com.yxh.ryt.validations.NicknameValidation;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -93,7 +79,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         System.out.println(file.getName() + "==========================");
         fileMap.put(file.getName(),file);
         AppApplication.getSingleEditTextValidator()
-                .add(new ValidationModel(nickName, new NickNameValidation()))
+                .add(new ValidationModel(nickName, new NicknameValidation()))
                 .execute();
         //表单没有检验通过直接退出方法
         if (!AppApplication.getSingleEditTextValidator().validate()) {
