@@ -24,6 +24,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
+import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
@@ -128,10 +129,34 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     }
     @OnClick(R.id.rs_iv_headPortrait)
     public void headPortrait(){
-        showPopwindowHead();
+        /*showPopwindowHead();*/
+        new ActionSheetDialog(this)
+                .builder()
+                .setCancelable(false)
+                .setCanceledOnTouchOutside(true)
+                .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
+                        new ActionSheetDialog.OnSheetItemClickListener() {
+                            @Override
+                            public void onClick(int which) {
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
+                                        getExternalStorageDirectory(), "temp.jpg")));
+                                startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                            }
+                        })
+                .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
+                        new ActionSheetDialog.OnSheetItemClickListener() {
+                            @Override
+                            public void onClick(int which) {
+                                Intent intent = new Intent(Intent.ACTION_PICK, null);
+                                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_UNSPECIFIED);
+                                startActivityForResult(intent, ALBUM_REQUEST_CODE);
+                            }
+                        })
+                .show();
     }
 
-    private void showPopwindowHead() {
+   /* private void showPopwindowHead() {
         // 利用layoutInflater获得View
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -159,9 +184,9 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                 startActivityForResult(intent, ALBUM_REQUEST_CODE);
             }
         });
-    }
+    }*/
 
-    private void common(View view){
+    /*private void common(View view){
         window = new PopupWindow(view,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);
@@ -192,7 +217,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
             }
         });
 
-    }
+    }*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

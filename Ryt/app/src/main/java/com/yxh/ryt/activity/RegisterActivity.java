@@ -25,6 +25,7 @@ import com.yxh.ryt.obsever.Smsobserver;
 import com.yxh.ryt.receiver.WxLoginBroadcastReciver;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationModel;
@@ -176,10 +177,6 @@ public class RegisterActivity extends BaseActivity {
             ToastUtil.showShort(this,"验证码不能为空!");
             return;
         }
-//        if (!eTPassword.getText().toString().equals(eTPasswordAgain.getText().toString())){
-//            ToastUtil.showShort(this, "两次输入的密码不一致,请重新输入!");
-//            return;
-//        }
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("username", eTPhone.getText().toString());
         paramsMap.put("password", Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));
@@ -202,6 +199,8 @@ public class RegisterActivity extends BaseActivity {
                     return;
                 }
                 if (response.get("resultCode").equals("0")) {
+                    SPUtil.put(RegisterActivity.this,"username",eTPhone.getText().toString());
+                    SPUtil.put(RegisterActivity.this,"password",Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));
                     ToastUtil.showShort(AppApplication.getSingleContext(), "注册成功!");
                     Intent intent=new Intent(RegisterActivity.this,RegisterScActivity.class);
                     RegisterActivity.this.startActivity(intent);
