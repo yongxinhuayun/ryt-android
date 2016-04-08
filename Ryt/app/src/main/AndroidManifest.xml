@@ -6,7 +6,7 @@
         android:protectionLevel="signature" />
 
     <!-- Required  一些系统要求的权限，如访问网络等 -->
-    <uses-permission android:name="com.rongyicast.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="com.yxh.ryt.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -37,7 +37,7 @@
         android:supportsRtl="true"
         android:name=".AppApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.IndexActivity">
+        <activity android:name=".activity.MsgActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

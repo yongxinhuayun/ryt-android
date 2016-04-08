@@ -13,7 +13,10 @@ import android.util.Log;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.CustomMsgActivity;
 import com.yxh.ryt.activity.ShowMsgActivity;
+import com.yxh.ryt.util.Utils;
+import com.yxh.ryt.vo.ChatMsgEntity;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,7 +38,7 @@ public class MyReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
 		Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
-		Log.d(TAG, "[MyReceiver] 接收Registration Id : " + JPushInterface.getRegistrationID(context));
+		System.out.println( "[MyReceiver] 接收Registration Id : " + JPushInterface.getRegistrationID(context));
 
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
            /* String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
@@ -44,14 +47,18 @@ public class MyReceiver extends BroadcastReceiver {
                         
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
         	Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
-        	processCustomMessage(context, bundle);
+			processCustomMessage(context, bundle);
         
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
-        	
-        } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
+			ChatMsgEntity chatMsgEntity = new ChatMsgEntity();
+			chatMsgEntity.setDate(Utils.getCurrentTime());
+			chatMsgEntity.setText(bundle.getString(JPushInterface.EXTRA_ALERT));
+			EventBus.getDefault().post(chatMsgEntity);
+
+		} else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
         	//打开自定义的Activity
         	Intent i = new Intent(context, ShowMsgActivity.class);
@@ -140,4 +147,11 @@ public class MyReceiver extends BroadcastReceiver {
 //			context.sendBroadcast(msgIntent);
 //		}
 	}
+//	public interface BRInteraction {
+//		public void setText(String content);
+//	}
+//
+//	public void setBRInteractionListener(BRInteraction brInteraction) {
+//		this.brInteraction = brInteraction;
+//	}
 }
