@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -41,10 +42,50 @@ public class IndexActivity extends BaseActivity {
         @Override public void set(View view, Integer value, int index) {
             TextView textView=(TextView)view;
             if(value==index){
-                textView.setTextColor(Color.RED);//可以将选择和未选择的color抽出
+                textView.setTextColor(Color.rgb(191,191,191));//可以将选择和未选择的color抽出
                 return;
             }
             textView.setTextColor(Color.WHITE);
+        }
+    };
+    @Bind({ R.id.iv_tab_01, R.id.iv_tab_02, R.id.iv_tab_03 ,R.id.iv_tab_04})
+    List<ImageView> tabIvs;
+    static final ButterKnife.Setter<View, Integer> SETIMAGE = new ButterKnife.Setter<View, Integer>() {
+
+        @Override public void set(View view, Integer value, int index) {
+            ImageView imageView=(ImageView)view;
+            if(value==index){
+                switch (value){
+                    case 0:
+                        imageView.setImageResource(R.mipmap.shouye_xuanzhong);
+                        break;
+                    case 1:
+                        imageView.setImageResource(R.mipmap.paihang_xuanzhong);
+                        break;
+                    case 2:
+                        imageView.setImageResource(R.mipmap.xiaoxi_xuanzhong);
+                        break;
+                    case 3:
+                        imageView.setImageResource(R.mipmap.wode_xuanzhong);
+                        break;
+                }
+                return;
+            }
+            switch (index){
+                case 0:
+                    imageView.setImageResource(R.mipmap.shouye_weixuanzhong);
+                    break;
+                case 1:
+                    imageView.setImageResource(R.mipmap.paihang_weixuanzhong);
+                    break;
+                case 2:
+                    imageView.setImageResource(R.mipmap.xiaoxi_weixuanzhong);
+                    break;
+                case 3:
+                    imageView.setImageResource(R.mipmap.wode_weixuanzhong);
+                    break;
+            }
+            return;
         }
     };
     @Override
@@ -62,21 +103,26 @@ public class IndexActivity extends BaseActivity {
         indexPager.setScanScroll(false);
         indexPager.setAdapter(indexAdapter);
         ButterKnife.apply(tabTvs, SETCOLOR, 0);
+        ButterKnife.apply(tabIvs, SETIMAGE, 0);
         indexPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
                         ButterKnife.apply(tabTvs, SETCOLOR, 0);
+                        ButterKnife.apply(tabIvs, SETIMAGE, 0);
                         break;
                     case 1:
                         ButterKnife.apply(tabTvs, SETCOLOR, 1);
+                        ButterKnife.apply(tabIvs, SETIMAGE, 1);
                         break;
                     case 2:
                         ButterKnife.apply(tabTvs, SETCOLOR, 2);
+                        ButterKnife.apply(tabIvs, SETIMAGE, 2);
                         break;
                     case 3:
                         ButterKnife.apply(tabTvs, SETCOLOR, 3);
+                        ButterKnife.apply(tabIvs, SETIMAGE, 3);
                         break;
                 }
             }
@@ -123,6 +169,7 @@ public class IndexActivity extends BaseActivity {
 //                transaction.replace(R.id.fl_tab, tabFragment01);
                 indexPager.setCurrentItem(0,false);
                 ButterKnife.apply(tabTvs, SETCOLOR, 0);
+                ButterKnife.apply(tabIvs, SETIMAGE, 0);
                 break;
             case R.id.rl_tab_02:
 //                if (tabFragment02 == null)
@@ -132,6 +179,7 @@ public class IndexActivity extends BaseActivity {
 //                transaction.replace(R.id.fl_tab, tabFragment02);
                 indexPager.setCurrentItem(1,false);
                 ButterKnife.apply(tabTvs, SETCOLOR, 1);
+                ButterKnife.apply(tabIvs, SETIMAGE, 1);
                 break;
             case R.id.rl_tab_03:
 //                if (tabFragment03 == null)
@@ -141,6 +189,7 @@ public class IndexActivity extends BaseActivity {
 //                transaction.replace(R.id.fl_tab, tabFragment03);
                 indexPager.setCurrentItem(2,false);
                 ButterKnife.apply(tabTvs, SETCOLOR, 2);
+                ButterKnife.apply(tabIvs, SETIMAGE, 2);
                 break;
             case R.id.rl_tab_04:
 //                if (tabFragment04 == null)
@@ -150,6 +199,7 @@ public class IndexActivity extends BaseActivity {
 //                transaction.replace(R.id.fl_tab, tabFragment04);
                 indexPager.setCurrentItem(3,false);
                 ButterKnife.apply(tabTvs, SETCOLOR, 3);
+                ButterKnife.apply(tabIvs, SETIMAGE, 3);
                 break;
         }
         // transaction.addToBackStack();

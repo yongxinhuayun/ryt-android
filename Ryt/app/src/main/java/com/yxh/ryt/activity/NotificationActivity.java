@@ -44,8 +44,8 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
         setContentView(R.layout.notification_listview);
         ButterKnife.bind(this);/*启用注解绑定*/
         notificationDatas=new ArrayList<Notification>();
-        initView();
         ntflistview.setPageSize(Constants.pageSize);
+        initView();
         LoadData(AutoListView.REFRESH, currentPage);
     }
 
@@ -86,6 +86,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
         NetRequestUtil.post(Constants.BASE_PATH + "information.do", paramsMap, new NotifaicationCallBack() {
             @Override
             public void onError(Call call, Exception e) {
+                e.printStackTrace();
                 System.out.println("失败了");
             }
 
