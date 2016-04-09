@@ -10,6 +10,9 @@ import com.google.gson.Gson;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.zhy.http.okhttp.OkHttpUtils;
+
+import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -32,6 +35,7 @@ public class AppApplication extends Application {
 
 		JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
 		JPushInterface.init(this);     		// 初始化 JPush
+		OkHttpUtils.getInstance().setConnectTimeout(10, TimeUnit.SECONDS);
 	}
 
 	//获取全局Context
