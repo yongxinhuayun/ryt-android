@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -11,7 +12,6 @@
         android:layout_height="50dp">
 
         <TextView
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
@@ -50,8 +50,118 @@
             android:paddingRight="10dp"
             android:paddingLeft="10dp"
             android:layout_height="match_parent">
-            <RelativeLayout
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="33"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="关注"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <com.yxh.ryt.custemview.CircleImageView
+                        android:id="@+id/rs_iv_headPortrait"
+                        android:layout_width="77dp"
+                        android:layout_height="77dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/jibenziliao_touxiang"
+                        app:border_color="@android:color/white"
+                        app:border_width="1dp" />
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="哈哈哈"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        />
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginRight="20dp"
+                        android:layout_toLeftOf="@+id/go6"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="18"
+                            android:textColor="@android:color/black"
+                            android:textSize="14sp"
+                            android:gravity="center"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="粉丝"
+                            android:textColor="@android:color/black"
+                            android:textSize="14sp"
+                            android:gravity="center"
+                            />
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/go6"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/go"/>
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:text="个性签名："
+                    android:textSize="14sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:text="一句话20字以内"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:background="@drawable/login_reg_et_bg"
                 android:layout_height="50dp">
                 <TextView
                     android:layout_width="wrap_content"
@@ -78,6 +188,8 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/login_reg_et_bg"
                 android:layout_height="50dp">
                 <TextView
                     android:layout_width="wrap_content"
@@ -105,6 +217,8 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/login_reg_et_bg"
                 android:layout_height="50dp">
                 <TextView
                     android:layout_width="wrap_content"
@@ -131,6 +245,8 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/login_reg_et_bg"
                 android:layout_height="50dp">
                 <TextView
                     android:layout_width="wrap_content"
@@ -157,6 +273,8 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/login_reg_et_bg"
                 android:layout_height="50dp">
                 <TextView
                     android:layout_width="wrap_content"

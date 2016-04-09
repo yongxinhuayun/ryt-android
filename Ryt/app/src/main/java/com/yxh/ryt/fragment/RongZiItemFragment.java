@@ -115,9 +115,9 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 				}else{
 					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.GONE);
 				}
-//				double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-//				helper.setProgress(R.id.progressBar1, ((int)(value*100)));
-//				helper.setText(R.id.tv_pb_value, ((int)(value*100))+"%");
+				double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
+				helper.setProgress(R.id.progressBar1, (int)(value*100));
+				helper.setText(R.id.tv_pb_value, (int)(value*100)+"%");
 			}
 		};
 		lstv.setAdapter(rongZiCommonAdapter);

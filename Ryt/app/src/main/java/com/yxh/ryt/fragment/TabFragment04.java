@@ -15,7 +15,7 @@ public class TabFragment04 extends  BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab_04, null);
+        View view = inflater.inflate(R.layout.user_center, null);
         return view;
     }
 
