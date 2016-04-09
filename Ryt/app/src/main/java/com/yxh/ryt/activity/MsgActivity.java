@@ -59,7 +59,6 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		EventBus.getDefault().register(this);
 		initView();
-		initData();
 	}
 
 	public void initView() {
@@ -68,33 +67,13 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 		mBtnSend.setOnClickListener(this);
 		mBottom = (RelativeLayout) findViewById(R.id.btn_bottom);
 		mEditTextContent = (EditText) findViewById(R.id.et_sendmessage);
-		
+		mAdapter = new ChatMsgViewAdapter(this, mDataArrays);
+		mListView.setAdapter(mAdapter);
 	}
 
 	private String[] msgArray = new String[] {};
 
 	private String[] dataArray = new String[] { };
-	private final static int COUNT = 6;
-
-	public void initData() {
-		for (int i = 0; i < COUNT; i++) {
-			ChatMsgEntity entity = new ChatMsgEntity();
-			entity.setDate(dataArray[i]);
-			if (i % 2 == 0) {
-				entity.setName("白富美");
-				entity.setMsgType(true);
-			} else {
-				entity.setName("高富帅");
-				entity.setMsgType(false);
-			}
-			entity.setText(msgArray[i]);
-			mDataArrays.add(entity);
-		}
-
-		mAdapter = new ChatMsgViewAdapter(this, mDataArrays);
-		mListView.setAdapter(mAdapter);
-
-	}
 
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
