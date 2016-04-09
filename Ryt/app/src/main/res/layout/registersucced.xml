@@ -60,6 +60,7 @@
             android:textColorHint="#D9D9D9"
             android:textSize="14sp"
             android:hint="昵称"
+            android:singleLine="true"
             android:textColor="@android:color/black"
             />
         <ImageView
