@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -97,7 +98,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
             return;
         }
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("username","13466636718");
+        paramsMap.put("username","18510251819");
         paramsMap.put("nickname",nickName.getText().toString());
         paramsMap.put("sex",sex+"");
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
@@ -118,6 +119,8 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
             @Override
             public void onResponse(Map<String, Object> response) {
                 System.out.println("成功了");
+                Log.d("XXXXXXXXXXXXXXXXXXXXX", "YYYYYYYYYYY");
+                Log.d("tagonResponse",response.toString());
             }
         });
     }
