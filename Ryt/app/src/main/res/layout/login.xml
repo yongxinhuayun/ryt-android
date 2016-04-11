@@ -44,10 +44,10 @@
             android:layout_height="match_parent"
             />
         <View
-            android:layout_width="match_parent"
-            android:layout_alignParentBottom="true"
-            android:background="#E9E9E9"
-            android:layout_height="1dp"></View>
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="#E9E9E9"
+        android:layout_height="1dp"></View>
     </RelativeLayout>
 
 
