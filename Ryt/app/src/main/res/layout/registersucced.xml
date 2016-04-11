@@ -146,7 +146,7 @@
             android:gravity="center"
             android:textColor="#B3B3B3"
             android:textSize="14sp"
-            android:background="@mipmap/wangjimima_anniu"
+            android:background="@mipmap/bukedianjianniu"
             android:text="完成" />
     </RelativeLayout>
 
