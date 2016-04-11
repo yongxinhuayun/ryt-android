@@ -125,7 +125,8 @@
                     android:textSize="14sp"
                     android:textColor="#4D4D4D"
                     android:layout_height="30dp"
-                    android:text="快速注册"/>
+                    android:text="快速注册"
+                    />
                 <TextView
                     android:id="@+id/tv_center_forget"
                     android:layout_alignParentRight="true"
