@@ -8,12 +8,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
@@ -59,9 +62,12 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     RadioButton nan;
     @Bind(R.id.rs_rb_nv)
     RadioButton nv;
+    @Bind(R.id.rs_bt_commit)
+    Button commit;
     PopupWindow window;
     private int sex=-1;
     private boolean flag=false;
+    private boolean isNickyname;
     private static final String IMAGE_UNSPECIFIED = "image/*";
     private static final int PHOTO_RESOULT = 4;
     private static final int ALBUM_REQUEST_CODE = 1;
@@ -74,7 +80,45 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         setContentView(R.layout.registersucced);
         ButterKnife.bind(this);/*启用注解绑定*/
         sexGroup.setOnCheckedChangeListener(this);
+        commit.setEnabled(false);
+        onEnabled();
     }
+
+    private void onEnabled() {
+        nickName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    isNickyname = true;
+                    dianji(flag, isNickyname, sex);
+                } else {
+                    isNickyname = false;
+                    dianji(flag, isNickyname, sex);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void dianji(boolean flag, boolean isNickyname, int sex) {
+        if (flag && isNickyname && sex>0){
+            commit.setEnabled(true);
+            commit.setBackgroundResource(R.mipmap.wangjimima_anniu);
+        }else {
+            commit.setEnabled(false);
+            commit.setBackgroundResource(R.mipmap.bukedianjianniu);
+        }
+    }
+
     @OnClick(R.id.rs_bt_commit)
     public void completeClick(){
 
@@ -234,6 +278,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                 circleImageView.setImageBitmap(bitmap);
 //                saveFile(bitmap);
                 flag=true;
+                dianji(flag, isNickyname, sex);
                 break;
             case CAMERA_REQUEST_CODE:
                 File picture = new File(Environment.getExternalStorageDirectory()
@@ -305,8 +350,10 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         if (checkedId==nan.getId()){
             sex=1;
+            dianji(flag, isNickyname, sex);
         }else {
             sex=2;
+            dianji(flag, isNickyname, sex);
         }
     }
 
