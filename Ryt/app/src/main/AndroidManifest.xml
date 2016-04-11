@@ -37,7 +37,7 @@
         android:supportsRtl="true"
         android:name=".AppApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.IndexActivity">
+        <activity android:name=".activity.PublicProject01Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -62,6 +62,7 @@
         <activity android:name=".activity.CustomMsgActivity"/>
         <activity android:name=".activity.NotificationActivity"/>
         <activity android:name=".activity.PrivateLetterActivity"/>
+        <activity android:name=".activity.PublicProject02Activity"/>
         <activity android:name=".activity.ShowMsgActivity"/>
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
