@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -55,8 +57,13 @@ public class RegisterActivity extends BaseActivity {
 //    EditText eTPasswordAgain;
     @Bind(R.id.rg_bt_verifyCode)
     TextView getVerifyCode;
+    @Bind(R.id.rg_bt_register)
+    Button commit;
     private Map<String,String> paramsMap;
     WxLoginBroadcastReciver mReciver;
+    private boolean isPhone;
+    private boolean isVcode;
+    private boolean isPassword;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -89,6 +96,86 @@ public class RegisterActivity extends BaseActivity {
         ButterKnife.bind(this);/*启用注解绑定*/
         smsBackfill();
         event();
+        commit.setEnabled(false);
+        clickable();
+    }
+
+    private void clickable() {
+        eTPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    isPhone = true;
+                    dianji(isPhone, isVcode, isPassword);
+                } else {
+                    isPhone = false;
+                    dianji(isPhone, isVcode, isPassword);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        eTVerfyCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    isVcode = true;
+                    dianji(isPhone, isVcode, isPassword);
+                } else {
+                    isVcode = false;
+                    dianji(isPhone, isVcode, isPassword);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        eTPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    isPassword = true;
+                    dianji(isPhone, isVcode, isPassword);
+                } else {
+                    isPassword = false;
+                    dianji(isPhone, isVcode, isPassword);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+    private void dianji(boolean isPhone, boolean isVcode, boolean isPassword){
+        if (isPassword && isPhone && isVcode){
+            commit.setEnabled(true);
+            commit.setBackgroundResource(R.mipmap.wangjimima_anniu);
+        }else {
+            commit.setEnabled(false);
+            commit.setBackgroundResource(R.mipmap.bukedianjianniu);
+        }
     }
     /*返回按钮事件触发*/
     @OnClick(R.id.iv_center_wx)

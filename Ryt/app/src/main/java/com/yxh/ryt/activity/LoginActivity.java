@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -51,12 +53,71 @@ public class LoginActivity extends BaseActivity {
     TextView tvForget;
     private  EditTextValidator editTextValidator;
     WxLoginBroadcastReciver mReciver;
-
+    private boolean isPhone;
+    private boolean isPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         ButterKnife.bind(this);/*启用注解绑定*/
+        btnLogin.setEnabled(false);
+        clickable();
+    }
+
+    private void clickable() {
+        etUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    isPhone = true;
+                    dianji(isPhone, isPassword);
+                } else {
+                    isPhone = false;
+                    dianji(isPhone, isPassword);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    isPassword = true;
+                    dianji(isPhone, isPassword);
+                } else {
+                    isPassword = false;
+                    dianji(isPhone, isPassword);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+    private void dianji(boolean isPhone, boolean isPassword){
+        if (isPassword && isPhone){
+            btnLogin.setEnabled(true);
+            btnLogin.setBackgroundResource(R.mipmap.wangjimima_anniu);
+        }else {
+            btnLogin.setEnabled(false);
+            btnLogin.setBackgroundResource(R.mipmap.bukedianjianniu);
+        }
     }
     /*返回按钮事件触发*/
     @OnClick(R.id.ib_top_rt)

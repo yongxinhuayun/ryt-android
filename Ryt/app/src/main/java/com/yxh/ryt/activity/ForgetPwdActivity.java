@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -47,8 +49,13 @@ public class ForgetPwdActivity extends BaseActivity {
     EditText eTVerfyCode;
     @Bind(R.id.fp_bt_verifyCode)
     TextView sendCode;
+    @Bind(R.id.fp_bt_commit)
+    Button commit;
     private Uri SMS_INBOX = Uri.parse("content://sms/");
     private Smsobserver smsObserver;
+    private boolean isPhone;
+    private boolean isVcode;
+    private boolean isPassword;
     private Map<String,String> paramsMap;
     private Handler handler = new Handler() {
         @Override
@@ -79,9 +86,88 @@ public class ForgetPwdActivity extends BaseActivity {
         setContentView(R.layout.forgetpasswrod);
         ButterKnife.bind(this);/*启用注解绑定*/
         smsBackfill();
+        commit.setEnabled(false);
+        clickable();
         event();
     }
 
+    private void clickable() {
+        eTPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    isPhone = true;
+                    dianji(isPhone,isVcode,isPassword);
+                }else {
+                    isPhone = false;
+                    dianji(isPhone,isVcode,isPassword);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        eTVerfyCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    isVcode = true;
+                    dianji(isPhone,isVcode,isPassword);
+                }else {
+                    isVcode = false;
+                    dianji(isPhone,isVcode,isPassword);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        eTPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    isPassword = true;
+                    dianji(isPhone,isVcode,isPassword);
+                }else {
+                    isPassword = false;
+                    dianji(isPhone,isVcode,isPassword);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+    private void dianji(boolean isPhone, boolean isVcode, boolean isPassword){
+        if (isPassword && isPhone && isVcode){
+            commit.setEnabled(true);
+            commit.setBackgroundResource(R.mipmap.wangjimima_anniu);
+        }else {
+            commit.setEnabled(false);
+            commit.setBackgroundResource(R.mipmap.bukedianjianniu);
+        }
+    }
     private void event() {
         eTVerfyCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

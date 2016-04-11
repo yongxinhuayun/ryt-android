@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#B3B3B3"
                 android:textSize="18sp"
-                android:background="@mipmap/denglu_anniu"
+                android:background="@mipmap/bukedianjianniu"
                 android:text="登录"
                 android:gravity="center"/>
             <RelativeLayout
@@ -125,7 +125,8 @@
                     android:textSize="14sp"
                     android:textColor="#4D4D4D"
                     android:layout_height="30dp"
-                    android:text="快速注册"/>
+                    android:text="快速注册"
+                    />
                 <TextView
                     android:id="@+id/tv_center_forget"
                     android:layout_alignParentRight="true"
