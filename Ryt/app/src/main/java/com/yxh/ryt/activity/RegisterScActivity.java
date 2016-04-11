@@ -83,7 +83,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         commit.setEnabled(false);
         onEnabled();
     }
-
     private void onEnabled() {
         nickName.addTextChangedListener(new TextWatcher() {
             @Override
