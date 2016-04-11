@@ -80,7 +80,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
 
         Map<String,File> fileMap=new HashMap<>();
         File file = new File(filePath);
-        System.out.println(file.getName() + "==========================");
         fileMap.put(file.getName(),file);
         AppApplication.getSingleEditTextValidator()
                 .add(new ValidationModel(nickName, new NickNameValidation()))
