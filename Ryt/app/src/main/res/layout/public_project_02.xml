@@ -66,23 +66,26 @@
                 <LinearLayout
                     android:layout_marginTop="10dp"
                     android:orientation="vertical"
-                    android:background="@drawable/login_reg_et_bg"
+                    android:background="@drawable/new_project_biankuang"
+                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
+                        android:background="@drawable/new_project_biankuang"
                         android:layout_width="match_parent"
+                        android:gravity="left"
+                        android:hint="请输入项目说明"
                         android:layout_height="100dp" />
-                    <LinearLayout
+                    <GridView
                         android:layout_marginTop="10dp"
-                        android:orientation="horizontal"
+                        android:id="@+id/noScrollgridview"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <GridView
-                            android:numColumns="3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                        </GridView>
-                    </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:horizontalSpacing="3dp"
+                        android:numColumns="4"
+                        android:scrollbars="none"
+                        android:verticalSpacing="5dp" >
+                    </GridView>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -100,6 +103,8 @@
                     android:layout_marginTop="10dp"
                     android:background="#E9E9E9"></View>
                     <EditText
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/new_project_biankuang"
                         android:layout_width="match_parent"
                         android:gravity="left"
                         android:inputType="textMultiLine"
@@ -121,8 +126,10 @@
                     android:layout_marginTop="10dp"
                     android:background="#E9E9E9"></View>
                 <EditText
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:gravity="left"
+                    android:background="@drawable/new_project_biankuang"
                     android:hint="1、本次产品是不是纯手工的\n答复：本人亲手制作\n\n1、本次产品是不是纯手工的\n
 答复：本人亲手制作"
                     android:layout_height="200dp" />
@@ -131,7 +138,7 @@
             <Button
                 android:layout_marginTop="100dp"
                 android:layout_gravity="center"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:layout_width="200dp"
                 android:layout_height="50dp"
                 android:background="#AEEEEE"
