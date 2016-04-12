@@ -60,6 +60,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.CustomMsgActivity"/>
+        <activity android:name=".activity.GalleryActivity"/>
+        <activity android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"/>
         <activity android:name=".activity.NotificationActivity"/>
         <activity android:name=".activity.PrivateLetterActivity"/>
         <activity android:name=".activity.PublicProject02Activity"/>
