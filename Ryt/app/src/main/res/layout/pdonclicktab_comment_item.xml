@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp">
+        <ImageView
+            android:id="@+id/pdctci_iv_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/ic_launcher"/>
+        <TextView
+            android:id="@+id/pdctci_tv_nickName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="屌丝用户"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_alignTop="@id/pdctci_iv_icon"
+            android:gravity="center_vertical"
+            android:layout_toRightOf="@id/pdctci_iv_icon"
+            android:layout_marginLeft="15dp"
+            />
+        <TextView
+            android:id="@+id/pdctci_tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/pdctci_tv_nickName"
+            android:layout_alignParentRight="true"
+            android:textSize="18sp"
+            android:text="2016-4-10"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/pdctci_tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="你好,我略懂些,以后可以多交流"/>
+    </RelativeLayout>
+
+</LinearLayout>
