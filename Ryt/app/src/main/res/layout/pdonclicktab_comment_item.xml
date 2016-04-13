@@ -35,12 +35,15 @@
             android:text="2016-4-10"/>
 
         <TextView
+            android:layout_alignLeft="@id/pdctci_tv_nickName"
+            android:layout_below="@id/pdctci_tv_nickName"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
             android:id="@+id/pdctci_tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:text="你好,我略懂些,以后可以多交流"/>
+/>
     </RelativeLayout>
 
 </LinearLayout>
