@@ -29,7 +29,6 @@ public class EncryptUtil {
         Log.d("before",str.toString());
         String md5Value = MD5(str.toString());
         Log.d("md5Value",md5Value);
-
         return md5Value;
     }
 
@@ -37,14 +36,14 @@ public class EncryptUtil {
         try {
             MessageDigest md = MessageDigest
                     .getInstance("MD5");
-            byte[] array = md.digest(md5.getBytes());
+            byte[] array = md.digest(md5.getBytes("UTF-8"));
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < array.length; ++i) {
                 sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100)
                         .substring(1, 3));
             }
             return sb.toString();
-        } catch (java.security.NoSuchAlgorithmException e) {
+        } catch (Exception e) {
         }
         return null;
     }
