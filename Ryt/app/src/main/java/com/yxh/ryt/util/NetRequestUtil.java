@@ -48,6 +48,9 @@ public class NetRequestUtil<T> {
         post.params(paramsMap);
         post.headers(headers);
         RequestCall build = post.build();
+        build.connTimeOut(500000);
+        build.readTimeOut(500000);
+        build.writeTimeOut(500000);
         build.execute(callback);
     }
 }
