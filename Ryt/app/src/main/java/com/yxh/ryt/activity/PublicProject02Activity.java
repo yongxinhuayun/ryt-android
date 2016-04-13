@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,21 +17,33 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.yxh.ryt.AppApplication;
+import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.callback.CompleteUserInfoCallBack;
+import com.yxh.ryt.util.EncryptUtil;
+import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.util.phote.util.Bimp;
 import com.yxh.ryt.util.phote.util.ImageItem;
 import com.yxh.ryt.util.phote.util.PublicWay;
 import com.yxh.ryt.util.phote.util.Res;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
+import okhttp3.Call;
 
 /**
  * Created by 吴洪杰 on 2016/4/11.
@@ -39,7 +52,53 @@ public class PublicProject02Activity extends  BaseActivity {
     public final int REQUEST_IMAGE=0;
     private GridView noScrollgridview;
     private GridAdapter adapter;
+    Map<String,File> fileMap=new HashMap<>();
     public static Bitmap bimap ;
+    String artworkId="";
+    @Bind(R.id.tv_done)
+    TextView tvDone;
+    @Bind(R.id.ev_shuoming)
+    EditText evShuoming;
+    @Bind(R.id.ev_zhizuo_shuoming)
+    EditText evZhizuo;
+    @Bind(R.id.ev_jiehuo)
+    EditText evJieHuo;
+    //艺术家发布项目第一步接口一网络请求
+    private void twoStepRequst() {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("artworkId",artworkId);
+        paramsMap.put("timestamp",System.currentTimeMillis()+"");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        paramsMap.put("description",evShuoming.getText().toString());
+        paramsMap.put("make_instru",evZhizuo.getText().toString());
+        paramsMap.put("financing_aq",evJieHuo.getText().toString());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("APP-Key", "APP-Secret222");
+        headers.put("APP-Secret", "APP-Secret111");
+        System.out.println(paramsMap.toString());
+        NetRequestUtil.postFile(Constants.BASE_PATH + "initNewArtWork2.do", "file", fileMap, paramsMap, headers, new CompleteUserInfoCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                System.out.println("成功了");
+                Log.d("XXXXXXXXXXXXXXXXXXXXX", "YYYYYYYYYYY");
+                Log.d("tagonResponse", response.toString());
+            }
+        });
+    }
+    @OnClick(R.id.tv_done)
+    public void doneClick(View v){
+        twoStepRequst();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +111,7 @@ public class PublicProject02Activity extends  BaseActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.
                 SOFT_INPUT_ADJUST_PAN);
         ButterKnife.bind(this);
+        artworkId = getIntent().getCharSequenceExtra("artworkId").toString();
         noScrollgridview = (GridView) findViewById(R.id.noScrollgridview);
         noScrollgridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         adapter = new GridAdapter(this);
@@ -209,11 +269,13 @@ public class PublicProject02Activity extends  BaseActivity {
 
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             if(requestCode == REQUEST_IMAGE){
-            if(resultCode == RESULT_OK){
+            if(resultCode == RESULT_OK&&Bimp.tempSelectBitmap.size()<9){
                 // 获取返回的图片列表
                 List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
                 // 处理你自己的逻辑 ....
                 for (String s:path){
+                    File file = new File(s);
+                    fileMap.put(file.getName(),file);
                     String fileName = String.valueOf(System.currentTimeMillis());
                     ImageItem takePhoto = new ImageItem();
                     takePhoto.setBitmap(null);
