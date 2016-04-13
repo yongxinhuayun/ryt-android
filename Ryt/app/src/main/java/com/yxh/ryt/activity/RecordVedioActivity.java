@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.yxh.ryt.R;
 import com.yxh.ryt.custemview.MovieRecorderView;
 
-public class MainActivity extends BaseActivity {
+public class RecordVedioActivity extends BaseActivity {
 
 	private MovieRecorderView mRecorderView;//视频录制控件
 	private Button mShootBtn;//视频开始录制按钮
@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity {
 						if (mRecorderView.getmRecordFile() != null)
 							mRecorderView.getmRecordFile().delete();//删除录制的过短视频
 						mRecorderView.stop();//停止录制
-						Toast.makeText(MainActivity.this, "视频录制时间太短", Toast.LENGTH_SHORT).show();
+						Toast.makeText(RecordVedioActivity.this, "视频录制时间太短", Toast.LENGTH_SHORT).show();
 					}
 				}
 				return true;

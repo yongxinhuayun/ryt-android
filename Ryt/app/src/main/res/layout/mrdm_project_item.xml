@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/common_bg_02"
+     android:background="@drawable/common_bg_02"
         android:padding="10dp">
         <Button
             android:id="@+id/mpi_bt_left"
