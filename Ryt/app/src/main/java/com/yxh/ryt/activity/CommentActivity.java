@@ -1,6 +1,5 @@
 package com.yxh.ryt.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,13 +11,10 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.CommentCallBack;
-import com.yxh.ryt.callback.NotifaicationCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Utils;
-import com.yxh.ryt.vo.Comment;
-import com.yxh.ryt.vo.Notification;
+import com.yxh.ryt.vo.ArtworkComment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,8 +29,8 @@ import okhttp3.Call;
  * Created by Administrator on 2016/4/9.
  */
 public class CommentActivity extends BaseActivity implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener {
-    private CommonAdapter<Comment> cmAdapter;
-    private List<Comment> commentDatas;
+    private CommonAdapter<ArtworkComment> cmAdapter;
+    private List<ArtworkComment> artworkCommentDatas;
     private int currentPage=1;
     @Bind(R.id.pl_message_listView)
     AutoListView cmlistview;
@@ -43,17 +39,17 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_listview);
         ButterKnife.bind(this);/*启用注解绑定*/
-        commentDatas=new ArrayList<Comment>();
+        artworkCommentDatas =new ArrayList<ArtworkComment>();
         initView();
         cmlistview.setPageSize(Constants.pageSize);
         LoadData(AutoListView.REFRESH, currentPage);
     }
 
     private void initView() {
-        cmAdapter=new CommonAdapter<Comment>(AppApplication.getSingleContext(),commentDatas,R.layout.comment_item) {
+        cmAdapter=new CommonAdapter<ArtworkComment>(AppApplication.getSingleContext(), artworkCommentDatas,R.layout.comment_item) {
             @Override
-            public void convert(ViewHolder helper, Comment item) {
-                Log.d("Comment", item.toString());
+            public void convert(ViewHolder helper, ArtworkComment item) {
+                Log.d("ArtworkComment", item.toString());
                 /*if (item.getIsWatch()==0){
                     helper.setColor(R.id.ni_ll_top, Color.RED);
                 }
@@ -94,34 +90,34 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
                 Log.d("response",response.toString());
                if (state == AutoListView.REFRESH) {
                    cmlistview.onRefreshComplete();
-                   commentDatas.clear();
-                    List<Comment> Comment = null;
+                   artworkCommentDatas.clear();
+                    List<ArtworkComment> ArtworkComment = null;
                     try {
-                        Comment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<Comment>>() {
+                        ArtworkComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<ArtworkComment>>() {
                         }.getType());
                     } catch (JsonSyntaxException e) {
                         e.printStackTrace();
                     }
-                    if (null == Comment || Comment.size() == 0) {
+                    if (null == ArtworkComment || ArtworkComment.size() == 0) {
                         cmlistview.setResultSize(0);
                     }
-                    if (null != Comment && Comment.size() > 0) {
-                        cmlistview.setResultSize(Comment.size());
-                        commentDatas.addAll(Comment);
+                    if (null != ArtworkComment && ArtworkComment.size() > 0) {
+                        cmlistview.setResultSize(ArtworkComment.size());
+                        artworkCommentDatas.addAll(ArtworkComment);
                         cmAdapter.notifyDataSetChanged();
                     }
                     return;
                 }
                 if (state == AutoListView.LOAD) {
                     cmlistview.onLoadComplete();
-                    List<Comment> Comment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<Comment>>() {
+                    List<ArtworkComment> ArtworkComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<ArtworkComment>>() {
                     }.getType());
-                    if (null == Comment || Comment.size() == 0) {
+                    if (null == ArtworkComment || ArtworkComment.size() == 0) {
                         cmlistview.setResultSize(1);
                     }
-                    if (null != Comment && Comment.size() > 0) {
-                        cmlistview.setResultSize(Comment.size());
-                        commentDatas.addAll(Comment);
+                    if (null != ArtworkComment && ArtworkComment.size() > 0) {
+                        cmlistview.setResultSize(ArtworkComment.size());
+                        artworkCommentDatas.addAll(ArtworkComment);
                         cmAdapter.notifyDataSetChanged();
                     }
                     return;
