@@ -251,15 +251,6 @@ public class PublicProject02Activity extends  BaseActivity {
         }
         }
 
-        public String getString(String s) {
-            String path = null;
-            if (s == null)
-                return "";
-            for (int i = s.length() - 1; i > 0; i++) {
-                s.charAt(i);
-            }
-            return path;
-        }
         protected void onRestart() {
             adapter.update();
             super.onRestart();
@@ -275,6 +266,7 @@ public class PublicProject02Activity extends  BaseActivity {
                 // 处理你自己的逻辑 ....
                 for (String s:path){
                     File file = new File(s);
+                    System.out.println(file.getName()+"=================");
                     fileMap.put(file.getName(),file);
                     String fileName = String.valueOf(System.currentTimeMillis());
                     ImageItem takePhoto = new ImageItem();
@@ -286,15 +278,4 @@ public class PublicProject02Activity extends  BaseActivity {
         }
         }
 
-        public boolean onKeyDown(int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                for(int i=0;i<PublicWay.activityList.size();i++){
-                    if (null != PublicWay.activityList.get(i)) {
-                        PublicWay.activityList.get(i).finish();
-                    }
-                }
-                System.exit(0);
-            }
-            return true;
-        }
     }

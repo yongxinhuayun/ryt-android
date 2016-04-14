@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
+
     <RelativeLayout
+        android:id="@+id/rl_top"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/rl_top">
+        android:layout_height="50dp">
+
         <ImageButton
             android:id="@+id/ib_top_lf"
             android:layout_width="50dp"
-            android:background="@null"
-            android:src="@mipmap/back"
-            android:layout_centerVertical="true"
             android:layout_height="match_parent"
-            />
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:src="@mipmap/back" />
+
         <TextView
             android:id="@+id/tv_top_ct"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="略带彷徨的青春"
             android:textColor="#333333"
-            android:textSize="20sp"
-            android:text="略带彷徨的青春"/>
+            android:textSize="20sp" />
         <!--<TextView-->
         <!--android:visibility="gone"-->
         <!--android:layout_width="50dp"-->
@@ -36,227 +38,244 @@
         <ImageButton
             android:id="@+id/ib_top_rt"
             android:layout_width="50dp"
-            android:background="@null"
-            android:layout_alignParentRight="true"
-            android:scaleType="center"
-            android:src="@mipmap/share01"
-            android:layout_centerVertical="true"
             android:layout_height="match_parent"
-            />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:scaleType="center"
+            android:src="@mipmap/share01" />
+
         <View
             android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:background="#E9E9E9"
-            android:layout_height="1dp"></View>
+            android:background="#E9E9E9"></View>
     </RelativeLayout>
-    <com.yxh.ryt.custemview.MyScrollView
-        android:id="@+id/scrollView"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
-        <LinearLayout
-            android:orientation="vertical" android:layout_width="match_parent"
-            android:background="@android:color/white"
-            android:layout_height="match_parent">
-        <include layout="@layout/common_xiangqing_header"/>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="25dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/rz_xq_pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent" />
 
-            <RelativeLayout
-                android:layout_marginRight="13.5dp"
-                android:layout_marginLeft="13.5dp"
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/top_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:animateLayoutChanges="true"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <!--<FrameLayout-->
-                <!--android:id="@+id/fli_fl_picture"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginRight="40dp">-->
-                <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="10dp"-->
-                <!--android:background="#E9E9E9"/>-->
-                <!--<TextView-->
-                <!--android:layout_width="100dp"-->
-                <!--android:layout_height="10dp"-->
-                <!--android:background="#000000"/>-->
-                <!--</FrameLayout>-->
-                <ProgressBar
-                    android:id="@+id/progressBar1"
-                    style="@style/mProgress_horizontal"
-                    android:layout_width="280dp"
-                    android:layout_height="10dp"
-                    android:layout_centerVertical="true"
-                    android:max="100"
-                    android:progress="50" />
+                <include layout="@layout/common_xiangqing_header" />
 
-                <TextView
-                    android:id="@+id/tv_pb_value"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="19.5dp"
-                    android:layout_toRightOf="@id/progressBar1"
-                    android:text="30%" />
-            </RelativeLayout>
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical">
 
-            <RelativeLayout
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13.5dp"
+                        android:layout_marginRight="13.5dp">
+
+                        <!--<FrameLayout-->
+                        <!--android:id="@+id/fli_fl_picture"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginRight="40dp">-->
+                        <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="10dp"-->
+                        <!--android:background="#E9E9E9"/>-->
+                        <!--<TextView-->
+                        <!--android:layout_width="100dp"-->
+                        <!--android:layout_height="10dp"-->
+                        <!--android:background="#000000"/>-->
+                        <!--</FrameLayout>-->
+                        <ProgressBar
+                            android:id="@+id/progressBar1"
+                            style="@style/mProgress_horizontal"
+                            android:layout_width="280dp"
+                            android:layout_height="10dp"
+                            android:layout_centerVertical="true"
+                            android:max="100"
+                            android:progress="50" />
+
+                        <TextView
+                            android:id="@+id/tv_pb_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="19.5dp"
+                            android:layout_toRightOf="@id/progressBar1"
+                            android:text="30%" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13.5dp"
+                        android:layout_marginRight="13.5dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/fli_ll_tv_investGoalMoney"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="3000元"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                android:text="目标金额"
+                                android:textSize="12.38sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/fli_ll_tv_remainingTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="24时00分00秒"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                android:text="剩余时间"
+                                android:textSize="12.38sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/fli_ll_tv_investGoalPeople"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="1000000"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                android:text="投资人数"
+                                android:textSize="12.38sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="14dp"
+                    android:background="#E9E9E9"></View>
+            </LinearLayout>
+
+
+            <com.yxh.ryt.custemview.refreash.PagerSlidingTabStrip
+                android:id="@+id/show_tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="13.5dp"
-                android:layout_marginRight="13.5dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/fli_ll_tv_investGoalMoney"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="3000元"
-                        android:textColor="@android:color/black"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:text="目标金额"
-                        android:textSize="12.38sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/fli_ll_tv_remainingTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="24时00分00秒"
-                        android:textColor="@android:color/black"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:text="剩余时间"
-                        android:textSize="12.38sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/fli_ll_tv_investGoalPeople"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="1000000"
-                        android:textColor="@android:color/black"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:text="投资人数"
-                        android:textSize="12.38sp" />
-                </LinearLayout>
-            </RelativeLayout>
+                android:layout_height="44dip"
+                android:background="@color/white" />
         </LinearLayout>
-            <View
-                android:layout_marginTop="14dp"
-                android:layout_width="match_parent"
-                android:background="#E9E9E9"
-                android:layout_height="1dp"></View>
-        <!--<com.viewpagerindicator.TabPageIndicator-->
-            <!--android:id="@+id/indicator"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--/>-->
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#E9E9E9"></View>-->
-        <!--<android.support.v4.view.ViewPager-->
-            <!--android:id="@+id/rz_xq_pager"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="500dp"-->
-            <!--/>-->
-            <include android:id="@+id/xq_pager" layout="@layout/rz_xq_vp"/>
-        </LinearLayout>
-    </com.yxh.ryt.custemview.MyScrollView>
+    </RelativeLayout>
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:layout_height="52dp"
         android:background="@android:color/black"
-        android:layout_height="52dp">
+        android:orientation="horizontal">
+
         <LinearLayout
             android:id="@+id/rl_tab_01"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_height="match_parent">
+            android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/iv_tab_01"
                 android:layout_width="wrap_content"
-                android:src="@mipmap/shouye_weixuanzhong"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:src="@mipmap/shouye_weixuanzhong" />
+
             <TextView
                 android:id="@+id/tv_tab_01"
-                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10sp"
+                android:layout_marginTop="5dp"
+                android:text="评论"
                 android:textColor="@android:color/white"
-                android:text="评论"/>
+                android:textSize="10sp" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/rl_tab_02"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_height="match_parent">
+            android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/iv_tab_02"
-                android:src="@mipmap/paihang_weixuanzhong"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/tv_tab_02"
-                android:layout_marginTop="5dp"
-                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@mipmap/paihang_weixuanzhong" />
+
+            <TextView
+                android:id="@+id/tv_tab_02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="投资"
                 android:textColor="@android:color/white"
-                android:textSize="10sp"
-                android:text="投资"/>
+                android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

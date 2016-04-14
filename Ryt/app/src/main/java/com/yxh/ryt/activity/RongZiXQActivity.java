@@ -1,161 +1,193 @@
 package com.yxh.ryt.activity;
 
-import android.graphics.Color;
-import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.view.WindowManager.LayoutParams;
+
+import com.nineoldandroids.view.ViewHelper;
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.RongZiXqTabPageIndicatorAdapter;
-import com.yxh.ryt.adapter.TabPageAdapter;
-import com.yxh.ryt.custemview.CustomViewPager;
-import com.yxh.ryt.custemview.MyScrollView;
+import com.yxh.ryt.custemview.refreash.PagerSlidingTabStrip;
 import com.yxh.ryt.fragment.BaseFragment;
 import com.yxh.ryt.fragment.RongZiItemFragment;
-import com.yxh.ryt.fragment.TabFragment01;
-import com.yxh.ryt.fragment.TabFragment02;
-import com.yxh.ryt.fragment.TabFragment03;
-import com.yxh.ryt.fragment.TabFragment04;
+import com.yxh.ryt.fragment.ScrollTabHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class RongZiXQActivity extends BaseActivity implements MyScrollView.OnScrollListener {
-    List<BaseFragment> rzFragments=new ArrayList<>();
-    FragmentPagerAdapter rzAdapter;
-    ViewPager rzPager;
+public class RongZiXQActivity extends BaseActivity implements  ViewPager.OnPageChangeListener,ScrollTabHolder {
 
-    private MyScrollView myScrollView;
-    private LinearLayout mBuyLayout;
-    private WindowManager mWindowManager;
-    /**
-     * 手机屏幕宽度
-     */
-    private int screenWidth;
-    /**
-     * 悬浮框View
-     */
-    private static View suspendView;
-    /**
-     * 悬浮框的参数
-     */
-    private static WindowManager.LayoutParams suspendLayoutParams;
-    /**
-     * 购买布局的高度
-     */
-    private int buyLayoutHeight;
-    /**
-     * myScrollView与其父类布局的顶部距离
-     */
-    private int myScrollViewTop;
+    private PagerSlidingTabStrip tabs;
 
-    /**
-     * 购买布局与其父类布局的顶部距离
-     */
-    private int buyLayoutTop;
+    private ViewPager viewPager;
 
+    private RongZiXqTabPageIndicatorAdapter adapter;
+
+    private LinearLayout header;
+
+    private int headerHeight;
+    private int headerTranslationDis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rongzi_xiangqing);
-        myScrollView = (MyScrollView) findViewById(R.id.scrollView);
-        mBuyLayout = (LinearLayout) findViewById(R.id.xq_pager);
-
-        myScrollView.setOnScrollListener(this);
-        mWindowManager = (WindowManager) getSystemService(AppApplication.getSingleContext().WINDOW_SERVICE);
-        screenWidth = mWindowManager.getDefaultDisplay().getWidth();
-
-        ButterKnife.bind(this);
-        rzFragments.add(new RongZiItemFragment());
-        rzFragments.add(new RongZiItemFragment());
-        rzFragments.add(new RongZiItemFragment());
-        rzAdapter = new RongZiXqTabPageIndicatorAdapter(this.getSupportFragmentManager(),rzFragments);
-        rzPager= (ViewPager) findViewById(R.id.rz_xq_pager);
-        rzPager.setOffscreenPageLimit(3);
-        rzPager.setAdapter(rzAdapter);
-        TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.indicator);
-        indicator.setViewPager(rzPager);
+        getHeaderHeight();
+        findViews();
+        setupPager();
+        setupTabs();
     }
 
-    /**
-     * 窗口有焦点的时候，即所有的布局绘制完毕的时候，我们来获取购买布局的高度和myScrollView距离父类布局的顶部位置
-     */
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if(hasFocus){
-            buyLayoutHeight = mBuyLayout.getHeight();
-            buyLayoutTop = mBuyLayout.getTop();
+    private void findViews() {
+        tabs = (PagerSlidingTabStrip) findViewById(R.id.show_tabs);
+        viewPager = (ViewPager) findViewById(R.id.rz_xq_pager);
+        header = (LinearLayout) findViewById(R.id.header);
+    }
 
-            myScrollViewTop = myScrollView.getTop();
+    private void getHeaderHeight() {
+        headerHeight = getResources().getDimensionPixelSize(R.dimen.max_header_height);
+        headerTranslationDis = -getResources().getDimensionPixelSize(R.dimen.header_offset_dis);
+    }
+
+    private void setupPager() {
+        adapter = new RongZiXqTabPageIndicatorAdapter(getSupportFragmentManager(), this, viewPager);
+        adapter.setTabHolderScrollingListener(this);//控制页面滑动
+        viewPager.setOffscreenPageLimit(adapter.getCacheCount());
+        viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(this);
+    }
+
+    private void setupTabs() {
+        tabs.setShouldExpand(true);
+        tabs.setIndicatorColorResource(R.color.color_purple_bd6aff);
+        tabs.setUnderlineColorResource(R.color.color_purple_bd6aff);
+        tabs.setCheckedTextColorResource(R.color.color_purple_bd6aff);
+        tabs.setViewPager(viewPager);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        tabs.onPageScrolled(position, positionOffset, positionOffsetPixels);
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        tabs.onPageSelected(position);
+        reLocation = true;
+        SparseArrayCompat<ScrollTabHolder> scrollTabHolders = adapter.getScrollTabHolders();
+        ScrollTabHolder currentHolder = scrollTabHolders.valueAt(position);
+        if (NEED_RELAYOUT) {
+            currentHolder.adjustScroll((int) (header.getHeight() + headerTop));// 修正滚出去的偏移量
+        } else {
+            currentHolder.adjustScroll((int) (header.getHeight() + ViewHelper.getTranslationY(header)));// 修正滚出去的偏移量
         }
     }
 
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        tabs.onPageScrollStateChanged(state);
+    }
 
+    @Override
+    public void adjustScroll(int scrollHeight) {
+
+    }
+
+    private boolean reLocation = false;
+
+    private int headerScrollSize = 0;
+
+    public static final boolean NEED_RELAYOUT = Integer.valueOf(Build.VERSION.SDK).intValue() < Build.VERSION_CODES.HONEYCOMB;
+
+    private int headerTop = 0;
+
+    // 刷新头部显示时，没有onScroll回调，只有刷新时有
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount,
+                         int pagePosition) {
+        if (viewPager.getCurrentItem() != pagePosition) {
+            return;
+        }
+        if (headerScrollSize == 0 && reLocation) {
+            reLocation = false;
+            return;
+        }
+        reLocation = false;
+        int scrollY = Math.max(-getScrollY(view), headerTranslationDis);
+        if (NEED_RELAYOUT) {
+            headerTop = scrollY;
+            header.post(new Runnable() {
+
+                @Override
+                public void run() {
+                    header.layout(0, headerTop, header.getWidth(), headerTop + header.getHeight());
+                }
+            });
+        } else {
+            ViewHelper.setTranslationY(header, scrollY);
+        }
+    }
 
     /**
-     * 滚动的回调方法，当滚动的Y距离大于或者等于 购买布局距离父类布局顶部的位置，就显示购买的悬浮框
-     * 当滚动的Y的距离小于 购买布局距离父类布局顶部的位置加上购买布局的高度就移除购买的悬浮框
+     * 主要算这玩意，PullToRefreshListView插入了一个刷新头部，因此要根据不同的情况计算当前的偏移量</br>
      *
+     * 当刷新时： 刷新头部显示，因此偏移量要加上刷新头的数值 未刷新时： 偏移量不计算头部。
+     *
+     * firstVisiblePosition >1时，listview中的项开始显示，姑且认为每一项等高来计算偏移量（其实只要显示一个项，向上偏移
+     * 量已经大于头部的最大偏移量，因此不准确也没有关系）
+     *
+     * @param view
+     * @return
+     */
+    public int getScrollY(AbsListView view) {
+        View c = view.getChildAt(0);
+        if (c == null) {
+            return 0;
+        }
+        int top = c.getTop();
+        int firstVisiblePosition = view.getFirstVisiblePosition();
+        if (firstVisiblePosition == 0) {
+            return -top + headerScrollSize;
+        } else if (firstVisiblePosition == 1) {
+            return -top;
+        } else {
+            return -top + (firstVisiblePosition - 2) * c.getHeight() + headerHeight;
+        }
+    }
+
+    /**
+     * 与onHeadScroll互斥，不能同时执行
+     * @param isRefreashing
+     * @param value
+     * @param pagePosition
      */
     @Override
-    public void onScroll(int scrollY) {
-        if(scrollY >= buyLayoutTop){
-            if(suspendView == null){
-                showSuspend();
-            }
-        }else if(scrollY <= buyLayoutTop + buyLayoutHeight){
-            if(suspendView != null){
-                removeSuspend();
-            }
+    public void onHeaderScroll(boolean isRefreashing, int value, int pagePosition) {
+        if (viewPager.getCurrentItem() != pagePosition) {
+            return;
+        }
+        headerScrollSize = value;
+        if (NEED_RELAYOUT) {
+            header.post(new Runnable() {
+
+                @Override
+                public void run() {
+                    header.layout(0, -headerScrollSize, header.getWidth(), -headerScrollSize + header.getHeight());
+                }
+            });
+        }else{
+            ViewHelper.setTranslationY(header, -value);
         }
     }
 
-
-    /**
-     * 显示购买的悬浮框
-     */
-    private void showSuspend(){
-        if(suspendView == null){
-            suspendView = LayoutInflater.from(this).inflate(R.layout.rz_xq_vp, null);
-            if(suspendLayoutParams == null){
-                suspendLayoutParams = new LayoutParams();
-                suspendLayoutParams.type = LayoutParams.TYPE_PHONE;
-                suspendLayoutParams.format = PixelFormat.RGBA_8888;
-                suspendLayoutParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        | LayoutParams.FLAG_NOT_FOCUSABLE;
-                suspendLayoutParams.gravity = Gravity.TOP;
-                suspendLayoutParams.width = screenWidth;
-                suspendLayoutParams.height = buyLayoutHeight;
-                suspendLayoutParams.x = 0;
-                suspendLayoutParams.y = myScrollViewTop;
-            }
-        }
-
-        mWindowManager.addView(suspendView, suspendLayoutParams);
-    }
-    /**
-     * 移除购买的悬浮框
-     */
-    private void removeSuspend(){
-        if(suspendView != null){
-            mWindowManager.removeView(suspendView);
-            suspendView = null;
-        }
-    }
 }

@@ -17,7 +17,7 @@
             android:gravity="center"
             android:layout_height="match_parent"
             android:textSize="16sp"
-            android:text="发起项目"
+            android:text="发布项目"
            />
         <TextView
             android:id="@+id/mrdm_tv_title"
@@ -34,82 +34,26 @@
             android:background="#E9E9E9"
             android:layout_height="1dp"></View>
     </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
-        <com.yxh.ryt.custemview.CircleImageView
-            android:id="@+id/mrdm_iv_headPortrait"
-            android:layout_width="77dp"
-            android:layout_height="77dp"
-            android:layout_centerHorizontal="true"
-            android:src="@mipmap/jibenziliao_touxiang"
-            app:border_color="@android:color/white"
-            app:border_width="1dp"
-            />
-        <TextView
-            android:id="@+id/mrdm_tv_name"
-            android:text="朱炳仁"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/mrdm_iv_headPortrait"
-            android:layout_width="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/mrdm_tv_signature"
-            android:text="他很懒,什么都没留下"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/mrdm_tv_name"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content" />
-        <LinearLayout
-            android:id="@+id/mrdm_ll_brief1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/mrdm_tv_signature"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="20dp">
-            <TextView
-                android:id="@+id/mrdm_tv_attention"
-                android:text="关注"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_marginLeft="10dp"
-                android:id="@+id/mrdm_tv_attentionContent"
-                android:text="5000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_marginLeft="20dp"
-                android:background="#D9D9D9"
-                android:layout_width="1dp"
-                android:layout_height="match_parent" />
-            <TextView
-                android:layout_marginLeft="20dp"
-                android:id="@+id/mrdm_tv_fans"
-                android:text="粉丝"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_marginLeft="10dp"
-                android:id="@+id/mrdm_tv_fansContent"
-                android:text="1500"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </RelativeLayout>
+    <include layout="@layout/user_yishujia_header"/>
     <View
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:background="#E9E9E9"
         android:layout_height="1dp"
         android:layout_marginTop="10dp"></View>
-    <com.yxh.ryt.custemview.AutoListView
-        android:id="@+id/mrdm_project_listView"
+    <com.viewpagerindicator.TabPageIndicator
+        android:id="@+id/indicator"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        />
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="1dp"
+        android:background="#E9E9E9"></View>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/yishujia_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
 </LinearLayout>

@@ -1,12 +1,17 @@
 package com.yxh.ryt.adapter;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.util.SparseArrayCompat;
+import android.support.v4.view.ViewPager;
 
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.fragment.BaseFragment;
+import com.yxh.ryt.fragment.ScrollTabHolder;
+import com.yxh.ryt.fragment.ScrollTabHolderFragment;
 
 import java.util.List;
 
@@ -15,29 +20,81 @@ import java.util.List;
  */
 public class RongZiXqTabPageIndicatorAdapter extends FragmentPagerAdapter {
 
-    List<BaseFragment> fragments;
-    public RongZiXqTabPageIndicatorAdapter(FragmentManager fm, List<BaseFragment> fragments) {
+
+    protected final ScrollTabHolderFragment[] fragments;
+
+    protected final Context context;
+
+    private SparseArrayCompat<ScrollTabHolder> mScrollTabHolders;
+    private ScrollTabHolder mListener;
+
+    public int getCacheCount() {
+        return PageAdapterTab.values().length;
+    }
+
+    public RongZiXqTabPageIndicatorAdapter(FragmentManager fm, Context context, ViewPager pager) {
         super(fm);
-        this.fragments=fragments;
+        fragments = new ScrollTabHolderFragment[PageAdapterTab.values().length];
+        this.context = context;
+        mScrollTabHolders = new SparseArrayCompat<ScrollTabHolder>();
+        init(fm);
+    }
+
+    private void init(FragmentManager fm) {
+        for (PageAdapterTab tab : PageAdapterTab.values()) {
+            try {
+                ScrollTabHolderFragment fragment = null;
+
+                List<Fragment> fs = fm.getFragments();
+                if (fs != null) {
+                    for (Fragment f : fs) {
+                        if (f.getClass() == tab.clazz) {
+                            fragment = (ScrollTabHolderFragment) f;
+                            break;
+                        }
+                    }
+                }
+
+                if (fragment == null) {
+                    fragment = (ScrollTabHolderFragment) tab.clazz.newInstance();
+                }
+
+                fragments[tab.tabIndex] = fragment;
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setTabHolderScrollingListener(ScrollTabHolder listener) {
+        mListener = listener;
     }
 
     @Override
-    public Fragment getItem(int position) {
-        //新建一个Fragment来展示ViewPager item的内容，并传递参数
-        BaseFragment fragment = this.fragments.get(position);
-        Bundle args = new Bundle();
-        args.putString("arg", Constants.RONGZI_XQ_TITLE[position]);
-        fragment.setArguments(args);
+    public ScrollTabHolderFragment getItem(int pos) {
+        ScrollTabHolderFragment fragment = fragments[pos];
+        mScrollTabHolders.put(pos, fragment);
+        if (mListener != null) {
+            fragment.setScrollTabHolder(mListener);
+        }
         return fragment;
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return Constants.RONGZI_XQ_TITLE[position % Constants.RONGZI_XQ_TITLE.length];
+    public SparseArrayCompat<ScrollTabHolder> getScrollTabHolders() {
+        return mScrollTabHolders;
     }
 
     @Override
     public int getCount() {
-        return Constants.RONGZI_XQ_TITLE.length;
+        return PageAdapterTab.values().length;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        PageAdapterTab tab = PageAdapterTab.fromTabIndex(position);
+        int resId = tab != null ? tab.resId : 0;
+        return resId != 0 ? context.getText(resId) : "";
     }
 }

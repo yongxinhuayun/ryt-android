@@ -107,7 +107,8 @@ public class PublicDongtaiImageActivity extends  BaseActivity {
                 SOFT_INPUT_ADJUST_PAN);
         ButterKnife.bind(this);
 //        artworkId = getIntent().getCharSequenceExtra("artworkId").toString();
-        noScrollgridview = (GridView) findViewById(R.id.noScrollgridview);
+        artworkId ="imx9rh3y1ej0bkx0";
+                noScrollgridview = (GridView) findViewById(R.id.noScrollgridview);
         noScrollgridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         adapter = new GridAdapter(this);
         adapter.update();

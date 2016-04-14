@@ -1,14 +1,17 @@
 package com.yxh.ryt.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.RongZiXQActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.LoginCallBack;
@@ -29,7 +32,7 @@ import okhttp3.Call;
 
 
 public class RongZiItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
-		AutoListView.OnLoadListener {
+		AutoListView.OnLoadListener,AdapterView.OnItemClickListener {
 	private AutoListView lstv;
 	private CommonAdapter<RongZi> rongZiCommonAdapter;
 	private List<RongZi> rongZiDatas;
@@ -41,7 +44,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 	}
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("pageSize",Constants.pageSize+"");
+		paramsMap.put("pageSize", Constants.pageSize + "");
 		paramsMap.put("pageNum", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
@@ -59,29 +62,29 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				if (state==AutoListView.REFRESH){
+				if (state == AutoListView.REFRESH) {
 					lstv.onRefreshComplete();
 					rongZiDatas.clear();
 					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
 					}.getType());
-					if(null==objectList||objectList.size()==0){
+					if (null == objectList || objectList.size() == 0) {
 						lstv.setResultSize(0);
 					}
-					if (null!=objectList&&objectList.size()>0){
+					if (null != objectList && objectList.size() > 0) {
 						lstv.setResultSize(objectList.size());
 						rongZiDatas.addAll(objectList);
 						rongZiCommonAdapter.notifyDataSetChanged();
 					}
 					return;
 				}
-				if (state==AutoListView.LOAD){
+				if (state == AutoListView.LOAD) {
 					lstv.onLoadComplete();
 					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
 					}.getType());
-					if(null==objectList||objectList.size()==0){
+					if (null == objectList || objectList.size() == 0) {
 						lstv.setResultSize(1);
 					}
-					if (null!=objectList&&objectList.size()>0) {
+					if (null != objectList && objectList.size() > 0) {
 						lstv.setResultSize(objectList.size());
 						rongZiDatas.addAll(objectList);
 						rongZiCommonAdapter.notifyDataSetChanged();
@@ -123,6 +126,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 		lstv.setAdapter(rongZiCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
+		lstv.setOnItemClickListener(this);
 		return contextView;
 	}
 
@@ -145,7 +149,13 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 	@Override
 	public void onLoad() {
 		currentPage++;
-		LoadData(AutoListView.LOAD,currentPage);
+		LoadData(AutoListView.LOAD, currentPage);
 	}
 
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Intent intent=new Intent(getActivity(), RongZiXQActivity.class);
+		intent.putExtra("id",rongZiDatas.get(position-1).getId());
+		startActivity(intent);
+	}
 }
