@@ -43,15 +43,23 @@
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="10dp"
+        android:padding="10dp"
         android:background="@drawable/common_bg_02">
+        <VideoView
+            android:id="@+id/rv_vv_video"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"/>
         <EditText
             android:padding="10dp"
-            android:hint="skjlsjlksgjlskjglksjglfajsflasjdfldjs"
+            android:hint="创作过程中有什么感想呢..."
             android:gravity="left"
-            android:layout_toLeftOf="@+id/rv_vv_video"
+            android:layout_alignTop="@id/rv_vv_video"
+            android:layout_toRightOf="@id/rv_vv_video"
             android:id="@+id/rv_et_content"
             android:layout_width="match_parent"
             android:layout_height="120dp"
@@ -59,10 +67,5 @@
             android:background="@null">
             <requestFocus />
         </EditText>
-        <VideoView
-            android:id="@+id/rv_vv_video"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 </LinearLayout>
