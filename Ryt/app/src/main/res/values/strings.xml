@@ -18,8 +18,12 @@
     <string name="unfinished">完成</string>
     <string name="camera_cancel">取消</string>
     <string name="no_photo">相册没有图片</string>
-    <string name="page_tab1">Tab1</string>
-    <string name="page_tab2">Tab2</string>
+
+    <string name="page_tab1">项目详情</string>
+    <string name="page_tab2">投资流程</string>
+    <string name="page_tab3">用户评价</string>
+    <string name="page_tab4">投资记录</string>
+
     <string name="pull_to_refresh_pull_label">下拉可以刷新</string>
     <string name="pull_to_refresh_release_label">松开可以刷新</string>
     <string name="pull_to_refresh_refreshing_label">加载中</string>
@@ -29,4 +33,11 @@
     <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
     <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
 
+
+    <string name="header_text">ViewpagerHeader\nLorem ipsum dolor sit amet, consectetur adipiscing elit</string>
+    <string name="empty_text">Empty</string>
+    <string name="tab_country">Country</string>
+    <string name="tab_continent">Continent</string>
+    <string name="tab_city">City</string>
+    <string name="tab_scroll_view">Scroll View</string>
 </resources>

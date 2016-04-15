@@ -55,6 +55,8 @@ public class RongZiXQActivity extends BaseActivity implements  ViewPager.OnPageC
     }
 
     private void getHeaderHeight() {
+//        headerHeight= header.getHeight();
+//        headerTranslationDis= -(headerHeight-44);
         headerHeight = getResources().getDimensionPixelSize(R.dimen.max_header_height);
         headerTranslationDis = -getResources().getDimensionPixelSize(R.dimen.header_offset_dis);
     }

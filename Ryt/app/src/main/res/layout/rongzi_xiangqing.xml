@@ -51,10 +51,16 @@
             android:layout_alignParentBottom="true"
             android:background="#E9E9E9"></View>
     </RelativeLayout>
-
-    <RelativeLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@android:color/white">
 
         <android.support.v4.view.ViewPager
@@ -65,14 +71,15 @@
         <LinearLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@android:color/white"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/top_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:animateLayoutChanges="true"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -211,7 +218,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="10dp"
                     android:background="#E9E9E9"></View>
             </LinearLayout>
 
@@ -219,13 +226,15 @@
             <com.yxh.ryt.custemview.refreash.PagerSlidingTabStrip
                 android:id="@+id/show_tabs"
                 android:layout_width="match_parent"
-                android:layout_height="44dip"
+                android:layout_height="40dip"
                 android:background="@color/white" />
         </LinearLayout>
     </RelativeLayout>
+        </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="52dp"
+        android:layout_gravity="bottom"
         android:background="@android:color/black"
         android:orientation="horizontal">
 
@@ -278,4 +287,5 @@
                 android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

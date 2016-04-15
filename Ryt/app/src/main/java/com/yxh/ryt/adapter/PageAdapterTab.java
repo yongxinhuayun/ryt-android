@@ -17,10 +17,8 @@ public enum PageAdapterTab {
 
 	PAGE_TAB2(1, Tab2ListFragment.class, R.string.page_tab2),
 
-	PAGE_TAB3(2, Tab1ListFragment.class, R.string.page_tab1),
-	PAGE_TAB4(3, Tab1ListFragment.class, R.string.page_tab1),
-	PAGE_TAB5(4, Tab1ListFragment.class, R.string.page_tab1),
-	PAGE_TAB6(5, Tab1ListFragment.class, R.string.page_tab1),
+	PAGE_TAB3(2, Tab1ListFragment.class, R.string.page_tab3),
+	PAGE_TAB4(3, Tab1ListFragment.class, R.string.page_tab4),
 	;
 
 	public final int tabIndex;
