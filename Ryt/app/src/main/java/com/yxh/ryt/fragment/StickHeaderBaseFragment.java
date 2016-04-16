@@ -13,7 +13,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 /**
  * Created by sj on 15/11/25.
  */
-public abstract class StickHeaderBaseFragment extends Fragment {
+public abstract class StickHeaderBaseFragment extends BaseFragment {
 
     PlaceHoderHeaderLayout placeHoderHeaderLayout;
     StickHeaderViewPagerManager manager;

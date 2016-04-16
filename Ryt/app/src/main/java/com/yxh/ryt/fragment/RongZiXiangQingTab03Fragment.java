@@ -16,23 +16,23 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 /**
  * Created by sj on 15/11/25.
  */
-public class SimpleListFragment extends StickHeaderBaseFragment{
+public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment{
 
-    public SimpleListFragment(StickHeaderViewPagerManager manager, int position) {
+    public RongZiXiangQingTab03Fragment(StickHeaderViewPagerManager manager, int position) {
         super(manager, position);
     }
 
-    public SimpleListFragment(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
+    public RongZiXiangQingTab03Fragment(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
         super(manager, position, isCanPulltoRefresh);
     }
 
-    public static SimpleListFragment newInstance(StickHeaderViewPagerManager manager, int position) {
-        SimpleListFragment listFragment = new SimpleListFragment(manager, position);
+    public static RongZiXiangQingTab03Fragment newInstance(StickHeaderViewPagerManager manager, int position) {
+        RongZiXiangQingTab03Fragment listFragment = new RongZiXiangQingTab03Fragment(manager, position);
         return listFragment;
     }
 
-    public static SimpleListFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
-        SimpleListFragment listFragment = new SimpleListFragment(manager, position, isCanPulltoRefresh);
+    public static RongZiXiangQingTab03Fragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
+        RongZiXiangQingTab03Fragment listFragment = new RongZiXiangQingTab03Fragment(manager, position, isCanPulltoRefresh);
         return listFragment;
     }
 
@@ -51,5 +51,10 @@ public class SimpleListFragment extends StickHeaderBaseFragment{
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, stringArray);
         mListview.setAdapter(adapter);
         return view;
+    }
+
+    @Override
+    protected void lazyLoad() {
+
     }
 }

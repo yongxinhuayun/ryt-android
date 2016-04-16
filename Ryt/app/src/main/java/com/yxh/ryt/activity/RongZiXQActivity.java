@@ -6,14 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.RongZiXqTabPageIndicatorAdapter;
-import com.yxh.ryt.fragment.SimpleListFragment;
+import com.yxh.ryt.fragment.RongZiXiangQingTab01Fragment;
+import com.yxh.ryt.fragment.RongZiXiangQingTab02Fragment;
+import com.yxh.ryt.fragment.RongZiXiangQingTab03Fragment;
+import com.yxh.ryt.fragment.RongZiXiangQingTab04Fragment;
 import com.yxh.ryt.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -47,10 +49,10 @@ public class RongZiXQActivity extends BaseActivity {
 
         mFragmentList = new ArrayList<Fragment>();
 
-        mFragmentList.add(SimpleListFragment.newInstance(manager, 0));
-        mFragmentList.add(SimpleListFragment.newInstance(manager,1,false));
-        mFragmentList.add(SimpleListFragment.newInstance(manager,2));
-        mFragmentList.add(SimpleListFragment.newInstance(manager, 3, false));
+        mFragmentList.add(RongZiXiangQingTab01Fragment.newInstance(manager, 0));
+        mFragmentList.add(RongZiXiangQingTab02Fragment.newInstance(manager, 1));
+        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 2));
+        mFragmentList.add(RongZiXiangQingTab04Fragment.newInstance(manager, 3));
 
         RongZiXqTabPageIndicatorAdapter pagerAdapter=new RongZiXqTabPageIndicatorAdapter(getSupportFragmentManager(),mFragmentList);
         mViewPager.setAdapter(pagerAdapter);
