@@ -32,7 +32,7 @@ public class RongZiXQActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_viewpager_pulltorefresh);
+        setContentView(R.layout.rongzi_xiangqing);
         mViewPager = (ViewPager)findViewById(R.id.v_scroll);
         ((ImageView)findViewById(R.id.cl_01_tv_prc)).setOnClickListener(new View.OnClickListener() {
             @Override
