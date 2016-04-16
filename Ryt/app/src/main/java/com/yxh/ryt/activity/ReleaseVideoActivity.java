@@ -1,13 +1,19 @@
 package com.yxh.ryt.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -43,10 +49,8 @@ public class ReleaseVideoActivity extends  BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);*/
         setContentView(R.layout.releasevideo);
-        ButterKnife.bind(this);/*启用注解绑定*/
+        ButterKnife.bind(this);//启用注解绑定
         content.requestFocus();
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -78,6 +82,8 @@ public class ReleaseVideoActivity extends  BaseActivity {
 
 
     }
+
+
     @OnClick(R.id.rv_tv_push)
     public  void push(){
         Map<String,File> fileMap=new HashMap<>();
@@ -115,5 +121,24 @@ public class ReleaseVideoActivity extends  BaseActivity {
     @OnClick(R.id.rv_ib_cancel)
     public void cancel(){
         finish();
+    }
+    @OnClick(R.id.rv_vv_video)
+    public void ddddddd(View v) {
+        Log.d("sssssssssssssssssss","hhhhhhhhhhhhhhhh");
+        Intent intent = new Intent(this, RecordVedioFullActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("text", file);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.rv_rl_video)
+    public void click(View v) {
+        Log.d("sssssssssssssssssss","hhhhhhhhhhhhhhhh");
+        Intent intent = new Intent(this, RecordVedioFullActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("text", file);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
