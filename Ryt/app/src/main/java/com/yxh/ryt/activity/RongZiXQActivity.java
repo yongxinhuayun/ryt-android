@@ -49,12 +49,13 @@ public class RongZiXQActivity extends BaseActivity {
 
         mFragmentList = new ArrayList<Fragment>();
 
-        mFragmentList.add(RongZiXiangQingTab01Fragment.newInstance(manager, 0));
-        mFragmentList.add(RongZiXiangQingTab02Fragment.newInstance(manager, 1));
-        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 2));
-        mFragmentList.add(RongZiXiangQingTab04Fragment.newInstance(manager, 3));
+        mFragmentList.add(RongZiXiangQingTab01Fragment.newInstance(manager, 0,false));
+        mFragmentList.add(RongZiXiangQingTab02Fragment.newInstance(manager, 1,false));
+        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 2,false));
+        mFragmentList.add(RongZiXiangQingTab04Fragment.newInstance(manager, 3,false));
 
         RongZiXqTabPageIndicatorAdapter pagerAdapter=new RongZiXqTabPageIndicatorAdapter(getSupportFragmentManager(),mFragmentList);
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(pagerAdapter);
         TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.indicator);
         indicator.setViewPager(mViewPager);
