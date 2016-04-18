@@ -15,7 +15,7 @@ public class User {
     private String password;
 //    private Role role;
     private String status;
-    protected Date createDatetime;
+    protected long createDatetime;
     private String type; //00000 普通用户 10000 艺术家
     private Master master; //用户关联的大师
 
@@ -76,11 +76,11 @@ public class User {
         this.status = status;
     }
 
-    public Date getCreateDatetime() {
+    public long getCreateDatetime() {
         return createDatetime;
     }
 
-    public void setCreateDatetime(Date createDatetime) {
+    public void setCreateDatetime(long createDatetime) {
         this.createDatetime = createDatetime;
     }
 

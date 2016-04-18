@@ -17,12 +17,20 @@ public class Artwork implements Serializable {
     private long auctionStartDatetime;//拍卖开始时间
     private long auctionEndDatetime;
     private User author;
-//    private Master master;
+    private Master master;
     private long createDatetime;
     private List<ArtworkAttachment> artworkAttachment;
     private List<ArtworkComment> artworkComments;//项目评论
     private List<ArtworkInvest> artworkInvests;//项目投资
     private List<ArtworkInvest> artworkInvestTopList;//投资者前三名
+
+    public Master getMaster() {
+        return master;
+    }
+
+    public void setMaster(Master master) {
+        this.master = master;
+    }
 
     public List<ArtworkInvest> getArtworkInvestTopList() {
         return artworkInvestTopList;
