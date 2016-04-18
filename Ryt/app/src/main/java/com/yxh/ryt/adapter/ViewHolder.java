@@ -3,6 +3,7 @@ package com.yxh.ryt.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,7 @@ public class ViewHolder
 	    DisplayImageOptions options;
 	    private ViewHolder(Context context, ViewGroup parent,int layoutId,  
 	            int position,ImageLoadingListener animateFirstListener)
-	    {  
+	    {
 	        this.mPosition = position;  
 	        this.animateFirstListener=animateFirstListener;
 	        this.mViews = new SparseArray<View>();  
@@ -57,8 +58,12 @@ public class ViewHolder
 	        if (convertView == null)  
 	        {  
 	            return new ViewHolder(context, parent, layoutId, position,animateFirstListener);
-	        }  
-	        return (ViewHolder) convertView.getTag();  
+	        }else{
+				ViewHolder holder = (ViewHolder) convertView.getTag();
+				holder.mPosition = position;
+				return holder;
+			}
+
 	    }  
 	  
 	    public View getConvertView()  
@@ -139,8 +144,9 @@ public class ViewHolder
 	    }  
 	   
 	    public int getPosition()  
-	    {  
-	        return mPosition;  
+	    {
+			Log.d("getPosition()",mPosition+"");
+			return mPosition;
 	    }  
 	  
 	}  
