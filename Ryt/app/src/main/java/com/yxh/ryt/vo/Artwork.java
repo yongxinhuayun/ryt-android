@@ -12,13 +12,13 @@ public class Artwork implements Serializable {
     private String description;//描述
     private String status;  //0 可用  1 废弃
     private BigDecimal investGoalMoney;
-    private Date investStartDatetime;//融资开始时间
-    private Date investEndDatetime;//融资结束时间、创作开始时间
-    private Date auctionStartDatetime;//拍卖开始时间
-    private Date auctionEndDatetime;
+    private long investStartDatetime;//融资开始时间
+    private long investEndDatetime;//融资结束时间、创作开始时间
+    private long auctionStartDatetime;//拍卖开始时间
+    private long auctionEndDatetime;
     private User author;
 //    private Master master;
-    private Date createDatetime;
+    private long createDatetime;
     private List<ArtworkAttachment> artworkAttachment;
     private List<ArtworkComment> artworkComments;//项目评论
     private List<ArtworkInvest> artworkInvests;//项目投资
@@ -80,38 +80,6 @@ public class Artwork implements Serializable {
         this.investGoalMoney = investGoalMoney;
     }
 
-    public Date getInvestStartDatetime() {
-        return investStartDatetime;
-    }
-
-    public void setInvestStartDatetime(Date investStartDatetime) {
-        this.investStartDatetime = investStartDatetime;
-    }
-
-    public Date getInvestEndDatetime() {
-        return investEndDatetime;
-    }
-
-    public void setInvestEndDatetime(Date investEndDatetime) {
-        this.investEndDatetime = investEndDatetime;
-    }
-
-    public Date getAuctionStartDatetime() {
-        return auctionStartDatetime;
-    }
-
-    public void setAuctionStartDatetime(Date auctionStartDatetime) {
-        this.auctionStartDatetime = auctionStartDatetime;
-    }
-
-    public Date getAuctionEndDatetime() {
-        return auctionEndDatetime;
-    }
-
-    public void setAuctionEndDatetime(Date auctionEndDatetime) {
-        this.auctionEndDatetime = auctionEndDatetime;
-    }
-
     public User getAuthor() {
         return author;
     }
@@ -120,11 +88,43 @@ public class Artwork implements Serializable {
         this.author = author;
     }
 
-    public Date getCreateDatetime() {
+    public long getInvestStartDatetime() {
+        return investStartDatetime;
+    }
+
+    public void setInvestStartDatetime(long investStartDatetime) {
+        this.investStartDatetime = investStartDatetime;
+    }
+
+    public long getInvestEndDatetime() {
+        return investEndDatetime;
+    }
+
+    public void setInvestEndDatetime(long investEndDatetime) {
+        this.investEndDatetime = investEndDatetime;
+    }
+
+    public long getAuctionStartDatetime() {
+        return auctionStartDatetime;
+    }
+
+    public void setAuctionStartDatetime(long auctionStartDatetime) {
+        this.auctionStartDatetime = auctionStartDatetime;
+    }
+
+    public long getAuctionEndDatetime() {
+        return auctionEndDatetime;
+    }
+
+    public void setAuctionEndDatetime(long auctionEndDatetime) {
+        this.auctionEndDatetime = auctionEndDatetime;
+    }
+
+    public long getCreateDatetime() {
         return createDatetime;
     }
 
-    public void setCreateDatetime(Date createDatetime) {
+    public void setCreateDatetime(long createDatetime) {
         this.createDatetime = createDatetime;
     }
 

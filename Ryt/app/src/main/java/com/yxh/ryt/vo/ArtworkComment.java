@@ -8,16 +8,16 @@ import java.util.List;
  */
 public class ArtworkComment {
     private String id;
-    private RongZi artwork;
+    private Artwork artwork;
     private String content;
     private User creator;
-    private Date createDatetime;
+    private long createDatetime;
     private String status;
     private String isWatch;
     private ArtworkComment fatherComment;
     private List<ArtworkComment> subComment;
 
-    public ArtworkComment(String id, RongZi artwork, String content, User creator, Date createDatetime, String isWatch, String status, ArtworkComment fatherComment, List<ArtworkComment> subComment) {
+    public ArtworkComment(String id, Artwork artwork, String content, User creator, long createDatetime, String isWatch, String status, ArtworkComment fatherComment, List<ArtworkComment> subComment) {
         this.id = id;
         this.artwork = artwork;
         this.content = content;
@@ -33,8 +33,12 @@ public class ArtworkComment {
         return id;
     }
 
-    public RongZi getArtwork() {
+    public Artwork getArtwork() {
         return artwork;
+    }
+
+    public void setArtwork(Artwork artwork) {
+        this.artwork = artwork;
     }
 
     public String getContent() {
@@ -45,9 +49,6 @@ public class ArtworkComment {
         return creator;
     }
 
-    public Date getCreateDatetime() {
-        return createDatetime;
-    }
 
     public String getStatus() {
         return status;
@@ -81,7 +82,11 @@ public class ArtworkComment {
         this.isWatch = isWatch;
     }
 
-    public void setCreateDatetime(Date createDatetime) {
+    public long getCreateDatetime() {
+        return createDatetime;
+    }
+
+    public void setCreateDatetime(long createDatetime) {
         this.createDatetime = createDatetime;
     }
 
@@ -97,7 +102,4 @@ public class ArtworkComment {
         this.content = content;
     }
 
-    public void setArtwork(RongZi artwork) {
-        this.artwork = artwork;
-    }
 }
