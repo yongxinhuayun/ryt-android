@@ -129,7 +129,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 					helper.getView(R.id.cli_tv_user).setVisibility(View.GONE);
 					helper.setText(R.id.cli_tv_size, "拍卖次数：" + item.getAuctionNum() + "次");
 					helper.setText(R.id.cli_tv_state,"正在拍卖中...");
-					helper.setText(R.id.cli_tv_current_price,item.getNewBidingPrice()!=null?"当前价格："+df.format(item.getNewBidingPrice().doubleValue())+"元":"当前价格：0.00元");
+//					helper.setText(R.id.cli_tv_current_price,item.getNewBidingPrice()!=null?"当前价格："+df.format(item.getNewBidingPrice().doubleValue())+"元":"当前价格：0.00元");
 				}
 				if(Integer.valueOf(item.getStep())==32){
 					helper.getView(R.id.cli_tv_time).setVisibility(View.GONE);
@@ -138,7 +138,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 					helper.getView(R.id.cli_tv_current_price).setVisibility(View.GONE);
 					helper.getView(R.id.cli_tv_chengjiao_price).setVisibility(View.VISIBLE);
 					helper.getView(R.id.cli_tv_user).setVisibility(View.VISIBLE);
-					helper.setText(R.id.cli_tv_chengjiao_price,item.getNewBidingPrice()!=null?"成交价："+df.format(item.getNewBidingPrice().doubleValue())+"元":"成交价：0.00元");
+//					helper.setText(R.id.cli_tv_chengjiao_price,item.getNewBidingPrice()!=null?"成交价："+df.format(item.getNewBidingPrice().doubleValue())+"元":"成交价：0.00元");
 					helper.setText(R.id.cli_tv_user,"");
 				}
 			}
