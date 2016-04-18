@@ -45,7 +45,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment{
         int size = 100;
         String[] stringArray = new String[size];
         for (int i = 0; i < size; ++i) {
-            stringArray[i] = ""+i;
+            stringArray[i] = "gffdfddghdhfdhdfhdshfdggsdhdrh"+i;
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, stringArray);
