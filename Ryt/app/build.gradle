@@ -33,4 +33,9 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile files('src/main/libs/jpush-android-2.1.0.jar')
     compile project(':multi-image-selector')
+    compile 'com.github.chenupt.android:dragtoplayout:1.2.1@aar'
+    compile files('src/main/libs/nineoldandroids.jar')
+    compile 'com.github.chenupt.android:multiplemodel:2.0.1@aar'
+    compile project(':mylibrary')
+    compile 'in.srain.cube:ultra-ptr:1.0.11'
 }
