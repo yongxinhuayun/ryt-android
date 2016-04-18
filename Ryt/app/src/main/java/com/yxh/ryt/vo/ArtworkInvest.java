@@ -51,15 +51,15 @@ public class ArtworkInvest implements Serializable{
         this.creator = creator;
     }
 
-    public Date getCreateDatetime() {
+    public long getCreateDatetime() {
         return createDatetime;
     }
 
-    public void setCreateDatetime(Date createDatetime) {
+    public void setCreateDatetime(long createDatetime) {
         this.createDatetime = createDatetime;
     }
 
-    private Date createDatetime;
+    private long createDatetime;
 
 }
 
