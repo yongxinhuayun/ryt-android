@@ -1,3 +1,2 @@
-include ':app'
-include ':library'
+include ':app', ':multi-image-selector', ':mylibrary'
 include ':library'
