@@ -22,6 +22,15 @@ public class Artwork implements Serializable {
     private List<ArtworkAttachment> artworkAttachment;
     private List<ArtworkComment> artworkComments;//项目评论
     private List<ArtworkInvest> artworkInvests;//项目投资
+    private List<ArtworkInvest> artworkInvestTopList;//投资者前三名
+
+    public List<ArtworkInvest> getArtworkInvestTopList() {
+        return artworkInvestTopList;
+    }
+
+    public void setArtworkInvestTopList(List<ArtworkInvest> artworkInvestTopList) {
+        this.artworkInvestTopList = artworkInvestTopList;
+    }
 
     public String getId() {
         return id;
