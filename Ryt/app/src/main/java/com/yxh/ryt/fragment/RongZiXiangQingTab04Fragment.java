@@ -16,6 +16,7 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
+import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
@@ -147,7 +148,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkInvest.do", paramsMap, new RongZiListCallBack() {
+        NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkInvest.do", paramsMap, new RZCommentCallBack() {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
