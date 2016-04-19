@@ -41,12 +41,20 @@ public class StickHeaderViewPagerManager implements ViewPager.OnPageChangeListen
     private StickHeaderLayout mStickHeaderLayout;
     private int placeHoderHeight;
     private int mStickHeaderTranslationY;
-
+    OnListViewScrollListener onListViewScrollListener;
     public StickHeaderViewPagerManager(StickHeaderLayout stickHeaderLayout, ViewPager viewPager) {
         this.mViewPager = viewPager;
         this.mStickHeaderLayout = stickHeaderLayout;
         mViewPager.addOnPageChangeListener(this);
         mStickHeaderLayout.addOnPlaceHoderListener(this);
+    }
+
+    public OnListViewScrollListener getOnListViewScrollListener() {
+        return onListViewScrollListener;
+    }
+
+    public void setOnListViewScrollListener(OnListViewScrollListener onListViewScrollListener) {
+        this.onListViewScrollListener = onListViewScrollListener;
     }
 
     public void addPlaceHoderHeaderLayout(final int position, final PlaceHoderHeaderLayout layout) {
@@ -85,7 +93,6 @@ public class StickHeaderViewPagerManager implements ViewPager.OnPageChangeListen
             }
             View mStickheader = mStickHeaderLayout.getStickHeaderView();
             if (placeHoderHeaderLayout != null) {
-                System.out.println(position+"-------------"+mStickheader.getHeight()+"======"+mStickheader.getTranslationY());
                 placeHoderHeaderLayout.adjustScroll((int) (mStickheader.getHeight() + mStickheader.getTranslationY()+2), mStickheader.getHeight(), false);
             }
         }
@@ -98,7 +105,6 @@ public class StickHeaderViewPagerManager implements ViewPager.OnPageChangeListen
         PlaceHoderHeaderLayout placeHoderHeaderLayout = placeHoderHeaderLayoutList.valueAt(position);
         View mStickheader = mStickHeaderLayout.getStickHeaderView();
         if (placeHoderHeaderLayout != null) {
-            System.out.println(position+"==========="+mStickheader.getHeight()+"======"+mStickheader.getTranslationY());
             placeHoderHeaderLayout.adjustScroll((int) (mStickheader.getHeight() + mStickheader.getTranslationY()+2), mStickheader.getHeight(), true);
         }
     }
@@ -132,7 +138,8 @@ public class StickHeaderViewPagerManager implements ViewPager.OnPageChangeListen
 
     @Override
     public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount, int pagePosition) {
-        System.out.println(mViewPager.getCurrentItem()+"------------"+pagePosition);
+        onListViewScrollListener.onListViewScroll(view,firstVisibleItem,visibleItemCount,totalItemCount-1);
+        System.out.println(firstVisibleItem+"====="+visibleItemCount+"======="+totalItemCount);
         if (mViewPager.getCurrentItem() == pagePosition) {
             mStickHeaderLayout.onListViewScroll(view, firstVisibleItem, visibleItemCount, totalItemCount, pagePosition);
         }
@@ -172,5 +179,9 @@ public class StickHeaderViewPagerManager implements ViewPager.OnPageChangeListen
 
     public interface OnHeaderScrollListener {
         void onScrollChanged(int height);
+    }
+
+    public interface OnListViewScrollListener {
+        void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount);
     }
 }
