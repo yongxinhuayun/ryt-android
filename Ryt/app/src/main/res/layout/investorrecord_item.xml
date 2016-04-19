@@ -45,10 +45,12 @@
         android:layout_alignParentRight="true"
         android:gravity="center"/>
     <View
+        android:id="@+id/iri_ve_line"
         android:layout_below="@id/iri_iv_icon"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:background="#E9E9E9"
         android:layout_height="1dp"
+        android:visibility="gone"
         android:layout_marginBottom="20dp"/>
 </RelativeLayout>
