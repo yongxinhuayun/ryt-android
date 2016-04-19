@@ -147,7 +147,7 @@ public class StickHeaderViewPagerManager implements ViewPager.OnPageChangeListen
 
     @Override
     public void onListViewScrollStateChanged(AbsListView view, int state) {
-        onListViewScrollListener.onListViewScrollStateChanged(view,state);
+        if(onListViewScrollListener!=null)onListViewScrollListener.onListViewScrollStateChanged(view,state);
     }
 
     @Override

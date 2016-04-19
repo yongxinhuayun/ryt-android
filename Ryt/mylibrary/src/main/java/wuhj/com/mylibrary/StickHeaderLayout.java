@@ -196,6 +196,11 @@ public class StickHeaderLayout extends RelativeLayout implements ScrollHolder, H
     }
 
     @Override
+    public void onListViewScrollStateChanged(AbsListView view, int state) {
+
+    }
+
+    @Override
     public void onScrollViewScroll(ScrollView view, int x, int y, int oldX, int oldY, int pagePosition) {
         scrollHeader(view.getScrollY());
     }
