@@ -128,7 +128,9 @@ public class PlaceHoderHeaderLayout extends FrameLayout {
                 } else if (mScrollItemView instanceof ListView) {
                     ((ListView) mScrollItemView).setOnScrollListener(new AbsListView.OnScrollListener() {
                         @Override
-                        public void onScrollStateChanged(AbsListView view, int scrollState) { }
+                        public void onScrollStateChanged(AbsListView view, int scrollState) {
+                            stickHeaderViewPagerManager.onListViewScrollStateChanged(view, scrollState);
+                        }
 
                         @Override
                         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {

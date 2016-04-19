@@ -138,11 +138,16 @@ public class StickHeaderViewPagerManager implements ViewPager.OnPageChangeListen
 
     @Override
     public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount, int pagePosition) {
-        onListViewScrollListener.onListViewScroll(view,firstVisibleItem,visibleItemCount,totalItemCount-1);
+        if(onListViewScrollListener!=null)onListViewScrollListener.onListViewScroll(view,firstVisibleItem,visibleItemCount,totalItemCount-1);
         System.out.println(firstVisibleItem+"====="+visibleItemCount+"======="+totalItemCount);
         if (mViewPager.getCurrentItem() == pagePosition) {
             mStickHeaderLayout.onListViewScroll(view, firstVisibleItem, visibleItemCount, totalItemCount, pagePosition);
         }
+    }
+
+    @Override
+    public void onListViewScrollStateChanged(AbsListView view, int state) {
+        onListViewScrollListener.onListViewScrollStateChanged(view,state);
     }
 
     @Override
@@ -183,5 +188,6 @@ public class StickHeaderViewPagerManager implements ViewPager.OnPageChangeListen
 
     public interface OnListViewScrollListener {
         void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount);
+        void onListViewScrollStateChanged(AbsListView view,int scrollState);
     }
 }

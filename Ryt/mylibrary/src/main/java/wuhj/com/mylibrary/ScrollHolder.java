@@ -12,6 +12,8 @@ public interface ScrollHolder {
 
     void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount, int pagePosition);
 
+    void onListViewScrollStateChanged(AbsListView view, int state);
+
     void onScrollViewScroll(ScrollView view, int x, int y, int oldX, int oldY, int pagePosition);
 
     void onRecyclerViewScroll(RecyclerView view, int scrollY, int pagePosition, boolean isScrollToTop);
