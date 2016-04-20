@@ -3,54 +3,63 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
-    android:layout_margin="20dp">
-    <ImageView
-        android:id="@+id/iri_iv_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@mipmap/ic_launcher"
-        />
-
-    <TextView
-        android:layout_toRightOf="@id/iri_iv_icon"
-        android:id="@+id/iri_tv_nickname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:text="小小"
-        android:gravity="center"
-        android:layout_alignTop="@id/iri_iv_icon"
-        android:layout_alignBottom="@id/iri_iv_icon"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"/>
-    <TextView
-        android:id="@+id/iri_tv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:text="投资了800元"
-        android:gravity="center"
-        android:layout_alignTop="@id/iri_iv_icon"
-        android:layout_alignBottom="@id/iri_iv_icon"
-        android:layout_toLeftOf="@+id/iri_tv_date"
-        android:layout_marginRight="10dp"/>
-    <TextView
-        android:id="@+id/iri_tv_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:text="2016-01-01 16;58"
-        android:layout_alignTop="@id/iri_iv_icon"
-        android:layout_alignBottom="@id/iri_iv_icon"
-        android:layout_alignParentRight="true"
-        android:gravity="center"/>
-    <View
-        android:id="@+id/iri_ve_line"
-        android:layout_below="@id/iri_iv_icon"
-        android:layout_marginTop="20dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/iri_ll_common"
         android:layout_width="match_parent"
-        android:background="#E9E9E9"
-        android:layout_height="1dp"
-        android:visibility="gone"
-        android:layout_marginBottom="20dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.yxh.ryt.custemview.CircleImageView
+            android:id="@+id/iri_iv_icon"
+            android:layout_width="30dp"
+            android:layout_centerVertical="true"
+            android:layout_height="30dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:id="@+id/iri_tv_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="15sp"
+            android:text="小小"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right">
+            <TextView
+                android:id="@+id/iri_tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:text="投资了800元"
+                android:gravity="center"
+                android:layout_marginRight="20dp"/>
+            <TextView
+                android:id="@+id/iri_tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:text="2016-01-01 16:58"
+                android:layout_marginRight="10dp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+    </LinearLayout>
+        <View
+            android:layout_below="@id/iri_ll_common"
+            android:visibility="gone"
+            android:id="@+id/iri_ve_line"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:background="#E9E9E9"
+            android:layout_height="1dp"
+            android:layout_marginBottom="20dp"/>
 </RelativeLayout>
