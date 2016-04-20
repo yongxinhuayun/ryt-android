@@ -20,7 +20,12 @@ import java.util.Locale;
  */
 
 public class Utils {
-
+	private final static ThreadLocal<SimpleDateFormat> dateFormater2 = new ThreadLocal<SimpleDateFormat>() {
+		@Override
+		protected SimpleDateFormat initialValue() {
+			return new SimpleDateFormat("yyyy-MM-dd");
+		}
+	};
 	public static String timeToFormatTemp(String tmpl,long time){
 		SimpleDateFormat sdf = new SimpleDateFormat(tmpl);
 		return sdf.format(new Date(time));
@@ -39,7 +44,35 @@ public class Utils {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
 		return sdf.format(new Date(time));
 	}
+	public static String timeTrans2(long time) {
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		return sdf.format(new Date(time));
+	}
+	public static Date timeTransfore(long time) throws Exception{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormater2.get().parse(sdf.format(new Date(time)));
+	}
+	public static String timeTransComment(long time){
+			boolean b = false;
+		Date currtime = null;
+		try {
+			currtime = timeTransfore(time);
+		} catch (Exception e) {
 
+		}
+		Date today = new Date();
+			if(currtime != null){
+				String nowDate = dateFormater2.get().format(today);
+				String timeDate = dateFormater2.get().format(currtime);
+				if(nowDate.equals(timeDate)){
+					b = true;
+				}
+			}
+		if (b){
+			return timeTrans2(time);
+		}
+		return  timeTrans(time);
+		}
 	public static void setListViewHeightBasedOnChildren(GridView listView) {
 		// 获取listview的adapter
 		ListAdapter listAdapter = listView.getAdapter();
