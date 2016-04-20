@@ -23,6 +23,7 @@ import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.ArtworkInvest;
 import com.yxh.ryt.vo.RongZi;
@@ -30,6 +31,8 @@ import com.yxh.ryt.vo.User;
 
 import java.math.BigDecimal;
 import java.sql.SQLOutput;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,6 +60,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
     private TextView more;
     private ProgressBar loading;
     private int lastItem;
+    private boolean loadComplete=true;
     static StickHeaderViewPagerManager stickHeaderViewPagerManager;
     public RongZiXiangQingTab04Fragment(StickHeaderViewPagerManager manager, int position) {
         super(manager, position);
@@ -103,7 +107,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
 
             @Override
             public void onListViewScrollStateChanged(AbsListView view, int scrollState) {
-                if (lastItem==investorRecordCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                if (lastItem==investorRecordCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && loadComplete) {
                     more.setVisibility(View.GONE);
                     loading.setVisibility(View.VISIBLE);
                     loadFull.setVisibility(View.GONE);
@@ -114,7 +118,6 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
             }
         });
     }
-
     private void setAdapter() {
         investorRecordCommonAdapter=new CommonAdapter<ArtworkInvest>(getActivity(),investorDatas,R.layout.investorrecord_item) {
             @Override
@@ -125,7 +128,8 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
                 }
                 helper.setText(R.id.iri_tv_nickname,item.getCreator().getName()+"--"+helper.getPosition());
                 helper.setText(R.id.iri_tv_content,"投资了"+item.getPrice()+"元");
-                helper.setImageByUrl(R.id.iri_iv_icon,item.getCreator().getPictureUrl());
+                helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
+                helper.setText(R.id.iri_tv_date, Utils.timeTransComment(item.getCreateDatetime()));
             }
         };
         mListview.setAdapter(investorRecordCommonAdapter);
@@ -189,6 +193,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
                         loading.setVisibility(View.GONE);
                         loadFull.setVisibility(View.VISIBLE);
                         noData.setVisibility(View.GONE);
+                        loadComplete=false;
                     }else {
                         more.setVisibility(View.VISIBLE);
                         loading.setVisibility(View.GONE);
