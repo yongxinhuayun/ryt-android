@@ -199,6 +199,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
                         investorDatas.addAll(investList);
                         investList.clear();
                     }
+
                     investorRecordCommonAdapter.notifyDataSetChanged();
                 }
             }
