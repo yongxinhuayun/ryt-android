@@ -28,6 +28,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.LoginActivity;
+import com.yxh.ryt.activity.RegisterActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
@@ -102,6 +103,15 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment{
         artCommentAdapter=new CommonAdapter<ArtworkComment>(getActivity(),artCommentDatas,R.layout.pdonclicktab_comment_item) {
             @Override
             public void convert(ViewHolder helper, ArtworkComment item) {
+                TextView user=helper.getView(R.id.pdctci_tv_nickName);
+                user.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(AppApplication.getSingleContext(), RegisterActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        AppApplication.getSingleContext().startActivity(intent);
+                    }
+                });
                 helper.setText(R.id.pdctci_tv_nickName, item.getCreator().getName());
                 helper.setImageByUrl(R.id.pdctci_iv_icon, item.getCreator().getPictureUrl());
                 helper.setText(R.id.pdctci_tv_date, Utils.timeTransComment(item.getCreateDatetime()));
@@ -153,6 +163,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment{
         @Override
         public void onClick(View widget) {
             Intent intent=new Intent(context, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
 
