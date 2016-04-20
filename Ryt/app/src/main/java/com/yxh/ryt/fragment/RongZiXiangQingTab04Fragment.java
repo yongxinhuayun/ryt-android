@@ -126,7 +126,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
                 if (helper.getPosition()==2){
                     helper.getView(R.id.iri_ve_line).setVisibility(View.VISIBLE);
                 }
-                helper.setText(R.id.iri_tv_nickname,item.getCreator().getName()+"--"+helper.getPosition());
+                helper.setText(R.id.iri_tv_nickname,item.getCreator().getName());
                 helper.setText(R.id.iri_tv_content,"投资了"+item.getPrice()+"元");
                 helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
                 helper.setText(R.id.iri_tv_date, Utils.timeTransComment(item.getCreateDatetime()));
@@ -185,27 +185,47 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
                             topList.clear();
                             investorRecordCommonAdapter.notifyDataSetChanged();
                         }
-                    }
-                    List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
-                    }.getType());
-                    if (investList ==null|| investList.size()<Constants.pageSize){
-                        more.setVisibility(View.GONE);
-                        loading.setVisibility(View.GONE);
-                        loadFull.setVisibility(View.VISIBLE);
-                        noData.setVisibility(View.GONE);
-                        loadComplete=false;
-                    }else {
-                        more.setVisibility(View.VISIBLE);
-                        loading.setVisibility(View.GONE);
-                        loadFull.setVisibility(View.GONE);
-                        noData.setVisibility(View.GONE);
-                    }
-                    if (investList!=null){
-                        investorDatas.addAll(investList);
-                        investList.clear();
-                    }
+                        List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
+                        }.getType());
+                        if (investList ==null|| investList.size()<Constants.pageSize){
+                            more.setVisibility(View.GONE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.VISIBLE);
+                            noData.setVisibility(View.GONE);
+                            loadComplete=false;
+                        }else {
+                            more.setVisibility(View.VISIBLE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.GONE);
+                            noData.setVisibility(View.GONE);
+                        }
+                        if (investList!=null){
+                            investorDatas.addAll(investList);
+                            investList.clear();
+                        }
 
-                    investorRecordCommonAdapter.notifyDataSetChanged();
+                        investorRecordCommonAdapter.notifyDataSetChanged();
+                    }else {
+                        List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
+                        }.getType());
+                        if (investList ==null|| investList.size()<Constants.pageSize){
+                            more.setVisibility(View.GONE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.VISIBLE);
+                            noData.setVisibility(View.GONE);
+                            loadComplete=false;
+                        }else {
+                            more.setVisibility(View.VISIBLE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.GONE);
+                            noData.setVisibility(View.GONE);
+                        }
+                        if (investList!=null){
+                            investorDatas.addAll(investList);
+                            investList.clear();
+                        }
+                        investorRecordCommonAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         });
