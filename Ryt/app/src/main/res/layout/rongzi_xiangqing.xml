@@ -94,20 +94,27 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="13.5dp"
                     android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="14sp"
                     android:text="已融金额："/>
                     <TextView
+                        android:id="@+id/tv_financing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/black"
                         android:text="14000元"/>
                 </LinearLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="13.5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="13.5dp">
 
                     <ProgressBar
