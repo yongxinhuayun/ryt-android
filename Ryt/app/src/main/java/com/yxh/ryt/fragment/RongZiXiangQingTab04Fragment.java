@@ -1,6 +1,7 @@
 package com.yxh.ryt.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -27,6 +29,7 @@ import com.yxh.ryt.vo.RongZi;
 import com.yxh.ryt.vo.User;
 
 import java.math.BigDecimal;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,13 +39,14 @@ import java.util.Objects;
 
 import okhttp3.Call;
 import wuhj.com.mylibrary.PlaceHoderHeaderLayout;
+import wuhj.com.mylibrary.ScrollHolder;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
 
 /**
  * Created by sj on 15/11/25.
  */
-public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
+public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
     private ListView mListview;
     private CommonAdapter<ArtworkInvest> investorRecordCommonAdapter;
     private List<ArtworkInvest> investorDatas;
@@ -53,6 +57,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
     private TextView more;
     private ProgressBar loading;
     private int lastItem;
+    static StickHeaderViewPagerManager stickHeaderViewPagerManager;
     public RongZiXiangQingTab04Fragment(StickHeaderViewPagerManager manager, int position) {
         super(manager, position);
     }
@@ -68,6 +73,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
 
     public static RongZiXiangQingTab04Fragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
         RongZiXiangQingTab04Fragment listFragment = new RongZiXiangQingTab04Fragment(manager, position, isCanPulltoRefresh);
+        stickHeaderViewPagerManager=manager;
         return listFragment;
     }
 
@@ -84,7 +90,29 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
         footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
         setAdapter();
+        onScroll();
         return view;
+    }
+
+    private void onScroll() {
+        stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
+            @Override
+            public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                lastItem = firstVisibleItem + visibleItemCount - 2;
+            }
+
+            @Override
+            public void onListViewScrollStateChanged(AbsListView view, int scrollState) {
+                if (lastItem==investorRecordCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    more.setVisibility(View.GONE);
+                    loading.setVisibility(View.VISIBLE);
+                    loadFull.setVisibility(View.GONE);
+                    noData.setVisibility(View.GONE);
+                    currentPage = currentPage + 1;
+                    LoadData(false, currentPage);
+                }
+            }
+        });
     }
 
     private void setAdapter() {
@@ -110,27 +138,8 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
         loading.setVisibility(View.GONE);
         loadFull.setVisibility(View.GONE);
         noData.setVisibility(View.GONE);
-        mListview.setOnScrollListener(new AbsListView.OnScrollListener() {
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-                lastItem = firstVisibleItem + visibleItemCount - 1;
-                // TODO Auto-generated method stub
-            }
-
-            public void onScrollStateChanged(AbsListView view,
-                                             int scrollState) {
-                if (lastItem == investorRecordCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    more.setVisibility(View.GONE);
-                    loading.setVisibility(View.VISIBLE);
-                    loadFull.setVisibility(View.GONE);
-                    noData.setVisibility(View.GONE);
-                    LoadData(false,currentPage+1);
-                }
-            }
-        });
-        LoadData(true,currentPage);
+        LoadData(true, currentPage);
     }
-
 
     private void LoadData(final boolean flag,int pageNum) {
         more.setVisibility(View.GONE);
@@ -139,7 +148,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
         noData.setVisibility(View.GONE);
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("artWorkId","qydeyugqqiugd2");
-        paramsMap.put("pageSize", 2+"");
+        paramsMap.put("pageSize",Constants.pageSize+"");
         paramsMap.put("pageIndex", pageNum + "");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -157,7 +166,6 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                Log.d("onResponse(Map<String, Object",response.toString());
                 if ("0".equals(response.get("resultCode"))){
                     Map<String,Object> object= (Map<String, Object>) response.get("object");
                     if (flag){
@@ -170,12 +178,13 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
                             noData.setVisibility(View.VISIBLE);
                         }else {
                             investorDatas.addAll(topList);
+                            topList.clear();
                             investorRecordCommonAdapter.notifyDataSetChanged();
                         }
                     }
                     List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
                     }.getType());
-                    if (investList ==null|| investList.size()<2 ){
+                    if (investList ==null|| investList.size()<Constants.pageSize){
                         more.setVisibility(View.GONE);
                         loading.setVisibility(View.GONE);
                         loadFull.setVisibility(View.VISIBLE);
@@ -186,14 +195,18 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
                         loadFull.setVisibility(View.GONE);
                         noData.setVisibility(View.GONE);
                     }
-                    investorDatas.addAll(investList);
+                    if (investList!=null){
+                        investorDatas.addAll(investList);
+                        investList.clear();
+                    }
+
                     investorRecordCommonAdapter.notifyDataSetChanged();
                 }
             }
         });
     }
-
     @Override
     protected void lazyLoad() {
     }
+
 }
