@@ -148,7 +148,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         noData.setVisibility(View.GONE);
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("artWorkId","qydeyugqqiugd2");
-        paramsMap.put("pageSize",7+"");
+        paramsMap.put("pageSize",Constants.pageSize+"");
         paramsMap.put("pageIndex", pageNum + "");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -166,7 +166,6 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                Log.d("onResponse(Map<String, Object",response.toString());
                 if ("0".equals(response.get("resultCode"))){
                     Map<String,Object> object= (Map<String, Object>) response.get("object");
                     if (flag){
@@ -185,7 +184,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
                     }
                     List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
                     }.getType());
-                    if (investList ==null|| investList.size()<7){
+                    if (investList ==null|| investList.size()<Constants.pageSize){
                         more.setVisibility(View.GONE);
                         loading.setVisibility(View.GONE);
                         loadFull.setVisibility(View.VISIBLE);
