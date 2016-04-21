@@ -53,6 +53,7 @@
             android:layout_height="match_parent">
           <include layout="@layout/user_header"/>
             <RelativeLayout
+                android:id="@+id/rl_user_index"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:background="@drawable/login_reg_et_bg"
