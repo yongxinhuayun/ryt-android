@@ -18,6 +18,7 @@ import com.yxh.ryt.activity.UserPtIndexActivity;
 import com.yxh.ryt.activity.UserSettingActivity;
 import com.yxh.ryt.activity.UserYiJianActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
+import com.yxh.ryt.activity.YsjRzActivity;
 import com.yxh.ryt.custemview.CircleImageView;
 
 import butterknife.Bind;
@@ -107,7 +108,7 @@ public class TabFragment04 extends BaseFragment {
     @OnClick(R.id.btn_lf)
     void btnLfClick() {
         if (0 == AppApplication.gUser.getUtype()) {
-            UserPtIndexActivity.openActivity(getActivity());
+            YsjRzActivity.openActivity(getActivity());
             return;
         }
         if (10000 == AppApplication.gUser.getUtype()) {
