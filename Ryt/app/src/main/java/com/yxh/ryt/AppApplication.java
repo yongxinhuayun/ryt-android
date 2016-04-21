@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.yxh.ryt.vo.User;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.Collections;
@@ -38,6 +39,7 @@ public class AppApplication extends Application {
 	private static EditTextValidator editTextValidator;
 	public static ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 	public static DisplayImageOptions options;
+	public static User gUser;
 	@Override
 	public void onCreate() {
 		super.onCreate();

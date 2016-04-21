@@ -1,5 +1,6 @@
 package com.yxh.ryt.activity;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,8 @@ import com.yxh.ryt.util.avalidations.EditTextValidator;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.PasswordValidation;
 import com.yxh.ryt.validations.UserNameValidation;
+import com.yxh.ryt.vo.Artwork;
+import com.yxh.ryt.vo.User;
 import com.yxh.ryt.wxapi.WxUtil;
 
 import java.util.HashMap;
@@ -55,6 +58,9 @@ public class LoginActivity extends BaseActivity {
     WxLoginBroadcastReciver mReciver;
     private boolean isPhone;
     private boolean isPassword;
+    public static void openActivity(Activity activity) {
+        activity.startActivity(new Intent(activity, LoginActivity.class));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,6 +190,8 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onResponse(Map<String, Object> response) {
+                AppApplication.gUser=AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+                finish();
                 System.out.println("成功了");
             }
         });
