@@ -9,14 +9,14 @@
         android:layout_height="50dp">
         <ImageView
             android:layout_marginLeft="10dp"
-            android:id="@+id/rg_ib_back"
+            android:id="@+id/tab03_ib_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@mipmap/back"
             />
         <TextView
-            android:id="@+id/rg_tv_title"
+            android:id="@+id/tab03_tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
