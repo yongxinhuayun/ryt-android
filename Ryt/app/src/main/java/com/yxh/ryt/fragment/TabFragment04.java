@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.UserPtIndexActivity;
+import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.UserPtTabPageIndicatorAdapter;
 
 import butterknife.Bind;
@@ -33,7 +34,7 @@ public class TabFragment04 extends BaseFragment {
 
     @OnClick(R.id.rl_user_index)
     void userIndexClick(){
-        UserPtIndexActivity.openActivity(getActivity());
+        UserYsjIndexActivity.openActivity(getActivity());
     }
 
     @Override
