@@ -98,6 +98,12 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        LoadData(true, currentPage);
+    }
+
     private void onScroll() {
         stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
             @Override
@@ -142,7 +148,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         loading.setVisibility(View.GONE);
         loadFull.setVisibility(View.GONE);
         noData.setVisibility(View.GONE);
-        LoadData(true, currentPage);
+
     }
 
     private void LoadData(final boolean flag,int pageNum) {
