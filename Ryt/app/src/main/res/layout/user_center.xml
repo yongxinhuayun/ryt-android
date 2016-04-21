@@ -143,6 +143,7 @@
                     android:src="@mipmap/go"/>
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/user_setting"
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/login_reg_et_bg"
@@ -172,6 +173,7 @@
                     android:src="@mipmap/go"/>
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/rl_yijian"
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/login_reg_et_bg"

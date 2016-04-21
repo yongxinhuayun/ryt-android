@@ -1,5 +1,6 @@
 package com.yxh.ryt.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -206,5 +207,12 @@ public class IndexActivity extends BaseActivity {
         // 事务提交
 //        transaction.commit();
     }
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // TODO Auto-generated method stub
+        super.onNewIntent(intent);
+        if("com.yxh.ryt.gouser".equals(intent.getAction())){
+            indexPager.setCurrentItem(4,false);
+        }
+    }
 }

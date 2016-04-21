@@ -46,6 +46,7 @@
         android:layout_height="1dp"
         android:background="#E9E9E9"/>
     <RelativeLayout
+        android:id="@+id/rl_about"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:paddingLeft="20dp"
@@ -66,6 +67,37 @@
             android:layout_alignParentRight="true"
             android:src="@mipmap/go"/>
     </RelativeLayout>
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="#E9E9E9"/>-->
+    <!--<View-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="#E9E9E9"/>-->
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/rl_des"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="70dp"-->
+        <!--android:paddingLeft="20dp"-->
+        <!--android:paddingRight="20dp">-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="16sp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:text="投资说明"/>-->
+        <!--<ImageView-->
+            <!--android:id="@+id/go1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:src="@mipmap/go"/>-->
+    <!--</RelativeLayout>-->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -76,6 +108,7 @@
         android:layout_height="1dp"
         android:background="#E9E9E9"/>
     <RelativeLayout
+        android:id="@+id/rl_hc"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:paddingLeft="20dp"
@@ -87,7 +120,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:textColor="@android:color/black"
-            android:text="清楚历史缓存"/>
+            android:text="清除历史缓存"/>
         <TextView
             android:id="@+id/go3"
             android:layout_width="wrap_content"
@@ -104,7 +137,7 @@
     <Button
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:id="@+id/btn_center_login"
+        android:id="@+id/btn_out"
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

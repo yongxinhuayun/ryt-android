@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,10 +14,10 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.UserEditZiLiaoActivity;
 import com.yxh.ryt.activity.UserPtIndexActivity;
+import com.yxh.ryt.activity.UserSettingActivity;
+import com.yxh.ryt.activity.UserYiJianActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.custemview.CircleImageView;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,7 +57,7 @@ public class TabFragment04 extends BaseFragment {
     TextView tvUserHeaderJeValue03;
     @Bind(R.id.tv_user_header_je_txt_03)
     TextView tvUserHeaderJeTxt03;
-//    @Bind({R.id.ll_header_gz, R.id.ll_header_fs, R.id.ll_header_qm, R.id.ll_header_value})
+    //    @Bind({R.id.ll_header_gz, R.id.ll_header_fs, R.id.ll_header_qm, R.id.ll_header_value})
 //    List<LinearLayout> linearLayouts;
 //    static final ButterKnife.Setter<View, Integer> ISVISIBLE = new ButterKnife.Setter<View, Integer>() {
 //        @Override
@@ -75,7 +74,10 @@ public class TabFragment04 extends BaseFragment {
 //    };
     @Bind(R.id.btn_lf)
     TextView btnLf;
-
+    @Bind(R.id.user_setting)
+    RelativeLayout userSetting;
+    @Bind(R.id.rl_yijian)
+    RelativeLayout userYiJian;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,16 +85,27 @@ public class TabFragment04 extends BaseFragment {
         ButterKnife.bind(this, view);
         return view;
     }
+
     //头像点击事件
     @OnClick(R.id.ll_user_header)
-    void userHeaderClick(){
+    void userHeaderClick() {
         if (AppApplication.gUser == null) {
             LoginActivity.openActivity(getActivity());
             return;
-        }else{
+        } else {
             UserEditZiLiaoActivity.openActivity(getActivity());
             return;
         }
+    }
+    //设置点击事件
+    @OnClick(R.id.user_setting)
+    void userSettingClick() {
+        UserSettingActivity.openActivity(getActivity());
+    }
+    //意见点击事件
+    @OnClick(R.id.rl_yijian)
+    void userYiJianClick() {
+        UserYiJianActivity.openActivity(getActivity());
     }
     //我的主页点击事件
     @OnClick(R.id.rl_user_index)
@@ -165,6 +178,7 @@ public class TabFragment04 extends BaseFragment {
         }
 
     }
+
     //未登录成功设置控件元素的值
     private void setLoginViewValues() {
         tvUserHeaderFsNum.setText("0");
@@ -178,6 +192,7 @@ public class TabFragment04 extends BaseFragment {
         tvUserHeaderJeTxt02.setText("投资收益");
         tvUserHeaderJeTxt03.setText("投资回报率");
     }
+
     @Override
     protected void lazyLoad() {
 
