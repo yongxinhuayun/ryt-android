@@ -87,44 +87,15 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:textColor="@android:color/black"
-            android:text="为我们评分"/>
-        <ImageView
-            android:id="@+id/go2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/go"/>
-    </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#E9E9E9"/>
-    <View
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#E9E9E9"/>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:textColor="@android:color/black"
             android:text="清楚历史缓存"/>
-        <ImageView
+        <TextView
             android:id="@+id/go3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/go"/>
+            android:textColor="@android:color/black"
+            android:text="5.6M"/>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
@@ -140,6 +111,6 @@
         android:textColor="#B3B3B3"
         android:textSize="18sp"
         android:background="@mipmap/denglu_anniu"
-        android:text="登录"
+        android:text="退出"
         android:gravity="center"/>
 </LinearLayout>
