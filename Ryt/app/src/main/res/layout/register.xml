@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="加入融易投"
+            android:text="加入融艺投"
             android:textSize="17sp"
             android:textColor="#333333"
             android:layout_centerInParent="true"
