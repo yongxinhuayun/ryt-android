@@ -49,6 +49,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 import wuhj.com.mylibrary.StickHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
@@ -107,7 +108,15 @@ public class RongZiXQActivity extends BaseActivity {
         super.onResume();
         LoadData(0, 1);
     }
-
+    @OnClick(R.id.rl_tab_01)
+    public void comment(){
+        Intent intent=new Intent(this, ProjectCommentReply.class);
+        intent.putExtra("fatherCommentId","");
+        intent.putExtra("messageId","");
+        intent.putExtra("flag",1);
+        intent.putExtra("artworkId",artworkId);
+        startActivity(intent);
+    }
     private void LoadData(int tabtype, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artworkId+"");
