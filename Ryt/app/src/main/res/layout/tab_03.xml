@@ -9,14 +9,14 @@
         android:layout_height="50dp">
         <ImageView
             android:layout_marginLeft="10dp"
-            android:id="@+id/rg_ib_back"
+            android:id="@+id/tab03_ib_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@mipmap/back"
             />
         <TextView
-            android:id="@+id/rg_tv_title"
+            android:id="@+id/tab03_tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -89,6 +89,7 @@
             android:src="@mipmap/comment"
             android:layout_centerVertical="true"/>
         <TextView
+            android:id="@+id/ft3_tv_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="评论"
@@ -96,12 +97,18 @@
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/ft3_iv_comment"
             android:layout_centerVertical="true"/>
+        <com.yxh.ryt.custemview.CircleImageView
+            android:id="@+id/ft3_ci_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/ft3_tv_comment"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/right"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
+
     </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
@@ -125,6 +132,7 @@
             android:src="@mipmap/priletter"
             android:layout_centerVertical="true"/>
         <TextView
+            android:id="@+id/ft3_tv_privateLetter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="私信"
@@ -132,6 +140,11 @@
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/ft3_iv_privateLetter"
             android:layout_centerVertical="true"/>
+        <com.yxh.ryt.custemview.CircleImageView
+            android:id="@+id/ft3_ci_privateLetter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/ft3_tv_privateLetter"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
