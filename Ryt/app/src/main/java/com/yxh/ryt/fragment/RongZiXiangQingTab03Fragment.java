@@ -17,7 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.LoginActivity;
+import com.yxh.ryt.activity.ProjectCommentReply;
 import com.yxh.ryt.activity.RegisterActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
@@ -38,6 +41,7 @@ import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.ArtworkComment;
 import com.yxh.ryt.vo.ArtworkInvest;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +55,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 /**
  * Created by sj on 15/11/25.
  */
-public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment{
+public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment implements AdapterView.OnItemClickListener {
     private ListView mListview;
     private CommonAdapter<ArtworkComment> artCommentAdapter;
     private List<ArtworkComment> artCommentDatas;
@@ -99,10 +103,17 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment{
         onScroll();
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LoadData(true, currentPage);
+    }
+
     private void setAdapter() {
         artCommentAdapter=new CommonAdapter<ArtworkComment>(getActivity(),artCommentDatas,R.layout.pdonclicktab_comment_item) {
             @Override
-            public void convert(ViewHolder helper, ArtworkComment item) {
+            public void convert(ViewHolder helper, final ArtworkComment item) {
                 TextView user=helper.getView(R.id.pdctci_tv_nickName);
                 user.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -141,8 +152,21 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment{
         loading.setVisibility(View.GONE);
         loadFull.setVisibility(View.GONE);
         noData.setVisibility(View.GONE);
-        LoadData(true, currentPage);
+        mListview.setOnItemClickListener(this);
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent=new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
+        intent.putExtra("name", artCommentDatas.get(position).getCreator().getName());
+        intent.putExtra("fatherCommentId",artCommentDatas.get(position).getCreator().getId());
+        intent.putExtra("artworkId",artCommentDatas.get(position).getId());
+        intent.putExtra("flag", 0);
+        intent.putExtra("messageId","");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        AppApplication.getSingleContext().startActivity(intent);
+    }
+
     public class ShuoMClickableSpan extends ClickableSpan {
 
         String string;
@@ -166,7 +190,6 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment{
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
-
     }
     private void onScroll() {
         stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
@@ -208,11 +231,12 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment{
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
-                System.out.println("失败了");
+                System.out.println("444444失败了");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
+                System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
                 if ("0".equals(response.get("resultCode"))) {
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
                     if (flag) {
