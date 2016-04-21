@@ -53,7 +53,6 @@
             android:layout_height="match_parent">
           <include layout="@layout/user_header"/>
             <RelativeLayout
-                android:id="@+id/rl_user_index"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:background="@drawable/login_reg_et_bg"
@@ -66,7 +65,7 @@
                     android:layout_alignParentLeft="true"
                     android:textColor="@android:color/black"
                     android:text="我的主页"/>
-                ImageView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -94,7 +93,7 @@
                     android:layout_alignParentLeft="true"
                     android:textColor="@android:color/black"
                     android:text="钱包"/>
-                TextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -113,6 +112,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
+                android:visibility="gone"
                 android:background="@drawable/login_reg_et_bg"
                 android:layout_height="50dp">
                 <TextView
@@ -123,7 +123,7 @@
                     android:layout_alignParentLeft="true"
                     android:textColor="@android:color/black"
                     android:text="拍卖订单"/>
-                TextView
+               <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -151,7 +151,7 @@
                     android:layout_alignParentLeft="true"
                     android:textColor="@android:color/black"
                     android:text="设置"/>
-                TextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
