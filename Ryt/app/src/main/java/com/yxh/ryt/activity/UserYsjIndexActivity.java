@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
@@ -33,6 +34,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -49,7 +51,50 @@ public class UserYsjIndexActivity extends BaseActivity {
     ViewPager mViewPager;
     StickHeaderViewPagerManager manager;
     private String artworkId;
-
+    RelativeLayout rlUserIndex;
+    @Bind(R.id.tv_user_header_gz_num)
+    TextView tvUserHeaderGzNum;
+    @Bind(R.id.tv_user_header_gz)
+    TextView tvUserHeaderGz;
+    @Bind(R.id.rs_iv_headPortrait)
+    CircleImageView rsIvHeadPortrait;
+    @Bind(R.id.tv_user_header_name)
+    TextView tvUserHeaderName;
+    @Bind(R.id.ll_user_header)
+    LinearLayout llUserHeader;
+    @Bind(R.id.tv_user_header_fs_num)
+    TextView tvUserHeaderFsNum;
+    @Bind(R.id.tv_user_header_fs)
+    TextView tvUserHeaderFs;
+    @Bind(R.id.tv_user_header_txt)
+    TextView tvUserHeaderTxt;
+    @Bind(R.id.tv_user_header_je_value_01)
+    TextView tvUserHeaderJeValue01;
+    @Bind(R.id.tv_user_header_je_txt_01)
+    TextView tvUserHeaderJeTxt01;
+    @Bind(R.id.tv_user_header_je_value_02)
+    TextView tvUserHeaderJeValue02;
+    @Bind(R.id.tv_user_header_je_txt_02)
+    TextView tvUserHeaderJeTxt02;
+    @Bind(R.id.tv_user_header_je_value_03)
+    TextView tvUserHeaderJeValue03;
+    @Bind(R.id.tv_user_header_je_txt_03)
+    TextView tvUserHeaderJeTxt03;
+//    @Bind({R.id.ll_header_gz, R.id.ll_header_fs, R.id.ll_header_qm, R.id.ll_header_value})
+//    List<LinearLayout> linearLayouts;
+//    static final ButterKnife.Setter<View, Integer> ISVISIBLE = new ButterKnife.Setter<View, Integer>() {
+//        @Override
+//        public void set(View view, Integer value, int index) {
+//            if (value == 0) {//显示
+//                view.setVisibility(View.VISIBLE);
+//                return;
+//            }
+//            if (value == 1) {//隐藏
+//                view.setVisibility(View.GONE);
+//                return;
+//            }
+//        }
+//    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +114,50 @@ public class UserYsjIndexActivity extends BaseActivity {
         TabPageIndicator indicator = (TabPageIndicator) findViewById(R.id.user_ysj_indicator);
         indicator.setViewPager(mViewPager);
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (AppApplication.gUser == null) {
+            setLoginViewValues();
+            return;
+        }
+        setLoginedViewValues();
+    }
 
+    //登录成功设置控件元素的值
+    private void setLoginedViewValues() {
+        if (10000 == AppApplication.gUser.getUtype()) {
+            tvUserHeaderName.setText(AppApplication.gUser.getUsername());
+            tvUserHeaderFsNum.setText("5000");
+            tvUserHeaderGzNum.setText("15000");
+            tvUserHeaderTxt.setText("一句话20字以内");
+            tvUserHeaderJeValue01.setText("￥5000");
+            tvUserHeaderJeValue02.setText("￥9000");
+            tvUserHeaderJeValue03.setText("80%");
+            tvUserHeaderJeTxt01.setText("项目总金额");
+            tvUserHeaderJeTxt02.setText("项目拍卖总金额");
+            tvUserHeaderJeTxt03.setText("拍卖溢价率");
+            return;
+        }
 
+    }
+    //未登录成功设置控件元素的值
+    private void setLoginViewValues() {
+        tvUserHeaderFsNum.setText("0");
+        tvUserHeaderGzNum.setText("0");
+        tvUserHeaderName.setText("游客");
+        tvUserHeaderTxt.setText("一句话20字以内");
+        tvUserHeaderJeValue01.setText("￥0");
+        tvUserHeaderJeValue02.setText("￥0");
+        tvUserHeaderJeValue03.setText("0%");
+        tvUserHeaderJeTxt01.setText("项目总金额");
+        tvUserHeaderJeTxt02.setText("项目拍卖总金额");
+        tvUserHeaderJeTxt03.setText("拍卖溢价率");
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
 }
 

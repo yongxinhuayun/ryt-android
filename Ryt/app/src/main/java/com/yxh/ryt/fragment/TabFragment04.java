@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.LoginActivity;
+import com.yxh.ryt.activity.UserEditZiLiaoActivity;
 import com.yxh.ryt.activity.UserPtIndexActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.custemview.CircleImageView;
@@ -57,21 +58,21 @@ public class TabFragment04 extends BaseFragment {
     TextView tvUserHeaderJeValue03;
     @Bind(R.id.tv_user_header_je_txt_03)
     TextView tvUserHeaderJeTxt03;
-    @Bind({R.id.ll_header_gz, R.id.ll_header_fs, R.id.ll_header_qm, R.id.ll_header_value})
-    List<LinearLayout> linearLayouts;
-    static final ButterKnife.Setter<View, Integer> ISVISIBLE = new ButterKnife.Setter<View, Integer>() {
-        @Override
-        public void set(View view, Integer value, int index) {
-            if (value == 0) {//显示
-                view.setVisibility(View.VISIBLE);
-                return;
-            }
-            if (value == 1) {//隐藏
-                view.setVisibility(View.GONE);
-                return;
-            }
-        }
-    };
+//    @Bind({R.id.ll_header_gz, R.id.ll_header_fs, R.id.ll_header_qm, R.id.ll_header_value})
+//    List<LinearLayout> linearLayouts;
+//    static final ButterKnife.Setter<View, Integer> ISVISIBLE = new ButterKnife.Setter<View, Integer>() {
+//        @Override
+//        public void set(View view, Integer value, int index) {
+//            if (value == 0) {//显示
+//                view.setVisibility(View.VISIBLE);
+//                return;
+//            }
+//            if (value == 1) {//隐藏
+//                view.setVisibility(View.GONE);
+//                return;
+//            }
+//        }
+//    };
     @Bind(R.id.btn_lf)
     TextView btnLf;
 
@@ -82,14 +83,14 @@ public class TabFragment04 extends BaseFragment {
         ButterKnife.bind(this, view);
         return view;
     }
-    //左上角按钮点击事件
+    //头像点击事件
     @OnClick(R.id.ll_user_header)
     void userHeaderClick(){
         if (AppApplication.gUser == null) {
             LoginActivity.openActivity(getActivity());
             return;
         }else{
-            UserPtIndexActivity.openActivity(getActivity());
+            UserEditZiLiaoActivity.openActivity(getActivity());
             return;
         }
     }
@@ -115,28 +116,68 @@ public class TabFragment04 extends BaseFragment {
         super.onResume();
         if (AppApplication.gUser == null) {
             btnLf.setVisibility(View.GONE);
-            ButterKnife.apply(linearLayouts, ISVISIBLE, 1);
+//            ButterKnife.apply(linearLayouts, ISVISIBLE, 1);
+            setLoginViewValues();
             return;
         } else {
-            ButterKnife.apply(linearLayouts, ISVISIBLE, 0);
-            setViewValues();
+//            ButterKnife.apply(linearLayouts, ISVISIBLE, 0);
             btnLf.setVisibility(View.VISIBLE);
         }
         if (0 == AppApplication.gUser.getUtype()) {
             btnLf.setText("申请为艺术家");
+            setLoginedViewValues(AppApplication.gUser.getUtype());
             return;
         }
         if (10000 == AppApplication.gUser.getUtype()) {
             btnLf.setText("发起项目");
+            setLoginedViewValues(AppApplication.gUser.getUtype());
             return;
         }
     }
 
     //登录成功设置控件元素的值
-    private void setViewValues() {
+    private void setLoginedViewValues(int type) {
+        if (0 == AppApplication.gUser.getUtype()) {
+            tvUserHeaderName.setText(AppApplication.gUser.getUsername());
+            tvUserHeaderFsNum.setText("200");
+            tvUserHeaderGzNum.setText("1000");
+            tvUserHeaderTxt.setText("一句话20字以内");
+            tvUserHeaderJeValue01.setText("￥300");
+            tvUserHeaderJeValue02.setText("￥1000");
+            tvUserHeaderJeValue03.setText("50%");
+            tvUserHeaderJeTxt01.setText("投资金额");
+            tvUserHeaderJeTxt02.setText("投资收益");
+            tvUserHeaderJeTxt03.setText("投资回报率");
+            return;
+        }
+        if (10000 == AppApplication.gUser.getUtype()) {
+            tvUserHeaderName.setText(AppApplication.gUser.getUsername());
+            tvUserHeaderFsNum.setText("5000");
+            tvUserHeaderGzNum.setText("15000");
+            tvUserHeaderTxt.setText("一句话20字以内");
+            tvUserHeaderJeValue01.setText("￥5000");
+            tvUserHeaderJeValue02.setText("￥9000");
+            tvUserHeaderJeValue03.setText("80%");
+            tvUserHeaderJeTxt01.setText("项目总金额");
+            tvUserHeaderJeTxt02.setText("项目拍卖总金额");
+            tvUserHeaderJeTxt03.setText("拍卖溢价率");
+            return;
+        }
 
     }
-
+    //未登录成功设置控件元素的值
+    private void setLoginViewValues() {
+        tvUserHeaderFsNum.setText("0");
+        tvUserHeaderGzNum.setText("0");
+        tvUserHeaderName.setText("游客");
+        tvUserHeaderTxt.setText("一句话20字以内");
+        tvUserHeaderJeValue01.setText("￥0");
+        tvUserHeaderJeValue02.setText("￥0");
+        tvUserHeaderJeValue03.setText("0%");
+        tvUserHeaderJeTxt01.setText("投资金额");
+        tvUserHeaderJeTxt02.setText("投资收益");
+        tvUserHeaderJeTxt03.setText("投资回报率");
+    }
     @Override
     protected void lazyLoad() {
 
