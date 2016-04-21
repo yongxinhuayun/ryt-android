@@ -48,5 +48,5 @@
             android:background="#E9E9E9"
             android:layout_height="1dp"></View>
     </RelativeLayout>
-    <include layout="@layout/user_yishujia_header"/>
+    <include layout="@layout/user_header"/>
 </LinearLayout>
