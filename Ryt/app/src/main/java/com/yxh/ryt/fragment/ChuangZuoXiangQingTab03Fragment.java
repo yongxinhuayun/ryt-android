@@ -1,10 +1,19 @@
 package com.yxh.ryt.fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -13,11 +22,16 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.LoginActivity;
+import com.yxh.ryt.activity.ProjectCommentReply;
+import com.yxh.ryt.activity.RegisterActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Utils;
+import com.yxh.ryt.vo.ArtworkComment;
 import com.yxh.ryt.vo.ArtworkInvest;
 
 import java.util.ArrayList;
@@ -33,10 +47,10 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 /**
  * Created by sj on 15/11/25.
  */
-public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
+public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment implements AdapterView.OnItemClickListener {
     private ListView mListview;
-    private CommonAdapter<ArtworkInvest> investorRecordCommonAdapter;
-    private List<ArtworkInvest> investorDatas;
+    private CommonAdapter<ArtworkComment> artCommentAdapter;
+    private List<ArtworkComment> artCommentDatas;
     private int currentPage=1;
     private View footer;
     private TextView loadFull;
@@ -44,6 +58,7 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
     private TextView more;
     private ProgressBar loading;
     private int lastItem;
+    private boolean loadComplete=true;
     static StickHeaderViewPagerManager stickHeaderViewPagerManager;
     public ChuangZuoXiangQingTab03Fragment(StickHeaderViewPagerManager manager, int position) {
         super(manager, position);
@@ -67,7 +82,7 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        investorDatas=new ArrayList<>();
+        artCommentDatas=new ArrayList<>();
     }
 
     @Override
@@ -81,6 +96,93 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        LoadData(true, currentPage);
+    }
+
+    private void setAdapter() {
+        artCommentAdapter=new CommonAdapter<ArtworkComment>(getActivity(),artCommentDatas,R.layout.pdonclicktab_comment_item) {
+            @Override
+            public void convert(ViewHolder helper, final ArtworkComment item) {
+                TextView user=helper.getView(R.id.pdctci_tv_nickName);
+                user.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(AppApplication.getSingleContext(), RegisterActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        AppApplication.getSingleContext().startActivity(intent);
+                    }
+                });
+                helper.setText(R.id.pdctci_tv_nickName, item.getCreator().getName());
+                helper.setImageByUrl(R.id.pdctci_iv_icon, item.getCreator().getPictureUrl());
+                helper.setText(R.id.pdctci_tv_date, Utils.timeTransComment(item.getCreateDatetime()));
+                if (item.getFatherComment()!=null){
+                    TextView textView=helper.getView(R.id.pdctci_tv_content);
+                    String fatherUser = item.getFatherComment().getCreator().getName();
+                    SpannableString spanFatherUser = new SpannableString(fatherUser);
+                    ClickableSpan click= new ShuoMClickableSpan(fatherUser, AppApplication.getSingleContext());
+                    spanFatherUser.setSpan(click, 0, fatherUser.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    textView.setText("回复");
+                    textView.append(spanFatherUser);
+                    textView.append(":");
+                    textView.append(item.getContent());
+                    textView.setMovementMethod(LinkMovementMethod.getInstance());
+                }else {
+                    helper.setText(R.id.pdctci_tv_content,item.getContent());
+                }
+            }
+        };
+        mListview.setAdapter(artCommentAdapter);
+        mListview.addFooterView(footer);
+        loadFull = (TextView) footer.findViewById(R.id.loadFull);
+        noData = (TextView) footer.findViewById(R.id.noData);
+        more = (TextView) footer.findViewById(R.id.more);
+        loading = (ProgressBar) footer.findViewById(R.id.loading);
+        more.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.GONE);
+        loadFull.setVisibility(View.GONE);
+        noData.setVisibility(View.GONE);
+        mListview.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent=new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
+        intent.putExtra("name", artCommentDatas.get(position).getCreator().getName());
+        intent.putExtra("fatherCommentId",artCommentDatas.get(position).getCreator().getId());
+        intent.putExtra("artworkId", artCommentDatas.get(position).getId());
+        intent.putExtra("flag", 0);
+        intent.putExtra("messageId", "");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        AppApplication.getSingleContext().startActivity(intent);
+    }
+
+    public class ShuoMClickableSpan extends ClickableSpan {
+
+        String string;
+        Context context;
+        public ShuoMClickableSpan(String str,Context context){
+            super();
+            this.string = str;
+            this.context = context;
+        }
+
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            ds.setColor(Color.BLUE);
+        }
+
+
+        @Override
+        public void onClick(View widget) {
+            Intent intent=new Intent(context, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+    }
     private void onScroll() {
         stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
             @Override
@@ -90,7 +192,7 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
 
             @Override
             public void onListViewScrollStateChanged(AbsListView view, int scrollState) {
-                if (lastItem == investorRecordCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                if (lastItem == artCommentAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && loadComplete) {
                     more.setVisibility(View.GONE);
                     loading.setVisibility(View.VISIBLE);
                     loadFull.setVisibility(View.GONE);
@@ -101,33 +203,6 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
             }
         });
     }
-
-    private void setAdapter() {
-        investorRecordCommonAdapter=new CommonAdapter<ArtworkInvest>(getActivity(),investorDatas,R.layout.investorrecord_item) {
-            @Override
-            public void convert(ViewHolder helper, ArtworkInvest item) {
-                helper.getView(R.id.iri_ve_line).setVisibility(View.GONE);
-                if (helper.getPosition()==2){
-                    helper.getView(R.id.iri_ve_line).setVisibility(View.VISIBLE);
-                }
-                helper.setText(R.id.iri_tv_nickname,item.getCreator().getName()+"--"+helper.getPosition());
-                helper.setText(R.id.iri_tv_content,"投资了"+item.getPrice()+"元");
-                helper.setImageByUrl(R.id.iri_iv_icon,item.getCreator().getPictureUrl());
-            }
-        };
-        mListview.setAdapter(investorRecordCommonAdapter);
-        mListview.addFooterView(footer);
-        loadFull = (TextView) footer.findViewById(R.id.loadFull);
-        noData = (TextView) footer.findViewById(R.id.noData);
-        more = (TextView) footer.findViewById(R.id.more);
-        loading = (ProgressBar) footer.findViewById(R.id.loading);
-        more.setVisibility(View.VISIBLE);
-        loading.setVisibility(View.GONE);
-        loadFull.setVisibility(View.GONE);
-        noData.setVisibility(View.GONE);
-        LoadData(true, currentPage);
-    }
-
     private void LoadData(final boolean flag,int pageNum) {
         more.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
@@ -135,7 +210,7 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
         noData.setVisibility(View.GONE);
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("artWorkId","qydeyugqqiugd2");
-        paramsMap.put("pageSize",Constants.pageSize+"");
+        paramsMap.put("pageSize", Constants.pageSize+"");
         paramsMap.put("pageIndex", pageNum + "");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -144,56 +219,73 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkInvest.do", paramsMap, new RZCommentCallBack() {
+        NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkComment.do", paramsMap, new RZCommentCallBack() {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
-                System.out.println("失败了");
+                System.out.println("444444失败了");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if ("0".equals(response.get("resultCode"))){
-                    Map<String,Object> object= (Map<String, Object>) response.get("object");
-                    if (flag){
-                        List<ArtworkInvest> topList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestTopList")), new TypeToken<List<ArtworkInvest>>() {
+                System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
+                if ("0".equals(response.get("resultCode"))) {
+                    Map<String, Object> object = (Map<String, Object>) response.get("object");
+                    if (flag) {
+                        List<ArtworkComment> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<ArtworkComment>>() {
                         }.getType());
-                        if (topList==null){
+                        if (commentList == null) {
                             more.setVisibility(View.GONE);
                             loading.setVisibility(View.GONE);
                             loadFull.setVisibility(View.GONE);
                             noData.setVisibility(View.VISIBLE);
+                        } else if (commentList.size() < Constants.pageSize){
+                            more.setVisibility(View.GONE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.VISIBLE);
+                            noData.setVisibility(View.GONE);
+                            artCommentDatas.addAll(commentList);
+                            commentList.clear();
+                            artCommentAdapter.notifyDataSetChanged();
                         }else {
-                            investorDatas.addAll(topList);
-                            topList.clear();
-                            investorRecordCommonAdapter.notifyDataSetChanged();
+                            more.setVisibility(View.VISIBLE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.GONE);
+                            noData.setVisibility(View.GONE);
                         }
-                    }
-                    List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
-                    }.getType());
-                    if (investList ==null|| investList.size()<Constants.pageSize){
-                        more.setVisibility(View.GONE);
-                        loading.setVisibility(View.GONE);
-                        loadFull.setVisibility(View.VISIBLE);
-                        noData.setVisibility(View.GONE);
+                        if (commentList != null) {
+                            artCommentDatas.addAll(commentList);
+                            commentList.clear();
+                        }
+
+                        artCommentAdapter.notifyDataSetChanged();
                     }else {
-                        more.setVisibility(View.VISIBLE);
-                        loading.setVisibility(View.GONE);
-                        loadFull.setVisibility(View.GONE);
-                        noData.setVisibility(View.GONE);
-                    }
-                    if (investList!=null){
-                        investorDatas.addAll(investList);
-                        investList.clear();
+                        List<ArtworkComment> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<ArtworkComment>>() {
+                        }.getType());
+                        if (commentList == null || commentList.size() < Constants.pageSize) {
+                            more.setVisibility(View.GONE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.VISIBLE);
+                            noData.setVisibility(View.GONE);
+                        } else {
+                            more.setVisibility(View.VISIBLE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.GONE);
+                            noData.setVisibility(View.GONE);
+                        }
+                        if (commentList != null) {
+                            artCommentDatas.addAll(commentList);
+                            commentList.clear();
+                        }
+                        artCommentAdapter.notifyDataSetChanged();
                     }
 
-                    investorRecordCommonAdapter.notifyDataSetChanged();
                 }
             }
         });
     }
     @Override
     protected void lazyLoad() {
-    }
 
+    }
 }
