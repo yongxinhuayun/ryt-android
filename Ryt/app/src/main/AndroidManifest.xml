@@ -59,6 +59,7 @@
                 <data android:scheme="wxc7f08565e496134b" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.ChuangZuoXQActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.RongZiXQActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.CustomMsgActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.GalleryActivity" android:screenOrientation="portrait"/>

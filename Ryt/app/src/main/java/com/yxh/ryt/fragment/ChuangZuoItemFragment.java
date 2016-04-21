@@ -1,14 +1,18 @@
 package com.yxh.ryt.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.ChuangZuoXQActivity;
+import com.yxh.ryt.activity.RongZiXQActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
@@ -26,7 +30,7 @@ import okhttp3.Call;
 
 
 public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
-		AutoListView.OnLoadListener {
+		AutoListView.OnLoadListener ,AdapterView.OnItemClickListener{
 	private AutoListView lstv;
 	private CommonAdapter<RongZi> chuangZuoCommonAdapter;
 	private List<RongZi> chuangZuoDatas;
@@ -37,7 +41,12 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 		chuangZuoDatas=new ArrayList<RongZi>();
 	}
 
-
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Intent intent=new Intent(getActivity(), ChuangZuoXQActivity.class);
+		intent.putExtra("id", chuangZuoDatas.get(position - 1).getId());
+		startActivity(intent);
+	}
 
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
@@ -111,6 +120,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 		lstv.setAdapter(chuangZuoCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
+		lstv.setOnItemClickListener(this);
 		return contextView;
 	}
 

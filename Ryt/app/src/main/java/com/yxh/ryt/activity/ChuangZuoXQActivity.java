@@ -3,24 +3,14 @@ package com.yxh.ryt.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
@@ -28,23 +18,23 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.RongZiXqTabPageIndicatorAdapter;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
+import com.yxh.ryt.fragment.ChuangZuoXiangQingTab01Fragment;
+import com.yxh.ryt.fragment.ChuangZuoXiangQingTab02Fragment;
+import com.yxh.ryt.fragment.ChuangZuoXiangQingTab03Fragment;
+import com.yxh.ryt.fragment.ChuangZuoXiangQingTab04Fragment;
 import com.yxh.ryt.fragment.RongZiXiangQingTab01Fragment;
 import com.yxh.ryt.fragment.RongZiXiangQingTab02Fragment;
 import com.yxh.ryt.fragment.RongZiXiangQingTab03Fragment;
 import com.yxh.ryt.fragment.RongZiXiangQingTab04Fragment;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.Artwork;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -53,7 +43,7 @@ import okhttp3.Call;
 import wuhj.com.mylibrary.StickHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
-public class RongZiXQActivity extends BaseActivity {
+public class ChuangZuoXQActivity extends BaseActivity {
     @Bind(R.id.cl_01_tv_prc)
     ImageView cl01TvPrc;
     @Bind(R.id.cl_01_tv_title)
@@ -71,7 +61,7 @@ public class RongZiXQActivity extends BaseActivity {
     @Bind(R.id.cl_01_tv_brief)
     TextView cl01TvBrief;
     public static void openActivity(Activity activity) {
-        activity.startActivity(new Intent(activity, RongZiXQActivity.class));
+        activity.startActivity(new Intent(activity, ChuangZuoXQActivity.class));
     }
     ArrayList<Fragment> mFragmentList;
     ViewPager mViewPager;
@@ -81,7 +71,7 @@ public class RongZiXQActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.rongzi_xiangqing);
+        setContentView(R.layout.chuangzuo_xiangqing);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         Intent intent = getIntent();
@@ -90,10 +80,10 @@ public class RongZiXQActivity extends BaseActivity {
         StickHeaderLayout shl_root = (StickHeaderLayout) findViewById(R.id.shl_root);
         manager = new StickHeaderViewPagerManager(shl_root, mViewPager);
         mFragmentList = new ArrayList<Fragment>();
-        mFragmentList.add(RongZiXiangQingTab01Fragment.newInstance(manager, 0, false));
-        mFragmentList.add(RongZiXiangQingTab02Fragment.newInstance(manager, 1, false));
-        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 2, false));
-        mFragmentList.add(new RongZiXiangQingTab04Fragment(manager, 3, false));
+        mFragmentList.add(ChuangZuoXiangQingTab01Fragment.newInstance(manager, 0, false));
+        mFragmentList.add(ChuangZuoXiangQingTab02Fragment.newInstance(manager, 1, false));
+        mFragmentList.add(ChuangZuoXiangQingTab03Fragment.newInstance(manager, 2, false));
+        mFragmentList.add(ChuangZuoXiangQingTab04Fragment.newInstance(manager, 3, false));
         RongZiXqTabPageIndicatorAdapter pagerAdapter = new RongZiXqTabPageIndicatorAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(pagerAdapter);

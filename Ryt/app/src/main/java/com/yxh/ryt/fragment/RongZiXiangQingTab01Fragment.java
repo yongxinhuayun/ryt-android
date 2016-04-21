@@ -83,6 +83,7 @@ public class RongZiXiangQingTab01Fragment extends StickHeaderBaseFragment {
             for (ArtworkAttachment artworkAttachment:artworkAttachments){
                 ImageView imageView=new ImageView(AppApplication.getSingleContext());
                 LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                if (count>0)layoutParams.setMargins(0,10,0,0);
                 imageView.setLayoutParams(layoutParams);
                 llImages.addView(imageView);
                 AppApplication.displayImage(artworkAttachment.getFileName(), imageView);
