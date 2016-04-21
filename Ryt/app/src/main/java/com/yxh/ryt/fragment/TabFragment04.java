@@ -1,11 +1,11 @@
 package com.yxh.ryt.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,20 +57,24 @@ public class TabFragment04 extends BaseFragment {
     TextView tvUserHeaderJeValue03;
     @Bind(R.id.tv_user_header_je_txt_03)
     TextView tvUserHeaderJeTxt03;
-    @Bind({ R.id.ll_header_gz, R.id.ll_header_fs, R.id.ll_header_qm ,R.id.ll_header_value})
+    @Bind({R.id.ll_header_gz, R.id.ll_header_fs, R.id.ll_header_qm, R.id.ll_header_value})
     List<LinearLayout> linearLayouts;
     static final ButterKnife.Setter<View, Integer> ISVISIBLE = new ButterKnife.Setter<View, Integer>() {
-        @Override public void set(View view, Integer value, int index) {
-            if(value==0){//显示
+        @Override
+        public void set(View view, Integer value, int index) {
+            if (value == 0) {//显示
                 view.setVisibility(View.VISIBLE);
                 return;
             }
-            if(value==1){//隐藏
+            if (value == 1) {//隐藏
                 view.setVisibility(View.GONE);
                 return;
             }
         }
     };
+    @Bind(R.id.btn_lf)
+    TextView btnLf;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,6 +82,18 @@ public class TabFragment04 extends BaseFragment {
         ButterKnife.bind(this, view);
         return view;
     }
+    //左上角按钮点击事件
+    @OnClick(R.id.ll_user_header)
+    void userHeaderClick(){
+        if (AppApplication.gUser == null) {
+            LoginActivity.openActivity(getActivity());
+            return;
+        }else{
+            UserPtIndexActivity.openActivity(getActivity());
+            return;
+        }
+    }
+    //我的主页点击事件
     @OnClick(R.id.rl_user_index)
     void userIndexClick() {
         if (AppApplication.gUser == null) {
@@ -98,16 +114,29 @@ public class TabFragment04 extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (AppApplication.gUser == null) {
+            btnLf.setVisibility(View.GONE);
             ButterKnife.apply(linearLayouts, ISVISIBLE, 1);
-        }else{
+            return;
+        } else {
             ButterKnife.apply(linearLayouts, ISVISIBLE, 0);
+            setViewValues();
+            btnLf.setVisibility(View.VISIBLE);
+        }
+        if (0 == AppApplication.gUser.getUtype()) {
+            btnLf.setText("申请为艺术家");
+            return;
+        }
+        if (10000 == AppApplication.gUser.getUtype()) {
+            btnLf.setText("发起项目");
+            return;
         }
     }
 
     //登录成功设置控件元素的值
-    private void setViewValues(){
+    private void setViewValues() {
 
     }
+
     @Override
     protected void lazyLoad() {
 
