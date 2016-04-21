@@ -1,5 +1,6 @@
 package com.yxh.ryt.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,6 +41,9 @@ import okhttp3.Call;
  * Created by 吴洪杰 on 2016/4/11.
  */
 public class PublicProject01Activity extends  BaseActivity {
+    public static void openActivity(Activity activity) {
+        activity.startActivity(new Intent(activity, PublicProject01Activity.class));
+    }
     public final int REQUEST_IMAGE=0;
     @Bind(R.id.btn_next)
     TextView btnNext;

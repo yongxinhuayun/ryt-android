@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.LoginActivity;
+import com.yxh.ryt.activity.PublicProject01Activity;
 import com.yxh.ryt.activity.UserEditZiLiaoActivity;
 import com.yxh.ryt.activity.UserPtIndexActivity;
 import com.yxh.ryt.activity.UserSettingActivity;
@@ -101,6 +102,18 @@ public class TabFragment04 extends BaseFragment {
     @OnClick(R.id.user_setting)
     void userSettingClick() {
         UserSettingActivity.openActivity(getActivity());
+    }
+    //左上角点击事件
+    @OnClick(R.id.btn_lf)
+    void btnLfClick() {
+        if (0 == AppApplication.gUser.getUtype()) {
+            UserPtIndexActivity.openActivity(getActivity());
+            return;
+        }
+        if (10000 == AppApplication.gUser.getUtype()) {
+            PublicProject01Activity.openActivity(getActivity());
+            return;
+        }
     }
     //意见点击事件
     @OnClick(R.id.rl_yijian)
