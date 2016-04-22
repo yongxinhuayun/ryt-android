@@ -80,7 +80,7 @@ public class TabFragment03 extends  BaseFragment {
             public void onResponse(Map<String, Object> response) {
 
                 if (response.get("resultCode").equals("0")){
-                    if ( response.get("noticeNum").equals("0")){
+                    if ( ((Double) response.get("noticeNum")) !=0){
                         bv = new BadgeView(getActivity(),circleNotification);
                         bv.setText(response.get("noticeNum")+"");
                         bv.setTextColor(Color.WHITE);
@@ -91,7 +91,7 @@ public class TabFragment03 extends  BaseFragment {
                         bv = new BadgeView(getActivity(),circleNotification);
                         bv.setVisibility(View.GONE);
                     }
-                    if ( response.get("commentNum").equals("0")){
+                    if (((Double) response.get("commentNum")) !=0){
                         bv = new BadgeView(getActivity(),circleComment);
                         bv.setText(response.get("commentNum")+"");
                         bv.setTextColor(Color.WHITE);
@@ -102,7 +102,7 @@ public class TabFragment03 extends  BaseFragment {
                         bv = new BadgeView(getActivity(),circleComment);
                         bv.setVisibility(View.GONE);
                     }
-                    if (response.get("messageNum").equals("0")){
+                    if (((Double) response.get("messageNum")) !=0){
                         bv = new BadgeView(getActivity(),circlePrivateLetter);
                         bv.setText(response.get("messageNum")+"");
                         bv.setTextColor(Color.WHITE);
