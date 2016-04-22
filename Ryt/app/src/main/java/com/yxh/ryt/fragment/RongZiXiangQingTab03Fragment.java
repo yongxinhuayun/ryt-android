@@ -91,6 +91,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment implem
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         artCommentDatas=new ArrayList<>();
+        Log.d("oncreateView", "onCreateonCreateonCreateonCreateonCreateonCreateonCreateonCreate");
     }
 
     @Override
@@ -101,12 +102,14 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment implem
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
         setAdapter();
         onScroll();
+        Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        artCommentDatas.clear();
         LoadData(true, currentPage);
     }
 
@@ -164,6 +167,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment implem
         intent.putExtra("flag", 0);
         intent.putExtra("messageId","");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         AppApplication.getSingleContext().startActivity(intent);
     }
 
@@ -294,6 +298,6 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment implem
     }
     @Override
     protected void lazyLoad() {
-
+        Log.d("oncreateView","lazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoad");
     }
 }
