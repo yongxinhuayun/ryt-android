@@ -79,9 +79,13 @@ public class ProjectCommentReply extends BaseActivity {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId",artworkId+"");
         paramsMap.put("currentUserId", "ieatht97wfw30hfd");
-        paramsMap.put("messageId", messageId);
+        if(!"".equals(messageId)){
+            paramsMap.put("messageId", messageId);
+        }
         paramsMap.put("content", content.getText().toString());
-        paramsMap.put("fatherCommentId", fatherCommentId);
+        if ( !"".equals(fatherCommentId)){
+            paramsMap.put("fatherCommentId", fatherCommentId);
+        }
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
@@ -95,10 +99,11 @@ public class ProjectCommentReply extends BaseActivity {
                 e.printStackTrace();
                 System.out.println("失败了");
             }
+
             @Override
             public void onResponse(Map<String, Object> response) {
-                if (response.get("resultCode").equals("0")){
-                    ToastUtil.show(ProjectCommentReply.this,"评论回复成功", Toast.LENGTH_SHORT);
+                if (response.get("resultCode").equals("0")) {
+                    ToastUtil.show(ProjectCommentReply.this, "评论回复成功", Toast.LENGTH_SHORT);
                     ProjectCommentReply.this.finish();
                 }
             }
