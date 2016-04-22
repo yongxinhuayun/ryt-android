@@ -99,6 +99,7 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment imp
     @Override
     public void onResume() {
         super.onResume();
+        artCommentDatas.clear();
         LoadData(true, currentPage);
     }
 
@@ -160,7 +161,6 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment imp
     }
 
     public class ShuoMClickableSpan extends ClickableSpan {
-
         String string;
         Context context;
         public ShuoMClickableSpan(String str,Context context){
