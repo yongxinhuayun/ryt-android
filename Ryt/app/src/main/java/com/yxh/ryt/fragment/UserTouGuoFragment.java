@@ -85,7 +85,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		TextView tvTotal = (TextView) view.findViewById(R.id.fit_tv);
 		TextView tvNoData = (TextView) view.findViewById(R.id.fit_tv_noData);
 		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
-		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
+		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.fit_placehoder);
 		setAdapter();
 		onScroll();
 		Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
