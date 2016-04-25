@@ -152,7 +152,7 @@
             android:gravity="center"
             android:textColor="#B3B3B3"
             android:textSize="14sp"
-            android:background="@mipmap/bukedianjianniu"
+            android:background="@mipmap/anniu_bukedianji"
             android:text="注册" />
         <TextView
             android:layout_below="@id/rg_bt_register"
