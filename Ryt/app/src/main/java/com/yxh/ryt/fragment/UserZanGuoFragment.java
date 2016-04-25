@@ -74,7 +74,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		lstv = (ListView)view.findViewById(R.id.fiz_lstv);
 		TextView tvNoData = (TextView) view.findViewById(R.id.fiz_tv_noData);
 		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
-		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
+		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.flz_placehoder);
 		setAdapter();
 		onScroll();
 		Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
