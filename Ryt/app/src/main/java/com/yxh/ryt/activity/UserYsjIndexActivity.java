@@ -17,6 +17,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.RongZiXqTabPageIndicatorAdapter;
+import com.yxh.ryt.adapter.UserPtTabPageIndicatorAdapter;
 import com.yxh.ryt.adapter.UserYsjTabPageIndicatorAdapter;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
@@ -101,18 +102,20 @@ public class UserYsjIndexActivity extends BaseActivity {
         setContentView(R.layout.user_ysj_index);
         ButterKnife.bind(this);
         mViewPager = (ViewPager) findViewById(R.id.user_ysj_pager);
+        StickHeaderLayout root = (StickHeaderLayout) findViewById(R.id.user_ysj_root);
+        manager = new StickHeaderViewPagerManager(root, mViewPager);
         mFragmentList = new ArrayList<Fragment>();
-        mFragmentList.add(new RongZiItemFragment());
-        mFragmentList.add(new RongZiItemFragment());
-        mFragmentList.add(new RongZiItemFragment());
-        mFragmentList.add(new RongZiItemFragment());
-        mFragmentList.add(new RongZiItemFragment());
-        UserYsjTabPageIndicatorAdapter pagerAdapter = new UserYsjTabPageIndicatorAdapter(getSupportFragmentManager(), mFragmentList);
         mFragmentList.add(RongZiXiangQingTab01Fragment.newInstance(manager, 0, false));
+        mFragmentList.add(RongZiXiangQingTab02Fragment.newInstance(manager, 1, false));
+        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 2, false));
+        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 3, false));
+        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 4, false));
+        UserYsjTabPageIndicatorAdapter pagerAdapter = new UserYsjTabPageIndicatorAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setOffscreenPageLimit(5);
         mViewPager.setAdapter(pagerAdapter);
         TabPageIndicator indicator = (TabPageIndicator) findViewById(R.id.user_ysj_indicator);
         indicator.setViewPager(mViewPager);
+
     }
     @Override
     public void onResume() {
