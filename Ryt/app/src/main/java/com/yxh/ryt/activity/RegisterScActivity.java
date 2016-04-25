@@ -111,10 +111,10 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     private void dianji(boolean flag, boolean isNickyname, int sex) {
         if (flag && isNickyname && sex>0){
             commit.setEnabled(true);
-            commit.setBackgroundResource(R.mipmap.wangjimima_anniu);
+            commit.setBackgroundResource(R.mipmap.anniu_kedianji);
         }else {
             commit.setEnabled(false);
-            commit.setBackgroundResource(R.mipmap.bukedianjianniu);
+            commit.setBackgroundResource(R.mipmap.anniu_bukedianji);
         }
     }
 
