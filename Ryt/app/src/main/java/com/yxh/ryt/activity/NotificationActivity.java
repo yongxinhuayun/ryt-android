@@ -46,6 +46,11 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
         notificationDatas=new ArrayList<Notification>();
         ntflistview.setPageSize(Constants.pageSize);
         initView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         LoadData(AutoListView.REFRESH, currentPage);
     }
 
