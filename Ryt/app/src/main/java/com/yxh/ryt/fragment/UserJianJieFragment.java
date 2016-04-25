@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
+import wuhj.com.mylibrary.PlaceHoderHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
 
@@ -85,6 +86,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment{
 		View contextView = inflater.inflate(R.layout.fragment_user_edit, container, false);
 		TextView content = (TextView) contextView.findViewById(R.id.fue_tv_content);
 		TextView edit = (TextView) contextView.findViewById(R.id.fue_bt_edit);
+		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) contextView.findViewById(R.id.fue_placehoder);
 		return contextView;
 	}
 
