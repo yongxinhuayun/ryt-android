@@ -55,7 +55,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 /**
  * Created by sj on 15/11/25.
  */
-public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment implements AdapterView.OnItemClickListener {
+public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
     private ListView mListview;
     private CommonAdapter<ArtworkComment> artCommentAdapter;
     private List<ArtworkComment> artCommentDatas;
@@ -91,6 +91,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment implem
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         artCommentDatas=new ArrayList<>();
+        Log.d("oncreateView", "onCreateonCreateonCreateonCreateonCreateonCreateonCreateonCreate");
     }
 
     @Override
@@ -101,13 +102,15 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment implem
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
         setAdapter();
         onScroll();
+        Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
+        artCommentDatas.clear();
+        LoadData(true, currentPage);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        LoadData(true, currentPage);
     }
 
     private void setAdapter() {
@@ -115,6 +118,20 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment implem
             @Override
             public void convert(ViewHolder helper, final ArtworkComment item) {
                 TextView user=helper.getView(R.id.pdctci_tv_nickName);
+                LinearLayout linearLayout=helper.getView(R.id.pdctci_ll_all);
+                linearLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
+                        intent.putExtra("name", item.getCreator().getName());
+                        intent.putExtra("fatherCommentId",item.getCreator().getId());
+                        intent.putExtra("artworkId",item.getId());
+                        intent.putExtra("flag", 0);
+                        intent.putExtra("messageId","");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        AppApplication.getSingleContext().startActivity(intent);
+                    }
+                });
                 user.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -152,20 +169,8 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment implem
         loading.setVisibility(View.GONE);
         loadFull.setVisibility(View.GONE);
         noData.setVisibility(View.GONE);
-        mListview.setOnItemClickListener(this);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent=new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
-        intent.putExtra("name", artCommentDatas.get(position).getCreator().getName());
-        intent.putExtra("fatherCommentId",artCommentDatas.get(position).getCreator().getId());
-        intent.putExtra("artworkId",artCommentDatas.get(position).getId());
-        intent.putExtra("flag", 0);
-        intent.putExtra("messageId","");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        AppApplication.getSingleContext().startActivity(intent);
-    }
 
     public class ShuoMClickableSpan extends ClickableSpan {
 
@@ -294,6 +299,6 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment implem
     }
     @Override
     protected void lazyLoad() {
-
+        Log.d("oncreateView","lazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoad");
     }
 }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -47,7 +48,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 /**
  * Created by sj on 15/11/25.
  */
-public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment implements AdapterView.OnItemClickListener {
+public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
     private ListView mListview;
     private CommonAdapter<ArtworkComment> artCommentAdapter;
     private List<ArtworkComment> artCommentDatas;
@@ -93,19 +94,35 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment imp
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
         setAdapter();
         onScroll();
+        artCommentDatas.clear();
+        LoadData(true, currentPage);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        LoadData(true, currentPage);
+
     }
 
     private void setAdapter() {
         artCommentAdapter=new CommonAdapter<ArtworkComment>(getActivity(),artCommentDatas,R.layout.pdonclicktab_comment_item) {
             @Override
             public void convert(ViewHolder helper, final ArtworkComment item) {
+                LinearLayout linearLayout=helper.getView(R.id.pdctci_ll_all);
+                linearLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
+                        intent.putExtra("name", item.getCreator().getName());
+                        intent.putExtra("fatherCommentId",item.getCreator().getId());
+                        intent.putExtra("artworkId", item.getId());
+                        intent.putExtra("flag", 0);
+                        intent.putExtra("messageId", "");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        AppApplication.getSingleContext().startActivity(intent);
+                    }
+                });
                 TextView user=helper.getView(R.id.pdctci_tv_nickName);
                 user.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -144,23 +161,10 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment imp
         loading.setVisibility(View.GONE);
         loadFull.setVisibility(View.GONE);
         noData.setVisibility(View.GONE);
-        mListview.setOnItemClickListener(this);
-    }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent=new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
-        intent.putExtra("name", artCommentDatas.get(position).getCreator().getName());
-        intent.putExtra("fatherCommentId",artCommentDatas.get(position).getCreator().getId());
-        intent.putExtra("artworkId", artCommentDatas.get(position).getId());
-        intent.putExtra("flag", 0);
-        intent.putExtra("messageId", "");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        AppApplication.getSingleContext().startActivity(intent);
     }
 
     public class ShuoMClickableSpan extends ClickableSpan {
-
         String string;
         Context context;
         public ShuoMClickableSpan(String str,Context context){

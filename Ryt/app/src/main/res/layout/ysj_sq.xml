@@ -253,7 +253,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#B3B3B3"
                 android:textSize="18sp"
-                android:background="@mipmap/bukedianjianniu"
+                android:background="@mipmap/anniu_bukedianji"
                 android:text="确认提交"
                 android:gravity="center"/>
             <LinearLayout

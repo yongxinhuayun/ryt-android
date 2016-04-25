@@ -162,10 +162,10 @@ public class ForgetPwdActivity extends BaseActivity {
     private void dianji(boolean isPhone, boolean isVcode, boolean isPassword){
         if (isPassword && isPhone && isVcode){
             commit.setEnabled(true);
-            commit.setBackgroundResource(R.mipmap.wangjimima_anniu);
+            commit.setBackgroundResource(R.mipmap.anniu_kedianji);
         }else {
             commit.setEnabled(false);
-            commit.setBackgroundResource(R.mipmap.bukedianjianniu);
+            commit.setBackgroundResource(R.mipmap.anniu_bukedianji);
         }
     }
     private void event() {
