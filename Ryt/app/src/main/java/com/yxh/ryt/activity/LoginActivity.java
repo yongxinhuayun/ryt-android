@@ -120,10 +120,10 @@ public class LoginActivity extends BaseActivity {
     private void dianji(boolean isPhone, boolean isPassword){
         if (isPassword && isPhone){
             btnLogin.setEnabled(true);
-            btnLogin.setBackgroundResource(R.mipmap.wangjimima_anniu);
+            btnLogin.setBackgroundResource(R.mipmap.anniu_kedianji);
         }else {
             btnLogin.setEnabled(false);
-            btnLogin.setBackgroundResource(R.mipmap.bukedianjianniu);
+            btnLogin.setBackgroundResource(R.mipmap.anniu_bukedianji);
         }
     }
     /*返回按钮事件触发*/
