@@ -143,7 +143,7 @@
         android:layout_height="wrap_content"
         android:textColor="#B3B3B3"
         android:textSize="18sp"
-        android:background="@mipmap/denglu_anniu"
+        android:background="@mipmap/anniu_kedianji"
         android:text="退出"
         android:gravity="center"/>
 </LinearLayout>
