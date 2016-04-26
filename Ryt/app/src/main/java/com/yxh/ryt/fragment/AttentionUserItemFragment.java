@@ -2,6 +2,7 @@ package com.yxh.ryt.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ import java.util.Map;
 import okhttp3.Call;
 
 
-public class AttentionItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
+public class AttentionUserItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener {
 	private AutoListView lstv;
 	private CommonAdapter<ArtUserFollowed> attentionCommonAdapter;
@@ -44,8 +45,10 @@ public class AttentionItemFragment extends BaseFragment implements AutoListView.
 	}
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
+		paramsMap.put("userId","ieatht97wfw30hfd");
+		paramsMap.put("type","2");
 		paramsMap.put("pageSize", Constants.pageSize + "");
-		paramsMap.put("pageNum", pageNum + "");
+		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -53,7 +56,7 @@ public class AttentionItemFragment extends BaseFragment implements AutoListView.
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "investorIndex.do", paramsMap, new AttentionListCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "userFollowed.do", paramsMap, new AttentionListCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
@@ -62,6 +65,7 @@ public class AttentionItemFragment extends BaseFragment implements AutoListView.
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
+				Log.d("AttentionUserItemFragment",response.toString());
 				if (state == AutoListView.REFRESH) {
 					lstv.onRefreshComplete();
 					attentionDatas.clear();
@@ -104,6 +108,7 @@ public class AttentionItemFragment extends BaseFragment implements AutoListView.
 		attentionCommonAdapter=new CommonAdapter<ArtUserFollowed>(AppApplication.getSingleContext(),attentionDatas,R.layout.fragment_attention_item) {
 			@Override
 			public void convert(ViewHolder helper, ArtUserFollowed item) {
+				helper.setText(R.id.fai_tv_name,item.getFollower().getName());
 
 			}
 		};
