@@ -22,6 +22,7 @@ import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.ArtUserFollowed;
+import com.yxh.ryt.vo.FollowUserUtil;
 import com.yxh.ryt.vo.RongZi;
 
 import java.util.ArrayList;
@@ -35,16 +36,18 @@ import okhttp3.Call;
 public class AttentionUserItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener {
 	private AutoListView lstv;
-	private CommonAdapter<ArtUserFollowed> attentionCommonAdapter;
-	private List<ArtUserFollowed> attentionDatas;
+	private CommonAdapter<FollowUserUtil> attentionCommonAdapter;
+	private List<FollowUserUtil> attentionDatas;
 	private int currentPage=1;
+	private String flag="1";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		attentionDatas=new ArrayList<ArtUserFollowed>();
+		attentionDatas=new ArrayList<FollowUserUtil>();
 	}
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
+
 		paramsMap.put("userId","ieatht97wfw30hfd");
 		paramsMap.put("type","2");
 		paramsMap.put("pageSize", Constants.pageSize + "");
@@ -53,6 +56,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
 			paramsMap.put("signmsg", AppApplication.signmsg);
+			paramsMap.put("flag",flag);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -69,7 +73,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 				if (state == AutoListView.REFRESH) {
 					lstv.onRefreshComplete();
 					attentionDatas.clear();
-					List<ArtUserFollowed> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<ArtUserFollowed>>() {
+					List<FollowUserUtil> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<FollowUserUtil>>() {
 					}.getType());
 					if (null == objectList || objectList.size() == 0) {
 						lstv.setResultSize(0);
@@ -83,7 +87,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 				}
 				if (state == AutoListView.LOAD) {
 					lstv.onLoadComplete();
-					List<ArtUserFollowed> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<ArtUserFollowed>>() {
+					List<FollowUserUtil> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<FollowUserUtil>>() {
 					}.getType());
 					if (null == objectList || objectList.size() == 0) {
 						lstv.setResultSize(1);
@@ -105,11 +109,12 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
 		lstv.setPageSize(Constants.pageSize);
-		attentionCommonAdapter=new CommonAdapter<ArtUserFollowed>(AppApplication.getSingleContext(),attentionDatas,R.layout.fragment_attention_item) {
+		attentionCommonAdapter=new CommonAdapter<FollowUserUtil>(AppApplication.getSingleContext(),attentionDatas,R.layout.fragment_attention_item) {
 			@Override
-			public void convert(ViewHolder helper, ArtUserFollowed item) {
-				helper.setText(R.id.fai_tv_name,item.getFollower().getName());
-
+			public void convert(ViewHolder helper, FollowUserUtil item) {
+				helper.setText(R.id.fai_tv_name,item.getArtUserFollowed().getFollower().getName());
+				helper.setText(R.id.fai_tv_brief,item.getUserBrief().getContent());
+				/*helper.setImageByUrl(R.id.fai_iv_icon, item.getUserBrief().g);*/
 			}
 		};
 		lstv.setAdapter(attentionCommonAdapter);
