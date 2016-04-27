@@ -144,7 +144,7 @@ public class TabFragment03 extends  BaseFragment {
             }
         });
     }
-    @OnClick({ R.id.ft3_ll_notification, R.id.ft3_ll_comment, R.id.ft3_ll_privateLetter,R.id.tab03_ib_back })
+    @OnClick({ R.id.ft3_ll_notification, R.id.ft3_ll_comment, R.id.ft3_ll_privateLetter })
     public void onClick(View view){
         switch (view.getId()){
             case R.id.ft3_ll_notification:
@@ -158,9 +158,6 @@ public class TabFragment03 extends  BaseFragment {
             case R.id.ft3_ll_privateLetter:
                 updateWatchedStatus("message", PrivateLetterActivity.class);
                 bvPrivateLetter.setVisibility(View.GONE);
-                break;
-            case R.id.tab03_ib_back:
-                getActivity().finish();
                 break;
         }
     }

@@ -15,6 +15,7 @@ import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.PublicProject01Activity;
 import com.yxh.ryt.activity.UserEditZiLiaoActivity;
 import com.yxh.ryt.activity.UserPtIndexActivity;
+import com.yxh.ryt.activity.UserQianBaoActivity;
 import com.yxh.ryt.activity.UserSettingActivity;
 import com.yxh.ryt.activity.UserYiJianActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
@@ -78,6 +79,8 @@ public class TabFragment04 extends BaseFragment {
     TextView btnLf;
     @Bind(R.id.user_setting)
     RelativeLayout userSetting;
+    @Bind(R.id.rl_qb)
+    RelativeLayout rlQb;
     @Bind(R.id.rl_yijian)
     RelativeLayout userYiJian;
     @Nullable
@@ -103,6 +106,11 @@ public class TabFragment04 extends BaseFragment {
     @OnClick(R.id.user_setting)
     void userSettingClick() {
         UserSettingActivity.openActivity(getActivity());
+    }
+    //钱包点击事件
+    @OnClick(R.id.rl_qb)
+    void userQbClick() {
+        UserQianBaoActivity.openActivity(getActivity());
     }
     //左上角点击事件
     @OnClick(R.id.btn_lf)
