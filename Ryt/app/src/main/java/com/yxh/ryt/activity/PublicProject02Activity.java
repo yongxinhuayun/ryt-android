@@ -145,36 +145,36 @@ public class PublicProject02Activity extends  BaseActivity {
         });
     }
     public class GridAdapter extends BaseAdapter {
-        private LayoutInflater inflater;
-        private int selectedPosition = -1;
-        private boolean shape;
+            private LayoutInflater inflater;
+            private int selectedPosition = -1;
+            private boolean shape;
 
-        public boolean isShape() {
-            return shape;
-        }
-
-        public void setShape(boolean shape) {
-            this.shape = shape;
-        }
-
-        public GridAdapter(Context context) {
-            inflater = LayoutInflater.from(context);
-        }
-
-        public void update() {
-            loading();
-        }
-
-        public int getCount() {
-            if(Bimp.tempSelectBitmap.size() == 9){
-                return 9;
+            public boolean isShape() {
+                return shape;
             }
-            return (Bimp.tempSelectBitmap.size() + 1);
-        }
 
-        public Object getItem(int arg0) {
-            return null;
-        }
+            public void setShape(boolean shape) {
+                this.shape = shape;
+            }
+
+            public GridAdapter(Context context) {
+                inflater = LayoutInflater.from(context);
+            }
+
+            public void update() {
+                loading();
+            }
+
+            public int getCount() {
+                if(Bimp.tempSelectBitmap.size() == 9){
+                    return 9;
+                }
+                return (Bimp.tempSelectBitmap.size() + 1);
+            }
+
+            public Object getItem(int arg0) {
+                return null;
+            }
 
         public long getItemId(int arg0) {
             return 0;

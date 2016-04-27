@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.yxh.ryt.R;
 
 
 public class ViewHolder
@@ -37,9 +38,9 @@ public class ViewHolder
 	        // setTag  
 	        mConvertView.setTag(this); 
 	        DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder();
-//			.showImageOnLoading(R.drawable.ic_launcher)
-//			.showImageForEmptyUri(R.drawable.ic_launcher)
-//			.showImageOnFail(R.drawable.ic_launcher)
+			builder.showImageOnLoading(R.mipmap.default_icon);
+			builder.showImageForEmptyUri(R.mipmap.default_icon);
+			builder.showImageOnFail(R.mipmap.default_icon);
 	        builder.cacheInMemory(true);
 			builder.cacheOnDisk(true);
 			builder.considerExifParams(true);

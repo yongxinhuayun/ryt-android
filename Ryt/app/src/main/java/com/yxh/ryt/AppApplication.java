@@ -52,9 +52,9 @@ public class AppApplication extends Application {
 		JPushInterface.init(this);     		// 初始化 JPush
 		OkHttpUtils.getInstance().setConnectTimeout(10, TimeUnit.SECONDS);
 		DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder();
-//			.showImageOnLoading(R.drawable.ic_launcher)
-//			.showImageForEmptyUri(R.drawable.ic_launcher)
-//			.showImageOnFail(R.drawable.ic_launcher)
+		builder.showImageOnLoading(R.mipmap.default_icon);
+		builder.showImageForEmptyUri(R.mipmap.default_icon);
+		builder.showImageOnFail(R.mipmap.default_icon);
 		builder.cacheInMemory(true);
 		builder.cacheOnDisk(true);
 		builder.considerExifParams(true);
