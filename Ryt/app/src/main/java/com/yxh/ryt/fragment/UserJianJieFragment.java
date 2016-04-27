@@ -67,7 +67,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "investorIndex.do", paramsMap, new RongZiListCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "follow.do", paramsMap, new RongZiListCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
