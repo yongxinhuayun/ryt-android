@@ -162,7 +162,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("artWorkId","qydeyugqqiugd2");
+		paramsMap.put("userId","qydeyugqqiugd2");
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -172,13 +172,12 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkComment.do", paramsMap, new RZCommentCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "my.do", paramsMap, new RZCommentCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
 				System.out.println("444444失败了");
 			}
-
 			@Override
 			public void onResponse(Map<String, Object> response) {
 				System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
@@ -232,7 +231,6 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 						}
 						userZGCommonAdapter.notifyDataSetChanged();
 					}
-
 				}
 			}
 		});
