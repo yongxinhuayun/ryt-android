@@ -16,6 +16,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
@@ -32,7 +38,9 @@ import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.ArtworkComment;
+import com.yxh.ryt.vo.ConvertWork;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,13 +53,14 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
 public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	private ListView lstv;
-	private CommonAdapter<Artwork> userZGCommonAdapter;
-	private List<Artwork> userZGDatas;
+	private CommonAdapter<ConvertWork> userZGCommonAdapter;
+	private List<ConvertWork> userZGDatas;
 	private int currentPage=1;
 	private View footer;
 	private TextView loadFull;
 	private TextView noData;
 	private TextView more;
+	private TextView tvTotal,tvNoData;
 	private ProgressBar loading;
 	private int lastItem;
 	private boolean loadComplete=true;
@@ -76,16 +85,16 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		userZGDatas=new ArrayList<Artwork>();
+		userZGDatas=new ArrayList<ConvertWork>();
 	}
 	@Override
 	public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_listview_touguo, container, false);
-		lstv = (ListView)view.findViewById(R.id.fit_lstv);
-		TextView tvTotal = (TextView) view.findViewById(R.id.fit_tv);
-		TextView tvNoData = (TextView) view.findViewById(R.id.fit_tv_noData);
-		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
+		View view = inflater.inflate(R.layout.fragment_listview_touguo, null);
 		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.fit_placehoder);
+		lstv = (ListView)view.findViewById(R.id.fit_lstv);
+		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
+		tvTotal = (TextView) view.findViewById(R.id.fit_tv);
+		tvNoData = (TextView) view.findViewById(R.id.fit_tv_noData);
 		setAdapter();
 		onScroll();
 		Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
@@ -94,26 +103,15 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		return view;
 	}
 	private void setAdapter() {
-		userZGCommonAdapter=new CommonAdapter<Artwork>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__touguo_item) {
+		userZGCommonAdapter=new CommonAdapter<ConvertWork>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__touguo_item) {
 			@Override
-			public void convert(ViewHolder helper, Artwork item) {
-				/*helper.setText(R.id.cl_01_tv_title,item.getTitle());
-				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
-				helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());
-//				helper.setText(R.id.fli_ll_tv_investGoalMoney,item.getInvestGoalMoney().intValue()+"元");
-				helper.setText(R.id.fli_ll_tv_remainingTime, Utils.timeToFormatTemp("HH时MM分SS秒",item.getInvestEndDatetime()-item.getInvestStartDatetime()));
-//				helper.setText(R.id.fli_ll_tv_investGoalPeople, item.getInvestorsNum() + "");
-				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
-				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
-				if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){
-					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.VISIBLE);
-					helper.setText(R.id.cl_01_tv_zhicheng, item.getAuthor().getMaster().getTitle());
-				}else{
-					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.GONE);
-				}*/
-//				double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-//				helper.setProgress(R.id.progressBar1, (int)(value*100));
-//				helper.setText(R.id.tv_pb_value, (int)(value*100)+"%");
+			public void convert(ViewHolder helper, ConvertWork item) {
+				helper.setImageByUrl(R.id.utf_iv_icon,item.getPicture_url());
+				helper.setText(R.id.utf_tv_proName, item.getTitle());
+				helper.setText(R.id.utf_tv_proStage,AppApplication.map.get(item.getStep()));
+				helper.setText(R.id.utf_tv_money,"项目金额:"+item.getGoalMoney());
+				helper.setText(R.id.utf_tv_name,item.getTruename());
+				helper.setText(R.id.utf_tv_zhicheng,item.getLevel());
 			}
 		};
 		lstv.setAdapter(userZGCommonAdapter);
@@ -182,10 +180,13 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 			public void onResponse(Map<String, Object> response) {
 				System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
 				if ("0".equals(response.get("resultCode"))) {
-					Map<String, Object> object = (Map<String, Object>) response.get("object");
+					Map<String, Object> object = (Map<String, Object>) response.get("pageInfo");
+					tvTotal.setText("投资项目:"+AppApplication.getSingleGson().toJson(((Map<String, Object>) response.get("pageInfo")).get("num"))+"个");
+					System.out.println(AppApplication.getSingleGson().toJson(((Map<String, Object>) response.get("pageInfo")).get("num"))+"投资项目投资项目投资项目投资项目");
 					if (flag) {
-						List<Artwork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<Artwork>>() {
+						List<ConvertWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworks")), new TypeToken<List<ConvertWork>>() {
 						}.getType());
+						System.out.println(commentList+"dudududuuuuuuuuuuuuuuuuuuuuu");
 						if (commentList == null) {
 							more.setVisibility(View.GONE);
 							loading.setVisibility(View.GONE);
@@ -212,7 +213,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 
 						userZGCommonAdapter.notifyDataSetChanged();
 					}else {
-						List<Artwork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<Artwork>>() {
+						List<ConvertWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("pageInfo")), new TypeToken<List<ConvertWork>>() {
 						}.getType());
 						if (commentList == null || commentList.size() < Constants.pageSize) {
 							more.setVisibility(View.GONE);
