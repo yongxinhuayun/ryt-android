@@ -22,6 +22,9 @@ import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.vo.Artwork;
+import com.yxh.ryt.vo.ConvertWork;
+import com.yxh.ryt.vo.MyZan;
+import com.yxh.ryt.vo.PageinfoList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,8 +38,8 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
 public class UserZanGuoFragment extends StickHeaderBaseFragment{
 	private ListView lstv;
-	private CommonAdapter<Artwork> userZGCommonAdapter;
-	private List<Artwork> userZGDatas;
+	private CommonAdapter<PageinfoList> userZGCommonAdapter;
+	private List<PageinfoList> userZGDatas;
 	private int currentPage=1;
 	private View footer;
 	private TextView loadFull;
@@ -66,11 +69,11 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		userZGDatas=new ArrayList<Artwork>();
+		userZGDatas=new ArrayList<PageinfoList>();
 	}
 	@Override
 	public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_listview_zanguo, container, false);
+		View view = inflater.inflate(R.layout.fragment_listview_zanguo, null);
 		lstv = (ListView)view.findViewById(R.id.fiz_lstv);
 		TextView tvNoData = (TextView) view.findViewById(R.id.fiz_tv_noData);
 		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
@@ -83,26 +86,15 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		return view;
 	}
 	private void setAdapter() {
-		userZGCommonAdapter=new CommonAdapter<Artwork>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__touguo_item) {
+		userZGCommonAdapter=new CommonAdapter<PageinfoList>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__touguo_item) {
 			@Override
-			public void convert(ViewHolder helper, Artwork item) {
-				/*helper.setText(R.id.cl_01_tv_title,item.getTitle());
-				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
-				helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());
-//				helper.setText(R.id.fli_ll_tv_investGoalMoney,item.getInvestGoalMoney().intValue()+"元");
-				helper.setText(R.id.fli_ll_tv_remainingTime, Utils.timeToFormatTemp("HH时MM分SS秒",item.getInvestEndDatetime()-item.getInvestStartDatetime()));
-//				helper.setText(R.id.fli_ll_tv_investGoalPeople, item.getInvestorsNum() + "");
-				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
-				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
-				if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){
-					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.VISIBLE);
-					helper.setText(R.id.cl_01_tv_zhicheng, item.getAuthor().getMaster().getTitle());
-				}else{
-					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.GONE);
-				}*/
-//				double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-//				helper.setProgress(R.id.progressBar1, (int)(value*100));
-//				helper.setText(R.id.tv_pb_value, (int)(value*100)+"%");
+			public void convert(ViewHolder helper, PageinfoList item) {
+				helper.setImageByUrl(R.id.utf_iv_icon, item.getArtwork().getPicture_url());
+				helper.setText(R.id.utf_tv_proName, item.getArtwork().getTitle());
+				helper.setText(R.id.utf_tv_proStage,AppApplication.map.get(item.getArtwork().getStep()));
+				helper.setText(R.id.utf_tv_money,"项目金额:"+item.getArtwork().getInvestGoalMoney());
+				helper.setText(R.id.utf_tv_name,item.getArtwork().getAuthor().getName());
+				/*helper.setText(R.id.utf_tv_zhicheng,item.getAuther().getStatus());*/
 			}
 		};
 		lstv.setAdapter(userZGCommonAdapter);
@@ -151,7 +143,8 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("artWorkId","qydeyugqqiugd2");
+		paramsMap.put("userId","ieatht97wfw30hfd");
+		paramsMap.put("type","1");
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -161,20 +154,19 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkComment.do", paramsMap, new RZCommentCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "followed.do", paramsMap, new RZCommentCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
 				System.out.println("444444失败了");
 			}
-
 			@Override
 			public void onResponse(Map<String, Object> response) {
 				System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
 				if ("0".equals(response.get("resultCode"))) {
-					Map<String, Object> object = (Map<String, Object>) response.get("object");
+					System.out.println(response.get("resultCode")+"dudududuuuuuuuuuuuuuuuuuuuuu");
 					if (flag) {
-						List<Artwork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<Artwork>>() {
+						List<PageinfoList> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<PageinfoList>>() {
 						}.getType());
 						if (commentList == null) {
 							more.setVisibility(View.GONE);
@@ -202,7 +194,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 
 						userZGCommonAdapter.notifyDataSetChanged();
 					}else {
-						List<Artwork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<Artwork>>() {
+						List<PageinfoList> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<PageinfoList>>() {
 						}.getType());
 						if (commentList == null || commentList.size() < Constants.pageSize) {
 							more.setVisibility(View.GONE);
