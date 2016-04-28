@@ -21,7 +21,7 @@ public class Smsobserver extends ContentObserver {
     public void getSmsFromPhone() {
         cursor = activity.managedQuery(Uri.parse("content://sms/inbox"),
                 new String[] { "_id", "address", "read", "body" }, "address=? and read=?",
-                new String[] {"10690736484207", "0" }, "_id desc");
+                new String[] {"10690736060397", "0" }, "_id desc");
         Log.d("---------",cursor.getCount()+"");
         // 按短信id排序，如果按date排序的话，修改手机时间后，读取的短信就不准了
         if (cursor != null && cursor.getCount() > 0) {
@@ -31,11 +31,12 @@ public class Smsobserver extends ContentObserver {
                 if (i==cursor.getCount()) {
                     String smsbody = cursor
                             .getString(cursor.getColumnIndex("body"));
-                    String regEx = "(?<!\\d)\\d{4}(?!\\d)";
+                    String regEx = "\\d{6}";
                     Pattern p = Pattern.compile(regEx);
                     Matcher m = p.matcher(smsbody.toString());
                     while (m.find()) {
                         String smsContent = m.group();
+                        System.out.println(smsContent+"================");
                         callBack.response(smsContent);
                     }
                     return;

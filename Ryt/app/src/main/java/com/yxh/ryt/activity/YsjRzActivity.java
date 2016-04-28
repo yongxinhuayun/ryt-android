@@ -132,7 +132,7 @@ public class YsjRzActivity extends BaseActivity {
         paramsMap.put("province","");
         paramsMap.put("artCategory","");
         paramsMap.put("titleCertificate","");
-        paramsMap.put("userId","in9xyax5cagsn8g7");
+        paramsMap.put("userId",AppApplication.gUser.getId());
         paramsMap.put("paramType","0");
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
         try {

@@ -55,7 +55,17 @@ public class AppApplication extends Application {
 		context=this;
 		editTextValidator=new EditTextValidator(this);
 		ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
+		gson = new GsonBuilder().
+				registerTypeAdapter(Double.class, new JsonSerializer<Double>() {
 
+					@Override
+					public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
+						if (src == src.longValue()){
+							return new JsonPrimitive(src.longValue());
+						}
+						return new JsonPrimitive(src);
+					}
+				}).create();
 		JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
 		JPushInterface.init(this);     		// 初始化 JPush
 		OkHttpUtils.getInstance().setConnectTimeout(10, TimeUnit.SECONDS);
@@ -83,22 +93,22 @@ public class AppApplication extends Application {
 		map.put("10","融资待审核");
 		map.put("11","融资审核中");
 		map.put("12","融资审核通过");
-		map.put("13","融资审核未通过,已驳回");
+		map.put("13", "融资审核未通过,已驳回");
 		map.put("14","融资中");
 		map.put("15","融资完成");
-		map.put("20","创作前");
-		map.put("21","创作中");
-		map.put("22","创作延时");
-		map.put("23","创作完成待审核");
-		map.put("24","创作完成审核中");
-		map.put("25","创作完成被驳回");
-		map.put("30","拍卖前");
-		map.put("31","拍卖中");
-		map.put("32","拍卖结束");
-		map.put("33","流拍");
-		map.put("34","待支付尾款");
+		map.put("20", "创作前");
+		map.put("21", "创作中");
+		map.put("22", "创作延时");
+		map.put("23", "创作完成待审核");
+		map.put("24", "创作完成审核中");
+		map.put("25", "创作完成被驳回");
+		map.put("30", "拍卖前");
+		map.put("31", "拍卖中");
+		map.put("32", "拍卖结束");
+		map.put("33", "流拍");
+		map.put("34", "待支付尾款");
 		map.put("35","待发放");
-		map.put("36","已发放");
+		map.put("36", "已发放");
 	}
 
 	public static void displayImage(String url,ImageView view){
@@ -110,17 +120,6 @@ public class AppApplication extends Application {
 	}
 	//获取全局Gson
 	public static Gson getSingleGson(){
-		Gson gson = new GsonBuilder().
-				registerTypeAdapter(Double.class, new JsonSerializer<Double>() {
-
-					@Override
-					public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
-						if (src == src.longValue()){
-							return new JsonPrimitive(src.longValue());
-						}
-						return new JsonPrimitive(src);
-					}
-				}).create();
 		return  gson;
 	}
 	//获取全局Gson

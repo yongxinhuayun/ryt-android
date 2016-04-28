@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <include layout="@layout/user_header"/>
+            <include layout="@layout/user_header" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

@@ -120,28 +120,25 @@ public class UserYsjIndexActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (AppApplication.gUser == null) {
-            setLoginViewValues();
-            return;
-        }
+//        if (AppApplication.gUser == null) {
+//            setLoginViewValues();
+//            return;
+//        }
         setLoginedViewValues();
     }
 
     //登录成功设置控件元素的值
     private void setLoginedViewValues() {
-        if (10000 == AppApplication.gUser.getUtype()) {
             tvUserHeaderName.setText(AppApplication.gUser.getUsername());
-            tvUserHeaderFsNum.setText("5000");
-            tvUserHeaderGzNum.setText("15000");
-            tvUserHeaderTxt.setText("一句话20字以内");
-            tvUserHeaderJeValue01.setText("￥5000");
-            tvUserHeaderJeValue02.setText("￥9000");
-            tvUserHeaderJeValue03.setText("80%");
+            tvUserHeaderFsNum.setText(AppApplication.gUser.getCount1()+"");
+            tvUserHeaderGzNum.setText(AppApplication.gUser.getCount()+"");
+            tvUserHeaderTxt.setText("null".equals(AppApplication.gUser.getUserBrief())?"一句话20字以内":AppApplication.gUser.getUserBrief());
+            tvUserHeaderJeValue01.setText("￥"+AppApplication.gUser.getInvestsMoney());
+            tvUserHeaderJeValue02.setText("￥"+AppApplication.gUser.getRoiMoney());
+            tvUserHeaderJeValue03.setText(0==AppApplication.gUser.getRate()?"0%":AppApplication.gUser.getRate()*100+"%");
             tvUserHeaderJeTxt01.setText("项目总金额");
             tvUserHeaderJeTxt02.setText("项目拍卖总金额");
             tvUserHeaderJeTxt03.setText("拍卖溢价率");
-            return;
-        }
 
     }
     //未登录成功设置控件元素的值

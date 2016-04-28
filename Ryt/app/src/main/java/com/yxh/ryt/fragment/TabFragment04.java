@@ -115,13 +115,10 @@ public class TabFragment04 extends BaseFragment {
     //左上角点击事件
     @OnClick(R.id.btn_lf)
     void btnLfClick() {
-        if (0 == AppApplication.gUser.getUtype()) {
-            YsjRzActivity.openActivity(getActivity());
-            return;
-        }
-        if (10000 == AppApplication.gUser.getUtype()) {
+        if ("2".equals(AppApplication.gUser.getFlag())) {
             PublicProject01Activity.openActivity(getActivity());
-            return;
+        }else{
+            YsjRzActivity.openActivity(getActivity());
         }
     }
     //意见点击事件
@@ -136,13 +133,10 @@ public class TabFragment04 extends BaseFragment {
             LoginActivity.openActivity(getActivity());
             return;
         }
-        if (0 == AppApplication.gUser.getUtype()) {
-            UserPtIndexActivity.openActivity(getActivity());
-            return;
-        }
-        if (10000 == AppApplication.gUser.getUtype()) {
+        if ("2".equals(AppApplication.gUser.getFlag())) {
             UserYsjIndexActivity.openActivity(getActivity());
-            return;
+        }else{
+            UserPtIndexActivity.openActivity(getActivity());
         }
     }
 
@@ -158,45 +152,39 @@ public class TabFragment04 extends BaseFragment {
 //            ButterKnife.apply(linearLayouts, ISVISIBLE, 0);
             btnLf.setVisibility(View.VISIBLE);
         }
-        if (0 == AppApplication.gUser.getUtype()) {
-            btnLf.setText("申请为艺术家");
-            setLoginedViewValues(AppApplication.gUser.getUtype());
-            return;
-        }
-        if (10000 == AppApplication.gUser.getUtype()) {
+        if ("2".equals(AppApplication.gUser.getFlag())) {
             btnLf.setText("发起项目");
             setLoginedViewValues(AppApplication.gUser.getUtype());
-            return;
+        }else{
+            btnLf.setText("申请为艺术家");
+            setLoginedViewValues(AppApplication.gUser.getUtype());
         }
     }
 
     //登录成功设置控件元素的值
     private void setLoginedViewValues(int type) {
-        if (0 == AppApplication.gUser.getUtype()) {
+        if ("2".equals(AppApplication.gUser.getFlag())) {
             tvUserHeaderName.setText(AppApplication.gUser.getUsername());
-            tvUserHeaderFsNum.setText("200");
-            tvUserHeaderGzNum.setText("1000");
-            tvUserHeaderTxt.setText("一句话20字以内");
-            tvUserHeaderJeValue01.setText("￥300");
-            tvUserHeaderJeValue02.setText("￥1000");
-            tvUserHeaderJeValue03.setText("50%");
-            tvUserHeaderJeTxt01.setText("投资金额");
-            tvUserHeaderJeTxt02.setText("投资收益");
-            tvUserHeaderJeTxt03.setText("投资回报率");
-            return;
-        }
-        if (10000 == AppApplication.gUser.getUtype()) {
-            tvUserHeaderName.setText(AppApplication.gUser.getUsername());
-            tvUserHeaderFsNum.setText("5000");
-            tvUserHeaderGzNum.setText("15000");
-            tvUserHeaderTxt.setText("一句话20字以内");
-            tvUserHeaderJeValue01.setText("￥5000");
-            tvUserHeaderJeValue02.setText("￥9000");
-            tvUserHeaderJeValue03.setText("80%");
+            tvUserHeaderFsNum.setText(AppApplication.gUser.getCount1()+"");
+            tvUserHeaderGzNum.setText(AppApplication.gUser.getCount()+"");
+            tvUserHeaderTxt.setText("null".equals(AppApplication.gUser.getUserBrief())?"一句话20字以内":AppApplication.gUser.getUserBrief());
+            tvUserHeaderJeValue01.setText("￥"+AppApplication.gUser.getInvestsMoney());
+            tvUserHeaderJeValue02.setText("￥"+AppApplication.gUser.getRoiMoney());
+            tvUserHeaderJeValue03.setText(0==AppApplication.gUser.getRate()?"0%":AppApplication.gUser.getRate()*100+"%");
             tvUserHeaderJeTxt01.setText("项目总金额");
             tvUserHeaderJeTxt02.setText("项目拍卖总金额");
             tvUserHeaderJeTxt03.setText("拍卖溢价率");
-            return;
+        }else{
+            tvUserHeaderName.setText(AppApplication.gUser.getUsername());
+            tvUserHeaderFsNum.setText(AppApplication.gUser.getCount1()+"");
+            tvUserHeaderGzNum.setText(AppApplication.gUser.getCount()+"");
+            tvUserHeaderTxt.setText("null".equals(AppApplication.gUser.getUserBrief())?"一句话20字以内":AppApplication.gUser.getUserBrief());
+            tvUserHeaderJeValue01.setText("￥"+AppApplication.gUser.getInvestsMoney());
+            tvUserHeaderJeValue02.setText("￥"+AppApplication.gUser.getRoiMoney());
+            tvUserHeaderJeValue03.setText(0==AppApplication.gUser.getRate()?"0%":AppApplication.gUser.getRate()*100+"%");
+            tvUserHeaderJeTxt01.setText("投资金额");
+            tvUserHeaderJeTxt02.setText("投资收益");
+            tvUserHeaderJeTxt03.setText("投资回报率");
         }
 
     }

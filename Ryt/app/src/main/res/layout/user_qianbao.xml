@@ -50,7 +50,7 @@
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="#E9E9E9"
         android:layout_height="1dp"></View>
     <RelativeLayout
@@ -67,44 +67,80 @@
         android:paddingBottom="10dp"
         android:layout_height="wrap_content">
         <TextView
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textColor="@android:color/black"
-            android:text="投资收益"/>
+            android:text="账户余额"/>
         <TextView
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
-            android:textSize="24sp"
-            android:textColor="@android:color/black"
+            android:textSize="29sp"
+            android:textColor="#EF5B70"
             android:layout_height="wrap_content"
-            android:text="5000元"/>
-        <TextView
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-            android:text="总金额"/>
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:textSize="24sp"
-            android:textColor="@android:color/black"
-            android:layout_height="wrap_content"
-            android:text="4700元"/>
+            android:text="￥ 500"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="#333333"
+                    android:text="投资金额"/>
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:textSize="17sp"
+                    android:textColor="@android:color/black"
+                    android:layout_height="wrap_content"
+                    android:text="4700元"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="#333333"
+                    android:text="收益金额"/>
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:textSize="17sp"
+                    android:textColor="@android:color/black"
+                    android:layout_height="wrap_content"
+                    android:text="4700元"/>
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
     <View
         android:layout_below="@id/ll_01"
         android:layout_width="match_parent"
         android:background="#E9E9E9"
+        android:layout_marginTop="20dp"
         android:layout_height="1dp"></View>
     <LinearLayout
+        android:id="@+id/ll_02"
         android:layout_below="@id/ll_01"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_height="wrap_content">
         <LinearLayout
             android:orientation="vertical"
@@ -113,16 +149,15 @@
             android:gravity="center"
             android:layout_height="wrap_content">
             <TextView
-                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="13sp"
                 android:textColor="@android:color/black"
                 android:text="可用金额"/>
             <TextView
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
-                android:textSize="24sp"
+                android:textSize="13sp"
                 android:textColor="@android:color/black"
                 android:layout_height="wrap_content"
                 android:text="4200元"/>
@@ -135,7 +170,7 @@
             android:layout_height="wrap_content">
             <View
                 android:layout_width="1dp"
-                android:background="#E9E9E9"
+                android:background="#cccccc"
                 android:layout_height="40dp"></View>
         </LinearLayout>
         <LinearLayout
@@ -145,43 +180,66 @@
             android:gravity="center"
             android:layout_height="wrap_content">
             <TextView
-                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="13sp"
                 android:textColor="@android:color/black"
                 android:text="保证金冻结"/>
             <TextView
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
-                android:textSize="24sp"
+                android:textSize="13sp"
                 android:textColor="@android:color/black"
                 android:layout_height="wrap_content"
                 android:text="500元"/>
         </LinearLayout>
 
     </LinearLayout>
+        <View
+            android:layout_below="@id/ll_02"
+            android:layout_width="match_parent"
+            android:background="#E9E9E9"
+            android:layout_marginTop="20dp"
+            android:layout_height="1dp"></View>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <View
+            android:layout_width="match_parent"
+            android:background="#E9E9E9"
+            android:layout_height="1dp"></View>
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:gravity="center"
+        android:layout_height="52dp">
         <Button
             android:id="@+id/btn_cz"
-            android:layout_weight="1"
             android:layout_width="0dp"
+            android:layout_weight="1"
             android:text="充值"
-            android:textColor="@android:color/white"
-            android:background="@android:color/black"
-            android:layout_height="40dp" />
+            android:textSize="17sp"
+            android:textColor="#EF5B70"
+            android:background="@null"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="1dp"
+            android:background="#cccccc"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_height="20dp" />
         <Button
             android:id="@+id/btn_tx"
-            android:layout_weight="1"
             android:layout_width="0dp"
+            android:layout_weight="1"
             android:text="提现"
-            android:textColor="@android:color/white"
-            android:background="@android:color/black"
-            android:layout_height="40dp" />
+            android:textSize="17sp"
+            android:textColor="#EF5B70"
+            android:background="@null"
+            android:layout_height="match_parent" />
     </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

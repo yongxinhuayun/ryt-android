@@ -4,6 +4,10 @@ package com.yxh.ryt.vo;
 
 //import com.efeiyi.ec.zero.promotion.model.PromotionPlan;
 
+import com.yxh.ryt.AppApplication;
+
+import java.math.BigDecimal;
+
 public class User {
     /**
      * id : in9xyax5cagsn8g7
@@ -51,7 +55,72 @@ public class User {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
 
-//    private String id;
+    private String flag;
+    private int rate;
+    private int investsMoney;
+    private int count;
+    private String  userBrief;
+    private int roiMoney;
+    private int count1;
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public int getInvestsMoney() {
+        return investsMoney;
+    }
+
+    public void setInvestsMoney(int investsMoney) {
+        this.investsMoney = investsMoney;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getRoiMoney() {
+        return roiMoney;
+    }
+
+    public void setRoiMoney(int roiMoney) {
+        this.roiMoney = roiMoney;
+    }
+
+    public int getCount1() {
+        return count1;
+    }
+
+    public void setCount1(int count1) {
+        this.count1 = count1;
+    }
+
+    public String getUserBrief() {
+        return userBrief;
+    }
+
+    public void setUserBrief(String userBrief) {
+        this.userBrief = userBrief;
+    }
+
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    //    private String id;
 //    private String username;
 //    private String name;
     private String pictureUrl;

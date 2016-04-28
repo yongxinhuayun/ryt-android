@@ -27,8 +27,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="33"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="#666666"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/tv_user_header_gz"
@@ -36,8 +36,8 @@
                 android:layout_height="wrap_content"
                 android:text="关注"
                 android:gravity="center"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="#666666"
+                android:textSize="11sp" />
                 </LinearLayout>
 
         <LinearLayout
@@ -50,8 +50,8 @@
 
             <com.yxh.ryt.custemview.CircleImageView
                 android:id="@+id/rs_iv_headPortrait"
-                android:layout_width="77dp"
-                android:layout_height="77dp"
+                android:layout_width="74dp"
+                android:layout_height="74dp"
                 android:src="@mipmap/jibenziliao_touxiang"
                 app:border_color="@android:color/white"
                 app:border_width="1dp" />
@@ -60,7 +60,7 @@
                 android:id="@+id/tv_user_header_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="14dp"
                 android:gravity="center"
                 android:text="立即登录"
                 android:textColor="@android:color/black"
@@ -81,8 +81,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="18"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="#666666"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/tv_user_header_fs"
@@ -90,8 +90,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="粉丝"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="#666666"
+                android:textSize="11sp" />
 
         </LinearLayout>
     </LinearLayout>
@@ -108,22 +108,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="个性签名："
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
+            android:textColor="#666666"
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/tv_user_header_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="一句话20字以内"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
+            android:textColor="#666666"
+            android:textSize="11sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="10dp"
         android:id="@+id/ll_header_value"
         android:gravity="center"
@@ -140,25 +140,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="50元"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="#333333"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/tv_user_header_je_txt_01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="项目总金额"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="#333333"
+                android:textSize="11sp" />
 
         </LinearLayout>
 
         <View
             android:layout_width="1dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@android:color/black" />
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:background="#E9E9E9" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -171,25 +171,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20元"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="#333333"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/tv_user_header_je_txt_02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="项目总拍卖金额"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="#333333"
+                android:textSize="11sp" />
 
         </LinearLayout>
 
         <View
             android:layout_width="1dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@android:color/black" />
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:background="#E9E9E9" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -202,16 +202,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="40%"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="#333333"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/tv_user_header_je_txt_03"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="拍卖溢价率"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textColor="#333333"
+                android:textSize="11sp" />
 
         </LinearLayout>
     </LinearLayout>

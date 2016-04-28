@@ -43,10 +43,10 @@ public class IndexActivity extends BaseActivity {
         @Override public void set(View view, Integer value, int index) {
             TextView textView=(TextView)view;
             if(value==index){
-                textView.setTextColor(Color.rgb(191,191,191));//可以将选择和未选择的color抽出
+                textView.setTextColor(Color.rgb(232,63,85));//可以将选择和未选择的color抽出
                 return;
             }
-            textView.setTextColor(Color.WHITE);
+            textView.setTextColor(Color.rgb(161,161,161));
         }
     };
     @Bind({ R.id.iv_tab_01, R.id.iv_tab_02, R.id.iv_tab_03 ,R.id.iv_tab_04})
@@ -58,32 +58,32 @@ public class IndexActivity extends BaseActivity {
             if(value==index){
                 switch (value){
                     case 0:
-                        imageView.setImageResource(R.mipmap.shouye_xuanzhong);
+                        imageView.setImageResource(R.mipmap.shouye_yixuanze);
                         break;
                     case 1:
-                        imageView.setImageResource(R.mipmap.paihang_xuanzhong);
+                        imageView.setImageResource(R.mipmap.paihang_yixuanze);
                         break;
                     case 2:
-                        imageView.setImageResource(R.mipmap.xiaoxi_xuanzhong);
+                        imageView.setImageResource(R.mipmap.xiaoxi_yixuanze);
                         break;
                     case 3:
-                        imageView.setImageResource(R.mipmap.wode_xuanzhong);
+                        imageView.setImageResource(R.mipmap.wode_yixuanze);
                         break;
                 }
                 return;
             }
             switch (index){
                 case 0:
-                    imageView.setImageResource(R.mipmap.shouye_weixuanzhong);
+                    imageView.setImageResource(R.mipmap.shouye_weixuanze);
                     break;
                 case 1:
-                    imageView.setImageResource(R.mipmap.paihang_weixuanzhong);
+                    imageView.setImageResource(R.mipmap.paihang_weixuanze);
                     break;
                 case 2:
-                    imageView.setImageResource(R.mipmap.xiaoxi_weixuanzhong);
+                    imageView.setImageResource(R.mipmap.xiaoxi_weixuanze);
                     break;
                 case 3:
-                    imageView.setImageResource(R.mipmap.wode_weixuanzhong);
+                    imageView.setImageResource(R.mipmap.wode_weixuanze);
                     break;
             }
             return;

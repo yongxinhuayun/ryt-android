@@ -16,10 +16,15 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         />
+    <View
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="#E9E9E9"
+        android:layout_height="1dp"></View>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:background="@android:color/black"
+        android:background="@android:color/white"
         android:layout_height="52dp">
         <LinearLayout
             android:id="@+id/rl_tab_01"
@@ -31,15 +36,15 @@
             <ImageView
                 android:id="@+id/iv_tab_01"
                 android:layout_width="wrap_content"
-                android:src="@mipmap/shouye_weixuanzhong"
+                android:src="@mipmap/shouye_weixuanze"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tv_tab_01"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:textColor="@android:color/white"
+                android:textSize="11sp"
+                android:textColor="#A1A1A1"
                 android:text="首页"/>
         </LinearLayout>
         <LinearLayout
@@ -51,17 +56,17 @@
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/iv_tab_02"
-                android:src="@mipmap/paihang_weixuanzhong"
+                android:src="@mipmap/paihang_weixuanze"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tv_tab_02"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="4dp"
                 android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="10sp"
+                android:textColor="#A1A1A1"
+                android:textSize="11sp"
                 android:text="排行"/>
         </LinearLayout>
         <LinearLayout
@@ -74,16 +79,16 @@
             <ImageView
                 android:id="@+id/iv_tab_03"
                 android:layout_width="wrap_content"
-                android:src="@mipmap/xiaoxi_weixuanzhong"
+                android:src="@mipmap/xiaoxi_weixuanze"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tv_tab_03"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="4dp"
                 android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="10sp"
+                android:textColor="#A1A1A1"
+                android:textSize="11sp"
                 android:text="消息"/>
         </LinearLayout>
         <LinearLayout
@@ -97,14 +102,15 @@
                 android:id="@+id/iv_tab_04"
                 android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
-                android:src="@mipmap/wode_weixuanzhong"
+                android:src="@mipmap/wode_weixuanze"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tv_tab_04"
                 android:layout_width="wrap_content"
+                android:layout_marginTop="4dp"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="10sp"
+                android:textColor="#A1A1A1"
+                android:textSize="11sp"
                 android:text="我的"/>
         </LinearLayout>
     </LinearLayout>

@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
@@ -31,6 +33,7 @@ import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.User;
 import com.yxh.ryt.wxapi.WxUtil;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -196,7 +199,14 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
                 AppApplication.gUser=AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
-                finish();
+                AppApplication.gUser.setFlag(response.get("flag") + "");
+                AppApplication.gUser.setCount(((Double) response.get("count")).intValue());
+                AppApplication.gUser.setCount(((Double) response.get("count1")).intValue());
+                AppApplication.gUser.setRoiMoney(((Double) response.get("roiMoney")).intValue());
+                        AppApplication.gUser.setRate(((Double) response.get("rate")).intValue());
+                                AppApplication.gUser.setUserBrief(response.get("userBrief") + "");
+                AppApplication.gUser.setInvestsMoney(((Double) response.get("investsMoney")).intValue());
+                        finish();
             }
         });
     }
