@@ -37,5 +37,5 @@
     <com.yxh.ryt.custemview.AutoListView
         android:id="@+id/pl_message_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 </LinearLayout>
