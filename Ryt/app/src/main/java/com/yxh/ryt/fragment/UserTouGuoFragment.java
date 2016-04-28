@@ -106,7 +106,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		userZGCommonAdapter=new CommonAdapter<ConvertWork>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__touguo_item) {
 			@Override
 			public void convert(ViewHolder helper, ConvertWork item) {
-				helper.setImageByUrl(R.id.utf_iv_icon,item.getPicture_url());
+				helper.setImageByUrl(R.id.utf_iv_icon, item.getPicture_url());
 				helper.setText(R.id.utf_tv_proName, item.getTitle());
 				helper.setText(R.id.utf_tv_proStage,AppApplication.map.get(item.getStep()));
 				helper.setText(R.id.utf_tv_money,"项目金额:"+item.getGoalMoney());
@@ -160,7 +160,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId","qydeyugqqiugd2");
+		paramsMap.put("userId","ieatht97wfw30hfd");
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -178,15 +178,12 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 			}
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
 				if ("0".equals(response.get("resultCode"))) {
 					Map<String, Object> object = (Map<String, Object>) response.get("pageInfo");
 					tvTotal.setText("投资项目:"+AppApplication.getSingleGson().toJson(((Map<String, Object>) response.get("pageInfo")).get("num"))+"个");
-					System.out.println(AppApplication.getSingleGson().toJson(((Map<String, Object>) response.get("pageInfo")).get("num"))+"投资项目投资项目投资项目投资项目");
 					if (flag) {
 						List<ConvertWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworks")), new TypeToken<List<ConvertWork>>() {
 						}.getType());
-						System.out.println(commentList+"dudududuuuuuuuuuuuuuuuuuuuuu");
 						if (commentList == null) {
 							more.setVisibility(View.GONE);
 							loading.setVisibility(View.GONE);
