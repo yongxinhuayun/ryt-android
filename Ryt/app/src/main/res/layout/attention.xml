@@ -7,11 +7,11 @@
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
         android:id="@+id/rl_top">
         <ImageButton
         android:id="@+id/attention_ib_top"
-        android:layout_width="50dp"
+        android:layout_width="48dp"
         android:background="@null"
         android:src="@mipmap/back"
         android:layout_centerVertical="true"
@@ -51,13 +51,13 @@
             android:layout_height="1dp"/>
     </RelativeLayout>
     <View
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:background="#E9E9E9"
         android:layout_height="1dp"/>
     <com.viewpagerindicator.TabPageIndicator
         android:id="@+id/attention_indicator"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_width="fill_parent"
         />
     <View
