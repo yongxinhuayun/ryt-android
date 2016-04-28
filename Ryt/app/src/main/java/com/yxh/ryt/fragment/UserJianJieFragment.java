@@ -1,6 +1,7 @@
 package com.yxh.ryt.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,10 +57,9 @@ public class UserJianJieFragment extends StickHeaderBaseFragment{
 		super.onCreate(savedInstanceState);
 		userTGDatas=new ArrayList<Artwork>();
 	}
-	private void LoadData(final int state,int pageNum) {
+	private void LoadData() {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("pageSize", Constants.pageSize + "");
-		paramsMap.put("pageNum", pageNum + "");
+		paramsMap.put("userId","ieatht97wfw30hfd");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -67,7 +67,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "follow.do", paramsMap, new RongZiListCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "intro.do", paramsMap, new RongZiListCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
@@ -76,7 +76,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment{
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-
+				Log.d("introintro","introintrointrointrointrointrointrointrointrointrointrointrointro");
 			}
 		});
 	}
@@ -98,6 +98,6 @@ public class UserJianJieFragment extends StickHeaderBaseFragment{
 	@Override
 	protected void lazyLoad() {
 		if(userTGDatas!=null&&userTGDatas.size()>0)return;
-		LoadData(AutoListView.REFRESH, currentPage);
+		LoadData();
 	}
 }
