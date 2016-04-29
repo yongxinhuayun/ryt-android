@@ -1,10 +1,15 @@
 package com.yxh.ryt.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
@@ -34,6 +39,9 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 	private List<FollowUserUtil> attentionDatas;
 	private int currentPage=1;
 	private String flag="1";
+	private AnimationSet animationSet;
+	private ScaleAnimation scaleAnimation;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,7 +50,7 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("userId","ieatht97wfw30hfd");
-		paramsMap.put("type","1");
+		paramsMap.put("type", "1");
 		paramsMap.put("pageSize", Constants.pageSize + "");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -62,7 +70,10 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				Log.d("AttentionArtItemFragment", response.toString());
+				Log.d("AttentionUserItemFragment1111111111", AppApplication.getSingleGson().toJson(response.get("followsNum")));
+				Constants.ATTENTION_TITLE[0]="艺术家("+AppApplication.getSingleGson().toJson(response.get("followsNum"))+")";
+				Intent intent = new Intent("android.intent.action.MY_BROADCAST");
+				AppApplication.getSingleContext().sendBroadcast(intent);
 				if (state == AutoListView.REFRESH) {
 					lstv.onRefreshComplete();
 					attentionDatas.clear();
@@ -106,8 +117,9 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 			@Override
 			public void convert(ViewHolder helper, FollowUserUtil item) {
 				helper.setText(R.id.fai_tv_name,item.getArtUserFollowed().getFollower().getName());
-				helper.setText(R.id.fai_tv_brief,item.getMaster().getTitle());
-				helper.setImageByUrl(R.id.fai_iv_icon,item.getMaster().getFavicon());
+				helper.setText(R.id.fai_tv_brief, item.getMaster().getTitle());
+				helper.setImageByUrl(R.id.fai_iv_icon, item.getMaster().getFavicon());
+
 			}
 		};
 		lstv.setAdapter(attentionCommonAdapter);
@@ -115,7 +127,6 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 		lstv.setOnLoadListener(this);
 		return contextView;
 	}
-
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
