@@ -9,6 +9,7 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +85,7 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         artCommentDatas=new ArrayList<>();
+        Log.d("oncreateView", "onCreateonCreateonCreateonCreateonCreateonCreateonCreateonCreate");
     }
 
     @Override
@@ -94,6 +96,7 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
         setAdapter();
         onScroll();
+        Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
         artCommentDatas.clear();
         LoadData(true, currentPage);
         return view;
@@ -102,13 +105,13 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     private void setAdapter() {
         artCommentAdapter=new CommonAdapter<ArtworkComment>(getActivity(),artCommentDatas,R.layout.pdonclicktab_comment_item) {
             @Override
             public void convert(ViewHolder helper, final ArtworkComment item) {
+                TextView user=helper.getView(R.id.pdctci_tv_nickName);
                 LinearLayout linearLayout=helper.getView(R.id.pdctci_ll_all);
                 linearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -116,14 +119,13 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
                         Intent intent=new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
                         intent.putExtra("name", item.getCreator().getName());
                         intent.putExtra("fatherCommentId",item.getCreator().getId());
-                        intent.putExtra("artworkId", item.getId());
+                        intent.putExtra("artworkId",item.getId());
                         intent.putExtra("flag", 0);
-                        intent.putExtra("messageId", "");
+                        intent.putExtra("messageId","");
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         AppApplication.getSingleContext().startActivity(intent);
                     }
                 });
-                TextView user=helper.getView(R.id.pdctci_tv_nickName);
                 user.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -161,10 +163,11 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
         loading.setVisibility(View.GONE);
         loadFull.setVisibility(View.GONE);
         noData.setVisibility(View.GONE);
-
     }
 
+
     public class ShuoMClickableSpan extends ClickableSpan {
+
         String string;
         Context context;
         public ShuoMClickableSpan(String str,Context context){
@@ -290,6 +293,6 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
     }
     @Override
     protected void lazyLoad() {
-
+        Log.d("oncreateView","lazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoad");
     }
 }
