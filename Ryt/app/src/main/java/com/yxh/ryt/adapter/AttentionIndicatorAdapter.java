@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.fragment.BaseFragment;
@@ -23,6 +24,7 @@ public class AttentionIndicatorAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        System.out.println("------------------------");
         //新建一个Fragment来展示ViewPager item的内容，并传递参数
         BaseFragment fragment = this.fragments.get(position);
         Bundle args = new Bundle();
