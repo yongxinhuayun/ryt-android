@@ -69,7 +69,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				Log.d("AttentionUserItemFragment",response.toString());
+				Log.d("AttentionUserItemFragment",AppApplication.getSingleGson().toJson(response.get("followsNum")));
 				if (state == AutoListView.REFRESH) {
 					lstv.onRefreshComplete();
 					attentionDatas.clear();
