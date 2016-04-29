@@ -69,7 +69,8 @@ public class AttentionActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             System.out.println("=======================");
-            indexChildAdapter.getPageTitle(0);
+            Log.d("dddddddddd", indexChildAdapter.getPageTitle(0)+"")
+            ;
             System.out.println("================5555=======");
         }
     }
