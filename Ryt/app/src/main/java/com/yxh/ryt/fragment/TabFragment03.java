@@ -50,6 +50,9 @@ public class TabFragment03 extends  BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_03, null);
         ButterKnife.bind(this, view);
+        bvPrivateLetter = new BadgeView(getActivity(),circlePrivateLetter);
+        bvNotification = new BadgeView(getActivity(),circleNotification);
+        bvComment = new BadgeView(getActivity(),circleComment);
         loadData();
         return view;
     }
@@ -108,9 +111,7 @@ public class TabFragment03 extends  BaseFragment {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                bvPrivateLetter = new BadgeView(getActivity(),circlePrivateLetter);
-                bvNotification = new BadgeView(getActivity(),circleNotification);
-                bvComment = new BadgeView(getActivity(),circleComment);
+
                 if (response.get("resultCode").equals("0")){
                     if ( ((Double) response.get("noticeNum")) !=0){
                         bvNotification.setText(response.get("noticeNum")+"");

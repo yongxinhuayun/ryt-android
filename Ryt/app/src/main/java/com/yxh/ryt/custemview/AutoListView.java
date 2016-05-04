@@ -311,7 +311,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 			noData.setVisibility(View.VISIBLE);
 		} else if (resultSize > 0 && resultSize < pageSize) {
 			isLoadFull = true;
-			loadFull.setVisibility(View.VISIBLE);
+			loadFull.setVisibility(View.GONE);
 			loading.setVisibility(View.GONE);
 			more.setVisibility(View.GONE);
 			noData.setVisibility(View.GONE);
