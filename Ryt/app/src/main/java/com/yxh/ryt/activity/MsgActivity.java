@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,16 +29,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.ChatMsgViewAdapter;
 import com.yxh.ryt.callback.LoginCallBack;
+import com.yxh.ryt.callback.NotifaicationCallBack;
+import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.ChatMsgEntity;
+import com.yxh.ryt.vo.PrivateLetter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -51,12 +57,13 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 	private ListView mListView;
 	private ChatMsgViewAdapter mAdapter;
 	private List<ChatMsgEntity> mDataArrays = new ArrayList<ChatMsgEntity>();
-
+	private String fromId="";
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat);
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		fromId=getIntent().getStringExtra("formId");
 		EventBus.getDefault().register(this);
 		initView();
 	}
@@ -89,7 +96,7 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 		if (contString.length() > 0) {
 			ChatMsgEntity entity = new ChatMsgEntity();
 			entity.setDate(Utils.getCurrentTime());
-			entity.setName("高富帅");
+			entity.setName(AppApplication.gUser.getName());
 			entity.setMsgType(false);
 			entity.setText(contString);
 			pushMessageRequst();
@@ -102,9 +109,9 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 
 	private void pushMessageRequst() {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("content","lllllllllllll");
-		paramsMap.put("fromUserId", "ibxeso2n0000174u");
-		paramsMap.put("targetUserId", "ibxd52l60000fqxb");
+		paramsMap.put("content",mEditTextContent.getText()+"");
+		paramsMap.put("fromUserId",AppApplication.gUser.getId() );
+		paramsMap.put("targetUserId",fromId );
 		paramsMap.put("timestamp",System.currentTimeMillis()+"");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -131,9 +138,55 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 		mAdapter.notifyDataSetChanged();
 		mListView.setSelection(mListView.getCount() - 1);
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		LoadData();
+	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		EventBus.getDefault().unregister(this);
+	}
+	private void LoadData() {
+		Map<String, String> paramsMap = new HashMap<>();
+		paramsMap.put("userId", AppApplication.gUser.getId());
+		paramsMap.put("fromUserId", fromId);
+		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		try {
+			paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		NetRequestUtil.post(Constants.BASE_PATH + "commentDetail.do", paramsMap, new NotifaicationCallBack() {
+			@Override
+			public void onError(Call call, Exception e) {
+				System.out.println("失败了");
+			}
+
+			@Override
+			public void onResponse(Map<String, Object> response) {
+				List<PrivateLetter> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<PrivateLetter>>() {
+				}.getType());
+				if(notificationList!=null){
+					Iterator<PrivateLetter> iterator = notificationList.iterator();
+					while (iterator.hasNext()){
+						ChatMsgEntity entity = new ChatMsgEntity();
+						PrivateLetter next = iterator.next();
+						entity.setDate(Utils.timeToFormatTemp("yyyy-MM-dd hh:mm:ss", next.getCreateDatetime()));
+						entity.setName(next.getFromUser().getName());
+						entity.setText(next.getContent());
+						if(AppApplication.gUser.getId().equals(next.getFromUser().getId())) {
+							entity.setMsgType(false);
+						}
+						mDataArrays.add(entity);
+					}
+					mAdapter.notifyDataSetChanged();
+					mListView.setSelection(mListView.getCount() - 1);
+				}
+			}
+		});
 	}
 }

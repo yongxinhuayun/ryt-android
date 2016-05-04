@@ -1,8 +1,11 @@
 package com.yxh.ryt.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -31,7 +34,7 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016/4/5.
  */
-public class PrivateLetterActivity extends BaseActivity implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener {
+public class PrivateLetterActivity extends BaseActivity implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener,AdapterView.OnItemClickListener {
     private CommonAdapter<PrivateLetter> plfAdapter;
     private List<PrivateLetter> privateLetterDatas;
     private int currentPage=1;
@@ -52,22 +55,29 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
         plfAdapter=new CommonAdapter<PrivateLetter>(AppApplication.getSingleContext(),privateLetterDatas,R.layout.privateletter_item) {
             @Override
             public void convert(ViewHolder helper, PrivateLetter item) {
-                if (item.getIsWatch()==0){
-                    helper.setColor(R.id.pi_ll_top, Color.RED);
+                if (helper.getPosition()==0){
+                    helper.getView(R.id.tv_line).setVisibility(View.GONE);
+                }else{
+                    helper.getView(R.id.tv_line).setVisibility(View.VISIBLE);
                 }
-                helper.setText(R.id.pi_tv_content,item.getContent());
+//                if (item.getIsWatch()==0){
+//                    helper.setColor(R.id.pi_ll_top, Color.RED);
+//                }
+                helper.setImageByUrl(R.id.pi_iv_icon,item.getFromUser().getPictureUrl());
+                helper.setText(R.id.pi_tv_content,item.getFromUser().getName());
                 helper.setText(R.id.pi_tv_date, Utils.timeTrans(item.getCreateDatetime()));
             }
         };
         plflistview.setAdapter(plfAdapter);
         plflistview.setOnLoadListener(this);
         plflistview.setOnRefreshListener(this);
+        plflistview.setOnItemClickListener(this);
     }
 
     private void LoadData(final int state,int pageNum) {
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId","iijq9f1r7apprtab");
-        paramsMap.put("type","0");
+        paramsMap.put("userId",AppApplication.gUser.getId());
+        paramsMap.put("type","2");
         paramsMap.put("pageSize",Constants.pageSize+"");
         paramsMap.put("pageNum", pageNum+"");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -132,5 +142,12 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
     public void onRefresh() {
         currentPage=1;
         LoadData(AutoListView.REFRESH,currentPage);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent=new Intent(this,MsgActivity.class);
+        intent.putExtra("formId",privateLetterDatas.get(position-1).getFromUser().getId());
+        startActivity(intent);
     }
 }

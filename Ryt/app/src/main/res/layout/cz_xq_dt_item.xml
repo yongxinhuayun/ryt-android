@@ -70,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:text="我要开始熔铜了。"
                 android:textColor="@android:color/darker_gray" />
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
