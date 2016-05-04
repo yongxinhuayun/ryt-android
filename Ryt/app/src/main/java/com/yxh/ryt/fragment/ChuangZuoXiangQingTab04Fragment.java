@@ -18,6 +18,7 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.ArtworkInvest;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class ChuangZuoXiangQingTab04Fragment extends StickHeaderBaseFragment{
     private TextView more;
     private ProgressBar loading;
     private int lastItem;
+    private boolean loadComplete=true;
     static StickHeaderViewPagerManager stickHeaderViewPagerManager;
     public ChuangZuoXiangQingTab04Fragment(StickHeaderViewPagerManager manager, int position) {
         super(manager, position);
@@ -96,7 +98,7 @@ public class ChuangZuoXiangQingTab04Fragment extends StickHeaderBaseFragment{
 
             @Override
             public void onListViewScrollStateChanged(AbsListView view, int scrollState) {
-                if (lastItem == investorRecordCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                if (lastItem==investorRecordCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && loadComplete) {
                     more.setVisibility(View.GONE);
                     loading.setVisibility(View.VISIBLE);
                     loadFull.setVisibility(View.GONE);
@@ -107,7 +109,6 @@ public class ChuangZuoXiangQingTab04Fragment extends StickHeaderBaseFragment{
             }
         });
     }
-
     private void setAdapter() {
         investorRecordCommonAdapter=new CommonAdapter<ArtworkInvest>(getActivity(),investorDatas,R.layout.investorrecord_item) {
             @Override
@@ -116,9 +117,10 @@ public class ChuangZuoXiangQingTab04Fragment extends StickHeaderBaseFragment{
                 if (helper.getPosition()==2){
                     helper.getView(R.id.iri_ve_line).setVisibility(View.VISIBLE);
                 }
-                helper.setText(R.id.iri_tv_nickname,item.getCreator().getName()+"--"+helper.getPosition());
+                helper.setText(R.id.iri_tv_nickname,item.getCreator().getName());
                 helper.setText(R.id.iri_tv_content,"投资了"+item.getPrice()+"元");
-                helper.setImageByUrl(R.id.iri_iv_icon,item.getCreator().getPictureUrl());
+                helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
+                helper.setText(R.id.iri_tv_date, Utils.timeTransComment(item.getCreateDatetime()));
             }
         };
         mListview.setAdapter(investorRecordCommonAdapter);
@@ -174,26 +176,47 @@ public class ChuangZuoXiangQingTab04Fragment extends StickHeaderBaseFragment{
                             topList.clear();
                             investorRecordCommonAdapter.notifyDataSetChanged();
                         }
-                    }
-                    List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
-                    }.getType());
-                    if (investList ==null|| investList.size()<Constants.pageSize){
-                        more.setVisibility(View.GONE);
-                        loading.setVisibility(View.GONE);
-                        loadFull.setVisibility(View.VISIBLE);
-                        noData.setVisibility(View.GONE);
-                    }else {
-                        more.setVisibility(View.VISIBLE);
-                        loading.setVisibility(View.GONE);
-                        loadFull.setVisibility(View.GONE);
-                        noData.setVisibility(View.GONE);
-                    }
-                    if (investList!=null){
-                        investorDatas.addAll(investList);
-                        investList.clear();
-                    }
+                        List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
+                        }.getType());
+                        if (investList ==null|| investList.size()<Constants.pageSize){
+                            more.setVisibility(View.GONE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.VISIBLE);
+                            noData.setVisibility(View.GONE);
+                            loadComplete=false;
+                        }else {
+                            more.setVisibility(View.VISIBLE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.GONE);
+                            noData.setVisibility(View.GONE);
+                        }
+                        if (investList!=null){
+                            investorDatas.addAll(investList);
+                            investList.clear();
+                        }
 
-                    investorRecordCommonAdapter.notifyDataSetChanged();
+                        investorRecordCommonAdapter.notifyDataSetChanged();
+                    }else {
+                        List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
+                        }.getType());
+                        if (investList ==null|| investList.size()<Constants.pageSize){
+                            more.setVisibility(View.GONE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.VISIBLE);
+                            noData.setVisibility(View.GONE);
+                            loadComplete=false;
+                        }else {
+                            more.setVisibility(View.VISIBLE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.GONE);
+                            noData.setVisibility(View.GONE);
+                        }
+                        if (investList!=null){
+                            investorDatas.addAll(investList);
+                            investList.clear();
+                        }
+                        investorRecordCommonAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         });
