@@ -31,7 +31,7 @@ public class Smsobserver extends ContentObserver {
                 if (i==cursor.getCount()) {
                     String smsbody = cursor
                             .getString(cursor.getColumnIndex("body"));
-                    String regEx = "\\d{6}";
+                    String regEx = "(?<![0-9])([0-9]{" + 6 + "})(?![0-9])";
                     Pattern p = Pattern.compile(regEx);
                     Matcher m = p.matcher(smsbody.toString());
                     while (m.find()) {
