@@ -21,6 +21,7 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
+import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
@@ -53,6 +54,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
     private ListView mListview;
     private CommonAdapter<ArtworkInvest> investorRecordCommonAdapter;
     private List<ArtworkInvest> investorDatas;
+    private List<ArtworkInvest> investorTOpDatas;
     private int currentPage=1;
     private View footer;
     private TextView loadFull;
@@ -62,6 +64,19 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
     private int lastItem;
     private boolean loadComplete=true;
     static StickHeaderViewPagerManager stickHeaderViewPagerManager;
+    private CircleImageView icon1;
+    private CircleImageView icon2;
+    private CircleImageView icon3;
+    private TextView title1;
+    private TextView title2;
+    private TextView title3;
+    private TextView date1;
+    private TextView date2;
+    private TextView date3;
+    private TextView money1;
+    private TextView money2;
+    private TextView money3;
+
     public RongZiXiangQingTab04Fragment(StickHeaderViewPagerManager manager, int position) {
         super(manager, position);
     }
@@ -85,6 +100,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         investorDatas=new ArrayList<>();
+        investorTOpDatas=new ArrayList<>();
     }
 
     @Override
@@ -93,15 +109,50 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         mListview = (ListView)view.findViewById(R.id.flr_scroll);
         footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
+        findView(view);
         setAdapter();
         onScroll();
+        investorDatas.clear();
+        investorTOpDatas.clear();
+        LoadData(true, currentPage);
         return view;
+    }
+
+    private void topDatas() {
+        if (investorTOpDatas.size()!=0){
+             AppApplication.displayImage(investorTOpDatas.get(0).getCreator().getPictureUrl(),icon1);
+            AppApplication.displayImage(investorTOpDatas.get(1).getCreator().getPictureUrl(), icon2);
+            AppApplication.displayImage(investorTOpDatas.get(2).getCreator().getPictureUrl(),icon3);
+            title1.setText(investorTOpDatas.get(0).getCreator().getName());
+            title2.setText(investorTOpDatas.get(1).getCreator().getName());
+            title3.setText(investorTOpDatas.get(2).getCreator().getName());
+            date1.setText( Utils.timeTransComment(investorTOpDatas.get(0).getCreateDatetime()));
+            date2.setText(Utils.timeTransComment(investorTOpDatas.get(1).getCreateDatetime()));
+            date3.setText(Utils.timeTransComment(investorTOpDatas.get(2).getCreateDatetime()));
+            money1.setText(investorTOpDatas.get(0).getPrice()+"");
+            money2.setText(investorTOpDatas.get(1).getPrice()+"");
+            money3.setText(investorTOpDatas.get(2).getPrice()+"");
+        }
+    }
+
+    private void findView(View view) {
+        icon1 = ((CircleImageView) view.findViewById(R.id.flr_iv_icon1));
+        icon2 = ((CircleImageView) view.findViewById(R.id.flr_iv_icon2));
+        icon3 = ((CircleImageView) view.findViewById(R.id.flr_iv_icon3));
+        title1 = ((TextView) view.findViewById(R.id.flr_tv_title1));
+        title2 = ((TextView) view.findViewById(R.id.flr_tv_title2));
+        title3 = ((TextView) view.findViewById(R.id.flr_tv_title3));
+        date1 = ((TextView) view.findViewById(R.id.flr_tv_date1));
+        date2 = ((TextView) view.findViewById(R.id.flr_tv_date2));
+        date3 = ((TextView) view.findViewById(R.id.flr_tv_date3));
+        money1 = ((TextView) view.findViewById(R.id.flr_tv_money1));
+        money2 = ((TextView) view.findViewById(R.id.flr_tv_money2));
+        money3 = ((TextView) view.findViewById(R.id.flr_tv_money3));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        LoadData(true, currentPage);
     }
 
     private void onScroll() {
@@ -128,10 +179,6 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         investorRecordCommonAdapter=new CommonAdapter<ArtworkInvest>(getActivity(),investorDatas,R.layout.investorrecord_item) {
             @Override
             public void convert(ViewHolder helper, ArtworkInvest item) {
-                helper.getView(R.id.iri_ve_line).setVisibility(View.GONE);
-                if (helper.getPosition()==2){
-                    helper.getView(R.id.iri_ve_line).setVisibility(View.VISIBLE);
-                }
                 helper.setText(R.id.iri_tv_nickname,item.getCreator().getName());
                 helper.setText(R.id.iri_tv_content,"投资了"+item.getPrice()+"元");
                 helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
@@ -187,9 +234,9 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
                             loadFull.setVisibility(View.GONE);
                             noData.setVisibility(View.VISIBLE);
                         }else {
-                            investorDatas.addAll(topList);
+                            investorTOpDatas.addAll(topList);
+                            topDatas();
                             topList.clear();
-                            investorRecordCommonAdapter.notifyDataSetChanged();
                         }
                         List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
                         }.getType());
