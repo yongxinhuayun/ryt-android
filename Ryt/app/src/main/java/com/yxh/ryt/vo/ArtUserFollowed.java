@@ -14,6 +14,15 @@ public class ArtUserFollowed implements Serializable{
     private String status;
     private String type;//1.关注艺术家 2.关注普通用户
     private long createDatetime;
+    private String pictureUrl;
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
 
     public String getId() {
         return id;
