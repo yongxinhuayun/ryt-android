@@ -5,24 +5,24 @@
     android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="46dp"
         android:id="@+id/rl_top">
-        <ImageButton
+        <ImageView
         android:id="@+id/ib_top_lf"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:background="@null"
         android:src="@mipmap/back"
         android:layout_centerVertical="true"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"/>
         <TextView
             android:id="@+id/tv_top_ct"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#333333"
-            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textSize="17sp"
             android:text="充值"/>
         <!--<TextView-->
         <!--android:visibility="gone"-->

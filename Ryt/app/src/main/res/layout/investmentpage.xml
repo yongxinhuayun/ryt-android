@@ -37,64 +37,114 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp">
-        <Button
+        <LinearLayout
+            android:id="@+id/imp_ll_2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/login_reg_et_bg"
-            android:text="1元"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-        <Button
+            android:background="@drawable/qianbaoweixuanzhong">
+            <TextView
+                android:id="@+id/imp_tv_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="2元"
+                android:layout_margin="15dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/imp_ll_5"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/login_reg_et_bg"
-            android:text="8元"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="15dp"/>
-        <Button
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/qianbaoweixuanzhong">
+            <TextView
+                android:id="@+id/imp_tv_5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="5元"
+                android:layout_margin="15dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/imp_ll_10"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/login_reg_et_bg"
-            android:text="18元"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="15dp"/>
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/qianbaoweixuanzhong">
+            <TextView
+                android:id="@+id/imp_tv_10"
+                android:layout_margin="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="10元"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp">
-        <Button
+        <LinearLayout
+            android:id="@+id/imp_ll_28"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/login_reg_et_bg"
-            android:text="28元"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-        <Button
+            android:background="@drawable/qianbaoweixuanzhong">
+            <TextView
+                android:id="@+id/imp_tv_28"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="28元"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_margin="15dp"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/imp_ll_88"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/login_reg_et_bg"
-            android:text="88元"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="15dp"/>
-        <Button
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/qianbaoweixuanzhong">
+            <TextView
+                android:id="@+id/imp_tv_88"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="88元"
+                android:layout_margin="15dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/imp_ll_all"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/login_reg_et_bg"
-            android:text="全包"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="15dp"/>
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/qianbaoweixuanzhong">
+            <TextView
+                android:id="@+id/imp_tv_all"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="全包"
+                android:layout_margin="15dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+
     </LinearLayout>
     <RelativeLayout
         android:layout_marginLeft="15dp"
@@ -112,7 +162,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="投资最低1元"
+            android:hint="投资最低2元"
             android:background="@null"/>
     </RelativeLayout>
     <Button
@@ -131,5 +181,5 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:text="1.您投资的作品将在融资成功后进行拍卖,拍卖所得金额将作为所有投资者的投资回报，个人所得回报与所投金额成正比。"/>
+        android:text="您投资的作品将在融资成功后进行拍卖,若拍卖成功,所得收益将按照所投金额占项目金额比例分配,作为投资者回报,返回到您的个人账户中。"/>
 </LinearLayout>

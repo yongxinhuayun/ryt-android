@@ -70,6 +70,9 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 			@Override
 			public void onResponse(Map<String, Object> response) {
 				Log.d("AttentionUserItemFragment",AppApplication.getSingleGson().toJson(response.get("followsNum")));
+				Constants.ATTENTION_TITLE[1]="用户("+AppApplication.getSingleGson().toJson(response.get("followsNum"))+")";
+				Intent intent = new Intent("android.intent.action.MY_BROADCAST");
+				AppApplication.getSingleContext().sendBroadcast(intent);
 				if (state == AutoListView.REFRESH) {
 					lstv.onRefreshComplete();
 					attentionDatas.clear();
@@ -114,12 +117,13 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 			public void convert(ViewHolder helper, FollowUserUtil item) {
 				helper.setText(R.id.fai_tv_name,item.getArtUserFollowed().getFollower().getName());
 				helper.setText(R.id.fai_tv_brief,item.getUserBrief().getContent());
-				/*helper.setImageByUrl(R.id.fai_iv_icon, item.getUserBrief().g);*/
+				helper.setImageByUrl(R.id.fai_iv_icon, item.getArtUserFollowed().getFollower().getPictureUrl());
 			}
 		};
 		lstv.setAdapter(attentionCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
+		LoadData(AutoListView.REFRESH, currentPage);
 		return contextView;
 	}
 
@@ -130,8 +134,8 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 	}
 	@Override
 	protected void lazyLoad() {
-		if(attentionDatas!=null&&attentionDatas.size()>0)return;
-		LoadData(AutoListView.REFRESH, currentPage);
+		/*if(attentionDatas!=null&&attentionDatas.size()>0)return;
+		LoadData(AutoListView.REFRESH, currentPage);*/
 	}
 	@Override
 	public void onRefresh() {

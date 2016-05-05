@@ -39,8 +39,6 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 	private List<FollowUserUtil> attentionDatas;
 	private int currentPage=1;
 	private String flag="1";
-	private AnimationSet animationSet;
-	private ScaleAnimation scaleAnimation;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +68,6 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				Log.d("AttentionUserItemFragment1111111111", AppApplication.getSingleGson().toJson(response.get("followsNum")));
 				Constants.ATTENTION_TITLE[0]="艺术家("+AppApplication.getSingleGson().toJson(response.get("followsNum"))+")";
 				Intent intent = new Intent("android.intent.action.MY_BROADCAST");
 				AppApplication.getSingleContext().sendBroadcast(intent);
@@ -118,7 +115,7 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 			public void convert(ViewHolder helper, FollowUserUtil item) {
 				helper.setText(R.id.fai_tv_name,item.getArtUserFollowed().getFollower().getName());
 				helper.setText(R.id.fai_tv_brief, item.getMaster().getTitle());
-				helper.setImageByUrl(R.id.fai_iv_icon, item.getMaster().getFavicon());
+				helper.setImageByUrl(R.id.fai_iv_icon, "http://tenant.efeiyi.com/"+item.getMaster().getFavicon());
 
 			}
 		};

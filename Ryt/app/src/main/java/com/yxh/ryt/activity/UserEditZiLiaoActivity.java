@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.yxh.ryt.R;
 
+import butterknife.Bind;
+
 /**
  * Created by 吴洪杰 on 2016/4/21.
  */

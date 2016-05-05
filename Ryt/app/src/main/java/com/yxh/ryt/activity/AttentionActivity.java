@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
+import com.viewpagerindicator.IcsLinearLayout;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.AttentionIndicatorAdapter;
@@ -68,10 +70,8 @@ public class AttentionActivity extends BaseActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            System.out.println("=======================");
-            Log.d("dddddddddd", indexChildAdapter.getPageTitle(0)+"")
-            ;
-            System.out.println("================5555=======");
+            ((TextView) ((IcsLinearLayout) indicator.getChildAt(0)).getChildAt(0)).setText(Constants.ATTENTION_TITLE[0]);
+            ((TextView) ((IcsLinearLayout) indicator.getChildAt(0)).getChildAt(1)).setText(Constants.ATTENTION_TITLE[1]);
         }
     }
 }

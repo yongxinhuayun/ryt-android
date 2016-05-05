@@ -40,4 +40,7 @@
     <string name="tab_continent">Continent</string>
     <string name="tab_city">City</string>
     <string name="tab_scroll_view">Scroll View</string>
+
+    <string name="tab01">艺术家(%1$s)</string>
+    <string name="tab02">用户(%1$s)</string>
 </resources>

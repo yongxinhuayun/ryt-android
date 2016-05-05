@@ -118,10 +118,10 @@ public class UserPtIndexActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-//        if (AppApplication.gUser == null) {
-//            setLoginViewValues();
-//            return;
-//        }
+        if (AppApplication.gUser == null) {
+            setLoginViewValues();
+            return;
+        }
         setLoginedViewValues();
     }
 

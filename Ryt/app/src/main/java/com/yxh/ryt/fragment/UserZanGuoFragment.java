@@ -94,7 +94,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 				helper.setText(R.id.utf_tv_proStage,AppApplication.map.get(item.getArtwork().getStep()));
 				helper.setText(R.id.utf_tv_money,"项目金额:"+item.getArtwork().getInvestGoalMoney());
 				helper.setText(R.id.utf_tv_name,item.getArtwork().getAuthor().getName());
-				/*helper.setText(R.id.utf_tv_zhicheng,item.getAuther().getStatus());*/
+				helper.setText(R.id.utf_tv_zhicheng,item.getArtwork().getAuthor().getMaster().getTitle());
 			}
 		};
 		lstv.setAdapter(userZGCommonAdapter);

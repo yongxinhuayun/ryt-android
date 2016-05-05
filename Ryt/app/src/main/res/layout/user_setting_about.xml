@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:gravity="center"
-                android:text="永新华韵出品"
+                android:text="北京永新华韵文化创意有限公司 版权所有"
                 />
             <TextView
                 android:id="@+id/us_tv_02"
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:gravity="center"
-                android:text=" @2016 efeiyi.Inc" />
+                android:text="CopyRight @ 2016 All Rights Reserved" />
         </LinearLayout>
         <TextView
             android:id="@+id/us_tv_03"

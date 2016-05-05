@@ -13,11 +13,12 @@ public class MyZan implements Serializable {
      * brief : 这是一个
      * description : 修改后
      * status : 0
-     * investGoalMoney : 1
+     * investGoalMoney : 1000
      * investStartDatetime : 1455005261000
      * investEndDatetime : 1454314064000
      * auctionStartDatetime : 1454400455000
      * auctionEndDatetime : 1454400449000
+     * author : {"id":"ieatht97wfw30hfd","username":"15110008479","name":"温群英","pictureUrl":"http://tenant.efeiyi.com/background/蔡水况.jpg","cityId":null,"status":"1","createDatetime":1441684108000,"type":"10000","master":{"id":"ich9th9y00008h8v","brief":"中国工艺美术大师、高级工艺美术师、福建省工艺美术大师、中国工艺美术学会会员、美国海外艺术家协会理事、福建省工艺美术学会常务理事、协会会员、首届厦门工艺美术学会常务付理事长。","title":"","favicon":"photo/20150729144701.jpg","birthday":"1939年","level":"1","content":"","presentAddress":"福建","backgroundUrl":"background/蔡水况.jpg","provinceName":"福建","theStatus":"1","logoUrl":"logo/蔡水况.jpg","masterSpeech":null,"artCategory":null,"titleCertificate":null,"feedback":"份","identityFront":null,"identityBack":null}}
      * createDatetime : 1454314046000
      * picture_url : http://tenant.efeiyi.com/background/蔡水况.jpg
      * step : 23
@@ -65,6 +66,9 @@ public class MyZan implements Serializable {
     private int commentNum;
     private int praiseNUm;
     private Auther author;
+    public String getId() {
+        return id;
+    }
 
     public Auther getAuthor() {
         return author;
@@ -72,10 +76,6 @@ public class MyZan implements Serializable {
 
     public void setAuthor(Auther author) {
         this.author = author;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public void setId(String id) {

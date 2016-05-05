@@ -15,8 +15,7 @@ public class ConvertWork implements Serializable{
     private BigDecimal investsMoney;//用户投资金额
     private BigDecimal goalMoney;//目标融资金额
     private Long praise;
-    private String truename;
-    private String username;
+    private CWUser user;
     private String flag;
     private String level;
     public String getId() {
@@ -29,6 +28,14 @@ public class ConvertWork implements Serializable{
 
     public String getTitle() {
         return title;
+    }
+
+    public CWUser getUser() {
+        return user;
+    }
+
+    public void setUser(CWUser user) {
+        this.user = user;
     }
 
     public void setTitle(String title) {
@@ -81,22 +88,6 @@ public class ConvertWork implements Serializable{
 
     public void setPraise(Long praise) {
         this.praise = praise;
-    }
-
-    public String getTruename() {
-        return truename;
-    }
-
-    public void setTruename(String truename) {
-        this.truename = truename;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFlag() {

@@ -218,7 +218,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
-                System.out.println("失败了");
+                System.out.println("564545455489失败了");
             }
 
             @Override

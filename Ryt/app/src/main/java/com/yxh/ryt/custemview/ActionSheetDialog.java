@@ -164,7 +164,7 @@ public class ActionSheetDialog {
 
 
 			float scale = context.getResources().getDisplayMetrics().density;
-			int height = (int) (45 * scale + 0.5f);
+			int height = (int) (48 * scale + 0.5f);
 			textView.setLayoutParams(new LayoutParams(
 					LayoutParams.MATCH_PARENT, height));
 
@@ -203,7 +203,7 @@ public class ActionSheetDialog {
 		}
 	}
 	public enum SheetItemColor {
-		Blue("#037BFF"), Red("#FD4A2E");
+		Blue("#000000"), Red("#FD4A2E");
 
 		private String name;
 
