@@ -20,7 +20,9 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Artwork;
+import com.yxh.ryt.vo.HomeYSJArtWork;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +36,8 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 @SuppressLint("ValidFragment")
 public class YSJHomeFragment extends StickHeaderBaseFragment{
 	private ListView lstv;
-	private CommonAdapter<Artwork> ySJHomeCommonAdapter;
-	private List<Artwork> ySJHomeDatas;
+	private CommonAdapter<HomeYSJArtWork> ySJHomeCommonAdapter;
+	private List<HomeYSJArtWork> ySJHomeDatas;
 	private int currentPage=1;
 	private View footer;
 	private TextView loadFull;
@@ -45,6 +47,8 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 	private int lastItem;
 	private boolean loadComplete=true;
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
+	private boolean isArtist=true;
+
 	public YSJHomeFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -67,7 +71,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ySJHomeDatas=new ArrayList<Artwork>();
+		ySJHomeDatas=new ArrayList<HomeYSJArtWork>();
 	}
 	@Override
 	public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,7 +79,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		lstv = (ListView)view.findViewById(R.id.fiyh_lstv);
 		TextView tvNoData = (TextView) view.findViewById(R.id.fiyh_tv_noData);
 		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
-		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.fiyh_placehoder);
+		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
 		setAdapter();
 		onScroll();
 		Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
@@ -84,26 +88,30 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		return view;
 	}
 	private void setAdapter() {
-		ySJHomeCommonAdapter=new CommonAdapter<Artwork>(AppApplication.getSingleContext(),ySJHomeDatas,R.layout.mrdm_project_item) {
+		ySJHomeCommonAdapter=new CommonAdapter<HomeYSJArtWork>(AppApplication.getSingleContext(),ySJHomeDatas,R.layout.mrdm_project_item) {
 			@Override
-			public void convert(ViewHolder helper, Artwork item) {
-				/*helper.setText(R.id.cl_01_tv_title,item.getTitle());
-				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
-				helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());
-//				helper.setText(R.id.fli_ll_tv_investGoalMoney,item.getInvestGoalMoney().intValue()+"元");
-				helper.setText(R.id.fli_ll_tv_remainingTime, Utils.timeToFormatTemp("HH时MM分SS秒",item.getInvestEndDatetime()-item.getInvestStartDatetime()));
-//				helper.setText(R.id.fli_ll_tv_investGoalPeople, item.getInvestorsNum() + "");
-				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
-				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
-				if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){
-					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.VISIBLE);
-					helper.setText(R.id.cl_01_tv_zhicheng, item.getAuthor().getMaster().getTitle());
-				}else{
-					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.GONE);
-				}*/
-//				double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-//				helper.setProgress(R.id.progressBar1, (int)(value*100));
-//				helper.setText(R.id.tv_pb_value, (int)(value*100)+"%");
+			public void convert(ViewHolder helper, HomeYSJArtWork item) {
+				helper.setImageByUrl(R.id.mpi_iv_icon, item.getPicture_url());
+				helper.setText(R.id.mpi_tv_tilte, item.getTitle());
+				helper.setText(R.id.mpi_iv_project,"项目描述:"+item.getDescription());
+				helper.setText(R.id.mpi_tv_money,item.getInvestGoalMoney()+"元");
+				helper.setText(R.id.mpi_tv_stage,AppApplication.map.get(item.getStep()));
+				helper.getView(R.id.mpi_tv_left).setVisibility(View.GONE);
+				helper.getView(R.id.mpi_tv_right).setVisibility(View.GONE);
+				if (isArtist){
+					if (item.getStep().equals("101")){
+						helper.getView(R.id.mpi_tv_left).setVisibility(View.VISIBLE);
+						((TextView) helper.getView(R.id.mpi_tv_left)).setText("提交项目");
+						helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);
+						((TextView) helper.getView(R.id.mpi_tv_right)).setText("编辑项目");
+					}else if (item.getStep().equals("21") || item.getStep().equals("22")){
+						helper.getView(R.id.mpi_tv_left).setVisibility(View.VISIBLE);
+						((TextView) helper.getView(R.id.mpi_tv_left)).setText("创作完成");
+						helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);
+						((TextView) helper.getView(R.id.mpi_tv_right)).setText("发布动态");
+					}
+				}
+
 			}
 		};
 		lstv.setAdapter(ySJHomeCommonAdapter);
@@ -152,7 +160,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("artWorkId","qydeyugqqiugd2");
+		paramsMap.put("userId","ieatht97wfw30hfd");
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -162,7 +170,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkComment.do", paramsMap, new RZCommentCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "userMain.do", paramsMap, new RZCommentCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
@@ -171,11 +179,10 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
 				if ("0".equals(response.get("resultCode"))) {
 					Map<String, Object> object = (Map<String, Object>) response.get("object");
 					if (flag) {
-						List<Artwork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<Artwork>>() {
+						List<HomeYSJArtWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkList")), new TypeToken<List<HomeYSJArtWork>>() {
 						}.getType());
 						if (commentList == null) {
 							more.setVisibility(View.GONE);
@@ -203,7 +210,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 
 						ySJHomeCommonAdapter.notifyDataSetChanged();
 					}else {
-						List<Artwork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<Artwork>>() {
+						List<HomeYSJArtWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkList")), new TypeToken<List<HomeYSJArtWork>>() {
 						}.getType());
 						if (commentList == null || commentList.size() < Constants.pageSize) {
 							more.setVisibility(View.GONE);

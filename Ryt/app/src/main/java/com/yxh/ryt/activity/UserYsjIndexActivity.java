@@ -26,6 +26,7 @@ import com.yxh.ryt.fragment.RongZiXiangQingTab01Fragment;
 import com.yxh.ryt.fragment.RongZiXiangQingTab02Fragment;
 import com.yxh.ryt.fragment.RongZiXiangQingTab03Fragment;
 import com.yxh.ryt.fragment.RongZiXiangQingTab04Fragment;
+import com.yxh.ryt.fragment.YSJHomeFragment;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.vo.Artwork;
@@ -105,7 +106,7 @@ public class UserYsjIndexActivity extends BaseActivity {
         StickHeaderLayout root = (StickHeaderLayout) findViewById(R.id.user_ysj_root);
         manager = new StickHeaderViewPagerManager(root, mViewPager);
         mFragmentList = new ArrayList<Fragment>();
-        mFragmentList.add(RongZiXiangQingTab01Fragment.newInstance(manager, 0, false));
+        mFragmentList.add(YSJHomeFragment.newInstance(manager, 0, false));
         mFragmentList.add(RongZiXiangQingTab02Fragment.newInstance(manager, 1, false));
         mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 2, false,""));
         mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 3, false,""));
@@ -120,10 +121,10 @@ public class UserYsjIndexActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-//        if (AppApplication.gUser == null) {
-//            setLoginViewValues();
-//            return;
-//        }
+        if (AppApplication.gUser == null) {
+            setLoginViewValues();
+            return;
+        }
         setLoginedViewValues();
     }
 

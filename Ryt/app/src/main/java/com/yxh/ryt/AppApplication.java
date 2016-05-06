@@ -49,6 +49,7 @@ public class AppApplication extends Application {
 	public static DisplayImageOptions options;
 	public static User gUser;
 	public static Map<String,String> map;
+	public static Map<String,String> ptMap;
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -79,8 +80,37 @@ public class AppApplication extends Application {
 		builder.imageScaleType(ImageScaleType.EXACTLY_STRETCHED);
 		options=builder.build();
 		getMap();
+		getPTMap();
 	}
-
+	private static void getPTMap() {
+		ptMap=new HashMap<String,String>();
+		ptMap.put("12", "融资阶段");
+		ptMap.put("14", "融资阶段");
+		ptMap.put("15", "融资阶段");
+		ptMap.put("21", "创作阶段");
+		ptMap.put("22", "创作阶段");
+		ptMap.put("23","创作阶段");
+		ptMap.put("24", "创作阶段");
+		ptMap.put("0","发起阶段");
+		ptMap.put("1","融资阶段");
+		ptMap.put("2","chu作阶段");
+		ptMap.put("3","拍卖阶段");
+		ptMap.put("4","抽奖阶段");
+		ptMap.put("5","驳回");
+		ptMap.put("100","");
+		ptMap.put("10","审核阶段");
+		ptMap.put("11","审核阶段");
+		ptMap.put("13", "审核未通过");
+		ptMap.put("20", "");
+		ptMap.put("25", "创作阶段");
+		ptMap.put("30", "拍卖前");
+		ptMap.put("31", "拍卖中");
+		ptMap.put("32", "拍卖结束");
+		ptMap.put("33", "流拍");
+		ptMap.put("34", "待支付尾款");
+		ptMap.put("35","待发放");
+		ptMap.put("36", "已发放");
+	}
 	private static void getMap() {
 		map=new HashMap<String,String>();
 		map.put("0","发起阶段");
@@ -89,17 +119,17 @@ public class AppApplication extends Application {
 		map.put("3","拍卖阶段");
 		map.put("4","抽奖阶段");
 		map.put("5","驳回");
-		map.put("100","编辑阶段,尚未提交");
-		map.put("10","融资待审核");
-		map.put("11","融资审核中");
-		map.put("12","融资审核通过");
-		map.put("13", "融资审核未通过,已驳回");
+		map.put("100","编辑阶段");
+		map.put("10","项目审核中");
+		map.put("11","项目审核中");
+		map.put("12","");
+		map.put("13", "审核未通过");
 		map.put("14","融资中");
-		map.put("15","融资完成");
+		map.put("15","");
 		map.put("20", "创作前");
 		map.put("21", "创作中");
 		map.put("22", "创作延时");
-		map.put("23", "创作完成待审核");
+		map.put("23", "");
 		map.put("24", "创作完成审核中");
 		map.put("25", "创作完成被驳回");
 		map.put("30", "拍卖前");

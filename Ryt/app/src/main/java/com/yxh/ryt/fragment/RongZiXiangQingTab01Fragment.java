@@ -71,7 +71,6 @@ public class RongZiXiangQingTab01Fragment extends StickHeaderBaseFragment {
         EventBus.getDefault().register(this);
         ButterKnife.bind(this, view);
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
-
         return view;
     }
 

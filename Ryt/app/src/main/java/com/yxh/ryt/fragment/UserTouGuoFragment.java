@@ -93,7 +93,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	@Override
 	public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_listview_touguo, null);
-		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.fit_placehoder);
+		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
 		lstv = (ListView)view.findViewById(R.id.fit_lstv);
 		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
 		tvTotal = (TextView) view.findViewById(R.id.fit_tv);
@@ -112,7 +112,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 				if (userZGDatas!=null){
 					helper.setImageByUrl(R.id.utf_iv_icon, item.getPicture_url());
 					helper.setText(R.id.utf_tv_proName, item.getTitle());
-					helper.setText(R.id.utf_tv_proStage,AppApplication.map.get(item.getStep()));
+					helper.setText(R.id.utf_tv_proStage,AppApplication.ptMap.get(item.getStep()));
 					helper.setText(R.id.utf_tv_money,"项目金额:"+item.getGoalMoney());
 					helper.setText(R.id.utf_tv_name,item.getUser().getName());
 					helper.setText(R.id.utf_tv_zhicheng,item.getUser().getMaster().getTitle());
@@ -212,7 +212,6 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 							userZGDatas.addAll(commentList);
 							commentList.clear();
 						}
-
 						userZGCommonAdapter.notifyDataSetChanged();
 					}else {
 						List<ConvertWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("pageInfo")), new TypeToken<List<ConvertWork>>() {
