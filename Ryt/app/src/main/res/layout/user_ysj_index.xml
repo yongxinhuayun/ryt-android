@@ -60,22 +60,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:animateLayoutChanges="true"
+            android:gravity="center">
             <include layout="@layout/user_header" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#E9E9E9"/>
         </LinearLayout>
-        <com.viewpagerindicator.TabPageIndicator
-            android:id="@+id/user_ysj_indicator"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            />
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E9E9E9"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.viewpagerindicator.TabPageIndicator
+                android:id="@+id/user_ysj_indicator"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:layout_width="fill_parent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E9E9E9"/>
+        </LinearLayout>
         <android.support.v4.view.ViewPager
             android:id="@+id/user_ysj_pager"
             android:layout_width="fill_parent"
