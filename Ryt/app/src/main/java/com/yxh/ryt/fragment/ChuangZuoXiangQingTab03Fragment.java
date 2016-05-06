@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -49,6 +50,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 /**
  * Created by sj on 15/11/25.
  */
+@SuppressLint("ValidFragment")
 public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
     private ListView mListview;
     private CommonAdapter<ArtworkComment> artCommentAdapter;
@@ -65,7 +67,9 @@ public class ChuangZuoXiangQingTab03Fragment extends StickHeaderBaseFragment{
     public ChuangZuoXiangQingTab03Fragment(StickHeaderViewPagerManager manager, int position) {
         super(manager, position);
     }
-
+    public ChuangZuoXiangQingTab03Fragment(){
+        super();
+    }
     public ChuangZuoXiangQingTab03Fragment(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
         super(manager, position, isCanPulltoRefresh);
     }

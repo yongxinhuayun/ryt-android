@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +31,7 @@ import okhttp3.Call;
 import wuhj.com.mylibrary.PlaceHoderHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
-
+@SuppressLint("ValidFragment")
 public class YSJHomeFragment extends StickHeaderBaseFragment{
 	private ListView lstv;
 	private CommonAdapter<Artwork> ySJHomeCommonAdapter;
@@ -47,7 +48,9 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 	public YSJHomeFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
-
+	public YSJHomeFragment(){
+		super();
+	}
 	public YSJHomeFragment(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
 		super(manager, position, isCanPulltoRefresh);
 	}

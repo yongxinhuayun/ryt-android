@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 /**
  * Created by sj on 15/11/25.
  */
+@SuppressLint("ValidFragment")
 public class ChuangZuoXiangQingTab04Fragment extends StickHeaderBaseFragment{
     private ListView mListview;
     private CommonAdapter<ArtworkInvest> investorRecordCommonAdapter;
@@ -50,7 +52,7 @@ public class ChuangZuoXiangQingTab04Fragment extends StickHeaderBaseFragment{
     public ChuangZuoXiangQingTab04Fragment(StickHeaderViewPagerManager manager, int position) {
         super(manager, position);
     }
-
+    public ChuangZuoXiangQingTab04Fragment(){}
     public ChuangZuoXiangQingTab04Fragment(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
         super(manager, position, isCanPulltoRefresh);
     }

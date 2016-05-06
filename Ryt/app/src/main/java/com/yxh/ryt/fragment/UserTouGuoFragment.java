@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -50,7 +51,7 @@ import okhttp3.Call;
 import wuhj.com.mylibrary.PlaceHoderHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
-
+@SuppressLint("ValidFragment")
 public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	private ListView lstv;
 	private CommonAdapter<ConvertWork> userZGCommonAdapter;
@@ -76,7 +77,9 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		UserTouGuoFragment listFragment = new UserTouGuoFragment(manager, position);
 		return listFragment;
 	}
-
+	public UserTouGuoFragment(){
+		super();
+	}
 	public static UserTouGuoFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
 		UserTouGuoFragment listFragment = new UserTouGuoFragment(manager, position, isCanPulltoRefresh);
 		stickHeaderViewPagerManager=manager;

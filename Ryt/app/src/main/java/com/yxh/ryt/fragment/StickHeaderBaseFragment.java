@@ -19,7 +19,9 @@ public abstract class StickHeaderBaseFragment extends BaseFragment {
     StickHeaderViewPagerManager manager;
     boolean isCanPulltoRefresh;
     int position;
+    public StickHeaderBaseFragment (){
 
+    }
     public StickHeaderBaseFragment(StickHeaderViewPagerManager manager, int position){
         this.manager = manager;
         this.position = position;

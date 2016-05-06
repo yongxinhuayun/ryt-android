@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -50,6 +51,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 /**
  * Created by sj on 15/11/25.
  */
+@SuppressLint("ValidFragment")
 public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
     private ListView mListview;
     private CommonAdapter<ArtworkInvest> investorRecordCommonAdapter;
@@ -95,7 +97,9 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         stickHeaderViewPagerManager=manager;
         return listFragment;
     }
-
+    public RongZiXiangQingTab04Fragment(){
+        super();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

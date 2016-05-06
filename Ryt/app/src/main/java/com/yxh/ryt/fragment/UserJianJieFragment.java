@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +29,7 @@ import okhttp3.Call;
 import wuhj.com.mylibrary.PlaceHoderHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
-
+@SuppressLint("ValidFragment")
 public class UserJianJieFragment extends StickHeaderBaseFragment{
 	private AutoListView lstv;
 	private CommonAdapter<Artwork> userTGCommonAdapter;
@@ -38,7 +39,9 @@ public class UserJianJieFragment extends StickHeaderBaseFragment{
 	public UserJianJieFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
-
+	public UserJianJieFragment(){
+		super();
+	}
 	public UserJianJieFragment(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
 		super(manager, position, isCanPulltoRefresh);
 	}

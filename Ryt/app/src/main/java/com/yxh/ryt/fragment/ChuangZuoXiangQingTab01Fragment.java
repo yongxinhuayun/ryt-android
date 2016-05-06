@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 /**
  * Created by sj on 15/11/25.
  */
+@SuppressLint("ValidFragment")
 public class ChuangZuoXiangQingTab01Fragment extends StickHeaderBaseFragment {
 
 
@@ -36,6 +38,9 @@ public class ChuangZuoXiangQingTab01Fragment extends StickHeaderBaseFragment {
     LinearLayout llDongtai;
 
     List<ArtworkMessage> artworkMessages=new ArrayList<>();
+    public ChuangZuoXiangQingTab01Fragment(){
+        super();
+    }
     public ChuangZuoXiangQingTab01Fragment(StickHeaderViewPagerManager manager, int position) {
         super(manager, position);
     }
