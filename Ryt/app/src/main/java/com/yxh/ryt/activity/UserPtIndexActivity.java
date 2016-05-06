@@ -106,8 +106,8 @@ public class UserPtIndexActivity extends BaseActivity {
         StickHeaderLayout root = (StickHeaderLayout) findViewById(R.id.user_pt_root);
         manager = new StickHeaderViewPagerManager(root, mViewPager);
         mFragmentList = new ArrayList<Fragment>();
-        mFragmentList.add(RongZiXiangQingTab04Fragment.newInstance(manager, 0, false));
-        mFragmentList.add(RongZiXiangQingTab04Fragment.newInstance(manager, 1, false));
+        mFragmentList.add(UserTouGuoFragment.newInstance(manager, 0, false));
+        mFragmentList.add(UserZanGuoFragment.newInstance(manager, 1, false));
         mFragmentList.add(RongZiXiangQingTab04Fragment.newInstance(manager, 2, false));
         UserPtTabPageIndicatorAdapter pagerAdapter = new UserPtTabPageIndicatorAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setOffscreenPageLimit(3);

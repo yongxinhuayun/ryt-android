@@ -79,9 +79,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		View view = inflater.inflate(R.layout.fragment_listview_zanguo, null);
 		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
 		lstv = (ListView)view.findViewById(R.id.fiz_lstv);
-		TextView tvNoData = (TextView) view.findViewById(R.id.fiz_tv_noData);
 		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
-
 		setAdapter();
 		onScroll();
 		userZGDatas.clear();
@@ -89,16 +87,16 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		return view;
 	}
 	private void setAdapter() {
-		userZGCommonAdapter=new CommonAdapter<PageinfoList>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__touguo_item) {
+		userZGCommonAdapter=new CommonAdapter<PageinfoList>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__zanguo_item) {
 			@Override
 			public void convert(ViewHolder helper, PageinfoList item) {
 				if (userZGDatas!=null){
-					helper.setImageByUrl(R.id.utf_iv_icon, item.getArtwork().getPicture_url());
-					helper.setText(R.id.utf_tv_proName, item.getArtwork().getTitle());
-					helper.setText(R.id.utf_tv_proStage,AppApplication.map.get(item.getArtwork().getStep()));
-					helper.setText(R.id.utf_tv_money,"项目金额:"+item.getArtwork().getInvestGoalMoney());
-					helper.setText(R.id.utf_tv_name,item.getArtwork().getAuthor().getName());
-					helper.setText(R.id.utf_tv_zhicheng,item.getArtwork().getAuthor().getMaster().getTitle());
+					helper.setImageByUrl(R.id.uzf_iv_icon, item.getArtwork().getPicture_url());
+					helper.setText(R.id.uzf_tv_proName, item.getArtwork().getTitle());
+					helper.setText(R.id.uzf_tv_proStage,AppApplication.map.get(item.getArtwork().getStep()));
+					helper.setText(R.id.uzf_tv_money,"项目金额:"+item.getArtwork().getInvestGoalMoney());
+					helper.setText(R.id.uzf_tv_name,item.getArtwork().getAuthor().getName());
+					helper.setText(R.id.uzf_tv_zhicheng,item.getArtwork().getAuthor().getMaster().getTitle());
 				}
 			}
 		};

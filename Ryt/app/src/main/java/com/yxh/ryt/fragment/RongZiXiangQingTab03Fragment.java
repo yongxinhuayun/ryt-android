@@ -275,7 +275,6 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                             artCommentDatas.addAll(commentList);
                             commentList.clear();
                         }
-
                         artCommentAdapter.notifyDataSetChanged();
                     }else {
                         List<ArtworkComment> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<ArtworkComment>>() {

@@ -121,7 +121,6 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         LoadData(true, currentPage);
         return view;
     }
-
     private void topDatas() {
         if (investorTOpDatas.size()!=0){
              AppApplication.displayImage(investorTOpDatas.get(0).getCreator().getPictureUrl(),icon1);
@@ -242,25 +241,32 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
                             topDatas();
                             topList.clear();
                         }
-                        List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
+                        List<ArtworkInvest> investList1 = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
                         }.getType());
-                        if (investList ==null|| investList.size()<Constants.pageSize){
+                        if (investList1 ==null){
                             more.setVisibility(View.GONE);
                             loading.setVisibility(View.GONE);
                             loadFull.setVisibility(View.VISIBLE);
                             noData.setVisibility(View.GONE);
                             loadComplete=false;
+                        }else if (investList1.size() < Constants.pageSize){
+                            more.setVisibility(View.GONE);
+                            loading.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.VISIBLE);
+                            noData.setVisibility(View.GONE);
+                            investorDatas.addAll(investList1);
+                            investList1.clear();
+                            investorRecordCommonAdapter.notifyDataSetChanged();
                         }else {
                             more.setVisibility(View.VISIBLE);
                             loading.setVisibility(View.GONE);
                             loadFull.setVisibility(View.GONE);
                             noData.setVisibility(View.GONE);
                         }
-                        if (investList!=null){
-                            investorDatas.addAll(investList);
-                            investList.clear();
+                        if (investList1!=null){
+                            investorDatas.addAll(investList1);
+                            investList1.clear();
                         }
-
                         investorRecordCommonAdapter.notifyDataSetChanged();
                     }else {
                         List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {

@@ -192,7 +192,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
-			int visibleItemCount, int totalItemCount) {
+						 int visibleItemCount, int totalItemCount) {
 		this.firstVisibleItem = firstVisibleItem;
 	}
 
@@ -211,7 +211,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 			if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
 					&& !isLoading
 					&& view.getLastVisiblePosition() == view
-							.getPositionForView(footer) && !isLoadFull) {
+					.getPositionForView(footer) && !isLoadFull) {
 				onLoad();
 				isLoading = true;
 			}
@@ -225,27 +225,27 @@ public class AutoListView extends ListView implements OnScrollListener {
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
 		switch (ev.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			if (firstVisibleItem == 0) {
-				isRecorded = true;
-				startY = (int) ev.getY();
-			}
-			break;
-		case MotionEvent.ACTION_CANCEL:
-		case MotionEvent.ACTION_UP:
-			if (state == PULL) {
-				state = NONE;
-				refreshHeaderViewByState();
-			} else if (state == RELEASE) {
-				state = REFRESHING;
-				refreshHeaderViewByState();
-				onRefresh();
-			}
-			isRecorded = false;
-			break;
-		case MotionEvent.ACTION_MOVE:
-			whenMove(ev);
-			break;
+			case MotionEvent.ACTION_DOWN:
+				if (firstVisibleItem == 0) {
+					isRecorded = true;
+					startY = (int) ev.getY();
+				}
+				break;
+			case MotionEvent.ACTION_CANCEL:
+			case MotionEvent.ACTION_UP:
+				if (state == PULL) {
+					state = NONE;
+					refreshHeaderViewByState();
+				} else if (state == RELEASE) {
+					state = REFRESHING;
+					refreshHeaderViewByState();
+					onRefresh();
+				}
+				isRecorded = false;
+				break;
+			case MotionEvent.ACTION_MOVE:
+				whenMove(ev);
+				break;
 		}
 		return super.onTouchEvent(ev);
 	}
@@ -259,30 +259,30 @@ public class AutoListView extends ListView implements OnScrollListener {
 		int space = tmpY - startY;
 		int topPadding = space - headerContentHeight;
 		switch (state) {
-		case NONE:
-			if (space > 0) {
-				state = PULL;
-				refreshHeaderViewByState();
-			}
-			break;
-		case PULL:
-			topPadding(topPadding);
-			if (scrollState == SCROLL_STATE_TOUCH_SCROLL
-					&& space > headerContentHeight + SPACE) {
-				state = RELEASE;
-				refreshHeaderViewByState();
-			}
-			break;
-		case RELEASE:
-			topPadding(topPadding);
-			if (space > 0 && space < headerContentHeight + SPACE) {
-				state = PULL;
-				refreshHeaderViewByState();
-			} else if (space <= 0) {
-				state = NONE;
-				refreshHeaderViewByState();
-			}
-			break;
+			case NONE:
+				if (space > 0) {
+					state = PULL;
+					refreshHeaderViewByState();
+				}
+				break;
+			case PULL:
+				topPadding(topPadding);
+				if (scrollState == SCROLL_STATE_TOUCH_SCROLL
+						&& space > headerContentHeight + SPACE) {
+					state = RELEASE;
+					refreshHeaderViewByState();
+				}
+				break;
+			case RELEASE:
+				topPadding(topPadding);
+				if (space > 0 && space < headerContentHeight + SPACE) {
+					state = PULL;
+					refreshHeaderViewByState();
+				} else if (space <= 0) {
+					state = NONE;
+					refreshHeaderViewByState();
+				}
+				break;
 		}
 
 	}
@@ -299,7 +299,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 	 * <p>
 	 * 这里假定每次请求的条数为10。如果请求到了10条。则认为还有数据。如过结果不足10条，则认为数据已经全部加载，这时footer显示已经全部加载
 	 * </p>
-	 * 
+	 *
 	 * @param resultSize
 	 */
 	public void setResultSize(int resultSize) {
@@ -311,7 +311,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 			noData.setVisibility(View.VISIBLE);
 		} else if (resultSize > 0 && resultSize < pageSize) {
 			isLoadFull = true;
-			loadFull.setVisibility(View.GONE);
+			loadFull.setVisibility(View.VISIBLE);
 			loading.setVisibility(View.GONE);
 			more.setVisibility(View.GONE);
 			noData.setVisibility(View.GONE);
@@ -328,40 +328,40 @@ public class AutoListView extends ListView implements OnScrollListener {
 	// 根据当前状态，调整header
 	private void refreshHeaderViewByState() {
 		switch (state) {
-		case NONE:
-			topPadding(-headerContentHeight);
-			tip.setText(R.string.pull_to_refresh);
-			refreshing.setVisibility(View.GONE);
-			arrow.clearAnimation();
-			arrow.setImageResource(R.mipmap.pull_to_refresh_arrow);
-			break;
-		case PULL:
-			arrow.setVisibility(View.VISIBLE);
-			tip.setVisibility(View.VISIBLE);
-			lastUpdate.setVisibility(View.VISIBLE);
-			refreshing.setVisibility(View.GONE);
-			tip.setText(R.string.pull_to_refresh);
-			arrow.clearAnimation();
-			arrow.setAnimation(reverseAnimation);
-			break;
-		case RELEASE:
-			arrow.setVisibility(View.VISIBLE);
-			tip.setVisibility(View.VISIBLE);
-			lastUpdate.setVisibility(View.VISIBLE);
-			refreshing.setVisibility(View.GONE);
-			tip.setText(R.string.pull_to_refresh);
-			tip.setText(R.string.release_to_refresh);
-			arrow.clearAnimation();
-			arrow.setAnimation(animation);
-			break;
-		case REFRESHING:
-			topPadding(headerContentInitialHeight);
-			refreshing.setVisibility(View.VISIBLE);
-			arrow.clearAnimation();
-			arrow.setVisibility(View.GONE);
-			tip.setVisibility(View.GONE);
-			lastUpdate.setVisibility(View.GONE);
-			break;
+			case NONE:
+				topPadding(-headerContentHeight);
+				tip.setText(R.string.pull_to_refresh);
+				refreshing.setVisibility(View.GONE);
+				arrow.clearAnimation();
+				arrow.setImageResource(R.mipmap.pull_to_refresh_arrow);
+				break;
+			case PULL:
+				arrow.setVisibility(View.VISIBLE);
+				tip.setVisibility(View.VISIBLE);
+				lastUpdate.setVisibility(View.VISIBLE);
+				refreshing.setVisibility(View.GONE);
+				tip.setText(R.string.pull_to_refresh);
+				arrow.clearAnimation();
+				arrow.setAnimation(reverseAnimation);
+				break;
+			case RELEASE:
+				arrow.setVisibility(View.VISIBLE);
+				tip.setVisibility(View.VISIBLE);
+				lastUpdate.setVisibility(View.VISIBLE);
+				refreshing.setVisibility(View.GONE);
+				tip.setText(R.string.pull_to_refresh);
+				tip.setText(R.string.release_to_refresh);
+				arrow.clearAnimation();
+				arrow.setAnimation(animation);
+				break;
+			case REFRESHING:
+				topPadding(headerContentInitialHeight);
+				refreshing.setVisibility(View.VISIBLE);
+				arrow.clearAnimation();
+				arrow.setVisibility(View.GONE);
+				tip.setVisibility(View.GONE);
+				lastUpdate.setVisibility(View.GONE);
+				break;
 		}
 	}
 

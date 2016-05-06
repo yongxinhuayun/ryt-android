@@ -45,7 +45,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 	}
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("pageSize", Constants.pageSize + "");
+		paramsMap.put("pageSize", "3");
 		paramsMap.put("pageNum", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
