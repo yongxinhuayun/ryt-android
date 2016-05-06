@@ -13,7 +13,7 @@ public class ContentValidation extends ValidationExecutor {
     @Override
     public boolean doValidate(Context context, String text) {
         if(text.isEmpty()){
-            ToastUtil.showShort(AppApplication.getSingleContext(), "密码不能为空！");
+            ToastUtil.showShort(AppApplication.getSingleContext(), "内容不能为空！");
             return false;
         }
         return true;

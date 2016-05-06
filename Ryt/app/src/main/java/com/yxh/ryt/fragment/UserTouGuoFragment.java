@@ -109,12 +109,14 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		userZGCommonAdapter=new CommonAdapter<ConvertWork>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__touguo_item) {
 			@Override
 			public void convert(ViewHolder helper, ConvertWork item) {
-				helper.setImageByUrl(R.id.utf_iv_icon, item.getPicture_url());
-				helper.setText(R.id.utf_tv_proName, item.getTitle());
-				helper.setText(R.id.utf_tv_proStage,AppApplication.map.get(item.getStep()));
-				helper.setText(R.id.utf_tv_money,"项目金额:"+item.getGoalMoney());
-				helper.setText(R.id.utf_tv_name,item.getUser().getName());
-				helper.setText(R.id.utf_tv_zhicheng,item.getUser().getMaster().getTitle());
+				if (userZGDatas!=null){
+					helper.setImageByUrl(R.id.utf_iv_icon, item.getPicture_url());
+					helper.setText(R.id.utf_tv_proName, item.getTitle());
+					helper.setText(R.id.utf_tv_proStage,AppApplication.map.get(item.getStep()));
+					helper.setText(R.id.utf_tv_money,"项目金额:"+item.getGoalMoney());
+					helper.setText(R.id.utf_tv_name,item.getUser().getName());
+					helper.setText(R.id.utf_tv_zhicheng,item.getUser().getMaster().getTitle());
+				}
 			}
 		};
 		lstv.setAdapter(userZGCommonAdapter);

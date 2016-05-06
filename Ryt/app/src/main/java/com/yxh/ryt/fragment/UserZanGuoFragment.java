@@ -83,7 +83,6 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.flz_placehoder);
 		setAdapter();
 		onScroll();
-		Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
 		userZGDatas.clear();
 		LoadData(true, currentPage);
 		return view;
@@ -92,12 +91,14 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		userZGCommonAdapter=new CommonAdapter<PageinfoList>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__touguo_item) {
 			@Override
 			public void convert(ViewHolder helper, PageinfoList item) {
-				helper.setImageByUrl(R.id.utf_iv_icon, item.getArtwork().getPicture_url());
-				helper.setText(R.id.utf_tv_proName, item.getArtwork().getTitle());
-				helper.setText(R.id.utf_tv_proStage,AppApplication.map.get(item.getArtwork().getStep()));
-				helper.setText(R.id.utf_tv_money,"项目金额:"+item.getArtwork().getInvestGoalMoney());
-				helper.setText(R.id.utf_tv_name,item.getArtwork().getAuthor().getName());
-				helper.setText(R.id.utf_tv_zhicheng,item.getArtwork().getAuthor().getMaster().getTitle());
+				if (userZGDatas!=null){
+					helper.setImageByUrl(R.id.utf_iv_icon, item.getArtwork().getPicture_url());
+					helper.setText(R.id.utf_tv_proName, item.getArtwork().getTitle());
+					helper.setText(R.id.utf_tv_proStage,AppApplication.map.get(item.getArtwork().getStep()));
+					helper.setText(R.id.utf_tv_money,"项目金额:"+item.getArtwork().getInvestGoalMoney());
+					helper.setText(R.id.utf_tv_name,item.getArtwork().getAuthor().getName());
+					helper.setText(R.id.utf_tv_zhicheng,item.getArtwork().getAuthor().getMaster().getTitle());
+				}
 			}
 		};
 		lstv.setAdapter(userZGCommonAdapter);

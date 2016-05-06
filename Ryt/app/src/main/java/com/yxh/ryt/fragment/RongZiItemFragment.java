@@ -155,8 +155,10 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Intent intent=new Intent(getActivity(), RongZiXQActivity.class);
-		intent.putExtra("id",rongZiDatas.get(position-1).getId());
-		startActivity(intent);
+		if (rongZiDatas.size()>0){
+			Intent intent=new Intent(getActivity(), RongZiXQActivity.class);
+			intent.putExtra("id",rongZiDatas.get(position-1).getId());
+			startActivity(intent);
+		}
 	}
 }

@@ -15,7 +15,7 @@ public class WxLoginBroadcastReciver extends BroadcastReceiver {
         String action = intent.getAction();
         if (Constants.WX_LOGIN_ACTION.equals(action)) {
             String wxuserStr = intent.getExtras().getString("wxuser");
-            System.out.println("wxuserStrwxuserStrwxuserStrwxuserStrwxuserStrwxuserStrwxuserStrwxuserStrwxuserStrwxuserStr"+wxuserStr);
+            System.out.println("2222222222222222222222222222222"+wxuserStr);
 //                AppApplication.gwxuser = AppApplication.getSingleGson().fromJson(wxuserStr, Wxuser.class);
         }
     }

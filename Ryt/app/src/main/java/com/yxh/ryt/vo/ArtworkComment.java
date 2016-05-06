@@ -1,12 +1,13 @@
 package com.yxh.ryt.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Administrator on 2016/4/9.
  */
-public class ArtworkComment {
+public class ArtworkComment implements Serializable{
     private String id;
     private Artwork artwork;
     private String content;

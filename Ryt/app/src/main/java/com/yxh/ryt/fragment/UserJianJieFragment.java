@@ -19,23 +19,25 @@ import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.vo.Artwork;
+import com.yxh.ryt.vo.UserBrief;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.OnClick;
 import okhttp3.Call;
 import wuhj.com.mylibrary.PlaceHoderHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
 @SuppressLint("ValidFragment")
-public class UserJianJieFragment extends StickHeaderBaseFragment{
-	private AutoListView lstv;
-	private CommonAdapter<Artwork> userTGCommonAdapter;
-	private List<Artwork> userTGDatas;
-	private int currentPage=1;
+public class UserJianJieFragment extends StickHeaderBaseFragment implements View.OnClickListener {
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
+	private TextView content;
+	private TextView wenZi;
+	private TextView edit;
+
 	public UserJianJieFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -58,7 +60,6 @@ public class UserJianJieFragment extends StickHeaderBaseFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		userTGDatas=new ArrayList<Artwork>();
 	}
 	private void LoadData() {
 		Map<String,String> paramsMap=new HashMap<>();
@@ -79,17 +80,30 @@ public class UserJianJieFragment extends StickHeaderBaseFragment{
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				Log.d("introintro","introintrointrointrointrointrointrointrointrointrointrointrointro");
+				if (response.get("resultCode").equals("0")){
+					Map<String,String> userBrief = (Map<String, String>) response.get("userBrief");
+					if (userBrief.get("signer").equals("")){
+						wenZi.setVisibility(View.VISIBLE);
+						edit.setVisibility(View.VISIBLE);
+						content.setVisibility(View.GONE);
+					}else {
+						wenZi.setVisibility(View.GONE);
+						edit.setVisibility(View.GONE);
+						content.setVisibility(View.VISIBLE);
+						content.setText(userBrief.get("signer"));
+					}
+				}
 			}
 		});
 	}
-
 	@Override
 	public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View contextView = inflater.inflate(R.layout.fragment_user_edit, container, false);
-		TextView content = (TextView) contextView.findViewById(R.id.fue_tv_content);
-		TextView edit = (TextView) contextView.findViewById(R.id.fue_bt_edit);
+		content = (TextView) contextView.findViewById(R.id.fue_tv_content);
+		wenZi = (TextView) contextView.findViewById(R.id.fue_tv_weiContent);
+		edit = (TextView) contextView.findViewById(R.id.fue_bt_edit);
 		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) contextView.findViewById(R.id.fue_placehoder);
+		edit.setOnClickListener(this);
 		return contextView;
 	}
 
@@ -100,7 +114,11 @@ public class UserJianJieFragment extends StickHeaderBaseFragment{
 	}
 	@Override
 	protected void lazyLoad() {
-		if(userTGDatas!=null&&userTGDatas.size()>0)return;
 		LoadData();
+	}
+
+	@Override
+	public void onClick(View v) {
+
 	}
 }

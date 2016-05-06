@@ -58,6 +58,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
  */
 @SuppressLint("ValidFragment")
 public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
+    private static String artWorkId;
     private ListView mListview;
     private CommonAdapter<ArtworkComment> artCommentAdapter;
     private List<ArtworkComment> artCommentDatas;
@@ -83,8 +84,9 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
         return listFragment;
     }
 
-    public static RongZiXiangQingTab03Fragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
+    public static RongZiXiangQingTab03Fragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh,String id) {
         RongZiXiangQingTab03Fragment listFragment = new RongZiXiangQingTab03Fragment(manager, position, isCanPulltoRefresh);
+        artWorkId=id;
         stickHeaderViewPagerManager=manager;
         return listFragment;
     }
@@ -95,7 +97,6 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         artCommentDatas=new ArrayList<>();
-        Log.d("oncreateView", "onCreateonCreateonCreateonCreateonCreateonCreateonCreateonCreate");
     }
 
     @Override
@@ -107,14 +108,14 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
         setAdapter();
         onScroll();
         Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
-        artCommentDatas.clear();
-        LoadData(true, currentPage);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        artCommentDatas.clear();
+        LoadData(true, currentPage);
     }
 
     private void setAdapter() {
@@ -128,8 +129,8 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                     public void onClick(View v) {
                         Intent intent=new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
                         intent.putExtra("name", item.getCreator().getName());
-                        intent.putExtra("fatherCommentId",item.getCreator().getId());
-                        intent.putExtra("artworkId",item.getId());
+                        intent.putExtra("fatherCommentId",item.getId());
+                        intent.putExtra("artworkId",artWorkId);
                         intent.putExtra("flag", 0);
                         intent.putExtra("messageId","");
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -226,7 +227,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
         loadFull.setVisibility(View.GONE);
         noData.setVisibility(View.GONE);
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("artWorkId","qydeyugqqiugd2");
+        paramsMap.put("artWorkId",artWorkId);
         paramsMap.put("pageSize", Constants.pageSize+"");
         paramsMap.put("pageIndex", pageNum + "");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");

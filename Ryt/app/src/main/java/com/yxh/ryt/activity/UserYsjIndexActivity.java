@@ -107,9 +107,9 @@ public class UserYsjIndexActivity extends BaseActivity {
         mFragmentList = new ArrayList<Fragment>();
         mFragmentList.add(RongZiXiangQingTab01Fragment.newInstance(manager, 0, false));
         mFragmentList.add(RongZiXiangQingTab02Fragment.newInstance(manager, 1, false));
-        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 2, false));
-        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 3, false));
-        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 4, false));
+        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 2, false,""));
+        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 3, false,""));
+        mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 4, false,""));
         UserYsjTabPageIndicatorAdapter pagerAdapter = new UserYsjTabPageIndicatorAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setOffscreenPageLimit(5);
         mViewPager.setAdapter(pagerAdapter);
