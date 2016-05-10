@@ -109,6 +109,10 @@ public class RecordVedioActivity extends BaseActivity {
 			Intent intent = new Intent(this, ReleaseVideoActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("text", mRecorderView.getmRecordFile().toString());
+			Log.d("mRecorderView", "222222222222222222");
+			Log.d("mRecorderView", mRecorderView.getmRecordFile().getAbsolutePath());
+			Log.d("mRecorderView", mRecorderView.getmRecordFile().toString());
+			Log.d("mRecorderView", mRecorderView.getmRecordFile().length()+"");
 			intent.putExtras(bundle);
 			startActivity(intent);
 		}

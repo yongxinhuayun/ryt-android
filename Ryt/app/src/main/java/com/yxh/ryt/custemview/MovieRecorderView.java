@@ -72,7 +72,7 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
         mHeight = a.getInteger(R.styleable.MovieRecorderView_height1, 240);// 默认240
 
         isOpenCamera = a.getBoolean(R.styleable.MovieRecorderView_is_open_camera, true);// 默认打开
-        mRecordMaxTime = a.getInteger(R.styleable.MovieRecorderView_record_max_time, 20);// 默认为10
+        mRecordMaxTime = a.getInteger(R.styleable.MovieRecorderView_record_max_time, 15);// 默认为10
 
         LayoutInflater.from(context).inflate(R.layout.movie_recorder_view, this);
         mSurfaceView = (SurfaceView) findViewById(R.id.surfaceview);
@@ -178,17 +178,19 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
     }
 
     private void createRecordDir() {
-        File sampleDir = new File(Environment.getExternalStorageDirectory() + File.separator + "im/video/");
-        if (!sampleDir.exists()) {
+            File sampleDir = new File(Environment.getExternalStorageDirectory() + File.separator + "im" + File.separator + "video" + File.separator);
+            if (!sampleDir.exists()) {
+                Log.d("111111", "11111111 ");
+                sampleDir.mkdirs();
+            }
+        if(!sampleDir.isDirectory()){
+            sampleDir.delete();
             sampleDir.mkdirs();
         }
-        File vecordDir = sampleDir;
-        // 创建文件
-        try {
-            mRecordFile = File.createTempFile("recording", ".mp4", vecordDir); //mp4格式
-            Log.i("TAG",mRecordFile.getAbsolutePath());
-        } catch (IOException e) {
-        }
+            try {
+                mRecordFile = File.createTempFile("recording"+System.currentTimeMillis(), ".mp4", sampleDir); //mp4格式
+            } catch (IOException e) {
+            }
     }
 
     /**
@@ -215,9 +217,7 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
         mMediaRecorder.setOrientationHint(90);// 输出旋转90度，保持竖屏录制
         mMediaRecorder.setVideoEncoder(VideoEncoder.MPEG_4_SP);// 视频录制格式
         // mediaRecorder.setMaxDuration(Constant.MAXVEDIOTIME * 1000);
-        if (mRecordFile!=null){
-            mMediaRecorder.setOutputFile(mRecordFile.getAbsolutePath());
-        }
+        mMediaRecorder.setOutputFile(mRecordFile.getAbsolutePath());
         mMediaRecorder.prepare();
         try {
             mMediaRecorder.start();
