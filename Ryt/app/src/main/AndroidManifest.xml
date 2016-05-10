@@ -4,7 +4,7 @@
     <permission
         android:name="com.yxh.ryt.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
-
+    <uses-sdk android:minSdkVersion="16" />
     <!-- Required  一些系统要求的权限，如访问网络等 -->
     <uses-permission android:name="com.yxh.ryt.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
@@ -22,8 +22,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-sdk android:minSdkVersion="16" />
-
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -36,6 +35,11 @@
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <!-- 接收消息 -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.CAMERA" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -43,7 +47,7 @@
         android:supportsRtl="true"
         android:name=".AppApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.IndexActivity" android:screenOrientation="portrait">
+        <activity android:name=".activity.RecordVedioActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,7 +56,7 @@
         </activity>
         <activity android:name=".activity.RegisterActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserYiJianActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.UserSettingActivity" android:screenOrientation="portrait"/>
+        <!--<activity android:name=".activity.UserSettingActivity" android:screenOrientation="portrait"/>-->
         <activity android:name=".activity.UserSettingAboutActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserChongZhiActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserQianBaoActivity" android:screenOrientation="portrait"/>
@@ -60,6 +64,7 @@
         <activity android:name=".activity.CommentActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ProjectCommentReply" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ForgetPwdActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ReleaseVideoActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
