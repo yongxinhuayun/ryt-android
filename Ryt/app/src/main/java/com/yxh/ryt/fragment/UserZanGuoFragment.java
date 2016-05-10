@@ -50,6 +50,8 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 	private int lastItem;
 	private boolean loadComplete=true;
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
+	private TextView tv_noData;
+
 	public UserZanGuoFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -78,6 +80,8 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 	public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_listview_zanguo, null);
 		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
+		tv_noData = (TextView) view.findViewById(R.id.flz_tv_noData);
+		tv_noData.setVisibility(View.GONE);
 		lstv = (ListView)view.findViewById(R.id.fiz_lstv);
 		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
 		setAdapter();
@@ -171,7 +175,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 					if (flag) {
 						List<PageinfoList> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<PageinfoList>>() {
 						}.getType());
-						if (commentList == null) {
+						if (commentList == null || commentList.size()==0) {
 							more.setVisibility(View.GONE);
 							loading.setVisibility(View.GONE);
 							loadFull.setVisibility(View.GONE);
@@ -194,7 +198,6 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 							userZGDatas.addAll(commentList);
 							commentList.clear();
 						}
-
 						userZGCommonAdapter.notifyDataSetChanged();
 					}else {
 						List<PageinfoList> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<PageinfoList>>() {

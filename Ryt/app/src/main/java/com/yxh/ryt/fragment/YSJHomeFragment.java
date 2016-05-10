@@ -99,12 +99,12 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 				helper.getView(R.id.mpi_tv_left).setVisibility(View.GONE);
 				helper.getView(R.id.mpi_tv_right).setVisibility(View.GONE);
 				if (isArtist){
-					if (item.getStep().equals("101")){
+					if ("101".equals(item.getStep())){
 						helper.getView(R.id.mpi_tv_left).setVisibility(View.VISIBLE);
 						((TextView) helper.getView(R.id.mpi_tv_left)).setText("提交项目");
 						helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);
 						((TextView) helper.getView(R.id.mpi_tv_right)).setText("编辑项目");
-					}else if (item.getStep().equals("21") || item.getStep().equals("22")){
+					}else if ("21".equals(item.getStep()) || "22".equals(item.getStep())){
 						helper.getView(R.id.mpi_tv_left).setVisibility(View.VISIBLE);
 						((TextView) helper.getView(R.id.mpi_tv_left)).setText("创作完成");
 						helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);

@@ -107,7 +107,6 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
         setAdapter();
         onScroll();
-        Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
         return view;
     }
 
@@ -252,7 +251,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                     if (flag) {
                         List<ArtworkComment> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<ArtworkComment>>() {
                         }.getType());
-                        if (commentList == null) {
+                        if (commentList == null || commentList.size()==0) {
                             more.setVisibility(View.GONE);
                             loading.setVisibility(View.GONE);
                             loadFull.setVisibility(View.GONE);

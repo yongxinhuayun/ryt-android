@@ -72,7 +72,7 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
         mHeight = a.getInteger(R.styleable.MovieRecorderView_height1, 240);// 默认240
 
         isOpenCamera = a.getBoolean(R.styleable.MovieRecorderView_is_open_camera, true);// 默认打开
-        mRecordMaxTime = a.getInteger(R.styleable.MovieRecorderView_record_max_time, 15);// 默认为10
+        mRecordMaxTime = a.getInteger(R.styleable.MovieRecorderView_record_max_time, 20);// 默认为10
 
         LayoutInflater.from(context).inflate(R.layout.movie_recorder_view, this);
         mSurfaceView = (SurfaceView) findViewById(R.id.surfaceview);
@@ -215,7 +215,9 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
         mMediaRecorder.setOrientationHint(90);// 输出旋转90度，保持竖屏录制
         mMediaRecorder.setVideoEncoder(VideoEncoder.MPEG_4_SP);// 视频录制格式
         // mediaRecorder.setMaxDuration(Constant.MAXVEDIOTIME * 1000);
-        mMediaRecorder.setOutputFile(mRecordFile.getAbsolutePath());
+        if (mRecordFile!=null){
+            mMediaRecorder.setOutputFile(mRecordFile.getAbsolutePath());
+        }
         mMediaRecorder.prepare();
         try {
             mMediaRecorder.start();

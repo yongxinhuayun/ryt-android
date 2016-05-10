@@ -92,7 +92,6 @@ public class RongZiXQActivity extends BaseActivity {
         manager = new StickHeaderViewPagerManager(shl_root, mViewPager);
         mFragmentList = new ArrayList<Fragment>();
         mFragmentList.add(RongZiXiangQingTab01Fragment.newInstance(manager, 0, false));
-
         mFragmentList.add(RongZiXiangQingTab02Fragment.newInstance(manager, 1, false));
         mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 2, false,artworkId));
         mFragmentList.add(RongZiXiangQingTab04Fragment.newInstance(manager, 3, false));

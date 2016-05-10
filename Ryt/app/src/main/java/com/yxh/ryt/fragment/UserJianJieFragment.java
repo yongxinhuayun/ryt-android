@@ -114,7 +114,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 	}
 	@Override
 	protected void lazyLoad() {
-		LoadData();
+		/*LoadData();*/
 	}
 
 	@Override

@@ -100,7 +100,6 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		tvNoData = (TextView) view.findViewById(R.id.fit_tv_noData);
 		setAdapter();
 		onScroll();
-		Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
 		userZGDatas.clear();
 		LoadData(true, currentPage);
 		return view;

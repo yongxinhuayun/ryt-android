@@ -111,7 +111,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
     public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_record, null);
         mListview = (ListView)view.findViewById(R.id.flr_scroll);
-        footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
+        footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer_1, null);
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
         findView(view);
         setAdapter();
@@ -221,7 +221,6 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
-                System.out.println("564545455489失败了");
             }
 
             @Override
@@ -231,7 +230,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
                     if (flag){
                         List<ArtworkInvest> topList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestTopList")), new TypeToken<List<ArtworkInvest>>() {
                         }.getType());
-                        if (topList==null){
+                        if (topList==null || topList.size()==0){
                             more.setVisibility(View.GONE);
                             loading.setVisibility(View.GONE);
                             loadFull.setVisibility(View.GONE);
@@ -243,11 +242,11 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
                         }
                         List<ArtworkInvest> investList1 = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
                         }.getType());
-                        if (investList1 ==null){
+                        if (investList1 ==null || investList1.size()==0){
                             more.setVisibility(View.GONE);
                             loading.setVisibility(View.GONE);
-                            loadFull.setVisibility(View.VISIBLE);
-                            noData.setVisibility(View.GONE);
+                            loadFull.setVisibility(View.GONE);
+                            noData.setVisibility(View.VISIBLE);
                             loadComplete=false;
                         }else if (investList1.size() < Constants.pageSize){
                             more.setVisibility(View.GONE);

@@ -20,7 +20,9 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Artwork;
+import com.yxh.ryt.vo.MasterWork;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +36,8 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 @SuppressLint("ValidFragment")
 public class YSJWorkFragment extends StickHeaderBaseFragment{
 	private ListView lstv;
-	private CommonAdapter<Artwork> ySJWorkCommonAdapter;
-	private List<Artwork> ySJWorkDatas;
+	private CommonAdapter<MasterWork> ySJWorkCommonAdapter;
+	private List<MasterWork> ySJWorkDatas;
 	private int currentPage=1;
 	private View footer;
 	private TextView loadFull;
@@ -67,7 +69,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ySJWorkDatas=new ArrayList<Artwork>();
+		ySJWorkDatas=new ArrayList<MasterWork>();
 	}
 	@Override
 	public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,32 +80,26 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.fiyw_placehoder);
 		setAdapter();
 		onScroll();
-		Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
 		ySJWorkDatas.clear();
 		LoadData(true, currentPage);
 		return view;
 	}
+	private String judgeStaus(String type){
+		if (type.equals("0")){
+			return "非卖品";
+		}else if(type.equals("1")){
+			return "可售";
+		}else {
+			return "已售";
+		}
+	}
 	private void setAdapter() {
-		ySJWorkCommonAdapter=new CommonAdapter<Artwork>(AppApplication.getSingleContext(),ySJWorkDatas,R.layout.mrdm_work_item) {
+		ySJWorkCommonAdapter=new CommonAdapter<MasterWork>(AppApplication.getSingleContext(),ySJWorkDatas,R.layout.mrdm_work_item) {
 			@Override
-			public void convert(ViewHolder helper, Artwork item) {
-				/*helper.setText(R.id.cl_01_tv_title,item.getTitle());
-				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
-				helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());
-//				helper.setText(R.id.fli_ll_tv_investGoalMoney,item.getInvestGoalMoney().intValue()+"元");
-				helper.setText(R.id.fli_ll_tv_remainingTime, Utils.timeToFormatTemp("HH时MM分SS秒",item.getInvestEndDatetime()-item.getInvestStartDatetime()));
-//				helper.setText(R.id.fli_ll_tv_investGoalPeople, item.getInvestorsNum() + "");
-				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
-				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
-				if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){
-					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.VISIBLE);
-					helper.setText(R.id.cl_01_tv_zhicheng, item.getAuthor().getMaster().getTitle());
-				}else{
-					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.GONE);
-				}*/
-//				double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-//				helper.setProgress(R.id.progressBar1, (int)(value*100));
-//				helper.setText(R.id.tv_pb_value, (int)(value*100)+"%");
+			public void convert(ViewHolder helper, MasterWork item) {
+				helper.setImageByUrl(R.id.mwi_iv_icon, item.getPictureUrl());
+				helper.setText(R.id.mwi_iv_title, item.getName());
+				helper.setText(R.id.mwi_tv_description,item.getMaterial()+"/"+ Utils.timeToFormatTemp("yyyy",item.getCreateDatetime())+"/"+judgeStaus(item.getType()));
 			}
 		};
 		lstv.setAdapter(ySJWorkCommonAdapter);
@@ -152,7 +148,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("artWorkId","qydeyugqqiugd2");
+		paramsMap.put("userId","ieatht97wfw30hfd");
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -162,7 +158,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkComment.do", paramsMap, new RZCommentCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "userWork.do", paramsMap, new RZCommentCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
@@ -175,7 +171,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 				if ("0".equals(response.get("resultCode"))) {
 					Map<String, Object> object = (Map<String, Object>) response.get("object");
 					if (flag) {
-						List<Artwork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<Artwork>>() {
+						List<MasterWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("masterWorkList")), new TypeToken<List<MasterWork>>() {
 						}.getType());
 						if (commentList == null) {
 							more.setVisibility(View.GONE);
@@ -202,7 +198,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 						}
 						ySJWorkCommonAdapter.notifyDataSetChanged();
 					}else {
-						List<Artwork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<Artwork>>() {
+						List<MasterWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("masterWorkList")), new TypeToken<List<MasterWork>>() {
 						}.getType());
 						if (commentList == null || commentList.size() < Constants.pageSize) {
 							more.setVisibility(View.GONE);

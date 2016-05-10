@@ -108,7 +108,7 @@ public class UserPtIndexActivity extends BaseActivity {
         mFragmentList = new ArrayList<Fragment>();
         mFragmentList.add(UserTouGuoFragment.newInstance(manager, 0, false));
         mFragmentList.add(UserZanGuoFragment.newInstance(manager, 1, false));
-        mFragmentList.add(RongZiXiangQingTab04Fragment.newInstance(manager, 2, false));
+        mFragmentList.add(UserJianJieFragment.newInstance(manager, 2, false));
         UserPtTabPageIndicatorAdapter pagerAdapter = new UserPtTabPageIndicatorAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(pagerAdapter);
