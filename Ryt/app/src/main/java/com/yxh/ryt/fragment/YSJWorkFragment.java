@@ -103,6 +103,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 				helper.setImageByUrl(R.id.mwi_iv_icon, item.getPictureUrl());
 				helper.setText(R.id.mwi_iv_title, item.getName());
 				helper.setText(R.id.mwi_tv_description,item.getMaterial()+"/"+ Utils.timeToFormatTemp("yyyy",item.getCreateDatetime())+"/"+judgeStaus(item.getType()));
+				helper.getView(R.id.mwi_iv_delete);
 			}
 		};
 		lstv.setAdapter(ySJWorkCommonAdapter);
