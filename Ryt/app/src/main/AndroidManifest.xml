@@ -47,7 +47,7 @@
         android:supportsRtl="true"
         android:name=".AppApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.UserSettingActivity" android:screenOrientation="portrait">
+        <activity android:name=".activity.UserYsjIndexActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

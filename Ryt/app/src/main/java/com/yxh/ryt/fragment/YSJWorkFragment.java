@@ -47,6 +47,8 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 	private int lastItem;
 	private boolean loadComplete=true;
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
+	private View header;
+
 	public YSJWorkFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -77,7 +79,8 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 		lstv = (ListView)view.findViewById(R.id.fiyw_lstv);
 		TextView tvNoData = (TextView) view.findViewById(R.id.fiyw_tv_noData);
 		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
-		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.fiyw_placehoder);
+		header = LayoutInflater.from(getActivity()).inflate(R.layout.workheaderview, lstv,false);
+		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
 		setAdapter();
 		onScroll();
 		ySJWorkDatas.clear();
@@ -104,6 +107,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 		};
 		lstv.setAdapter(ySJWorkCommonAdapter);
 		lstv.addFooterView(footer);
+		lstv.addHeaderView(header);
 		loadFull = (TextView) footer.findViewById(R.id.loadFull);
 		noData = (TextView) footer.findViewById(R.id.noData);
 		more = (TextView) footer.findViewById(R.id.more);
