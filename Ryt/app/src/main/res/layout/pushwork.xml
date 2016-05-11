@@ -118,13 +118,24 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="是否出售"/>
-        <ImageView
-            android:id="@+id/pw_iv_go5"
+        <LinearLayout
+            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/go"/>
+            android:gravity="center">
+            <TextView
+                android:id="@+id/pw_tv_state"
+                android:layout_width="wrap_content"
+                android:text="已售"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/pw_iv_go5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/jiantou"/>
+        </LinearLayout>
+
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
