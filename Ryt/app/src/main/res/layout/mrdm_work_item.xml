@@ -10,14 +10,14 @@
             android:id="@+id/mwi_iv_icon"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="120dp"
             android:src="@mipmap/ic_launcher"/>
         <com.yxh.ryt.custemview.CircleImageView
             android:id="@+id/mwi_iv_delete"
             android:layout_gravity="right"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/shanchu"
             android:layout_width="20dp"
             android:layout_height="20dp"/>
     </FrameLayout>
