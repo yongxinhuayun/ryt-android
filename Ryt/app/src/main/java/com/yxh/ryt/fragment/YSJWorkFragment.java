@@ -101,7 +101,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 	private void setAdapter() {
 		ySJWorkCommonAdapter=new CommonAdapter<MasterWork>(AppApplication.getSingleContext(),ySJWorkDatas,R.layout.mrdm_work_item) {
 			@Override
-			public void convert(ViewHolder helper, MasterWork item) {
+			public void convert(ViewHolder helper, final MasterWork item) {
 				helper.setImageByUrl(R.id.mwi_iv_icon, item.getPictureUrl());
 				helper.setText(R.id.mwi_iv_title, item.getName());
 				helper.setText(R.id.mwi_tv_description,item.getMaterial()+"/"+ Utils.timeToFormatTemp("yyyy",item.getCreateDatetime())+"/"+judgeStaus(item.getType()));
@@ -113,6 +113,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 							public void onClick(DialogInterface dialog, int which) {
 								dialog.dismiss();
 								//设置你的操作事项
+								delete(item.getId());
 							}
 						});
 
@@ -140,6 +141,36 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 	}
+
+	private void delete(String id) {
+		Map<String,String> paramsMap=new HashMap<>();
+		paramsMap.put("userId", "ieatht97wfw30hfd");
+		paramsMap.put("artworkId", id);
+		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		try {
+			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+			paramsMap.put("signmsg", AppApplication.signmsg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		NetRequestUtil.post(Constants.BASE_PATH + "artworkRemove.do", paramsMap, new RZCommentCallBack() {
+			@Override
+			public void onError(Call call, Exception e) {
+				e.printStackTrace();
+				System.out.println("444444失败了");
+			}
+
+			@Override
+			public void onResponse(Map<String, Object> response) {
+				if ("0".equals(response.get("resultCode"))) {
+					ySJWorkDatas.clear();
+					currentPage=1;
+					LoadData(true,currentPage);
+				}
+			}
+		});
+	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -194,7 +225,6 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
 				if ("0".equals(response.get("resultCode"))) {
 					Map<String, Object> object = (Map<String, Object>) response.get("object");
 					if (flag) {
