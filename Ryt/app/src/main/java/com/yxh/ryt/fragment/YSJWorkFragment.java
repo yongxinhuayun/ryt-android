@@ -1,6 +1,7 @@
 package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
+import com.yxh.ryt.custemview.CustomDialog;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
@@ -103,7 +105,27 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 				helper.setImageByUrl(R.id.mwi_iv_icon, item.getPictureUrl());
 				helper.setText(R.id.mwi_iv_title, item.getName());
 				helper.setText(R.id.mwi_tv_description,item.getMaterial()+"/"+ Utils.timeToFormatTemp("yyyy",item.getCreateDatetime())+"/"+judgeStaus(item.getType()));
-				helper.getView(R.id.mwi_iv_delete);
+				helper.getView(R.id.mwi_iv_delete).setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
+						builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+								//设置你的操作事项
+							}
+						});
+
+						builder.setNegativeButton("取消",
+								new android.content.DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int which) {
+										dialog.dismiss();
+									}
+								});
+
+						builder.create().show();
+					}
+				});
 			}
 		};
 		lstv.setAdapter(ySJWorkCommonAdapter);

@@ -28,7 +28,7 @@
                 android:gravity="center"
                 android:text="33"
                 android:textColor="#666666"
-                android:textSize="11sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_user_header_gz"
@@ -37,7 +37,7 @@
                 android:text="关注"
                 android:gravity="center"
                 android:textColor="#666666"
-                android:textSize="11sp" />
+                android:textSize="14sp" />
                 </LinearLayout>
 
         <LinearLayout
@@ -64,7 +64,7 @@
                 android:gravity="center"
                 android:text="立即登录"
                 android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -82,7 +82,7 @@
                 android:gravity="center"
                 android:text="18"
                 android:textColor="#666666"
-                android:textSize="11sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_user_header_fs"
@@ -91,7 +91,7 @@
                 android:gravity="center"
                 android:text="粉丝"
                 android:textColor="#666666"
-                android:textSize="11sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
     </LinearLayout>
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:text="个性签名："
             android:textColor="#666666"
-            android:textSize="11sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_user_header_txt"
@@ -117,7 +117,7 @@
             android:layout_height="wrap_content"
             android:text="一句话20字以内"
             android:textColor="#666666"
-            android:textSize="11sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:text="50元"
                 android:textColor="#333333"
-                android:textSize="11sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_user_header_je_txt_01"
@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:text="项目总金额"
                 android:textColor="#333333"
-                android:textSize="11sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -172,7 +172,7 @@
                 android:layout_height="wrap_content"
                 android:text="20元"
                 android:textColor="#333333"
-                android:textSize="11sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_user_header_je_txt_02"
@@ -180,7 +180,7 @@
                 android:layout_height="wrap_content"
                 android:text="项目总拍卖金额"
                 android:textColor="#333333"
-                android:textSize="11sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -203,7 +203,7 @@
                 android:layout_height="wrap_content"
                 android:text="40%"
                 android:textColor="#333333"
-                android:textSize="11sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_user_header_je_txt_03"
@@ -211,7 +211,8 @@
                 android:layout_height="wrap_content"
                 android:text="拍卖溢价率"
                 android:textColor="#333333"
-                android:textSize="11sp" />
+                android:textSize="14sp"
+                />
 
         </LinearLayout>
     </LinearLayout>

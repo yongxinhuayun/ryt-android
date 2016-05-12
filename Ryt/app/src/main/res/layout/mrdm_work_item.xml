@@ -26,13 +26,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:textColor="#000000"
         android:text="四不猴铜雕"
         android:layout_marginTop="5dp"/>
     <TextView
         android:id="@+id/mwi_tv_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:layout_marginTop="15dp"
         android:text="铜雕/2015/非卖品"/>
 </LinearLayout>
