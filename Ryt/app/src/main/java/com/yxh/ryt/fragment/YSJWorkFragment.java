@@ -145,7 +145,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 	private void delete(String id) {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("userId", "ieatht97wfw30hfd");
-		paramsMap.put("artworkId", id);
+		paramsMap.put("masterWorkId", id);
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -153,7 +153,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "artworkRemove.do", paramsMap, new RZCommentCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "removeMasterWork.do", paramsMap, new RZCommentCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
@@ -164,8 +164,8 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 			public void onResponse(Map<String, Object> response) {
 				if ("0".equals(response.get("resultCode"))) {
 					ySJWorkDatas.clear();
-					currentPage=1;
-					LoadData(true,currentPage);
+					currentPage = 1;
+					LoadData(true, currentPage);
 				}
 			}
 		});
