@@ -77,7 +77,7 @@ public class ProjectCommentReply extends BaseActivity {
             return;
         }
         Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("artWorkId",artworkId+"");
+        paramsMap.put("artworkId",artworkId+"");
         paramsMap.put("currentUserId", "ieatht97wfw30hfd");
         if(!"".equals(messageId)){
             paramsMap.put("messageId", messageId);
