@@ -21,6 +21,6 @@
     <color name="GreyWhite_has_alpha">#66FAFAFA</color>
     <color name="transparent">#00000000</color>
     <color name="action_bar_tittle_color_555555">#FF000000</color>
-
+    <color name="province_line_border1">#D0D0D0</color>
     <color name="province_line_border">#C7C7C7</color>
 </resources>
