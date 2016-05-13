@@ -227,12 +227,15 @@ public class UserYsjIndexActivity extends BaseActivity {
                 circleImageView.setImageBitmap(bitmap);*/
 //                saveFile(bitmap);
                 Intent intent=new Intent(this,PushWoraActivity.class);
-                intent.putExtra("intent",data);
+                intent.putExtra("intent",data.getData());
                 startActivity(intent);
                 break;
             case CAMERA_REQUEST_CODE:
                 File picture = new File(Environment.getExternalStorageDirectory()
                         + "/temp.jpg");
+                Intent intent1=new Intent(this,PushWoraActivity.class);
+                intent1.putExtra("intent",Uri.fromFile(picture));
+                startActivity(intent1);
                 break;
             case CROP_REQUEST_CODE:
 //                if (data == null) {

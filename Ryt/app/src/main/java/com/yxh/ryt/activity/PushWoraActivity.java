@@ -3,6 +3,8 @@ package com.yxh.ryt.activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +19,8 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.DatePicker.DatePickerView;
 import com.yxh.ryt.R;
 import com.yxh.ryt.custemview.ActionSheetDialog;
+import com.yxh.ryt.util.GetPathFromUri4kitkat;
+import com.yxh.ryt.util.Utils;
 
 import java.io.File;
 
@@ -38,12 +42,40 @@ public class PushWoraActivity extends BaseActivity {
     TextView state;
     @Bind(R.id.pw_tv_year)
     TextView year;
-
+    String filePath="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pushwork);
         ButterKnife.bind(this);/*启用注解绑定*/
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent=getIntent();
+        Uri uri=intent.getParcelableExtra("intent");
+        if (uri !=null){
+            Bitmap bitmap=getBitmap(uri);
+            filePath=Utils.getFilePathFromUri( uri,this);
+            Bitmap bitmap1 = Utils.rotaingImageView(filePath, bitmap);
+            bitmap.recycle();
+            imageWork.setImageBitmap(bitmap1);
+        }
+    }
+    public Bitmap getBitmap(Uri data){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        options.inSampleSize = 4;
+//        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+        filePath= GetPathFromUri4kitkat.getPath(data);
+//        }else{
+//            filePath=ImageUtils.getRealPathByUriOld(data);
+//        }
+        Bitmap bm = BitmapFactory.decodeFile(filePath, options);
+        options.inJustDecodeBounds = false;
+        bm = BitmapFactory.decodeFile(filePath, options);
+        return  bm;
     }
     @OnClick({R.id.pw_sale,R.id.pw_rl_year} )
     public void isSale(View view){
