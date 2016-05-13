@@ -51,6 +51,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="19.5dp"
                 android:layout_toRightOf="@id/progressBar1"
+                android:textSize="14sp"
+                android:textColor="#000000"
                 android:text="30%" />
         </RelativeLayout>
 
@@ -74,9 +76,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="3000元"
-                    android:textColor="@android:color/black"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                     />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -84,7 +86,8 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:text="目标金额"
-                    android:textSize="12.38sp" />
+                    android:textSize="14sp"
+                    android:textColor="#808080"/>
             </LinearLayout>
 
             <LinearLayout
@@ -99,9 +102,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="24时00分00秒"
-                    android:textColor="@android:color/black"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -109,7 +111,8 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:text="剩余时间"
-                    android:textSize="12.38sp" />
+                    android:textSize="14sp"
+                    android:textColor="#808080" />
             </LinearLayout>
 
             <LinearLayout
@@ -124,9 +127,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="1000000"
-                    android:textColor="@android:color/black"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -134,7 +136,8 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:text="投资人数"
-                    android:textSize="12.38sp" />
+                    android:textSize="14sp"
+                    android:textColor="#808080" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
