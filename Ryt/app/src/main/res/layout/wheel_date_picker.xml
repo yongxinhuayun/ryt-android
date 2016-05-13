@@ -3,31 +3,21 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginBottom="1dp"
-        android:background="#999999" />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:paddingRight="20dp"
-        android:background="#11000000"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="15dp"
         android:text="完成"
         android:id="@+id/finish"
-        android:textColor="#0056ac"
-        android:textSize="18sp" />
+        android:textColor="#000000"
+        android:textSize="14sp" />
 
     <View
         android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginBottom="1dp"
-        android:background="#999999" />
+        android:layout_height="1dp"
+        android:background="#8c8c8c" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -43,10 +33,5 @@
             />
     </LinearLayout>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginBottom="1dp"
-        android:background="#999999" />
 
 </LinearLayout>

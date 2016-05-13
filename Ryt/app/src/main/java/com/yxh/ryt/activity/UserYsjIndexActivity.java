@@ -2,8 +2,15 @@ package com.yxh.ryt.activity;
 
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -20,6 +27,7 @@ import com.yxh.ryt.adapter.RongZiXqTabPageIndicatorAdapter;
 import com.yxh.ryt.adapter.UserPtTabPageIndicatorAdapter;
 import com.yxh.ryt.adapter.UserYsjTabPageIndicatorAdapter;
 import com.yxh.ryt.callback.RongZiListCallBack;
+import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.fragment.RongZiItemFragment;
 import com.yxh.ryt.fragment.RongZiXiangQingTab01Fragment;
@@ -38,6 +46,7 @@ import com.yxh.ryt.vo.Artwork;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,6 +95,7 @@ public class UserYsjIndexActivity extends BaseActivity {
     TextView tvUserHeaderJeValue03;
     @Bind(R.id.tv_user_header_je_txt_03)
     TextView tvUserHeaderJeTxt03;
+    private PushWorkReceiver receiver;
 //    @Bind({R.id.ll_header_gz, R.id.ll_header_fs, R.id.ll_header_qm, R.id.ll_header_value})
 //    List<LinearLayout> linearLayouts;
 //    static final ButterKnife.Setter<View, Integer> ISVISIBLE = new ButterKnife.Setter<View, Integer>() {
@@ -101,6 +111,12 @@ public class UserYsjIndexActivity extends BaseActivity {
 //            }
 //        }
 //    };
+
+    private static final String IMAGE_UNSPECIFIED = "image/*";
+    private static final int PHOTO_RESOULT = 4;
+    private static final int ALBUM_REQUEST_CODE = 1;
+    private static final int CAMERA_REQUEST_CODE = 2;
+    private static final int CROP_REQUEST_CODE = 4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +136,10 @@ public class UserYsjIndexActivity extends BaseActivity {
         mViewPager.setAdapter(pagerAdapter);
         TabPageIndicator indicator = (TabPageIndicator) findViewById(R.id.user_ysj_indicator);
         indicator.setViewPager(mViewPager);
-
+        receiver = new PushWorkReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.intent.action.FW_BROADCAST");
+        registerReceiver(receiver, filter);
     }
     @Override
     public void onResume() {
@@ -163,6 +182,82 @@ public class UserYsjIndexActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        unregisterReceiver(receiver);
+    }
+    public class PushWorkReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            new ActionSheetDialog(UserYsjIndexActivity.this)
+                    .builder()
+                    .setCancelable(false)
+                    .setCanceledOnTouchOutside(true)
+                    .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
+                            new ActionSheetDialog.OnSheetItemClickListener() {
+                                @Override
+                                public void onClick(int which) {
+                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
+                                            getExternalStorageDirectory(), "temp.jpg")));
+                                    startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                                }
+                            })
+                    .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
+                            new ActionSheetDialog.OnSheetItemClickListener() {
+                                @Override
+                                public void onClick(int which) {
+                                    Intent intent = new Intent(Intent.ACTION_PICK, null);
+                                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_UNSPECIFIED);
+                                    startActivityForResult(intent, ALBUM_REQUEST_CODE);
+                                }
+                            })
+                    .show();
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode) {
+            case ALBUM_REQUEST_CODE:
+                if (data == null) {
+                    return;
+                }
+                /*Bitmap bitmap = getBitmap(data.getData());
+//                Bitmap bitmap=getBitmapFromUri(data.getData());
+                circleImageView.setImageBitmap(bitmap);*/
+//                saveFile(bitmap);
+                Intent intent=new Intent(this,PushWoraActivity.class);
+                intent.putExtra("intent",data);
+                startActivity(intent);
+                break;
+            case CAMERA_REQUEST_CODE:
+                File picture = new File(Environment.getExternalStorageDirectory()
+                        + "/temp.jpg");
+                break;
+            case CROP_REQUEST_CODE:
+//                if (data == null) {
+//                    // TODO 如果之前以后有设置过显示之前设置的图片 否则显示默认的图片
+//                    return;
+//                }
+//                Bundle extras = data.getExtras();
+//                if (extras != null) {
+//                    Bitmap photo = extras.getParcelable("data");
+//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                    BitmapFactory.Options options = new BitmapFactory.Options();
+//                    options.inSampleSize = 4;  //这里表示原来图片的1/4
+//                    photo.
+//                    BitmapFactory.Options options = new BitmapFactory.Options();
+//                    options.inJustDecodeBounds = true;
+//                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                    photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//                    InputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+//                    BitmapFactory.decodeStream(isBm, null, options);
+//                    final int i = ImageUtils.calculateInSampleSize(new ImageUtils.ImageSize(options.outWidth, options.outHeight), new ImageUtils.ImageSize(100, 100));
+//                }
+//                break;
+            default:
+                break;
+        }
     }
 }
 

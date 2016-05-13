@@ -65,6 +65,7 @@
         <activity android:name=".activity.ProjectCommentReply" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ForgetPwdActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ReleaseVideoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PushWoraActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"

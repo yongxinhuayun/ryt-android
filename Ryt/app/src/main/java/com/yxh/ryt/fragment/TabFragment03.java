@@ -86,7 +86,6 @@ public class TabFragment03 extends  BaseFragment {
             @Override
             public void onResponse(Map<String, Object> response) {
                 if (response.get("resultCode").equals("0")){
-                    Log.d("resultCoderesultCoderesultCode","reresultCoderesultCoderesultCode");
                     Intent intent=new Intent(getActivity(), cls);
                     getActivity().startActivity(intent);
                 }

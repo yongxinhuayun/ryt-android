@@ -2,6 +2,7 @@ package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +37,7 @@ import wuhj.com.mylibrary.PlaceHoderHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
 @SuppressLint("ValidFragment")
-public class YSJWorkFragment extends StickHeaderBaseFragment{
+public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnClickListener {
 	private ListView lstv;
 	private CommonAdapter<MasterWork> ySJWorkCommonAdapter;
 	private List<MasterWork> ySJWorkDatas;
@@ -140,6 +141,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 		loading.setVisibility(View.GONE);
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
+		header.setOnClickListener(this);
 	}
 
 	private void delete(String id) {
@@ -277,5 +279,11 @@ public class YSJWorkFragment extends StickHeaderBaseFragment{
 				}
 			}
 		});
+	}
+
+	@Override
+	public void onClick(View v) {
+		Intent intent = new Intent("android.intent.action.FW_BROADCAST");
+		AppApplication.getSingleContext().sendBroadcast(intent);
 	}
 }
