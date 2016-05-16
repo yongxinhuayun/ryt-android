@@ -112,8 +112,11 @@ public class TabFragment03 extends  BaseFragment {
             public void onResponse(Map<String, Object> response) {
 
                 if (response.get("resultCode").equals("0")){
-                    if ( ((Double) response.get("noticeNum")) !=0){
-                        bvNotification.setText(response.get("noticeNum")+"");
+                    String noticeNum = AppApplication.getSingleGson().toJson(response.get("noticeNum"));
+                    String commentNum = AppApplication.getSingleGson().toJson(response.get("commentNum"));
+                    String messageNum = AppApplication.getSingleGson().toJson(response.get("messageNum"));
+                    if ( !"0".equals(noticeNum)){
+                        bvNotification.setText(noticeNum);
                         bvNotification.setTextColor(Color.WHITE);
                         bvNotification.setTextSize(7);
                         bvNotification.setBadgePosition(BadgeView.POSITION_TOP_RIGHT); //默认
@@ -121,9 +124,9 @@ public class TabFragment03 extends  BaseFragment {
                     }else {
                         bvNotification.setVisibility(View.GONE);
                     }
-                    if (((Double) response.get("commentNum")) !=0){
+                    if ( !"0".equals(commentNum)){
                         bvComment = new BadgeView(getActivity(),circleComment);
-                        bvComment.setText(response.get("commentNum")+"");
+                        bvComment.setText(commentNum);
                         bvComment.setTextColor(Color.WHITE);
                         bvComment.setTextSize(7);
                         bvComment.setBadgePosition(BadgeView.POSITION_TOP_RIGHT); //默认
@@ -131,8 +134,8 @@ public class TabFragment03 extends  BaseFragment {
                     }else {
                         bvComment.setVisibility(View.GONE);
                     }
-                    if (((Double) response.get("messageNum")) !=0){
-                        bvPrivateLetter.setText(response.get("messageNum")+"");
+                    if (!"0".equals(messageNum)){
+                        bvPrivateLetter.setText(messageNum);
                         bvPrivateLetter.setTextColor(Color.WHITE);
                         bvPrivateLetter.setTextSize(7);
                         bvPrivateLetter.setBadgePosition(BadgeView.POSITION_TOP_RIGHT); //默认
