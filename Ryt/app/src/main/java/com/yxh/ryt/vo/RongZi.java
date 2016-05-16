@@ -1,5 +1,7 @@
 package com.yxh.ryt.vo;
 
+import java.math.BigDecimal;
+
 /**
  * Created by 吴洪杰 on 2016/4/5.
  */
@@ -38,7 +40,7 @@ public class RongZi {
     private String brief;
     private Object description;
     private String status;
-    private int investGoalMoney;
+    private BigDecimal investGoalMoney;
     private long investStartDatetime;
     private long investEndDatetime;
     private long auctionStartDatetime;
@@ -59,7 +61,7 @@ public class RongZi {
     private long createDatetime;
     private String picture_url;
     private String step;
-    private int investsMoney;
+    private BigDecimal investsMoney;
     private long creationEndDatetime;
     private String type;
     private Object newCreationDate;
@@ -112,13 +114,7 @@ public class RongZi {
         this.status = status;
     }
 
-    public int getInvestGoalMoney() {
-        return investGoalMoney;
-    }
 
-    public void setInvestGoalMoney(int investGoalMoney) {
-        this.investGoalMoney = investGoalMoney;
-    }
 
     public long getInvestStartDatetime() {
         return investStartDatetime;
@@ -184,11 +180,19 @@ public class RongZi {
         this.step = step;
     }
 
-    public int getInvestsMoney() {
+    public BigDecimal getInvestGoalMoney() {
+        return investGoalMoney;
+    }
+
+    public void setInvestGoalMoney(BigDecimal investGoalMoney) {
+        this.investGoalMoney = investGoalMoney;
+    }
+
+    public BigDecimal getInvestsMoney() {
         return investsMoney;
     }
 
-    public void setInvestsMoney(int investsMoney) {
+    public void setInvestsMoney(BigDecimal investsMoney) {
         this.investsMoney = investsMoney;
     }
 
