@@ -26,6 +26,7 @@
             android:textSize="20sp"
             android:text="发布作品"/>
         <TextView
+            android:id="@+id/pw_tv_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -146,7 +147,6 @@
             <TextView
                 android:id="@+id/pw_tv_state"
                 android:layout_width="wrap_content"
-                android:text="已售"
                 android:layout_height="wrap_content" />
             <ImageView
                 android:id="@+id/pw_iv_go5"

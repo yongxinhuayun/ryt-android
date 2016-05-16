@@ -1,5 +1,6 @@
 package com.yxh.ryt.util;
 
+import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -214,9 +215,10 @@ public class Utils {
 		matrix.postRotate(degree);
 		// 创建新的图片
 		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-		bitmap.recycle();
+		/*bitmap.recycle();*/
 		return resizedBitmap;
 	}
+	@TargetApi(Build.VERSION_CODES.KITKAT)
 	public static String getFilePathFromUri( Uri uri,Context mContext) {
 		final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
