@@ -73,6 +73,15 @@ public class RongZi {
     private Object feedback;
     private Object duration;
     private int startingPrice;
+    private int investNum;
+
+    public int getInvestNum() {
+        return investNum;
+    }
+
+    public void setInvestNum(int investNum) {
+        this.investNum = investNum;
+    }
 
     public String getId() {
         return id;
