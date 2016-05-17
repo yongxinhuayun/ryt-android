@@ -17,15 +17,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp">
+                android:gravity="center">
                 <ImageView
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="256dp"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/touzimingxingbang"/>
                 <LinearLayout
-                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="21dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -36,61 +37,62 @@
                         android:layout_height="match_parent">
                         <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            >
+                            android:layout_height="81dp"
+                            android:paddingTop="16dp">
                             <com.yxh.ryt.custemview.CircleImageView
                                 android:id="@+id/flr_iv_icon1"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
+                                android:layout_width="58dp"
+                                android:layout_height="58dp"
                                 android:src="@mipmap/ic_launcher"/>
                             <LinearLayout
                                 android:layout_gravity="center_horizontal"
-                                android:layout_width="115dp"
-                                android:layout_height="100dp"
+                                android:layout_width="68dp"
+                                android:layout_height="66dp"
                                 android:gravity="right">
                                 <com.yxh.ryt.custemview.CircleImageView
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:src="@mipmap/ic_launcher"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@mipmap/yin"
                                     android:layout_gravity="bottom"/>
                             </LinearLayout>
                         </FrameLayout>
                         <TextView
                             android:id="@+id/flr_tv_title1"
                             android:gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="7dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
                             android:text="喵星人"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="#000000"/>
                         <TextView
                             android:id="@+id/flr_tv_date1"
                             android:gravity="center_horizontal"
                             android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:text="16:00"
+                            android:textColor="#808080"
                             />
                         <TextView
                             android:gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:text="投资了"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="#000000"/>
                         <TextView
                             android:id="@+id/flr_tv_money1"
                             android:gravity="center_horizontal"
                             android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:text="¥ 150"
-                            android:textColor="@android:color/holo_red_dark"/>
+                            android:textColor="#e83f55"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -104,56 +106,56 @@
                             <com.yxh.ryt.custemview.CircleImageView
                                 android:id="@+id/flr_iv_icon2"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
+                                android:layout_width="74dp"
+                                android:layout_height="74dp"
                                 android:src="@mipmap/ic_launcher"/>
                             <LinearLayout
                                 android:layout_gravity="center_horizontal"
-                                android:layout_width="115dp"
-                                android:layout_height="100dp"
+                                android:layout_width="78dp"
+                                android:layout_height="82dp"
                                 android:gravity="right">
                                 <com.yxh.ryt.custemview.CircleImageView
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:src="@mipmap/ic_launcher"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@mipmap/jin"
                                     android:layout_gravity="bottom"/>
                             </LinearLayout>
                         </FrameLayout>
                         <TextView
                             android:id="@+id/flr_tv_title2"
                             android:gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="7dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
                             android:text="喵星人"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="#000000"/>
                         <TextView
                             android:id="@+id/flr_tv_date2"
                             android:gravity="center_horizontal"
                             android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:text="16:00"
-                            />
+                            android:textColor="#808080"/>
                         <TextView
                             android:gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:text="投资了"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="#000000"/>
                         <TextView
                             android:id="@+id/flr_tv_money2"
                             android:gravity="center_horizontal"
                             android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:text="¥ 150"
-                            android:textColor="@android:color/holo_red_dark"/>
+                            android:textColor="#e83f55"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -163,60 +165,60 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            >
+                            android:paddingTop="22dp">
                             <com.yxh.ryt.custemview.CircleImageView
                                 android:id="@+id/flr_iv_icon3"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
+                                android:layout_width="52dp"
+                                android:layout_height="52dp"
                                 android:src="@mipmap/ic_launcher"/>
                             <LinearLayout
                                 android:layout_gravity="center_horizontal"
-                                android:layout_width="115dp"
-                                android:layout_height="100dp"
+                                android:layout_width="62dp"
+                                android:layout_height="60dp"
                                 android:gravity="right">
                                 <com.yxh.ryt.custemview.CircleImageView
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:src="@mipmap/ic_launcher"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@mipmap/tong"
                                     android:layout_gravity="bottom"/>
                             </LinearLayout>
                         </FrameLayout>
                         <TextView
                             android:id="@+id/flr_tv_title3"
                             android:gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="7dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
                             android:text="喵星人"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="#000000"/>
                         <TextView
                             android:id="@+id/flr_tv_date3"
                             android:gravity="center_horizontal"
                             android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:text="16:00"
-                            />
+                            android:textColor="#808080"/>
                         <TextView
                             android:gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:text="投资了"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="#000000"/>
                         <TextView
                             android:id="@+id/flr_tv_money3"
                             android:gravity="center_horizontal"
                             android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:text="¥ 150"
-                            android:textColor="@android:color/holo_red_dark"/>
+                            android:textColor="#e83f55"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -224,20 +226,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#E9E9E9"
-                android:layout_margin="15dp"/>
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="32dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp">
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp">
                 <ImageView
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/zuixintouzijilu"/>
+                    android:src="@mipmap/zuixintouzijilu"
+                    />
                 <ListView
                     android:id="@+id/flr_scroll"
                     android:scrollbars="none"
+                    android:layout_marginTop="33dp"
                     android:listSelector="#00000000"
                     android:cacheColorHint="#00000000"
                     android:layout_width="match_parent"

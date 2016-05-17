@@ -146,7 +146,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                 });
                 helper.setText(R.id.pdctci_tv_nickName, item.getCreator().getName());
                 helper.setImageByUrl(R.id.pdctci_iv_icon, item.getCreator().getPictureUrl());
-                helper.setText(R.id.pdctci_tv_date, Utils.timeTransComment(item.getCreateDatetime()));
+                helper.setText(R.id.pdctci_tv_date, Utils.timeTransComment1(item.getCreateDatetime()));
                 if (item.getFatherComment()!=null){
                     TextView textView=helper.getView(R.id.pdctci_tv_content);
                     String fatherUser = item.getFatherComment().getCreator().getName();
@@ -189,7 +189,8 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
 
         @Override
         public void updateDrawState(TextPaint ds) {
-            ds.setColor(Color.BLUE);
+
+            ds.setColor(Color.rgb(7,99,198));
         }
 
 
@@ -245,7 +246,6 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
                 if ("0".equals(response.get("resultCode"))) {
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
                     if (flag) {
