@@ -5,6 +5,12 @@
         android:name="com.yxh.ryt.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
     <uses-sdk android:minSdkVersion="16" />
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:resizeable="true"
+        android:anyDensity="true" />
     <!-- Required  一些系统要求的权限，如访问网络等 -->
     <uses-permission android:name="com.yxh.ryt.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
