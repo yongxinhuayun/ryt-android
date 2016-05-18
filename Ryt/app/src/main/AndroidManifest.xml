@@ -63,6 +63,7 @@
         <activity android:name=".activity.RegisterActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserYiJianActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserSettingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.InvestActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserSettingAboutActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserChongZhiActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserQianBaoActivity" android:screenOrientation="portrait"/>

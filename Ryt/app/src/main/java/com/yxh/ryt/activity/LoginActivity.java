@@ -40,6 +40,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.data.JPushLocalNotification;
 import okhttp3.Call;
 
 /**
@@ -148,7 +150,7 @@ public class LoginActivity extends BaseActivity {
         Intent intent=new Intent(this,ForgetPwdActivity.class);
         startActivity(intent);
     }
-    /*返回按钮事件触发*/
+    /*按钮事件触发*/
     @OnClick(R.id.iv_center_wx)
     public void wxLoginClick(){
         if(WxUtil.regAndCheckWx(LoginActivity.this)){
@@ -206,7 +208,29 @@ public class LoginActivity extends BaseActivity {
                         AppApplication.gUser.setRate(((Double) response.get("rate")).intValue());
                                 AppApplication.gUser.setUserBrief(response.get("userBrief") + "");
                 AppApplication.gUser.setInvestsMoney(((Double) response.get("investsMoney")).intValue());
-                        finish();
+                Map<String,String> paramsMap=new HashMap<>();
+                paramsMap.put("username", etUsername.getText().toString());
+                paramsMap.put("password", Sha1.encodePassword(etPassword.getText().toString(), "SHA"));
+                paramsMap.put("cid",JPushInterface.getRegistrationID(LoginActivity.this));
+                paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                try {
+                    AppApplication.signmsg=EncryptUtil.encrypt(paramsMap);
+                    paramsMap.put("signmsg", AppApplication.signmsg);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                NetRequestUtil.post(Constants.BASE_PATH + "userBinding.do", paramsMap, new LoginCallBack() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        System.out.println("失败了");
+                    }
+
+                    @Override
+                    public void onResponse(Map<String, Object> response) {
+                        ToastUtil.showLong(LoginActivity.this,"登录绑定成功");
+
+                    }
+                });
             }
         });
     }

@@ -2,7 +2,11 @@ package com.yxh.ryt.activity;
 
 
 import android.app.Activity;
+import android.app.Application;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +14,9 @@ import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +43,7 @@ import com.yxh.ryt.fragment.RongZiXiangQingTab03Fragment;
 import com.yxh.ryt.fragment.RongZiXiangQingTab04Fragment;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Artwork;
@@ -74,8 +82,17 @@ public class RongZiXQActivity extends BaseActivity {
     LinearLayout cl01LlZhicheng;
     @Bind(R.id.cl_01_tv_brief)
     TextView cl01TvBrief;
+    @Bind(R.id.iv_tab_01)
+    ImageView dianzan;
+    @Bind(R.id.rzxq_tv_zan)
+    TextView zan;
+    @Bind(R.id.tv_top_ct)
+    TextView topTitle;
     private StickHeaderLayout shl_root;
     private LinearLayout touziren_ll;
+    private SQLiteDatabase database;
+    private String isPraise;
+    private String isPraise1;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, RongZiXQActivity.class));
@@ -144,13 +161,22 @@ public class RongZiXQActivity extends BaseActivity {
             touziren_ll.addView(linearLayout);
         }
         LoadData(0, 1);
+        database= AppApplication.getDBHelper().getWritableDatabase();
+        Cursor cursor = database.query("rzxq_praise", null, "project_workID=? AND current_id=?", new String[]{artworkId,"ieatht97wfw30hfd"}, null, null, null);
+        while (cursor.moveToNext()) {
+            isPraise = cursor.getString(cursor.getColumnIndex("isPraise"));
+        }
+        if ("1".equals(isPraise)){
+            dianzan.setEnabled(false);
+            dianzan.setImageResource(R.mipmap.dianzanhou);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
     }
-    @OnClick({R.id.iv_tab_02})
+    @OnClick({R.id.iv_tab_02,R.id.ib_top_lf,R.id.iv_tab_01,R.id.rzxq_tv_invest})
     public void comment(View view){
         switch (view.getId()){
             case R.id.iv_tab_02:
@@ -164,13 +190,94 @@ public class RongZiXQActivity extends BaseActivity {
            /* case R.id.rzxq_iv_touziren:
 
                 break;*/
+            case R.id.ib_top_lf:
+                finish();
+                break;
+            case R.id.rzxq_tv_invest:
+                Intent intent1=new Intent(this,InvestActivity.class);
+                startActivity(intent1);
+                finish();
+                break;
+            case R.id.iv_tab_01:
+                if (!"1".equals(isPraise)){
+                    AnimationSet animationSet=new AnimationSet(true);
+                    ScaleAnimation scaleAnimation=new ScaleAnimation(1,1.5f,1,1.5f, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                    scaleAnimation.setDuration(200);
+                    animationSet.addAnimation(scaleAnimation);
+                    animationSet.setFillAfter(true);
+                    animationSet.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            AnimationSet animationSet = new AnimationSet(true);
+                            ScaleAnimation scaleAnimation = new ScaleAnimation(1.5f, 1f, 1.5f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                            scaleAnimation.setDuration(200);
+                            animationSet.addAnimation(scaleAnimation);
+                            animationSet.setFillAfter(true);
+                            dianzan.startAnimation(animationSet);
+                            ContentValues values = new ContentValues();
+                            values.put("project_workID",artworkId);
+                            values.put("current_id","ieatht97wfw30hfd");
+                            values.put("isPraise", "1");
+                            dianzan.setEnabled(false);
+                            database.insert("rzxq_praise", null, values);
+                            praise(artworkId,"ieatht97wfw30hfd");
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    dianzan.setImageResource(R.mipmap.dianzanhou);
+                    dianzan.startAnimation(animationSet);
+                }
+
+                break;
         }
 
     }
+
+    private void praise(String artworkId, String s) {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("artworkId", "imysevcw2mg3l2x4");
+        paramsMap.put("currentUserId", "iijq9f1r7apprtab");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "artworkPraise.do", paramsMap, new RongZiListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showLong(RongZiXQActivity.this,"点赞成功");
+                }
+            }
+        });
+    }
+
     private void LoadData(int tabtype, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artworkId+"");
-        paramsMap.put("currentUserId", "ieatht97wfw30hfd");
+        /*if ("".equals(SPUtil.get(this,"currentUserId",""))){
+            paramsMap.put("currentUserId", "");
+        }else {*/
+            paramsMap.put("currentUserId", "iijq9f1r7apprtab");
+       /* }*/
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
@@ -189,7 +296,9 @@ public class RongZiXQActivity extends BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                 Map<String, Object> object = (Map<String, Object>) response.get("object");
+                isPraise1=AppApplication.getSingleGson().toJson(object.get("isPraise"));
                 Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
+                topTitle.setText(artwork.getTitle());
                 cl01TvTitle.setText(artwork.getTitle());
                 cl01TvBrief.setText(artwork.getBrief());
                 cl01TvName.setText(artwork.getAuthor().getName());

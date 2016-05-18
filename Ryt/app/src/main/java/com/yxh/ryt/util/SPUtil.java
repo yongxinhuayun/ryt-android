@@ -40,7 +40,7 @@ public class SPUtil
   
         SharedPreferencesCompat.apply(editor);  
     }  
-  
+
     public static Object get(Context context, String key, Object defaultObject)
     {  
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME,  

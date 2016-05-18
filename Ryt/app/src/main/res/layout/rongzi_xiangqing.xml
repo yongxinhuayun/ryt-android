@@ -333,6 +333,7 @@
             android:layout_marginLeft="28dp"
             android:layout_marginRight="28dp">
             <TextView
+                android:id="@+id/rzxq_tv_invest"
                 android:background="@mipmap/anniu_kedianji"
                 android:layout_gravity="center_vertical"
                 android:layout_width="match_parent"

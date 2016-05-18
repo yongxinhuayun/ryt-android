@@ -2,7 +2,9 @@ package com.yxh.ryt;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,6 +20,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.yxh.ryt.util.DBHelper;
 import com.yxh.ryt.util.avalidations.EditTextValidator;
 import com.google.gson.Gson;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -50,6 +53,7 @@ public class AppApplication extends Application {
 	public static User gUser;
 	public static Map<String,String> map;
 	public static Map<String,String> ptMap;
+	public static DBHelper helper;
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -81,6 +85,13 @@ public class AppApplication extends Application {
 		options=builder.build();
 		getMap();
 		getPTMap();
+	}
+	public static DBHelper getDBHelper(){
+		if (helper==null){
+			helper=new DBHelper(AppApplication.getSingleContext());
+			return helper;
+		}
+		return helper;
 	}
 	private static void getPTMap() {
 		ptMap=new HashMap<String,String>();
