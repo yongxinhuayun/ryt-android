@@ -182,10 +182,14 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         investorRecordCommonAdapter=new CommonAdapter<ArtworkInvest>(getActivity(),investorDatas,R.layout.investorrecord_item) {
             @Override
             public void convert(ViewHolder helper, ArtworkInvest item) {
-                helper.setText(R.id.iri_tv_nickname,item.getCreator().getName());
-                helper.setText(R.id.iri_tv_content,"投资了"+item.getPrice()+"元");
+                if (item.getCreator().getName().length()>3){
+                    helper.setText(R.id.iri_tv_nickname,item.getCreator().getName().substring(0,3)+"...");
+                }else {
+                    helper.setText(R.id.iri_tv_nickname,item.getCreator().getName());
+                }
+                helper.setText(R.id.iri_tv_content,item.getPrice()+"元");
                 helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
-                helper.setText(R.id.iri_tv_date, Utils.timeTransComment(item.getCreateDatetime()));
+                helper.setText(R.id.iri_tv_date, Utils.timeTransComment1(item.getCreateDatetime()));
             }
         };
         mListview.setAdapter(investorRecordCommonAdapter);

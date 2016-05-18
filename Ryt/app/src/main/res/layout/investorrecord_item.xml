@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="30dp"
     android:background="@android:color/white"
-    android:layout_marginBottom="10dp"
-    android:layout_marginTop="10dp"
-    android:orientation="vertical">
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/iri_ll_common"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    >
+
         <com.yxh.ryt.custemview.CircleImageView
             android:id="@+id/iri_iv_icon"
             android:layout_width="30dp"
             android:layout_centerVertical="true"
             android:layout_height="30dp"
             android:src="@mipmap/ic_launcher"
-            android:layout_marginLeft="10dp"/>
+            />
         <TextView
+            android:layout_toRightOf="@id/iri_iv_icon"
             android:id="@+id/iri_tv_nickname"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -29,27 +22,37 @@
             android:gravity="center_vertical"
             android:layout_marginLeft="10dp"/>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="right">
+
+            <RelativeLayout
+
+                android:layout_centerInParent="true"
+                android:layout_width="100dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="投资了"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"
+                    android:layout_alignParentLeft="true"/>
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/iri_tv_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"
+                    android:text="800元"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+
             <TextView
-                android:id="@+id/iri_tv_content"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="15sp"
-                android:text="投资了800元"
-                android:gravity="center"
-                android:layout_marginRight="20dp"/>
-            <TextView
+                android:layout_alignParentRight="true"
                 android:id="@+id/iri_tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:text="2016-01-01 16:58"
-                android:layout_marginRight="10dp"
                 android:gravity="center"/>
-        </LinearLayout>
-    </LinearLayout>
 </RelativeLayout>

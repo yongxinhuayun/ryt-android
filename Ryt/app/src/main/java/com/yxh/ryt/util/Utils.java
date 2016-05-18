@@ -49,12 +49,27 @@ public class Utils {
 		String currentTime = sdf.format(date);
 		return currentTime;
 	}
+	public static int dip2px(Context context, float dpValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (dpValue * scale + 0.5f);
+	}
 
+	/**
+	 * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+	 */
+	public static int px2dip(Context context, float pxValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (pxValue / scale + 0.5f);
+	}
 	public static String getCurrentTime() {
 		return getCurrentTime("yyyy-MM-dd  HH:mm:ss");
 	}
 	public static String timeTrans(long time){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
+		return sdf.format(new Date(time));
+	}
+	public static String timeTrans1(long time){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(new Date(time));
 	}
 	public static String timeTrans2(long time) {
@@ -86,6 +101,27 @@ public class Utils {
 		}
 		return  timeTrans(time);
 		}
+	public static String timeTransComment1(long time){
+		boolean b = false;
+		Date currtime = null;
+		try {
+			currtime = timeTransfore(time);
+		} catch (Exception e) {
+
+		}
+		Date today = new Date();
+		if(currtime != null){
+			String nowDate = dateFormater2.get().format(today);
+			String timeDate = dateFormater2.get().format(currtime);
+			if(nowDate.equals(timeDate)){
+				b = true;
+			}
+		}
+		if (b){
+			return timeTrans2(time);
+		}
+		return  timeTrans1(time);
+	}
 	public static void setListViewHeightBasedOnChildren(GridView listView) {
 		// 获取listview的adapter
 		ListAdapter listAdapter = listView.getAdapter();
@@ -339,4 +375,8 @@ public class Utils {
 	public static boolean isMediaDocument(Uri uri) {
 		return "com.android.providers.media.documents".equals(uri.getAuthority());
 	}
+	/**
+	 * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+	 */
+
 }

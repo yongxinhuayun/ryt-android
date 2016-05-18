@@ -105,23 +105,25 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 		rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.finance_list_item) {
 			@Override
 			public void convert(ViewHolder helper, RongZi item) {
-				helper.setText(R.id.cl_01_tv_title,item.getTitle());
-				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
-				helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());
-//				helper.setText(R.id.fli_ll_tv_investGoalMoney,item.getInvestGoalMoney().intValue()+"元");
-				helper.setText(R.id.fli_ll_tv_remainingTime, Utils.timeToFormatTemp("HH时MM分SS秒",item.getInvestEndDatetime()-item.getInvestStartDatetime()));
-//				helper.setText(R.id.fli_ll_tv_investGoalPeople, item.getInvestorsNum() + "");
-				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
-				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
-				if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){
-					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.VISIBLE);
-					helper.setText(R.id.cl_01_tv_zhicheng, item.getAuthor().getMaster().getTitle());
-				}else{
-					helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.GONE);
+				if (item!=null){
+					helper.setText(R.id.cl_01_tv_title,item.getTitle());
+					helper.setText(R.id.cl_01_tv_brief,item.getBrief());
+					helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());
+					helper.setText(R.id.fli_ll_tv_investGoalMoney,item.getInvestGoalMoney().intValue()+"元");
+					helper.setText(R.id.fli_ll_tv_remainingTime, Utils.timeToFormatTemp("HH时MM分SS秒",item.getInvestEndDatetime()-item.getInvestStartDatetime()));
+					helper.setText(R.id.fli_ll_tv_investGoalPeople, item.getInvestNum()+"");
+					helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
+					helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
+					if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){
+						helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.VISIBLE);
+						helper.setText(R.id.cl_01_tv_zhicheng, item.getAuthor().getMaster().getTitle());
+					}else{
+						helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.GONE);
+					}
+					double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
+					helper.setProgress(R.id.progressBar1, (int)(value*100));
+					helper.setText(R.id.tv_pb_value, (int) (value * 100) + "%");
 				}
-//				double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-//				helper.setProgress(R.id.progressBar1, (int)(value*100));
-//				helper.setText(R.id.tv_pb_value, (int)(value*100)+"%");
 			}
 		};
 		lstv.setAdapter(rongZiCommonAdapter);
