@@ -126,8 +126,8 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
             ButterKnife.apply(tabTvs1, SETCOLOR1,4);
         }
         if ("1111".equals(s.toString())){
-            ButterKnife.apply(tabTvs1, SETCOLOR,5);
-            ButterKnife.apply(tabTvs, SETCOLOR1,5);
+            ButterKnife.apply(tabTvs, SETCOLOR,5);
+            ButterKnife.apply(tabTvs1, SETCOLOR1,5);
         }
         invest.setText("投资" + s + "元");
     }
