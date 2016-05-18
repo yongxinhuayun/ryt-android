@@ -38,7 +38,6 @@ import cn.jpush.android.api.JPushInterface;
 
 public class AppApplication extends Application {
 
-
 	public static BaseResp resp;
 	public static IWXAPI api;
 	public static PayReq req;
