@@ -10,6 +10,8 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.yxh.ryt.util.Utils;
+
 public class Bimp {
 	public static int max = 0;
 	
@@ -31,7 +33,8 @@ public class Bimp {
 						new FileInputStream(new File(path)));
 				options.inSampleSize = (int) Math.pow(2.0D, i);
 				options.inJustDecodeBounds = false;
-				bitmap = BitmapFactory.decodeStream(in, null, options);
+				Bitmap bitmap1 = BitmapFactory.decodeStream(in, null, options);
+				bitmap= Utils.rotaingImageView(path,bitmap1);
 				break;
 			}
 			i += 1;
