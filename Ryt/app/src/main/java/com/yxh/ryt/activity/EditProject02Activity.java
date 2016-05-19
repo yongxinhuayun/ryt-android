@@ -6,11 +6,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,19 +22,26 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
+import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Sha1;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.util.phote.util.Bimp;
 import com.yxh.ryt.util.phote.util.ImageItem;
 import com.yxh.ryt.util.phote.util.PublicWay;
 import com.yxh.ryt.util.phote.util.Res;
+import com.yxh.ryt.vo.ArtworkComment;
+import com.yxh.ryt.vo.Image;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,13 +49,14 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 
 /**
  * Created by 吴洪杰 on 2016/4/11.
  */
-public class PublicProject02Activity extends  BaseActivity {
+public class EditProject02Activity extends  BaseActivity {
     public final int REQUEST_IMAGE=0;
     private GridView noScrollgridview;
     private GridAdapter adapter;
@@ -63,6 +71,7 @@ public class PublicProject02Activity extends  BaseActivity {
     EditText evZhizuo;
     @Bind(R.id.ev_jiehuo)
     EditText evJieHuo;
+    List<String> ImageList;
     //艺术家发布项目第一步接口一网络请求
     private void twoStepRequst() {
         Map<String,String> paramsMap=new HashMap<>();
@@ -102,11 +111,6 @@ public class PublicProject02Activity extends  BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Res.init(this);
-        bimap = BitmapFactory.decodeResource(
-                getResources(),
-                R.mipmap.icon_addpic_unfocused);
-        PublicWay.activityList.add(this);
         setContentView(R.layout.public_project_02);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.
                 SOFT_INPUT_ADJUST_PAN);
@@ -115,35 +119,58 @@ public class PublicProject02Activity extends  BaseActivity {
         noScrollgridview = (GridView) findViewById(R.id.noScrollgridview);
         noScrollgridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         adapter = new GridAdapter(this);
-        adapter.update();
         noScrollgridview.setAdapter(adapter);
         noScrollgridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
-                if (arg2 == Bimp.tempSelectBitmap.size()) {
-                    Intent intent = new Intent(AppApplication.getSingleContext(), MultiImageSelectorActivity.class);
-                    // 是否显示调用相机拍照
-                    intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, true);
-                    if(Bimp.tempSelectBitmap.size()==0){
-                        // 最大图片选择数量
-                        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 9);
-                    }else{
-                        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 9-Bimp.tempSelectBitmap.size());
+
+            }
+        });
+        loadData();
+    }
+
+    private void loadData() {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("artWorkId", "imyt7yax314lpzzj");
+        paramsMap.put("currentUserId", "imhfp1yr4636pj49");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg=EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkView.do", paramsMap, new LoginCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                System.out.println("失败了");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                ImageList=new ArrayList<String>();
+                if ("0".equals(response.get("resultCode"))) {
+                    Map<String, Object> object = (Map<String, Object>) response.get("object");
+                    List<Image> list = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkAttachmentList")), new TypeToken<List<Image>>() {
+                    }.getType());
+                    if (list.size() > 9) {
+                        for (int i = 0; i < 9; i++) {
+                            ImageList.add(list.get(i).getFileName());
+                        }
+                    } else {
+                        for (int i = 0; i < list.size(); i++) {
+                            ImageList.add(list.get(i).getFileName());
+                        }
                     }
-                    // 设置模式 (支持 单选/MultiImageSelectorActivity.MODE_SINGLE 或者 多选/MultiImageSelectorActivity.MODE_MULTI)
-                    intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, MultiImageSelectorActivity.MODE_MULTI);
-                    startActivityForResult(intent, REQUEST_IMAGE);
-                } else {
-                    Intent intent = new Intent(PublicProject02Activity.this,
-                            GalleryActivity.class);
-                    intent.putExtra("position", "1");
-                    intent.putExtra("ID", arg2);
-                    startActivity(intent);
+                    for (int i = 0; i < ImageList.size(); i++) {
+
+                    }
                 }
             }
         });
     }
+
     public class GridAdapter extends BaseAdapter {
             private LayoutInflater inflater;
             private int selectedPosition = -1;
@@ -267,7 +294,7 @@ public class PublicProject02Activity extends  BaseActivity {
                 for (String s:path){
                     File file = new File(s);
                     System.out.println(file.getName()+"=================");
-                    fileMap.put(file.getName(),file);
+                    fileMap.put(file.getName(), file);
                     String fileName = String.valueOf(System.currentTimeMillis());
                     ImageItem takePhoto = new ImageItem();
                     takePhoto.setBitmap(null);

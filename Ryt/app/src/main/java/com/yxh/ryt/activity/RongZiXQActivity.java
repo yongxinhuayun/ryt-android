@@ -273,11 +273,11 @@ public class RongZiXQActivity extends BaseActivity {
     private void LoadData(int tabtype, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artworkId+"");
-        /*if ("".equals(SPUtil.get(this,"currentUserId",""))){
+        if ("".equals(SPUtil.get(this,"currentUserId",""))){
             paramsMap.put("currentUserId", "");
-        }else {*/
+        }else {
             paramsMap.put("currentUserId", "iijq9f1r7apprtab");
-       /* }*/
+        }
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);

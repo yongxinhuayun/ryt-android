@@ -126,12 +126,12 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                 linearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent=new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
+                        Intent intent = new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
                         intent.putExtra("name", item.getCreator().getName());
-                        intent.putExtra("fatherCommentId",item.getId());
-                        intent.putExtra("artworkId",artWorkId);
+                        intent.putExtra("fatherCommentId", item.getId());
+                        intent.putExtra("artworkId", artWorkId);
                         intent.putExtra("flag", 0);
-                        intent.putExtra("messageId","");
+                        intent.putExtra("messageId", "");
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         AppApplication.getSingleContext().startActivity(intent);
                     }
@@ -139,13 +139,15 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                 user.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent=new Intent(AppApplication.getSingleContext(), RegisterActivity.class);
+                        Intent intent = new Intent(AppApplication.getSingleContext(), RegisterActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         AppApplication.getSingleContext().startActivity(intent);
                     }
                 });
-                helper.setText(R.id.pdctci_tv_nickName, item.getCreator().getName());
-                helper.setImageByUrl(R.id.pdctci_iv_icon, item.getCreator().getPictureUrl());
+                if (item.getCreator()!=null){
+                    helper.setText(R.id.pdctci_tv_nickName, item.getCreator().getName());
+                    helper.setImageByUrl(R.id.pdctci_iv_icon, item.getCreator().getPictureUrl());
+                }
                 helper.setText(R.id.pdctci_tv_date, Utils.timeTransComment1(item.getCreateDatetime()));
                 if (item.getFatherComment()!=null){
                     TextView textView=helper.getView(R.id.pdctci_tv_content);

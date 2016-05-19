@@ -4,27 +4,29 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
-import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Sha1;
+import com.yxh.ryt.util.Utils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -138,20 +140,55 @@ public class PublicProject01Activity extends  BaseActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        int widthzong = metric.widthPixels; // 屏幕宽度（像素）
         switch (requestCode) {
             case ALBUM_REQUEST_CODE:
                 if (data == null) {
                     return;
                 }
+                int height1=Utils.dip2px(PublicProject01Activity.this,224);
+                int left1=Utils.dip2px(PublicProject01Activity.this,14);
+                int right1=Utils.dip2px(PublicProject01Activity.this,14);
+                LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(widthzong,height1);
+                params1.setMargins(left1,0,right1,0);
+                ivImage.setLayoutParams(params1);
                 Bitmap bitmap = getBitmap(data.getData());
-                ivImage.setImageBitmap(bitmap);
+                /*Bitmap btm2=Bitmap.createScaledBitmap(bitmap, widthzong, height1, false); //自定义
+                bitmap.recycle();*/
+                int bmpWidth1  = bitmap.getWidth();
+                int bmpHeight1  = bitmap.getHeight();
+                float scaleWidth1  = (float) widthzong / bmpWidth1;     //按固定大小缩放  sWidth 写多大就多大
+                Matrix matrix1 = new Matrix();
+                matrix1.postScale(scaleWidth1, scaleWidth1);//产生缩放后的Bitmap对象
+                Bitmap resizeBitmap1 = Bitmap.createBitmap(bitmap, 0, 0, bmpWidth1, bmpHeight1, matrix1, false);
+                bitmap.recycle();
+                ivImage.setImageBitmap(resizeBitmap1);
                 break;
             case CAMERA_REQUEST_CODE:
+                int height=Utils.dip2px(PublicProject01Activity.this,224);
+                int left=Utils.dip2px(PublicProject01Activity.this,14);
+                int right=Utils.dip2px(PublicProject01Activity.this,14);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthzong,height);
+                params.setMargins(left,0,right,0);
+                ivImage.setLayoutParams(params);
                 File picture = new File(Environment.getExternalStorageDirectory()
                         + "/temp.jpg");
                 Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
-                ivImage.setImageBitmap(bitmap1);
+                filePath= Utils.getFilePathFromUri(Uri.fromFile(picture), this);
+                Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
+                bitmap1.recycle();
+                int bmpWidth  = bitmap2.getWidth();
+                int bmpHeight  = bitmap2.getHeight();
+                float scaleWidth  = (float) widthzong / bmpWidth;     //按固定大小缩放  sWidth 写多大就多大
+                Matrix matrix = new Matrix();
+                matrix.postScale(scaleWidth, scaleWidth);//产生缩放后的Bitmap对象
+                Bitmap resizeBitmap = Bitmap.createBitmap(bitmap2, 0, 0, bmpWidth, bmpHeight, matrix, false);
+                bitmap2.recycle();
+                /*Bitmap btm3=Bitmap.createScaledBitmap(bitmap2, widthzong, height, false); //自定义
+                bitmap2.recycle();*/
+                ivImage.setImageBitmap(resizeBitmap);
                 break;
             default:
                 break;

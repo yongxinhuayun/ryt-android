@@ -156,6 +156,10 @@ public class AppApplication extends Application {
 	public static void displayImage(String url,ImageView view){
 		ImageLoader.getInstance().displayImage(url, view, options, animateFirstListener);
 	}
+	public static Bitmap displayImage(String url){
+		Bitmap bitmap=ImageLoader.getInstance().loadImageSync(url);
+		return bitmap;
+	}
 	//获取全局Context
 	public static Context getSingleContext(){
 		return  context;
