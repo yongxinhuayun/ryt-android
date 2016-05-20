@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -30,8 +33,12 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,7 +141,7 @@ public class MultiImageSelectorFragment extends Fragment {
 
         // 是否显示照相机
         mIsShowCamera = getArguments().getBoolean(EXTRA_SHOW_CAMERA, true);
-        mImageAdapter = new ImageGridAdapter(getActivity(), mIsShowCamera, 3);
+        mImageAdapter = new ImageGridAdapter(getActivity(), mIsShowCamera, 4);
         // 是否显示选择指示器
         mImageAdapter.showSelectIndicator(mode == MODE_MULTI);
 
@@ -304,6 +311,21 @@ public class MultiImageSelectorFragment extends Fragment {
             if(resultCode == Activity.RESULT_OK) {
                 if (mTmpFile != null) {
                     if (mCallback != null) {
+                        /*Matrix matrix = new Matrix();
+                        matrix.reset();
+                        matrix.postRotate(90);
+                        Bitmap bt = BitmapFactory.decodeFile(mTmpFile.getAbsolutePath());
+                        Bitmap bMapRotate = Bitmap.createBitmap(bt, 0, 0,
+                                bt.getWidth(), bt.getHeight(),
+                                matrix, true);
+                        try {
+                            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(mTmpFile.getPath()));
+                            bMapRotate.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                            bos.flush();
+                            bos.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }*/
                         mCallback.onCameraShot(mTmpFile);
                     }
                 }

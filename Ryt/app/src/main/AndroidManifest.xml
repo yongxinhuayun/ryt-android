@@ -53,13 +53,17 @@
         android:supportsRtl="true"
         android:name=".AppApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.EditProject02Activity" android:screenOrientation="portrait">
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.GuideActivity"></activity>
+
+        <activity android:name=".activity.EditProject02Activity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.IndexActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.RegisterActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserYiJianActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserSettingActivity" android:screenOrientation="portrait"/>

@@ -6,5 +6,9 @@
     {
         "merged": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\vpi__tab_indicator.xml",
         "source": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable\\vpi__tab_indicator.xml"
+    },
+    {
+        "merged": "D:\\yangzhenjie\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\vpi__tab_indicator.xml",
+        "source": "D:\\yangzhenjie\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable\\vpi__tab_indicator.xml"
     }
 ]

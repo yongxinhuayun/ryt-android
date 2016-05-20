@@ -30,4 +30,9 @@ public class Constants {
     public static final String[] USER_YSJ_TITLE = new String[] { "主页","简介","作品", "投过的","赞过的" };
     public static final String[] USER_PT_TITLE = new String[] { "投过的","赞过的","简介"};
     public static final int pageSize=20;
+
+    /**
+     * 是否第一次登录的key
+     */
+    public static final String ISFIRSTENTER="isfirstenter";
 }
