@@ -1,19 +1,7 @@
 [
     {
-        "merged": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_unselected_focused_holo.9.png",
-        "source": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_unselected_focused_holo.9.png"
-    },
-    {
         "merged": "D:\\yangzhenjie\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_unselected_holo.9.png",
         "source": "D:\\yangzhenjie\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_unselected_holo.9.png"
-    },
-    {
-        "merged": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_unselected_pressed_holo.9.png",
-        "source": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_unselected_pressed_holo.9.png"
-    },
-    {
-        "merged": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_unselected_holo.9.png",
-        "source": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_unselected_holo.9.png"
     },
     {
         "merged": "D:\\yangzhenjie\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_selected_holo.9.png",
@@ -24,18 +12,6 @@
         "source": "D:\\yangzhenjie\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_selected_focused_holo.9.png"
     },
     {
-        "merged": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_selected_holo.9.png",
-        "source": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_selected_holo.9.png"
-    },
-    {
-        "merged": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_unselected_focused_holo.9.png",
-        "source": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_unselected_focused_holo.9.png"
-    },
-    {
-        "merged": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_selected_holo.9.png",
-        "source": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_selected_holo.9.png"
-    },
-    {
         "merged": "D:\\yangzhenjie\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_unselected_pressed_holo.9.png",
         "source": "D:\\yangzhenjie\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_unselected_pressed_holo.9.png"
     },
@@ -44,31 +20,7 @@
         "source": "D:\\yangzhenjie\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_selected_pressed_holo.9.png"
     },
     {
-        "merged": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_selected_pressed_holo.9.png",
-        "source": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_selected_pressed_holo.9.png"
-    },
-    {
-        "merged": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_selected_focused_holo.9.png",
-        "source": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_selected_focused_holo.9.png"
-    },
-    {
-        "merged": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_unselected_pressed_holo.9.png",
-        "source": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_unselected_pressed_holo.9.png"
-    },
-    {
-        "merged": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_selected_focused_holo.9.png",
-        "source": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_selected_focused_holo.9.png"
-    },
-    {
         "merged": "D:\\yangzhenjie\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_unselected_focused_holo.9.png",
         "source": "D:\\yangzhenjie\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_unselected_focused_holo.9.png"
-    },
-    {
-        "merged": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_unselected_holo.9.png",
-        "source": "D:\\android_workspace\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_unselected_holo.9.png"
-    },
-    {
-        "merged": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\vpi__tab_selected_pressed_holo.9.png",
-        "source": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\vpi__tab_selected_pressed_holo.9.png"
     }
 ]

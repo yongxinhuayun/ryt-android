@@ -53,17 +53,8 @@
         android:supportsRtl="true"
         android:name=".AppApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".activity.GuideActivity"></activity>
-
         <activity android:name=".activity.EditProject02Activity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.IndexActivity" android:screenOrientation="portrait"/>
+
         <activity android:name=".activity.RegisterActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserYiJianActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserSettingActivity" android:screenOrientation="portrait"/>
@@ -77,6 +68,7 @@
         <activity android:name=".activity.ForgetPwdActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ReleaseVideoActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.PushWoraActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.IndexActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
@@ -206,6 +198,15 @@
             android:name="JPUSH_APPKEY"
             android:value="539b73fd73c82f1134120a57" />
         <!-- </>值来自开发者平台取得的AppKey -->
+        <activity android:name=".activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.GuideActivity"></activity>
+
 
     </application>
 
