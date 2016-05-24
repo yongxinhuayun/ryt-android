@@ -76,7 +76,7 @@ public class SplashActivity extends Activity {
         public void onAnimationEnd(Animation animation) {
             //跳转界面
             //判断，如果是第一次打开，跳转引导页面，如果不是第一次打开，跳转到首页
-            boolean isfirstenter = (boolean)SPUtil.get(getApplicationContext(), Constants.ISFIRSTENTER, true);
+            boolean isfirstenter = (boolean) SPUtil.get(getApplicationContext(), Constants.ISFIRSTENTER, true);
             if (isfirstenter) {
                 //跳转到引导界面
                 startActivity(new Intent(SplashActivity.this,GuideActivity.class));
