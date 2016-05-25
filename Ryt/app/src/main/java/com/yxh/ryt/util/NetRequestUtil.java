@@ -70,7 +70,8 @@ public class NetRequestUtil<T> {
             }
         }.start();
     }
-    public static <T> void postMulFile(final String url, final Map<String,Map<String, File>>  fileMap, final Map<String, String> paramsMap, final Map<String, String> headers, final Callback<T> callback) {
+
+    public static <T> void postMulFile(final String url, final Map<String, Map<String, File>> fileMap, final Map<String, String> paramsMap, final Map<String, String> headers, final Callback<T> callback) {
         new Thread() {
             @Override
             public void run() {
@@ -80,7 +81,7 @@ public class NetRequestUtil<T> {
                     Map.Entry<String, Map<String, File>> next = iterator.next();
                     Map<String, File> value = next.getValue();
                     Iterator<Map.Entry<String, File>> iterator1 = value.entrySet().iterator();
-                    while (iterator1.hasNext()){
+                    while (iterator1.hasNext()) {
                         Map.Entry<String, File> next1 = iterator1.next();
                         post.addFile(next.getKey(), next1.getKey(), next1.getValue());
                     }
@@ -93,6 +94,25 @@ public class NetRequestUtil<T> {
                 build.readTimeOut(500000);
                 build.writeTimeOut(500000);
                 build.execute(callback);
+            }
+        }.start();
+    }
+
+    //*下载*//*
+    public static <T> void download(final String url, final Map<String, String> paramsMap, final Callback<T> callback) {
+        new Thread() {
+            @Override
+            public void run() {
+                PostFormBuilder post = OkHttpUtils.post();
+                post.url(url)
+                        .params(paramsMap)
+                        .build();
+                RequestCall build = post.build();
+                build.connTimeOut(500000);
+                build.readTimeOut(500000);
+                build.writeTimeOut(500000);
+                build.execute(callback);
+
             }
         }.start();
     }
