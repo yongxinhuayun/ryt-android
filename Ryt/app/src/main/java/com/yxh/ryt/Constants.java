@@ -38,5 +38,8 @@ public class Constants {
     /*自动更新*/
     public static final String AUTO_UPDATE = "auto_update";
 
+    public final static String USERNAME = "username";
+
+    public final static String PASSWORD = "password";
 
 }
