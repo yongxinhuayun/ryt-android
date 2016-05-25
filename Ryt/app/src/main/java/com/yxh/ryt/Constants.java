@@ -3,7 +3,7 @@ package com.yxh.ryt;
 public class Constants {
 
     //网络请求基地址
-    public static final String BASE_PATH="http://192.168.1.41:8085/app/";
+    public static final String BASE_PATH="http://192.168.1.75:8080/app/";
     //public static final String BASE_PATH="http://j.efeiyi.com:8080/app-wikiServer/app/";
     //融艺投APP_KEY
     public static final String APP_KEY="BL2QEuXUXNoGbNeHObD4EzlX+KuGc70U";
@@ -35,4 +35,8 @@ public class Constants {
      * 是否第一次登录的key
      */
     public static final String ISFIRSTENTER="isfirstenter";
+    /*自动更新*/
+    public static final String AUTO_UPDATE = "auto_update";
+
+
 }
