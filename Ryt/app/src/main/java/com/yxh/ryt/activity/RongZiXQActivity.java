@@ -2,12 +2,12 @@ package com.yxh.ryt.activity;
 
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -17,19 +17,16 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import android.widget.TextView;
+
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
@@ -52,10 +49,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -93,7 +87,7 @@ public class RongZiXQActivity extends BaseActivity {
     private SQLiteDatabase database;
     private String isPraise;
     private String isPraise1;
-
+    IWXAPI api;
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, RongZiXQActivity.class));
     }
@@ -106,6 +100,9 @@ public class RongZiXQActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rongzi_xiangqing);
+        api= WXAPIFactory.createWXAPI(this,Constants.APP_ID); //初始化api
+        api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
+
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         Intent intent = getIntent();
@@ -176,7 +173,7 @@ public class RongZiXQActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
     }
-    @OnClick({R.id.iv_tab_02,R.id.ib_top_lf,R.id.iv_tab_01,R.id.rzxq_tv_invest})
+    @OnClick({R.id.iv_tab_02,R.id.ib_top_lf,R.id.ib_top_rt,R.id.iv_tab_01,R.id.rzxq_tv_invest})
     public void comment(View view){
         switch (view.getId()){
             case R.id.iv_tab_02:
@@ -193,6 +190,10 @@ public class RongZiXQActivity extends BaseActivity {
             case R.id.ib_top_lf:
                 finish();
                 break;
+            case R.id.ib_top_rt:
+                shareWx(1);
+                break;
+
             case R.id.rzxq_tv_invest:
                 Intent intent1=new Intent(this,InvestActivity.class);
                 startActivity(intent1);
@@ -325,5 +326,51 @@ public class RongZiXQActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
+private void shareWx(int flag) {
+    /*if(!api.isWXAppInstalled()) {
+        Toast.makeText(WXEntryActivity.this, "您还未安装微信客户端",
+                Toast.LENGTH_SHORT).show();
+        return;
+    }*/
+
+    WXWebpageObject webpage = new WXWebpageObject();
+    webpage.webpageUrl = "http://www.baidu.com";
+    WXMediaMessage msg = new WXMediaMessage(webpage);
+
+    msg.title = "title";
+    msg.description = getResources().getString(
+            R.string.app_share_weixin_txt);
+    Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+            R.mipmap.logo_qq);
+    msg.setThumbImage(thumb);
+    SendMessageToWX.Req req = new SendMessageToWX.Req();
+    req.transaction = String.valueOf(System.currentTimeMillis());
+    req.message = msg;
+    req.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
+
+    api.sendReq(req);
+    /*//创建一个用于封装待分享文本的WXTextObject对象
+
+    WXTextObject textObject =new WXTextObject();
+
+    textObject.text= text; //text为String类型
+
+//创建WXMediaMessage对象，该对象用于Android客户端向微信发送数据
+
+    WXMediaMessage msg =new WXMediaMessage();
+
+    msg.mediaObject= textObject;
+
+    msg.description= text;//text为String类型，设置描述，可省略*/
+
+
+
+//    api.handleIntent(intent, this);
 }
+}
+
+
+
+
+
 

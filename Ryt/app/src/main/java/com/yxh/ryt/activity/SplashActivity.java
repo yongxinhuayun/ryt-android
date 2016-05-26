@@ -337,7 +337,7 @@ public class SplashActivity extends Activity {
                 if (isUpdate) {
                     checkVersion();
                 } else {
-                    handler.sendEmptyMessageDelayed(NO_UPDATE, 2000);
+                    handler.sendEmptyMessageDelayed(NO_UPDATE, 1000);
                 }
             }
             //跳转完成，移除splash界面
