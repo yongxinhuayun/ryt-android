@@ -39,7 +39,7 @@ import java.util.Map;
 import okhttp3.Call;
 
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
 
     private RelativeLayout mRoot;
     protected static final int UPDATE_DIALOG = 100;

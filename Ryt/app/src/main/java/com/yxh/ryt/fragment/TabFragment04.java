@@ -129,7 +129,7 @@ public class TabFragment04 extends BaseFragment {
     //我的主页点击事件
     @OnClick(R.id.rl_user_index)
     void userIndexClick() {
-        if (AppApplication.gUser == null) {
+        /*if (AppApplication.gUser == null) {
             LoginActivity.openActivity(getActivity());
             return;
         }
@@ -137,7 +137,8 @@ public class TabFragment04 extends BaseFragment {
             UserYsjIndexActivity.openActivity(getActivity());
         }else{
             UserPtIndexActivity.openActivity(getActivity());
-        }
+        }*/
+        UserYsjIndexActivity.openActivity(getActivity());
     }
 
     @Override

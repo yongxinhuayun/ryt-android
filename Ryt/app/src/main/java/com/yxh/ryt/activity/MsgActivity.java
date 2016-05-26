@@ -51,28 +51,34 @@ import okhttp3.Call;
 
 public class MsgActivity extends BaseActivity implements OnClickListener {
 
-	private Button mBtnSend;
+	private TextView mBtnSend;
 	private EditText mEditTextContent;
-	private RelativeLayout mBottom;
+	private LinearLayout mBottom;
 	private ListView mListView;
 	private ChatMsgViewAdapter mAdapter;
 	private List<ChatMsgEntity> mDataArrays = new ArrayList<ChatMsgEntity>();
 	private String fromId="";
+	private String name;
+	private TextView title;
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat);
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		fromId=getIntent().getStringExtra("formId");
+		name = getIntent().getStringExtra("name");
 		EventBus.getDefault().register(this);
 		initView();
 	}
 
 	public void initView() {
 		mListView = (ListView) findViewById(R.id.listview);
-		mBtnSend = (Button) findViewById(R.id.btn_send);
+		mBtnSend = (TextView) findViewById(R.id.btn_send);
+		title = (TextView) findViewById(R.id.tv_top_ct);
+		title.setText(name);
 		mBtnSend.setOnClickListener(this);
-		mBottom = (RelativeLayout) findViewById(R.id.btn_bottom);
+		mBottom = (LinearLayout) findViewById(R.id.btn_bottom);
 		mEditTextContent = (EditText) findViewById(R.id.et_sendmessage);
 		mAdapter = new ChatMsgViewAdapter(this, mDataArrays);
 		mListView.setAdapter(mAdapter);
@@ -96,7 +102,8 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 		if (contString.length() > 0) {
 			ChatMsgEntity entity = new ChatMsgEntity();
 			entity.setDate(Utils.getCurrentTime());
-			entity.setName(AppApplication.gUser.getName());
+			/*entity.setName(AppApplication.gUser.getName());*/
+			entity.setName("温群英");
 			entity.setMsgType(false);
 			entity.setText(contString);
 			pushMessageRequst();
@@ -110,7 +117,8 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 	private void pushMessageRequst() {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("content",mEditTextContent.getText()+"");
-		paramsMap.put("fromUserId",AppApplication.gUser.getId() );
+		/*paramsMap.put("fromUserId",AppApplication.gUser.getId() );*/
+		paramsMap.put("fromUserId","ieatht97wfw30hfd" );
 		paramsMap.put("targetUserId",fromId );
 		paramsMap.put("timestamp",System.currentTimeMillis()+"");
 		try {
@@ -152,7 +160,7 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 	}
 	private void LoadData() {
 		Map<String, String> paramsMap = new HashMap<>();
-		paramsMap.put("userId", AppApplication.gUser.getId());
+		paramsMap.put("userId", "ieatht97wfw30hfd");
 		paramsMap.put("fromUserId", fromId);
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
@@ -178,7 +186,10 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 						entity.setDate(Utils.timeToFormatTemp("yyyy-MM-dd hh:mm:ss", next.getCreateDatetime()));
 						entity.setName(next.getFromUser().getName());
 						entity.setText(next.getContent());
-						if(AppApplication.gUser.getId().equals(next.getFromUser().getId())) {
+						/*if(AppApplication.gUser.getId().equals(next.getFromUser().getId())) {
+							entity.setMsgType(false);
+						}*/
+						if("ieatht97wfw30hfd".equals(next.getFromUser().getId())) {
 							entity.setMsgType(false);
 						}
 						mDataArrays.add(entity);

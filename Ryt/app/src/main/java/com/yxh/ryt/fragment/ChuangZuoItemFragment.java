@@ -19,6 +19,7 @@ import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.vo.Create;
 import com.yxh.ryt.vo.RongZi;
 
 import java.util.ArrayList;
@@ -32,13 +33,13 @@ import okhttp3.Call;
 public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener ,AdapterView.OnItemClickListener{
 	private AutoListView lstv;
-	private CommonAdapter<RongZi> chuangZuoCommonAdapter;
-	private List<RongZi> chuangZuoDatas;
+	private CommonAdapter<Create> chuangZuoCommonAdapter;
+	private List<Create> chuangZuoDatas;
 	private int currentPage=1;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		chuangZuoDatas=new ArrayList<RongZi>();
+		chuangZuoDatas=new ArrayList<Create>();
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("pageSize",Constants.pageSize+"");
-		paramsMap.put("pageNum", pageNum + "");
+		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -70,35 +71,39 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				if (state==AutoListView.REFRESH){
-					lstv.onRefreshComplete();
-					chuangZuoDatas.clear();
-					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
-					}.getType());
-					if(null==objectList||objectList.size()==0){
-						lstv.setResultSize(0);     //暂无数据
+				if ("0".equals(response.get("resultCode"))){
+					Map<String,String> object= (Map<String, String>) response.get("object");
+					if (state==AutoListView.REFRESH){
+						lstv.onRefreshComplete();
+						chuangZuoDatas.clear();
+						List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkList")), new TypeToken<List<Create>>() {
+						}.getType());
+						if(null==objectList||objectList.size()==0){
+							lstv.setResultSize(1);
+						}
+						if (null!=objectList&&objectList.size()>0){
+							lstv.setResultSize(objectList.size()); //还有数据加载。。。
+							chuangZuoDatas.addAll(objectList);
+							chuangZuoCommonAdapter.notifyDataSetChanged();
+						}
+						return;
 					}
-					if (null!=objectList&&objectList.size()>0){
-						lstv.setResultSize(objectList.size()); //还有数据加载。。。
-						chuangZuoDatas.addAll(objectList);
-						chuangZuoCommonAdapter.notifyDataSetChanged();
+					if (state==AutoListView.LOAD){
+						lstv.onLoadComplete();
+						List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkList")), new TypeToken<List<Create>>() {
+						}.getType());
+						if(null==objectList||objectList.size()==0){
+							lstv.setResultSize(1);   //已全部加载完毕
+						}
+						if (null!=objectList&&objectList.size()>0) {
+							lstv.setResultSize(objectList.size());  //还有数据加载。。。
+							chuangZuoDatas.addAll(objectList);
+							chuangZuoCommonAdapter.notifyDataSetChanged();
+						}
+						return;
 					}
-					return;
 				}
-				if (state==AutoListView.LOAD){
-					lstv.onLoadComplete();
-					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
-					}.getType());
-					if(null==objectList||objectList.size()==0){
-						lstv.setResultSize(1);   //已全部加载完毕
-					}
-					if (null!=objectList&&objectList.size()>0) {
-						lstv.setResultSize(objectList.size());  //还有数据加载。。。
-						chuangZuoDatas.addAll(objectList);
-						chuangZuoCommonAdapter.notifyDataSetChanged();
-					}
-					return;
-				}
+
 			}
 		});
 	}
@@ -109,9 +114,9 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
 		lstv.setPageSize(Constants.pageSize);
-		chuangZuoCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),chuangZuoDatas,R.layout.create_list_item) {
+		chuangZuoCommonAdapter=new CommonAdapter<Create>(AppApplication.getSingleContext(),chuangZuoDatas,R.layout.create_list_item) {
 			@Override
-			public void convert(ViewHolder helper, RongZi item) {
+			public void convert(ViewHolder helper, Create item) {
 				helper.setText(R.id.cl_01_tv_title,item.getTitle());
 				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
 				helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());

@@ -38,6 +38,7 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.ShuoMClickableSpan;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.ArtworkComment;
 import com.yxh.ryt.vo.ArtworkInvest;
@@ -114,6 +115,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
     public void onResume() {
         super.onResume();
         artCommentDatas.clear();
+        currentPage=1;
         LoadData(true, currentPage);
     }
 
@@ -127,7 +129,11 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
-                        intent.putExtra("name", item.getCreator().getName());
+                        if (item.getCreator()!=null){
+                            intent.putExtra("name", item.getCreator().getName());
+                        }else {
+                            intent.putExtra("name", "");
+                        }
                         intent.putExtra("fatherCommentId", item.getId());
                         intent.putExtra("artworkId", artWorkId);
                         intent.putExtra("flag", 0);
@@ -153,7 +159,14 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                     TextView textView=helper.getView(R.id.pdctci_tv_content);
                     String fatherUser = item.getFatherComment().getCreator().getName();
                     SpannableString spanFatherUser = new SpannableString(fatherUser);
-                    ClickableSpan click= new ShuoMClickableSpan(fatherUser, AppApplication.getSingleContext());
+                    ClickableSpan click= new ShuoMClickableSpan(fatherUser, AppApplication.getSingleContext()) {
+                        @Override
+                        public void onClick(View widget) {
+                            Intent intent=new Intent(AppApplication.getSingleContext(), LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            AppApplication.getSingleContext().startActivity(intent);
+                        }
+                    };
                     spanFatherUser.setSpan(click, 0, fatherUser.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                     textView.setText("回复");
                     textView.append(spanFatherUser);
@@ -178,7 +191,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
     }
 
 
-    public class ShuoMClickableSpan extends ClickableSpan {
+    /*public class ShuoMClickableSpan extends ClickableSpan {
 
         String string;
         Context context;
@@ -202,12 +215,13 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
-    }
+    }*/
     private void onScroll() {
         stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
             @Override
             public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 lastItem = firstVisibleItem + visibleItemCount - 2;
+                Log.d("XXXXXXXXXXXXXX","YYYYYYYYYYYYYY");
             }
 
             @Override

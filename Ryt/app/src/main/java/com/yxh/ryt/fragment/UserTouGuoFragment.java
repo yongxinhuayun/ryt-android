@@ -34,6 +34,7 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
+import com.yxh.ryt.custemview.CustomListview;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
@@ -53,7 +54,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
 @SuppressLint("ValidFragment")
 public class UserTouGuoFragment extends StickHeaderBaseFragment{
-	private ListView lstv;
+	private CustomListview lstv;
 	private CommonAdapter<ConvertWork> userZGCommonAdapter;
 	private List<ConvertWork> userZGDatas;
 	private int currentPage=1;
@@ -94,7 +95,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_listview_touguo, null);
 		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
-		lstv = (ListView)view.findViewById(R.id.fit_lstv);
+		lstv = (CustomListview)view.findViewById(R.id.fit_lstv);
 		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
 		tvTotal = (TextView) view.findViewById(R.id.fit_tv);
 		tvNoData = (TextView) view.findViewById(R.id.fit_tv_noData);
@@ -138,6 +139,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
 			@Override
 			public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				Log.d("jjjjjjjjjjjjjjjjj","kjskjksjflslfs");
 				lastItem = firstVisibleItem + visibleItemCount - 2;
 			}
 

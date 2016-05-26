@@ -24,6 +24,7 @@ public class Artwork implements Serializable {
     private List<ArtworkInvest> artworkInvests;//项目投资
     private List<ArtworkInvest> artworkInvestTopList;//投资者前三名
     private String praiseNUm;
+
     public Master getMaster() {
         return master;
     }

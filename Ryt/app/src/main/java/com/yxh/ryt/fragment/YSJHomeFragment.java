@@ -99,7 +99,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 				helper.getView(R.id.mpi_tv_left).setVisibility(View.GONE);
 				helper.getView(R.id.mpi_tv_right).setVisibility(View.GONE);
 				if (isArtist){
-					if ("101".equals(item.getStep())){
+					if ("100".equals(item.getStep())){
 						helper.getView(R.id.mpi_tv_left).setVisibility(View.VISIBLE);
 						((TextView) helper.getView(R.id.mpi_tv_left)).setText("提交项目");
 						helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);
@@ -134,6 +134,8 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
 			@Override
 			public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				Log.d("TTTTTTTTTTTTTTTTT","jskljfsfslfjslfjfs");
+
 				lastItem = firstVisibleItem + visibleItemCount - 2;
 			}
 
@@ -160,7 +162,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId","ieatht97wfw30hfd");
+		paramsMap.put("userId","imhfp1yr4636pj49");
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
