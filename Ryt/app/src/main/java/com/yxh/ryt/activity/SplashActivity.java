@@ -1,6 +1,5 @@
 package com.yxh.ryt.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -337,7 +336,7 @@ public class SplashActivity extends BaseActivity {
                 if (isUpdate) {
                     checkVersion();
                 } else {
-                    handler.sendEmptyMessageDelayed(NO_UPDATE, 1000);
+                    handler.sendEmptyMessageDelayed(NO_UPDATE, 2000);
                 }
             }
             //跳转完成，移除splash界面

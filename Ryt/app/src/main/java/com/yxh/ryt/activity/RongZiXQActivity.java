@@ -2,6 +2,7 @@ package com.yxh.ryt.activity;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,10 +14,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -191,7 +198,7 @@ public class RongZiXQActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ib_top_rt:
-                shareWx(1);
+                showShareDialog();
                 break;
 
             case R.id.rzxq_tv_invest:
@@ -296,27 +303,24 @@ public class RongZiXQActivity extends BaseActivity {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if ("0".equals(response.get("resultCode"))){
-                    Map<String, Object> object = (Map<String, Object>) response.get("object");
-                    isPraise1=AppApplication.getSingleGson().toJson(object.get("isPraise"));
-                    Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
-                    topTitle.setText(artwork.getTitle());
-                    cl01TvTitle.setText(artwork.getTitle());
-                    cl01TvBrief.setText(artwork.getBrief());
-                    cl01TvName.setText(artwork.getAuthor().getName());
-                    cl01LlZhicheng.setVisibility(View.GONE);
-                    if (artwork.getAuthor() != null) {
-                        if (artwork.getAuthor().getMaster() != null) {
-                            if (artwork.getAuthor().getMaster().getTitle() != null && !"".equals(artwork.getAuthor().getMaster().getTitle())) {
-                                cl01LlZhicheng.setVisibility(View.VISIBLE);
-                                cl01TvZhicheng.setText(artwork.getAuthor().getMaster().getTitle());
-                            }
+                Map<String, Object> object = (Map<String, Object>) response.get("object");
+                isPraise1=AppApplication.getSingleGson().toJson(object.get("isPraise"));
+                Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
+                topTitle.setText(artwork.getTitle());
+                cl01TvTitle.setText(artwork.getTitle());
+                cl01TvBrief.setText(artwork.getBrief());
+                cl01TvName.setText(artwork.getAuthor().getName());
+                cl01LlZhicheng.setVisibility(View.GONE);
+                if (artwork.getAuthor() != null) {
+                    if (artwork.getAuthor().getMaster() != null) {
+                        if (artwork.getAuthor().getMaster().getTitle() != null && !"".equals(artwork.getAuthor().getMaster().getTitle())) {
+                            cl01LlZhicheng.setVisibility(View.VISIBLE);
+                            cl01TvZhicheng.setText(artwork.getAuthor().getMaster().getTitle());
                         }
                     }
-                    AppApplication.displayImage(artwork.getPicture_url(), cl01TvPrc);
-                    EventBus.getDefault().post(object);
                 }
-
+                AppApplication.displayImage(artwork.getPicture_url(), cl01TvPrc);
+                EventBus.getDefault().post(object);
             }
         });
     }
@@ -329,6 +333,58 @@ public class RongZiXQActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    private void showShareDialog() {
+    View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_share_weixin_view, null);
+    // 设置style 控制默认dialog带来的边距问题
+    final Dialog dialog = new Dialog(this, R.style.common_dialog);
+    dialog.setContentView(view);
+    dialog.show();
+
+    // 监听
+    View.OnClickListener listener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+
+            switch (v.getId()) {
+
+                case R.id.view_share_weixin:
+                    // 分享到微信
+                    shareWx(0);
+                    break;
+
+                case R.id.view_share_pengyou:
+                    // 分享到朋友圈
+                    shareWx(1);
+                    break;
+
+                case R.id.share_cancel_btn:
+                    // 取消
+                    break;
+
+            }
+
+            dialog.dismiss();
+        }
+
+    };
+    ViewGroup mViewWeixin = (ViewGroup) view.findViewById(R.id.view_share_weixin);
+    ViewGroup mViewPengyou = (ViewGroup) view.findViewById(R.id.view_share_pengyou);
+    Button mBtnCancel = (Button) view.findViewById(R.id.share_cancel_btn);
+    //mBtnCancel.setTextColor(R.none_color);
+    mViewWeixin.setOnClickListener(listener);
+    mViewPengyou.setOnClickListener(listener);
+    mBtnCancel.setOnClickListener(listener);
+
+    // 设置相关位置，一定要在 show()之后
+    Window window = dialog.getWindow();
+    window.getDecorView().setPadding(0, 0, 0, 0);
+    WindowManager.LayoutParams params = window.getAttributes();
+    params.width = LayoutParams.MATCH_PARENT;
+    params.gravity = Gravity.BOTTOM;
+    window.setAttributes(params);
+
+}
 private void shareWx(int flag) {
     /*if(!api.isWXAppInstalled()) {
         Toast.makeText(WXEntryActivity.this, "您还未安装微信客户端",
@@ -337,7 +393,7 @@ private void shareWx(int flag) {
     }*/
 
     WXWebpageObject webpage = new WXWebpageObject();
-    webpage.webpageUrl = "http://www.baidu.com";
+    webpage.webpageUrl = "http://baidu.com";
     WXMediaMessage msg = new WXMediaMessage(webpage);
 
     msg.title = "title";
