@@ -66,7 +66,7 @@ public class TabFragment03 extends  BaseFragment {
     protected void lazyLoad() {
 
     }
-    public void updateWatchedStatus(String group, final Class cls){
+    /*public void updateWatchedStatus(String group, final Class cls){
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("userId", "ieatht97wfw30hfd");
         paramsMap.put("group", group);
@@ -91,7 +91,7 @@ public class TabFragment03 extends  BaseFragment {
                 }
             }
         });
-    }
+    }*/
     private void loadData() {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("userId", "ieatht97wfw30hfd");
@@ -149,17 +149,21 @@ public class TabFragment03 extends  BaseFragment {
     }
     @OnClick({ R.id.ft3_ll_notification, R.id.ft3_ll_comment, R.id.ft3_ll_privateLetter })
     public void onClick(View view){
+        Intent intent=null;
         switch (view.getId()){
             case R.id.ft3_ll_notification:
-                updateWatchedStatus("notification",NotificationActivity.class);
+                intent=new Intent(getActivity(), NotificationActivity.class);
+                getActivity().startActivity(intent);
                 bvNotification.setVisibility(View.GONE);
                 break;
             case R.id.ft3_ll_comment:
-                updateWatchedStatus("comment", CommentActivity.class);
+                intent=new Intent(getActivity(), CommentActivity.class);
+                getActivity().startActivity(intent);
                 bvComment.setVisibility(View.GONE);
                 break;
             case R.id.ft3_ll_privateLetter:
-                updateWatchedStatus("message", PrivateLetterActivity.class);
+                intent=new Intent(getActivity(), PrivateLetterActivity.class);
+                getActivity().startActivity(intent);
                 bvPrivateLetter.setVisibility(View.GONE);
                 break;
         }

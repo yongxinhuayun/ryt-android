@@ -1,5 +1,6 @@
 package com.yxh.ryt.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -57,7 +58,7 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
         ButterKnife.bind(this);
         other.addTextChangedListener(this);
     }
-    @OnClick({R.id.imp_ll_2,R.id.imp_ll_5,R.id.imp_ll_10,R.id.imp_ll_28,R.id.imp_ll_88,R.id.imp_ll_all})
+    @OnClick({R.id.imp_ll_2,R.id.imp_ll_5,R.id.imp_ll_10,R.id.imp_ll_28,R.id.imp_ll_88,R.id.imp_ll_all,R.id.imp_tv_invest})
     public void click(View view){
         switch (view.getId()){
             case R.id.imp_ll_2:
@@ -69,6 +70,9 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                 ButterKnife.apply(tabTvs, SETCOLOR,1);
                 ButterKnife.apply(tabTvs1, SETCOLOR1,1);
                 invest.setText("投资" + 5 + "元");
+                break;
+            case R.id.imp_tv_invest:
+
                 break;
             case R.id.imp_ll_10:
                 ButterKnife.apply(tabTvs, SETCOLOR,2);

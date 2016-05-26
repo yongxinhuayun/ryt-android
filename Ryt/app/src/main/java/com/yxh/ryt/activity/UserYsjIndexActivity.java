@@ -59,6 +59,11 @@ import wuhj.com.mylibrary.StickHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
 public class UserYsjIndexActivity extends BaseActivity {
+   /* private StickHeaderViewPagerManager manager1;
+    private StickHeaderViewPagerManager manager2;
+    private StickHeaderViewPagerManager manager3;
+    private StickHeaderViewPagerManager manager4;*/
+
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserYsjIndexActivity.class));
     }
@@ -127,9 +132,13 @@ public class UserYsjIndexActivity extends BaseActivity {
         manager = new StickHeaderViewPagerManager(root, mViewPager);
         mFragmentList = new ArrayList<Fragment>();
         mFragmentList.add(YSJHomeFragment.newInstance(manager, 0, false));
+        /*manager1 = new StickHeaderViewPagerManager(root, mViewPager);*/
         mFragmentList.add(UserJianJieFragment.newInstance(manager, 1, false));
+        /*manager2 = new StickHeaderViewPagerManager(root, mViewPager);*/
         mFragmentList.add(YSJWorkFragment.newInstance(manager, 2, false));
+        /*manager3 = new StickHeaderViewPagerManager(root, mViewPager);*/
         mFragmentList.add(UserTouGuoFragment.newInstance(manager, 3, false));
+       /* manager4 = new StickHeaderViewPagerManager(root, mViewPager);*/
         mFragmentList.add(UserZanGuoFragment.newInstance(manager, 4, false));
         UserYsjTabPageIndicatorAdapter pagerAdapter = new UserYsjTabPageIndicatorAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setOffscreenPageLimit(5);

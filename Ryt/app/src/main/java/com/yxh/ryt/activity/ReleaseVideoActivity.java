@@ -113,8 +113,6 @@ public class ReleaseVideoActivity extends  BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                 System.out.println("成功了");
-                Log.d("XXXXXXXXXXXXXXXXXXXXX", "YYYYYYYYYYY");
-                Log.d("tagonResponse", response.toString());
             }
         });
     }
@@ -124,7 +122,6 @@ public class ReleaseVideoActivity extends  BaseActivity {
     }
     @OnClick(R.id.rv_vv_video)
     public void ddddddd(View v) {
-        Log.d("sssssssssssssssssss","hhhhhhhhhhhhhhhh");
         Intent intent = new Intent(this, RecordVedioFullActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("text", file);
@@ -134,7 +131,6 @@ public class ReleaseVideoActivity extends  BaseActivity {
 
     @OnClick(R.id.rv_rl_video)
     public void click(View v) {
-        Log.d("sssssssssssssssssss","hhhhhhhhhhhhhhhh");
         Intent intent = new Intent(this, RecordVedioFullActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("text", file);

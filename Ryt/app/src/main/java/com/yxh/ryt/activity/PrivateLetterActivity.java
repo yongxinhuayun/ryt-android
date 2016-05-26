@@ -55,17 +55,23 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
         plfAdapter=new CommonAdapter<PrivateLetter>(AppApplication.getSingleContext(),privateLetterDatas,R.layout.privateletter_item) {
             @Override
             public void convert(ViewHolder helper, PrivateLetter item) {
-                if (helper.getPosition()==0){
-                    helper.getView(R.id.tv_line).setVisibility(View.GONE);
-                }else{
-                    helper.getView(R.id.tv_line).setVisibility(View.VISIBLE);
+                if ("0".equals(item.getIsWatch())){
+                    helper.setColor(R.id.pli_rl_all, Color.rgb(250, 250, 250));
                 }
-//                if (item.getIsWatch()==0){
-//                    helper.setColor(R.id.pi_ll_top, Color.RED);
-//                }
-                helper.setImageByUrl(R.id.pi_iv_icon,item.getFromUser().getPictureUrl());
-                helper.setText(R.id.pi_tv_content,item.getFromUser().getName());
-                helper.setText(R.id.pi_tv_date, Utils.timeTrans(item.getCreateDatetime()));
+                if (item.getFromUser()!=null){
+                    helper.setImageByUrl(R.id.pi_iv_icon, item.getFromUser().getPictureUrl());
+                    helper.setText(R.id.pi_tv_name,item.getFromUser().getName());
+                }
+                helper.setText(R.id.pi_tv_content,item.getContent());
+                if (item.getIsRead()==0){
+                    helper.getView(R.id.pli_ll_count).setVisibility(View.GONE);
+                }else if (item.getIsRead()>0){
+                    helper.getView(R.id.pli_ll_count).setVisibility(View.VISIBLE);
+                    helper.setText(R.id.pli_tv_count,item.getIsRead()+"");
+                }else if (item.getIsRead()<0){
+                    helper.getView(R.id.pli_ll_count).setVisibility(View.GONE);
+                }
+
             }
         };
         plflistview.setAdapter(plfAdapter);
@@ -76,7 +82,7 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
 
     private void LoadData(final int state,int pageNum) {
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId",AppApplication.gUser.getId());
+        paramsMap.put("userId","ieatht97wfw30hfd");
         paramsMap.put("type","2");
         paramsMap.put("pageSize",Constants.pageSize+"");
         paramsMap.put("pageNum", pageNum+"");
@@ -148,6 +154,7 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent=new Intent(this,MsgActivity.class);
         intent.putExtra("formId",privateLetterDatas.get(position-1).getFromUser().getId());
+        intent.putExtra("name",privateLetterDatas.get(position-1).getFromUser().getName());
         startActivity(intent);
     }
 }

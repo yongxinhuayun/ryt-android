@@ -295,24 +295,27 @@ public class RongZiXQActivity extends BaseActivity {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                Map<String, Object> object = (Map<String, Object>) response.get("object");
-                isPraise1=AppApplication.getSingleGson().toJson(object.get("isPraise"));
-                Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
-                topTitle.setText(artwork.getTitle());
-                cl01TvTitle.setText(artwork.getTitle());
-                cl01TvBrief.setText(artwork.getBrief());
-                cl01TvName.setText(artwork.getAuthor().getName());
-                cl01LlZhicheng.setVisibility(View.GONE);
-                if (artwork.getAuthor() != null) {
-                    if (artwork.getAuthor().getMaster() != null) {
-                        if (artwork.getAuthor().getMaster().getTitle() != null && !"".equals(artwork.getAuthor().getMaster().getTitle())) {
-                            cl01LlZhicheng.setVisibility(View.VISIBLE);
-                            cl01TvZhicheng.setText(artwork.getAuthor().getMaster().getTitle());
+                if ("0".equals(response.get("resultCode"))){
+                    Map<String, Object> object = (Map<String, Object>) response.get("object");
+                    isPraise1=AppApplication.getSingleGson().toJson(object.get("isPraise"));
+                    Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
+                    topTitle.setText(artwork.getTitle());
+                    cl01TvTitle.setText(artwork.getTitle());
+                    cl01TvBrief.setText(artwork.getBrief());
+                    cl01TvName.setText(artwork.getAuthor().getName());
+                    cl01LlZhicheng.setVisibility(View.GONE);
+                    if (artwork.getAuthor() != null) {
+                        if (artwork.getAuthor().getMaster() != null) {
+                            if (artwork.getAuthor().getMaster().getTitle() != null && !"".equals(artwork.getAuthor().getMaster().getTitle())) {
+                                cl01LlZhicheng.setVisibility(View.VISIBLE);
+                                cl01TvZhicheng.setText(artwork.getAuthor().getMaster().getTitle());
+                            }
                         }
                     }
+                    AppApplication.displayImage(artwork.getPicture_url(), cl01TvPrc);
+                    EventBus.getDefault().post(object);
                 }
-                AppApplication.displayImage(artwork.getPicture_url(), cl01TvPrc);
-                EventBus.getDefault().post(object);
+
             }
         });
     }

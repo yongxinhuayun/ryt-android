@@ -94,8 +94,10 @@ public class RongZiXiangQingTab01Fragment extends StickHeaderBaseFragment {
             }
         }
         tvContent.setText(artwork.getDescription());
-        tvGuocheng.setText(artworkdirection.getMake_instru());
-        tvJiehuo.setText(artworkdirection.getFinancing_aq());
+        if (artworkdirection!=null){
+            tvGuocheng.setText(artworkdirection.getMake_instru());
+            tvJiehuo.setText(artworkdirection.getFinancing_aq());
+        }
     }
 
     @Override

@@ -23,6 +23,8 @@ import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.custemview.CircleImageView;
+import com.yxh.ryt.custemview.CustomGridView;
+import com.yxh.ryt.custemview.CustomListview;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
@@ -53,7 +55,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
  */
 @SuppressLint("ValidFragment")
 public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
-    private ListView mListview;
+    private CustomListview mListview;
     private CommonAdapter<ArtworkInvest> investorRecordCommonAdapter;
     private List<ArtworkInvest> investorDatas;
     private List<ArtworkInvest> investorTOpDatas;
@@ -110,7 +112,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
     @Override
     public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_record, null);
-        mListview = (ListView)view.findViewById(R.id.flr_scroll);
+        mListview = (CustomListview)view.findViewById(R.id.flr_scroll);
         footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer_1, null);
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
         findView(view);
@@ -159,7 +161,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
     }
 
     private void onScroll() {
-        stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
+       /* stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
             @Override
             public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 lastItem = firstVisibleItem + visibleItemCount - 2;
@@ -176,22 +178,46 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
                     LoadData(false, currentPage);
                 }
             }
+        });*/
+        mListview.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (lastItem==investorRecordCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && loadComplete) {
+                    more.setVisibility(View.GONE);
+                    loading.setVisibility(View.VISIBLE);
+                    loadFull.setVisibility(View.GONE);
+                    noData.setVisibility(View.GONE);
+                    currentPage = currentPage + 1;
+                    LoadData(false, currentPage);
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                Log.d("xxxxxxxxxxxxxxxx","jksjflsjlfjslfjlsdf");
+                lastItem = firstVisibleItem + visibleItemCount - 2;
+            }
         });
     }
     private void setAdapter() {
         investorRecordCommonAdapter=new CommonAdapter<ArtworkInvest>(getActivity(),investorDatas,R.layout.investorrecord_item) {
             @Override
             public void convert(ViewHolder helper, ArtworkInvest item) {
-                if (item.getCreator().getName().length()>3){
-                    helper.setText(R.id.iri_tv_nickname,item.getCreator().getName().substring(0,3)+"...");
-                }else {
-                    helper.setText(R.id.iri_tv_nickname,item.getCreator().getName());
+                if (item.getCreator()!=null){
+                    helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
+                    if (item.getCreator().getName()!=null){
+                        if (item.getCreator().getName().length()>3){
+                            helper.setText(R.id.iri_tv_nickname,item.getCreator().getName().substring(0,3)+"...");
+                        }else {
+                            helper.setText(R.id.iri_tv_nickname,item.getCreator().getName());
+                        }
+                    }
                 }
-                helper.setText(R.id.iri_tv_content,item.getPrice()+"元");
-                helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
+                helper.setText(R.id.iri_tv_content, item.getPrice() + "元");
                 helper.setText(R.id.iri_tv_date, Utils.timeTransComment1(item.getCreateDatetime()));
             }
         };
+        /*Utils.setListViewHeightBasedOnChildren(mListview);*/
         mListview.setAdapter(investorRecordCommonAdapter);
         mListview.addFooterView(footer);
         loadFull = (TextView) footer.findViewById(R.id.loadFull);

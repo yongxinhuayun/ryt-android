@@ -46,6 +46,10 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" >
     </uses-permission>
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -53,8 +57,15 @@
         android:supportsRtl="true"
         android:name=".AppApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.EditProject02Activity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SplashActivity" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.IndexActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MsgActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.RegisterActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserYiJianActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserSettingActivity" android:screenOrientation="portrait"/>
@@ -68,7 +79,8 @@
         <activity android:name=".activity.ForgetPwdActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ReleaseVideoActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.PushWoraActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.IndexActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.GuideActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.UserPtIndexActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
@@ -82,10 +94,10 @@
                 <data android:scheme="wxc7f08565e496134b" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".activity.ProjectCommentReply" android:screenOrientation="portrait"/>-->
+        <activity android:name=".activity.UserYsjIndexActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ChuangZuoXQActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.RongZiXQActivity" android:screenOrientation="portrait"/>
-        <!--<activity android:name=".activity.RegisterScActivity" android:screenOrientation="portrait"/>-->
+        <activity android:name=".activity.RegisterScActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.CustomMsgActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.GalleryActivity" android:screenOrientation="portrait"/>
         <activity android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity" android:screenOrientation="portrait"/>
@@ -198,15 +210,6 @@
             android:name="JPUSH_APPKEY"
             android:value="539b73fd73c82f1134120a57" />
         <!-- </>值来自开发者平台取得的AppKey -->
-        <activity android:name=".activity.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".activity.GuideActivity"></activity>
-
 
     </application>
 

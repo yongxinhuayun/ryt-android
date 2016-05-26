@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -406,8 +407,37 @@ public class Utils {
 	public static boolean isMediaDocument(Uri uri) {
 		return "com.android.providers.media.documents".equals(uri.getAuthority());
 	}
-	/**
-	 * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-	 */
+	public static String getImageFormat(String url){
+		/*String[] split = url.split(".");
+		 url.endsWith("")
+		Log.d("bbbbbbbbb",split.length+"bbbbbbbbbbbbbbbbbbbbbbb");*/
+		if (".jpg".equals(url.endsWith(".jpg"))){
+			return ".jpg";
+		}else if (".jpeg".equals(url.endsWith(".jpeg"))){
+			return ".jpeg";
+		}else if ("png".equals(url.endsWith(".png"))){
+			return ".png";
+		}else if (".gif".equals(url.endsWith(".gif"))){
+			return ".gif";
+		}
+		return "";
+	}
+	public static void setListViewHeightBasedOnChildren(ListView listView) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			return;
+		}
 
+		int totalHeight = 0;
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		/*ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		params.height += 5;//if without this statement,the listview will be a little short
+		listView.setLayoutParams(params);*/
+	}
 }

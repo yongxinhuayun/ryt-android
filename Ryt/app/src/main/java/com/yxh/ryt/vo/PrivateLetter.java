@@ -12,7 +12,6 @@ public class PrivateLetter {
     private String isWatch; //0 未读 1 已读
     private String status;
     private Long isRead;
-
     private String cid;
 
     public String getId() {

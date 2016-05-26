@@ -6,7 +6,7 @@
     <RelativeLayout
         android:id="@+id/rl_top"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="50dp">
 
         <ImageView
             android:id="@+id/ib_top_lf"
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:background="#E9E9E9"/>
+            android:background="#E9E9E9"></View>
     </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"

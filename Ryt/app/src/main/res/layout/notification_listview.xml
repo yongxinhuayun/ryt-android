@@ -6,7 +6,7 @@
     <RelativeLayout
         android:id="@+id/rg_rl_top"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="46dp">
         <ImageView
             android:layout_marginLeft="10dp"
             android:id="@+id/rg_ib_back"
@@ -21,21 +21,25 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="通知"
-            android:textSize="18sp"
+            android:textColor="#000000"
+            android:textSize="17sp"
             android:layout_centerInParent="true"
             />
     </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#000000"/>
+        android:background="#e2e2e2"/>
     <TextView
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:background="#000000"/>
+        android:background="#e2e2e2"/>
     <com.yxh.ryt.custemview.AutoListView
         android:id="@+id/nl_message_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:divider="@null"
+        android:background="@null"/>
 </LinearLayout>

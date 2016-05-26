@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -28,7 +29,9 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.callback.LoginCallBack;
+import com.yxh.ryt.custemview.CustomGridView;
 import com.yxh.ryt.util.EncryptUtil;
+import com.yxh.ryt.util.GetImageTask;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
@@ -40,7 +43,10 @@ import com.yxh.ryt.util.phote.util.Res;
 import com.yxh.ryt.vo.ArtworkComment;
 import com.yxh.ryt.vo.Image;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,6 +78,7 @@ public class EditProject02Activity extends  BaseActivity {
     @Bind(R.id.ev_jiehuo)
     EditText evJieHuo;
     List<String> ImageList;
+    List<String> loaclPath;
     //艺术家发布项目第一步接口一网络请求
     private void twoStepRequst() {
         Map<String,String> paramsMap=new HashMap<>();
@@ -111,7 +118,12 @@ public class EditProject02Activity extends  BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.public_project_02);
+        Res.init(this);
+        bimap = BitmapFactory.decodeResource(
+                getResources(),
+                R.mipmap.icon_addpic_unfocused);
+        PublicWay.activityList.add(this);
+        setContentView(R.layout.edit_project_02);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.
                 SOFT_INPUT_ADJUST_PAN);
         ButterKnife.bind(this);
@@ -124,7 +136,26 @@ public class EditProject02Activity extends  BaseActivity {
 
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
-
+                if (arg2 == Bimp.tempSelectBitmap.size()) {
+                    Intent intent = new Intent(AppApplication.getSingleContext(), MultiImageSelectorActivity.class);
+                    // 是否显示调用相机拍照
+                    intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, true);
+                    if (Bimp.tempSelectBitmap.size() == 0) {
+                        // 最大图片选择数量
+                        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 9);
+                    } else {
+                        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 9 - Bimp.tempSelectBitmap.size());
+                    }
+                    // 设置模式 (支持 单选/MultiImageSelectorActivity.MODE_SINGLE 或者 多选/MultiImageSelectorActivity.MODE_MULTI)
+                    intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, MultiImageSelectorActivity.MODE_MULTI);
+                    startActivityForResult(intent, REQUEST_IMAGE);
+                } else {
+                    Intent intent = new Intent(EditProject02Activity.this,
+                            GalleryActivity.class);
+                    intent.putExtra("position", "1");
+                    intent.putExtra("ID", arg2);
+                    startActivity(intent);
+                }
             }
         });
         loadData();
@@ -149,7 +180,7 @@ public class EditProject02Activity extends  BaseActivity {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                ImageList=new ArrayList<String>();
+                ImageList = new ArrayList<String>();
                 if ("0".equals(response.get("resultCode"))) {
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
                     List<Image> list = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkAttachmentList")), new TypeToken<List<Image>>() {
@@ -163,7 +194,40 @@ public class EditProject02Activity extends  BaseActivity {
                             ImageList.add(list.get(i).getFileName());
                         }
                     }
+                    Bimp.tempSelectBitmap = new ArrayList<ImageItem>();
                     for (int i = 0; i < ImageList.size(); i++) {
+                        /*System.out.print(Bimp.tempSelectBitmap.size() + "XXXXXXXXXXXXXXXXXX");*/
+                        GetImageTask imageTask = new GetImageTask(new GetImageTask.ImageCallBack() {
+                            @Override
+                            public void getBitmapAndLc(Bitmap result, int location) {
+                                if (result != null) {
+                                    File sampleDir = new File(Environment.getExternalStorageDirectory() + File.separator + "image" + File.separator);
+                                    if (!sampleDir.exists()) {
+                                        sampleDir.mkdirs();
+                                    }
+                                    if (!sampleDir.isDirectory()) {
+                                        sampleDir.delete();
+                                        sampleDir.mkdirs();
+                                    }
+                                    File mRecordFile = null;
+                                    try {
+                                        Log.d("hhhhhhhhhhhhhhhhhhhhh",ImageList.get(location));
+                                        mRecordFile = File.createTempFile("" + System.currentTimeMillis(), Utils.getImageFormat(ImageList.get(location)), sampleDir); //mp4格式
+                                        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(mRecordFile));
+                                        result.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                                        bos.flush();
+                                        bos.close();
+                                        ImageItem imageItem = new ImageItem();
+                                        imageItem.setImagePath(mRecordFile.getAbsolutePath());
+                                        Bimp.tempSelectBitmap.add(imageItem);
+                                        adapter.notifyDataSetChanged();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        },i);
+                        imageTask.execute(ImageList.get(i));
 
                     }
                 }

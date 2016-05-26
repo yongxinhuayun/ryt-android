@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/white" >
+    android:background="#ffffff">
 <!-- 标题栏 -->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -50,56 +50,49 @@
             android:layout_height="1dp"></View>
     </RelativeLayout>
 
-    <!-- 底部按钮以及 编辑框-->
-    <RelativeLayout
-        android:id="@+id/rl_bottom"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@mipmap/chat_footer_bg" >
 
 
-        <RelativeLayout
+
+        <LinearLayout
+            android:background="#fafafa"
             android:id="@+id/btn_bottom"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-             >
-
-            <Button
-                android:id="@+id/btn_send"
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/chat_send_btn"
-                android:text="发送" />
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <EditText
                 android:id="@+id/et_sendmessage"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@id/btn_send"
-                android:background="@drawable/login_edit_normal"
-                android:singleLine="true"
-                android:textSize="18sp" />
-        </RelativeLayout>
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:singleLine="false"
+                android:layout_height="34dp"
+                android:layout_marginLeft="14dp"
+                android:textSize="14sp"
+                android:background="#ffffff"/>
+            <TextView
+                android:id="@+id/btn_send"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="34dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="14dp"
+                android:background="@mipmap/fasong"
+                android:text="发送"
+                android:gravity="center"/>
+        </LinearLayout>
 
-    </RelativeLayout>
     <!-- 聊天内容 listview-->
     <ListView
         android:id="@+id/listview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@id/rl_bottom"
+        android:layout_above="@id/btn_bottom"
         android:layout_below="@id/rl_top"
         android:cacheColorHint="#0000"
         android:divider="@null"
+        android:scrollbars="none"
         android:dividerHeight="5dp"
         android:scrollbarStyle="outsideOverlay"
         android:stackFromBottom="true" />

@@ -4,7 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -29,6 +31,10 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.yxh.ryt.vo.User;
 import com.zhy.http.okhttp.OkHttpUtils;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
@@ -94,7 +100,7 @@ public class AppApplication extends Application {
 		}
 		return helper;
 	}
-	private static void getPTMap() {
+	public static void getPTMap() {
 		ptMap=new HashMap<String,String>();
 		ptMap.put("12", "融资阶段");
 		ptMap.put("14", "融资阶段");
@@ -105,7 +111,7 @@ public class AppApplication extends Application {
 		ptMap.put("24", "创作阶段");
 		ptMap.put("0","发起阶段");
 		ptMap.put("1","融资阶段");
-		ptMap.put("2","chu作阶段");
+		ptMap.put("2","创作阶段");
 		ptMap.put("3","拍卖阶段");
 		ptMap.put("4","抽奖阶段");
 		ptMap.put("5","驳回");
@@ -123,7 +129,7 @@ public class AppApplication extends Application {
 		ptMap.put("35","待发放");
 		ptMap.put("36", "已发放");
 	}
-	private static void getMap() {
+	public static void getMap() {
 		map=new HashMap<String,String>();
 		map.put("0","发起阶段");
 		map.put("1","融资阶段");
@@ -152,14 +158,45 @@ public class AppApplication extends Application {
 		map.put("35","待发放");
 		map.put("36", "已发放");
 	}
-
+	public static int getStep(String step){
+		if ("1".equals(step.substring(0,1))){
+			return 1;
+		}
+		if ("2".equals(step.substring(0,1))){
+			return 2;
+		}
+		if ("3".equals(step.substring(0,1))){
+			return 3;
+		}
+		return -1;
+	}
 	public static void displayImage(String url,ImageView view){
 		ImageLoader.getInstance().displayImage(url, view, options, animateFirstListener);
 	}
-	public static Bitmap displayImage(String url){
+	/*public  void displayImage(String url,int i,LoadCallBack callBack){
+		this.callBack=callBack;
 		Bitmap bitmap=ImageLoader.getInstance().loadImageSync(url);
-		return bitmap;
-	}
+		*//*File sampleDir = new File(Environment.getExternalStorageDirectory() + File.separator + "image" +File.separator);
+		if (!sampleDir.exists()) {
+			sampleDir.mkdirs();
+		}
+		if(!sampleDir.isDirectory()){
+			sampleDir.delete();
+			sampleDir.mkdirs();
+		}
+		File mRecordFile=null;
+			try {
+				mRecordFile = File.createTempFile(""+System.currentTimeMillis(), ".jpg", sampleDir); //mp4格式
+				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(sampleDir));
+				bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+				bos.flush();
+				bos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+		}*//*
+		*//*return mRecordFile.getAbsolutePath();*//*
+		callBack.getBitmap(bitmap);
+	}*/
 	//获取全局Context
 	public static Context getSingleContext(){
 		return  context;
