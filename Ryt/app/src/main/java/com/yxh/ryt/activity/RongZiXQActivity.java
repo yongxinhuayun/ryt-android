@@ -342,7 +342,7 @@ private void shareWx(int flag) {
 
     msg.title = "title";
     msg.description = getResources().getString(
-            R.string.app_share_weixin_txt);
+            R.string.app_name);
     Bitmap thumb = BitmapFactory.decodeResource(getResources(),
             R.mipmap.logo_qq);
     msg.setThumbImage(thumb);

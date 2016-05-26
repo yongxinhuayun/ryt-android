@@ -286,10 +286,12 @@ public class RegisterActivity extends BaseActivity {
                     return;
                 }
                 if (response.get("resultCode").equals("0")) {
-                    SPUtil.put(RegisterActivity.this,"username",eTPhone.getText().toString());
-                    SPUtil.put(RegisterActivity.this,"password",Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));
+                    /*SPUtil.put(RegisterActivity.this,"username",eTPhone.getText().toString());
+                    SPUtil.put(RegisterActivity.this, "password", Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));*/
                     ToastUtil.showShort(AppApplication.getSingleContext(), "注册成功!");
                     Intent intent=new Intent(RegisterActivity.this,RegisterScActivity.class);
+                    intent.putExtra("username",eTPhone.getText().toString());
+                    intent.putExtra("password",Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));
                     RegisterActivity.this.startActivity(intent);
                     RegisterActivity.this.finish();
                 }

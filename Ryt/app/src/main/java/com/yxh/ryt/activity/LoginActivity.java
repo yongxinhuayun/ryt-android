@@ -58,6 +58,7 @@ public class LoginActivity extends BaseActivity {
     WxLoginBroadcastReciver mReciver;
     private boolean isPhone;
     private boolean isPassword;
+
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, LoginActivity.class));
     }
@@ -153,6 +154,7 @@ public class LoginActivity extends BaseActivity {
             mReciver = new WxLoginBroadcastReciver();
             registerReceiver(mReciver, intentFilter);
             WxUtil.wxlogin();
+            finish();
         }
     }
 
@@ -175,7 +177,7 @@ public class LoginActivity extends BaseActivity {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("username",etUsername.getText().toString());
         paramsMap.put("password", Sha1.encodePassword(etPassword.getText().toString(), "SHA"));
-        paramsMap.put("timestamp",System.currentTimeMillis()+"");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg=EncryptUtil.encrypt(paramsMap);
             paramsMap.put("signmsg", AppApplication.signmsg);
@@ -190,25 +192,18 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if (Integer.valueOf((String) response.get("resultCode"))>0){
-                    ToastUtil.showShort(LoginActivity.this,((String)response.get("resultMsg")));
+                if (Integer.valueOf((String) response.get("resultCode")) > 0) {
+                    ToastUtil.showShort(LoginActivity.this, ((String) response.get("resultMsg")));
                     return;
                 }
-                AppApplication.gUser=AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
-                AppApplication.gUser.setFlag(response.get("flag") + "");
-                AppApplication.gUser.setCount(((Double) response.get("count")).intValue());
-                AppApplication.gUser.setCount(((Double) response.get("count1")).intValue());
-                AppApplication.gUser.setRoiMoney(((Double) response.get("roiMoney")).intValue());
-                        AppApplication.gUser.setRate(((Double) response.get("rate")).intValue());
-                                AppApplication.gUser.setUserBrief(response.get("userBrief") + "");
-                AppApplication.gUser.setInvestsMoney(((Double) response.get("investsMoney")).intValue());
-                Map<String,String> paramsMap=new HashMap<>();
+                getUser(response);
+                Map<String, String> paramsMap = new HashMap<>();
                 paramsMap.put("username", etUsername.getText().toString());
                 paramsMap.put("password", Sha1.encodePassword(etPassword.getText().toString(), "SHA"));
-                paramsMap.put("cid",JPushInterface.getRegistrationID(LoginActivity.this));
+                paramsMap.put("cid", JPushInterface.getRegistrationID(LoginActivity.this));
                 paramsMap.put("timestamp", System.currentTimeMillis() + "");
                 try {
-                    AppApplication.signmsg=EncryptUtil.encrypt(paramsMap);
+                    AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
                     paramsMap.put("signmsg", AppApplication.signmsg);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -221,12 +216,39 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(Map<String, Object> response) {
-                        ToastUtil.showLong(LoginActivity.this,"登录绑定成功");
-
+                        ToastUtil.showLong(LoginActivity.this, "登录绑定成功");
+                        finish();
                     }
                 });
             }
         });
+    }
+
+    private void getUser(Map<String, Object> response) {
+        User user = new User();
+        user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+        user.setFlag(response.get("flag") + "");
+        user.setCount(((Double) response.get("count")).intValue());
+        user.setCount1(((Double) response.get("count1")).intValue());
+        user.setRoiMoney(((Double) response.get("roiMoney")).intValue());
+        user.setRate(((Double) response.get("rate")).intValue());
+        user.setUserBrief(response.get("userBrief") + "");
+        user.setInvestsMoney(((Double) response.get("investsMoney")).intValue());
+        SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_count1", user.getCount1()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_count", user.getCount()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_roiMoney", user.getRoiMoney()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_flag", user.getFlag()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_rate", user.getRate()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_investsMoney", user.getInvestsMoney()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_userBrief", user.getUserBrief()+"");
+        AppApplication.gUser = user;
+        System.out.print(AppApplication.gUser.toString());
     }
 
     @Override

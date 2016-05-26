@@ -2,6 +2,7 @@ package com.yxh.ryt.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -24,20 +25,27 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
+import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SPUtil;
+import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.NickNameValidation;
 import com.yxh.ryt.validations.UserNameValidation;
+import com.yxh.ryt.vo.User;
 
 
 import java.io.File;
@@ -47,6 +55,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.Call;
 
 /**
@@ -58,7 +67,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     @Bind(R.id.rs_rg_sex)
     RadioGroup sexGroup;
     @Bind(R.id.rs_iv_headPortrait)
-    CircleImageView  circleImageView;
+    CircleImageView circleImageView;
     @Bind(R.id.rs_rb_nan)
     RadioButton nan;
     @Bind(R.id.rs_rb_nv)
@@ -66,24 +75,38 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     @Bind(R.id.rs_bt_commit)
     Button commit;
     PopupWindow window;
-    private int sex=-1;
-    private boolean flag=false;
+    private int sex = -1;
+    private boolean flag = false;
     private boolean isNickyname;
     private static final String IMAGE_UNSPECIFIED = "image/*";
     private static final int PHOTO_RESOULT = 4;
     private static final int ALBUM_REQUEST_CODE = 1;
     private static final int CAMERA_REQUEST_CODE = 2;
     private static final int CROP_REQUEST_CODE = 4;
-    String filePath="";
+    String filePath = "";
+    private String username;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+    private String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registersucced);
         ButterKnife.bind(this);/*启用注解绑定*/
+        username = getIntent().getStringExtra("username");
+        password = getIntent().getStringExtra("password");
         sexGroup.setOnCheckedChangeListener(this);
         commit.setEnabled(false);
         onEnabled();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
+
     private void onEnabled() {
         nickName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -110,21 +133,21 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     private void dianji(boolean flag, boolean isNickyname, int sex) {
-        if (flag && isNickyname && sex>0){
+        if (flag && isNickyname && sex > 0) {
             commit.setEnabled(true);
             commit.setBackgroundResource(R.mipmap.anniu_kedianji);
-        }else {
+        } else {
             commit.setEnabled(false);
             commit.setBackgroundResource(R.mipmap.anniu_bukedianji);
         }
     }
 
     @OnClick(R.id.rs_bt_commit)
-    public void completeClick(){
+    public void completeClick() {
 
-        Map<String,File> fileMap=new HashMap<>();
+        Map<String, File> fileMap = new HashMap<>();
         File file = new File(filePath);
-        fileMap.put(file.getName(),file);
+        fileMap.put(file.getName(), file);
         AppApplication.getSingleEditTextValidator()
                 .add(new ValidationModel(nickName, new NickNameValidation()))
                 .execute();
@@ -132,19 +155,19 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         if (!AppApplication.getSingleEditTextValidator().validate()) {
             return;
         }
-        if(!flag){
-            ToastUtil.show(this,"请选择头像", Toast.LENGTH_LONG);
+        if (!flag) {
+            ToastUtil.show(this, "请选择头像", Toast.LENGTH_LONG);
             return;
         }
-        if (sex==-1){
-            ToastUtil.show(this,"请选择性别", Toast.LENGTH_LONG);
+        if (sex == -1) {
+            ToastUtil.show(this, "请选择性别", Toast.LENGTH_LONG);
             return;
         }
-        Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("username","18510251819");
-        paramsMap.put("nickname",nickName.getText().toString());
-        paramsMap.put("sex",sex+"");
-        paramsMap.put("timestamp",System.currentTimeMillis()+"");
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("username", username + "");
+        paramsMap.put("nickname", nickName.getText().toString());
+        paramsMap.put("sex", sex + "");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
         } catch (Exception e) {
@@ -153,7 +176,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         Map<String, String> headers = new HashMap<>();
         headers.put("APP-Key", "APP-Secret222");
         headers.put("APP-Secret", "APP-Secret111");
-        NetRequestUtil.postFile(Constants.BASE_PATH+"completeUserInfo.do","headPortrait",fileMap,paramsMap,headers,new CompleteUserInfoCallBack() {
+        NetRequestUtil.postFile(Constants.BASE_PATH + "completeUserInfo.do", "headPortrait", fileMap, paramsMap, headers, new CompleteUserInfoCallBack() {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
@@ -161,20 +184,54 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                System.out.println("成功了");
-                Log.d("XXXXXXXXXXXXXXXXXXXXX", "YYYYYYYYYYY");
-                Log.d("tagonResponse",response.toString());
+
+                getUser(response);
+                Map<String, String> paramsMap = new HashMap<>();
+                paramsMap.put("username", username+"");
+                paramsMap.put("password", password+"");
+                paramsMap.put("cid", JPushInterface.getRegistrationID(RegisterScActivity.this));
+                paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                try {
+                    AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+                    paramsMap.put("signmsg", AppApplication.signmsg);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                NetRequestUtil.post(Constants.BASE_PATH + "userBinding.do", paramsMap, new LoginCallBack() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        System.out.println("失败了");
+                    }
+
+                    @Override
+                    public void onResponse(Map<String, Object> response) {
+                        ToastUtil.showLong(RegisterScActivity.this, "绑定成功");
+                        finish();
+                    }
+                });
             }
         });
     }
-
+    private void getUser(Map<String, Object> response) {
+        User user = new User();
+        user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+        SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");
+        AppApplication.gUser = user;
+        System.out.print(AppApplication.gUser.toString());
+    }
 
     @OnClick(R.id.rs_ib_back)
-    public void back(){
+    public void back() {
         finish();
     }
+
     @OnClick(R.id.rs_iv_headPortrait)
-    public void headPortrait(){
+    public void headPortrait() {
         /*showPopwindowHead();*/
         new ActionSheetDialog(this)
                 .builder()
@@ -276,20 +333,20 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
 //                Bitmap bitmap=getBitmapFromUri(data.getData());
                 circleImageView.setImageBitmap(bitmap);
 //                saveFile(bitmap);
-                flag=true;
+                flag = true;
                 dianji(flag, isNickyname, sex);
                 break;
             case CAMERA_REQUEST_CODE:
                 File picture = new File(Environment.getExternalStorageDirectory()
                         + "/temp.jpg");
                 Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
-                filePath= Utils.getFilePathFromUri(Uri.fromFile(picture), this);
+                filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
                 Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
                 bitmap1.recycle();
                 circleImageView.setImageBitmap(bitmap2);
 //                saveFile(bitmap1);
 //                startCrop(Uri.fromFile(picture));
-                flag=true;
+                flag = true;
                 break;
             case CROP_REQUEST_CODE:
 //                if (data == null) {
@@ -317,32 +374,29 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         }
     }
 
-    public Bitmap getBitmap(Uri data){
+    public Bitmap getBitmap(Uri data) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inSampleSize = 4;
 //        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            filePath=GetPathFromUri4kitkat.getPath(data);
+        filePath = GetPathFromUri4kitkat.getPath(data);
 //        }else{
 //            filePath=ImageUtils.getRealPathByUriOld(data);
 //        }
         Bitmap bm = BitmapFactory.decodeFile(filePath, options);
         options.inJustDecodeBounds = false;
         bm = BitmapFactory.decodeFile(filePath, options);
-        return  bm;
+        return bm;
     }
-    private Bitmap getBitmapFromUri(Uri uri)
-    {
-        try
-        {
-            filePath=GetPathFromUri4kitkat.getPath(uri);
+
+    private Bitmap getBitmapFromUri(Uri uri) {
+        try {
+            filePath = GetPathFromUri4kitkat.getPath(uri);
             System.out.println(filePath);
             // 读取uri所在的图片
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
             return bitmap;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -350,13 +404,52 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        if (checkedId==nan.getId()){
-            sex=1;
+        if (checkedId == nan.getId()) {
+            sex = 1;
             dianji(flag, isNickyname, sex);
-        }else {
-            sex=2;
+        } else {
+            sex = 2;
             dianji(flag, isNickyname, sex);
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "RegisterSc Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.yxh.ryt.activity/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "RegisterSc Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.yxh.ryt.activity/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
 }

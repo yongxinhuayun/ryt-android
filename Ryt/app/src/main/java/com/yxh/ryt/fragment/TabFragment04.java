@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,10 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
+import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.PublicProject01Activity;
+import com.yxh.ryt.activity.RegisterScActivity;
 import com.yxh.ryt.activity.UserEditZiLiaoActivity;
 import com.yxh.ryt.activity.UserPtIndexActivity;
 import com.yxh.ryt.activity.UserQianBaoActivity;
@@ -20,11 +24,24 @@ import com.yxh.ryt.activity.UserSettingActivity;
 import com.yxh.ryt.activity.UserYiJianActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.activity.YsjRzActivity;
+import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
+import com.yxh.ryt.util.EncryptUtil;
+import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Sha1;
+import com.yxh.ryt.util.ToastUtil;
+import com.yxh.ryt.vo.HomeYSJArtWork;
+import com.yxh.ryt.vo.User;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 /**
  * Created by Administrator on 2016-4-4.
@@ -115,9 +132,9 @@ public class TabFragment04 extends BaseFragment {
     //左上角点击事件
     @OnClick(R.id.btn_lf)
     void btnLfClick() {
-        if ("2".equals(AppApplication.gUser.getFlag())) {
+        if (AppApplication.gUser.getMaster()!=null) {
             PublicProject01Activity.openActivity(getActivity());
-        }else{
+        }else if (AppApplication.gUser.getMaster()==null){
             YsjRzActivity.openActivity(getActivity());
         }
     }
@@ -129,60 +146,92 @@ public class TabFragment04 extends BaseFragment {
     //我的主页点击事件
     @OnClick(R.id.rl_user_index)
     void userIndexClick() {
-        /*if (AppApplication.gUser == null) {
+        if (AppApplication.gUser == null) {
             LoginActivity.openActivity(getActivity());
             return;
         }
-        if ("2".equals(AppApplication.gUser.getFlag())) {
+        if (AppApplication.gUser != null&&AppApplication.gUser.getMaster()!=null) {
             UserYsjIndexActivity.openActivity(getActivity());
-        }else{
+        }else if (AppApplication.gUser != null&&AppApplication.gUser.getMaster()==null){
             UserPtIndexActivity.openActivity(getActivity());
-        }*/
-        UserYsjIndexActivity.openActivity(getActivity());
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (AppApplication.gUser == null) {
+        if (AppApplication.gUser!=null && AppApplication.gUser.getId()!=null && !"".equals(AppApplication.gUser.getId())){
+            btnLf.setVisibility(View.VISIBLE);
+            Map<String,String> paramsMap=new HashMap<>();
+            paramsMap.put("userId", AppApplication.gUser.getId());
+            paramsMap.put("pageIndex", "1");
+            paramsMap.put("pageSize", "20");
+            paramsMap.put("timestamp", System.currentTimeMillis() + "");
+            try {
+                paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            NetRequestUtil.post(Constants.BASE_PATH + "my.do", paramsMap, new RegisterCallBack() {
+                @Override
+                public void onError(Call call, Exception e) {
+                    System.out.println("失败了");
+                }
+
+                @Override
+                public void onResponse(Map<String, Object> response) {
+                    if (!response.get("resultCode").equals("0")) {
+                        ToastUtil.showShort(AppApplication.getSingleContext(), "注册失败!");
+                        return;
+                    }
+                    if (response.get("resultCode").equals("0")) {
+                    /*SPUtil.put(RegisterActivity.this,"username",eTPhone.getText().toString());
+                    SPUtil.put(RegisterActivity.this, "password", Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));*/
+                        Map<String,Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
+                        User user=AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")),User.class);
+                        if (user!=null){
+                            if (user.getMaster()==null){
+                                btnLf.setText("申请为艺术家");
+                                setLoginedViewValues(1, user);
+                            }else {
+                                btnLf.setText("发起项目");
+                                setLoginedViewValues(2,user);
+                            }
+                        }
+                    }
+
+                }
+            });
+        }else {
             btnLf.setVisibility(View.GONE);
 //            ButterKnife.apply(linearLayouts, ISVISIBLE, 1);
             setLoginViewValues();
             return;
-        } else {
-//            ButterKnife.apply(linearLayouts, ISVISIBLE, 0);
-            btnLf.setVisibility(View.VISIBLE);
         }
-        if ("2".equals(AppApplication.gUser.getFlag())) {
-            btnLf.setText("发起项目");
-            setLoginedViewValues(AppApplication.gUser.getUtype());
-        }else{
-            btnLf.setText("申请为艺术家");
-            setLoginedViewValues(AppApplication.gUser.getUtype());
-        }
+
     }
 
     //登录成功设置控件元素的值
-    private void setLoginedViewValues(int type) {
-        if ("2".equals(AppApplication.gUser.getFlag())) {
-            tvUserHeaderName.setText(AppApplication.gUser.getUsername());
-            tvUserHeaderFsNum.setText(AppApplication.gUser.getCount1()+"");
-            tvUserHeaderGzNum.setText(AppApplication.gUser.getCount()+"");
-            tvUserHeaderTxt.setText("null".equals(AppApplication.gUser.getUserBrief())?"一句话20字以内":AppApplication.gUser.getUserBrief());
-            tvUserHeaderJeValue01.setText("￥"+AppApplication.gUser.getInvestsMoney());
-            tvUserHeaderJeValue02.setText("￥"+AppApplication.gUser.getRoiMoney());
-            tvUserHeaderJeValue03.setText(0==AppApplication.gUser.getRate()?"0%":AppApplication.gUser.getRate()*100+"%");
+    private void setLoginedViewValues(int type,User user) {
+        if (type==2) {
+            tvUserHeaderName.setText(user.getName()+"");
+            tvUserHeaderFsNum.setText(user.getCount1()+"");
+            tvUserHeaderGzNum.setText(user.getCount()+"");
+            tvUserHeaderTxt.setText("null".equals(user.getUserBrief())?"一句话20字以内":user.getUserBrief());
+            tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
+            tvUserHeaderJeValue02.setText("￥"+user.getRoiMoney());
+            tvUserHeaderJeValue03.setText(0==user.getRate()?"0%":user.getRate()*100+"%");
             tvUserHeaderJeTxt01.setText("项目总金额");
             tvUserHeaderJeTxt02.setText("项目拍卖总金额");
             tvUserHeaderJeTxt03.setText("拍卖溢价率");
         }else{
-            tvUserHeaderName.setText(AppApplication.gUser.getUsername());
-            tvUserHeaderFsNum.setText(AppApplication.gUser.getCount1()+"");
-            tvUserHeaderGzNum.setText(AppApplication.gUser.getCount()+"");
-            tvUserHeaderTxt.setText("null".equals(AppApplication.gUser.getUserBrief())?"一句话20字以内":AppApplication.gUser.getUserBrief());
-            tvUserHeaderJeValue01.setText("￥"+AppApplication.gUser.getInvestsMoney());
-            tvUserHeaderJeValue02.setText("￥"+AppApplication.gUser.getRoiMoney());
-            tvUserHeaderJeValue03.setText(0==AppApplication.gUser.getRate()?"0%":AppApplication.gUser.getRate()*100+"%");
+            tvUserHeaderName.setText(user.getName()+"");
+            tvUserHeaderFsNum.setText(user.getCount1()+"");
+            tvUserHeaderGzNum.setText(user.getCount()+"");
+            tvUserHeaderTxt.setText("null".equals(user.getUserBrief())?"一句话20字以内":user.getUserBrief());
+            tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
+            tvUserHeaderJeValue02.setText("￥"+user.getRoiMoney());
+            tvUserHeaderJeValue03.setText(0==user.getRate()?"0%":user.getRate()*100+"%");
             tvUserHeaderJeTxt01.setText("投资金额");
             tvUserHeaderJeTxt02.setText("投资收益");
             tvUserHeaderJeTxt03.setText("投资回报率");

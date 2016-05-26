@@ -102,10 +102,10 @@ public class ForgetPwdActivity extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
                     isPhone = true;
-                    dianji(isPhone,isVcode,isPassword);
-                }else {
+                    dianji(isPhone, isVcode, isPassword);
+                } else {
                     isPhone = false;
-                    dianji(isPhone,isVcode,isPassword);
+                    dianji(isPhone, isVcode, isPassword);
                 }
             }
 
@@ -124,10 +124,10 @@ public class ForgetPwdActivity extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
                     isVcode = true;
-                    dianji(isPhone,isVcode,isPassword);
-                }else {
+                    dianji(isPhone, isVcode, isPassword);
+                } else {
                     isVcode = false;
-                    dianji(isPhone,isVcode,isPassword);
+                    dianji(isPhone, isVcode, isPassword);
                 }
             }
 
@@ -146,10 +146,10 @@ public class ForgetPwdActivity extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
                     isPassword = true;
-                    dianji(isPhone,isVcode,isPassword);
-                }else {
+                    dianji(isPhone, isVcode, isPassword);
+                } else {
                     isPassword = false;
-                    dianji(isPhone,isVcode,isPassword);
+                    dianji(isPhone, isVcode, isPassword);
                 }
             }
 
@@ -223,41 +223,50 @@ public class ForgetPwdActivity extends BaseActivity {
         getContentResolver().registerContentObserver(SMS_INBOX, true,
                 smsObserver);
     }
-    @OnClick(R.id.fp_bt_commit)
-    public void commit(){
-        AppApplication.getSingleEditTextValidator()
-                .add(new ValidationModel(eTPhone, new UserNameValidation()))
-                .add(new ValidationModel(eTPassword,new PasswordValidation()))
-                .add(new ValidationModel(eTVerfyCode,new VerifyCodeValidation()))
-                .execute();
-        //表单没有检验通过直接退出方法
-        if(!AppApplication.getSingleEditTextValidator().validate()){
-            return;
-        }
-        paramsMap=new HashMap<>();
-        paramsMap.put("username", eTPhone.getText().toString());
-        paramsMap.put("password", Sha1.encodePassword(eTPassword.getText().toString(),"SHA"));
-        paramsMap.put("timestamp", System.currentTimeMillis() + "");
-        try {
-            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        NetRequestUtil.post(Constants.BASE_PATH + "retrievePassword.do", paramsMap, new RegisterCallBack() {
-            @Override
-            public void onError(Call call, Exception e) {
-                System.out.println("失败了");
-            }
-
-            @Override
-            public void onResponse(Map<String, Object> response) {
-                if (response.get("resultCode").equals("0")) {
-                    ToastUtil.showShort(AppApplication.getSingleContext(), "修改密码成功!");
-                } else {
-                    ToastUtil.showShort(AppApplication.getSingleContext(), "修改密码失败!");
+    @OnClick({R.id.fp_ib_back,R.id.fp_bt_commit})
+    public void commit(View view){
+        switch (view.getId()){
+            case R.id.fp_ib_back:
+                finish();
+                break;
+            case R.id.fp_bt_commit:
+                AppApplication.getSingleEditTextValidator()
+                        .add(new ValidationModel(eTPhone, new UserNameValidation()))
+                        .add(new ValidationModel(eTPassword,new PasswordValidation()))
+                        .add(new ValidationModel(eTVerfyCode,new VerifyCodeValidation()))
+                        .execute();
+                //表单没有检验通过直接退出方法
+                if(!AppApplication.getSingleEditTextValidator().validate()){
+                    return;
                 }
-            }
-        });
+                paramsMap=new HashMap<>();
+                paramsMap.put("username", eTPhone.getText().toString());
+                paramsMap.put("password", Sha1.encodePassword(eTPassword.getText().toString(),"SHA"));
+                paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                try {
+                    paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                NetRequestUtil.post(Constants.BASE_PATH + "retrievePassword.do", paramsMap, new RegisterCallBack() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        System.out.println("失败了");
+                    }
+
+                    @Override
+                    public void onResponse(Map<String, Object> response) {
+                        if (response.get("resultCode").equals("0")) {
+                            ToastUtil.showShort(AppApplication.getSingleContext(), "修改密码成功!");
+                            finish();
+                        } else {
+                            ToastUtil.showShort(AppApplication.getSingleContext(), "修改密码失败!");
+                        }
+                    }
+                });
+                break;
+        }
+
     }
 
     @OnClick(R.id.fp_bt_verifyCode)

@@ -32,7 +32,7 @@ public class User {
      * accountNonLocked : true
      * credentialsNonExpired : true
      */
-
+    private String sex;
     private String id;
     private String username;
     private String name;
@@ -62,6 +62,14 @@ public class User {
     private String  userBrief;
     private int roiMoney;
     private int count1;
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
     public int getRate() {
         return rate;
@@ -315,5 +323,8 @@ public class User {
 
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {
         this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public User() {
     }
 }

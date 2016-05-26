@@ -1,14 +1,19 @@
 package com.yxh.ryt.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.viewpagerindicator.IcsLinearLayout;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
@@ -40,6 +45,8 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
     private int currentPage=1;
     @Bind(R.id.pl_message_listView)
     AutoListView plflistview;
+    private PrivateLetterReceiver receiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +55,17 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
         privateLetterDatas=new ArrayList<PrivateLetter>();
         initView();
         plflistview.setPageSize(Constants.pageSize);
+        receiver = new PrivateLetterReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.intent.action.Server_BROADCAST");
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        privateLetterDatas.clear();
+        currentPage=1;
         LoadData(AutoListView.REFRESH, currentPage);
     }
 
@@ -156,5 +174,21 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
         intent.putExtra("formId",privateLetterDatas.get(position-1).getFromUser().getId());
         intent.putExtra("name",privateLetterDatas.get(position-1).getFromUser().getName());
         startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
+    public class PrivateLetterReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            privateLetterDatas.clear();
+            currentPage=1;
+            LoadData(AutoListView.REFRESH, currentPage);
+        }
     }
 }

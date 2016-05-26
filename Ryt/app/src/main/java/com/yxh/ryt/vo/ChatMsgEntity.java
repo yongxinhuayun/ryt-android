@@ -11,8 +11,24 @@ public class ChatMsgEntity {
     private String text;
     
     private String time;
-    
-    
+
+    private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public boolean isComMeg() {
+        return isComMeg;
+    }
+
+    public void setIsComMeg(boolean isComMeg) {
+        this.isComMeg = isComMeg;
+    }
 
     public String getTime() {
 		return time;

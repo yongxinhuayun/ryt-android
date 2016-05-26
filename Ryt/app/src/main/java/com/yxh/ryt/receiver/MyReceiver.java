@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.CustomMsgActivity;
 import com.yxh.ryt.activity.ShowMsgActivity;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.ChatMsgEntity;
+import com.yxh.ryt.vo.JpushEntity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -50,13 +52,16 @@ public class MyReceiver extends BroadcastReceiver {
 			processCustomMessage(context, bundle);
         
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
-            int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-            Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
 			ChatMsgEntity chatMsgEntity = new ChatMsgEntity();
 			chatMsgEntity.setDate(Utils.getCurrentTime());
+			String s=bundle.getString(JPushInterface.EXTRA_EXTRA);
+			JpushEntity entity = AppApplication.getSingleGson().fromJson(s, JpushEntity.class);
+			chatMsgEntity.setUserId(entity.getUserId()+"");
+			Log.d("userDI", entity.getUserId() + "");
 			chatMsgEntity.setText(bundle.getString(JPushInterface.EXTRA_ALERT));
 			EventBus.getDefault().post(chatMsgEntity);
+			Intent inten = new Intent("android.intent.action.Server_BROADCAST");
+			AppApplication.getSingleContext().sendBroadcast(inten);
 
 		} else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
