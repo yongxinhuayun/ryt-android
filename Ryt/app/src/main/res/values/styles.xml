@@ -118,4 +118,8 @@
         <item name="@android:windowExitAnimation">@anim/activity_tobottom</item>
         //退出时的动画
     </style>
+    <style name="common_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

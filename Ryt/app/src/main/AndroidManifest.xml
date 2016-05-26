@@ -84,16 +84,8 @@
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:scheme="wxc7f08565e496134b" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".activity.UserYsjIndexActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ChuangZuoXQActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.RongZiXQActivity" android:screenOrientation="portrait"/>

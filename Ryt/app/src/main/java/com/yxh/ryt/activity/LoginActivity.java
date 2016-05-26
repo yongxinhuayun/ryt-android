@@ -19,7 +19,6 @@ import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.receiver.WxLoginBroadcastReciver;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.EditTextValidator;

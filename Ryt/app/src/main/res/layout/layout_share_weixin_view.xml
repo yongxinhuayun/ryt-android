@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:id="@+id/view_share_pengyou"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/iv_pengyou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/bg_share_pengyou" />
+
+            <TextView
+                android:id="@+id/tv_pengyou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_pengyou"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="朋友圈"
+                android:textColor="#999999"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/view_share_weixin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/share_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/bg_share_weixin" />
+
+            <TextView
+                android:id="@+id/share_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/share_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="微信好友"
+                android:textColor="#999999"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/white" />
+
+    <Button
+        android:id="@+id/share_cancel_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="取消" />
+</LinearLayout>
