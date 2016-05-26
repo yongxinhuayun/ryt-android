@@ -62,11 +62,11 @@ public class WXEntryActivity  extends BaseActivity implements IWXAPIEventHandler
 	                finish(); 
 	                break;  
 	            default:  
-	                result = "登陆返回";  
-	                Toast.makeText(this, result, Toast.LENGTH_LONG).show();  
+	               /* result = "登陆返回";
+	                Toast.makeText(this, result, Toast.LENGTH_LONG).show();  */
 	                finish();
 	                break;  
-	        }  
+	        }
 		
 	}
 		//获取用户信息
