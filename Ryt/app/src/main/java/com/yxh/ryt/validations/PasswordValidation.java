@@ -40,7 +40,7 @@ public class PasswordValidation extends ValidationExecutor {
 			ToastUtil.showShort(AppApplication.getSingleContext(), "密码不能为空！");
 			return false;
 		}
-		String regex = "^[a-zA-Z]|[0-9]{6,16}$";
+		String regex = "^[a-zA-Z0-9]{6,10}$";
 		boolean result = Pattern.compile(regex).matcher(text).find();
 		if (!result) {
 			ToastUtil.showShort(AppApplication.getSingleContext(), "密码格式不正确！");
