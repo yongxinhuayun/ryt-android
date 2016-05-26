@@ -19,6 +19,7 @@ import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.receiver.WxLoginBroadcastReciver;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.EditTextValidator;
@@ -216,6 +217,8 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onResponse(Map<String, Object> response) {
                         ToastUtil.showLong(LoginActivity.this, "登录绑定成功");
+                        Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
+                        startActivity(intent);
                         finish();
                     }
                 });
@@ -226,26 +229,31 @@ public class LoginActivity extends BaseActivity {
     private void getUser(Map<String, Object> response) {
         User user = new User();
         user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
-        user.setFlag(response.get("flag") + "");
+        /*user.setFlag(response.get("flag") + "");
         user.setCount(((Double) response.get("count")).intValue());
         user.setCount1(((Double) response.get("count1")).intValue());
         user.setRoiMoney(((Double) response.get("roiMoney")).intValue());
         user.setRate(((Double) response.get("rate")).intValue());
-        user.setUserBrief(response.get("userBrief") + "");
-        user.setInvestsMoney(((Double) response.get("investsMoney")).intValue());
+        user.setUserBrief(response.get("userBrief") + "");*/
+        if (user.getMaster()!=null){
+            user.setMaster1("master");
+        }else {
+            user.setMaster1("");
+        }
+        /*user.setInvestsMoney(((Double) response.get("investsMoney")).intValue());*/
         SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
         SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster1()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_count1", user.getCount1()+"");
+        /*SPUtil.put(AppApplication.getSingleContext(), "current_count1", user.getCount1()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_count", user.getCount()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_roiMoney", user.getRoiMoney()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_flag", user.getFlag()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_flag", user.getFlag() + "");
         SPUtil.put(AppApplication.getSingleContext(), "current_rate", user.getRate()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_investsMoney", user.getInvestsMoney()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_userBrief", user.getUserBrief()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_userBrief", user.getUserBrief()+"");*/
         AppApplication.gUser = user;
         System.out.print(AppApplication.gUser.toString());
     }

@@ -219,9 +219,18 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex() + "");
-        SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster()+"");
+        if (user.getMaster()!=null){
+            SPUtil.put(AppApplication.getSingleContext(), "current_master","master");
+        }else {
+            SPUtil.put(AppApplication.getSingleContext(), "current_master","");
+        }
         SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");
         AppApplication.gUser = user;
+        if (user.getMaster()!=null){
+            AppApplication.gUser.setMaster1("master");
+        }else {
+            AppApplication.gUser.setMaster1("");
+        }
         System.out.print(AppApplication.gUser.toString());
     }
 

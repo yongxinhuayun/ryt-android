@@ -28,6 +28,7 @@ import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.HomeYSJArtWork;
@@ -111,7 +112,7 @@ public class TabFragment04 extends BaseFragment {
     //头像点击事件
     @OnClick(R.id.ll_user_header)
     void userHeaderClick() {
-        if (AppApplication.gUser == null) {
+        if ("".equals(AppApplication.gUser.getId())) {
             LoginActivity.openActivity(getActivity());
             return;
         } else {
@@ -132,9 +133,9 @@ public class TabFragment04 extends BaseFragment {
     //左上角点击事件
     @OnClick(R.id.btn_lf)
     void btnLfClick() {
-        if (AppApplication.gUser.getMaster()!=null) {
+        if ("master".equals(AppApplication.gUser.getMaster1())) {
             PublicProject01Activity.openActivity(getActivity());
-        }else if (AppApplication.gUser.getMaster()==null){
+        }else if ("".equals(AppApplication.gUser.getMaster1())){
             YsjRzActivity.openActivity(getActivity());
         }
     }
@@ -146,7 +147,7 @@ public class TabFragment04 extends BaseFragment {
     //我的主页点击事件
     @OnClick(R.id.rl_user_index)
     void userIndexClick() {
-        if (AppApplication.gUser == null) {
+        if ("".equals(AppApplication.gUser.getId())) {
             LoginActivity.openActivity(getActivity());
             return;
         }
@@ -185,15 +186,13 @@ public class TabFragment04 extends BaseFragment {
                         return;
                     }
                     if (response.get("resultCode").equals("0")) {
-                    /*SPUtil.put(RegisterActivity.this,"username",eTPhone.getText().toString());
-                    SPUtil.put(RegisterActivity.this, "password", Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));*/
                         Map<String,Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
                         User user=AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")),User.class);
                         if (user!=null){
-                            if (user.getMaster()==null){
+                            if ("".equals(SPUtil.get(AppApplication.getSingleContext(),"current_master",""))){
                                 btnLf.setText("申请为艺术家");
                                 setLoginedViewValues(1, user);
-                            }else {
+                            }else if ("master".equals(SPUtil.get(AppApplication.getSingleContext(), "current_master", ""))){
                                 btnLf.setText("发起项目");
                                 setLoginedViewValues(2,user);
                             }

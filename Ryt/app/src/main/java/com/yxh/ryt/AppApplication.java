@@ -91,6 +91,7 @@ public class AppApplication extends Application {
 		builder.imageScaleType(ImageScaleType.EXACTLY_STRETCHED);
 		options=builder.build();
 		getMap();
+		gUser=new User();
 		getPTMap();
 	}
 	public static DBHelper getDBHelper(){

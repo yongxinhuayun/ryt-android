@@ -32,6 +32,7 @@ public class User {
      * accountNonLocked : true
      * credentialsNonExpired : true
      */
+    private String master1;
     private String sex;
     private String id;
     private String username;
@@ -62,6 +63,14 @@ public class User {
     private String  userBrief;
     private int roiMoney;
     private int count1;
+
+    public String getMaster1() {
+        return master1;
+    }
+
+    public void setMaster1(String master1) {
+        this.master1 = master1;
+    }
 
     public String getSex() {
         return sex;

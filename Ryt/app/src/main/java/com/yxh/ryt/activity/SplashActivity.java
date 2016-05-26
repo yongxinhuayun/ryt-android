@@ -22,6 +22,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.UpdataCallBack;
@@ -29,6 +30,7 @@ import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.ToastUtil;
+import com.yxh.ryt.vo.Master;
 import com.zhy.http.okhttp.callback.FileCallBack;
 
 import java.io.File;
@@ -88,8 +90,24 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         initView();
+        setShare();
         startAnimation();
 
+    }
+
+    private void setShare() {
+        /*SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");*/
+        AppApplication.gUser.setMaster1((String) SPUtil.get(AppApplication.getSingleContext(), "current_master", ""));
+        AppApplication.gUser.setId((String) SPUtil.get(AppApplication.getSingleContext(), "current_id", ""));
+        AppApplication.gUser.setName((String) SPUtil.get(AppApplication.getSingleContext(), "current_name", ""));
+        AppApplication.gUser.setUsername((String) SPUtil.get(AppApplication.getSingleContext(), "current_username", ""));
+        AppApplication.gUser.setSex((String) SPUtil.get(AppApplication.getSingleContext(), "current_sex", ""));
+        AppApplication.gUser.setPictureUrl((String) SPUtil.get(AppApplication.getSingleContext(), "current_pictureUrl", ""));
     }
 
     private void checkVersion() {
