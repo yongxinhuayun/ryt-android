@@ -22,6 +22,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.DBHelper;
 import com.yxh.ryt.util.avalidations.EditTextValidator;
 import com.google.gson.Gson;
