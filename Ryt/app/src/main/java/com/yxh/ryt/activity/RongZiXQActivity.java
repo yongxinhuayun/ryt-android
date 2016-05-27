@@ -402,12 +402,12 @@ private void shareWx(int flag) {
     Bitmap thumb = BitmapFactory.decodeResource(getResources(),
             R.mipmap.logo_qq);
     msg.setThumbImage(thumb);
-    SendMessageToWX.Req req = new SendMessageToWX.Req();
-    req.transaction = String.valueOf(System.currentTimeMillis());
-    req.message = msg;
-    req.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
+    SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
+    reqShare.transaction = String.valueOf(System.currentTimeMillis());
+    reqShare.message = msg;
+    reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
 
-    api.sendReq(req);
+    api.sendReq(reqShare);
     /*//创建一个用于封装待分享文本的WXTextObject对象
 
     WXTextObject textObject =new WXTextObject();

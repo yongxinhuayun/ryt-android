@@ -6,55 +6,33 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.AppApplication;
-import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
-import com.yxh.ryt.adapter.RongZiXqTabPageIndicatorAdapter;
-import com.yxh.ryt.adapter.UserPtTabPageIndicatorAdapter;
 import com.yxh.ryt.adapter.UserYsjTabPageIndicatorAdapter;
-import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.custemview.CircleImageView;
-import com.yxh.ryt.fragment.RongZiItemFragment;
-import com.yxh.ryt.fragment.RongZiXiangQingTab01Fragment;
-import com.yxh.ryt.fragment.RongZiXiangQingTab02Fragment;
-import com.yxh.ryt.fragment.RongZiXiangQingTab03Fragment;
-import com.yxh.ryt.fragment.RongZiXiangQingTab04Fragment;
 import com.yxh.ryt.fragment.UserJianJieFragment;
 import com.yxh.ryt.fragment.UserTouGuoFragment;
 import com.yxh.ryt.fragment.UserZanGuoFragment;
 import com.yxh.ryt.fragment.YSJHomeFragment;
 import com.yxh.ryt.fragment.YSJWorkFragment;
-import com.yxh.ryt.util.EncryptUtil;
-import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.vo.Artwork;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import okhttp3.Call;
 import wuhj.com.mylibrary.StickHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
@@ -165,7 +143,7 @@ public class UserYsjIndexActivity extends BaseActivity {
             tvUserHeaderName.setText(AppApplication.gUser.getUsername());
             tvUserHeaderFsNum.setText(AppApplication.gUser.getCount1()+"");
             tvUserHeaderGzNum.setText(AppApplication.gUser.getCount()+"");
-            tvUserHeaderTxt.setText("null".equals(AppApplication.gUser.getUserBrief())?"一句话20字以内":AppApplication.gUser.getUserBrief());
+           // tvUserHeaderTxt.setText("null".equals(AppApplication.gUser.getUserBrief())?"一句话20字以内":AppApplication.gUser.getUserBrief());
             tvUserHeaderJeValue01.setText("￥"+AppApplication.gUser.getInvestsMoney());
             tvUserHeaderJeValue02.setText("￥"+AppApplication.gUser.getRoiMoney());
             tvUserHeaderJeValue03.setText(0==AppApplication.gUser.getRate()?"0%":AppApplication.gUser.getRate()*100+"%");

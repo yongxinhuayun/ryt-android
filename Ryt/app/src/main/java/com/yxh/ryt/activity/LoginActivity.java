@@ -1,6 +1,8 @@
 package com.yxh.ryt.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -60,6 +62,7 @@ public class LoginActivity extends BaseActivity {
     WxLoginBroadcastReciver mReciver;
     private boolean isPhone;
     private boolean isPassword;
+    private LoginReceiver receiver;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, LoginActivity.class));
@@ -71,6 +74,10 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);/*启用注解绑定*/
         btnLogin.setEnabled(false);
         clickable();
+        receiver = new LoginReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.intent.action.WX_Login_BROADCAST");
+        registerReceiver(receiver, filter);
     }
 
     private void clickable() {
@@ -283,6 +290,14 @@ public class LoginActivity extends BaseActivity {
         super.onDestroy();
         if(mReciver!=null){
             unregisterReceiver(mReciver);
+        }
+        unregisterReceiver(receiver);
+    }
+    public class LoginReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ToastUtil.showLong(context,"你好狼啊啊啊啊啊啊啊");
         }
     }
 }

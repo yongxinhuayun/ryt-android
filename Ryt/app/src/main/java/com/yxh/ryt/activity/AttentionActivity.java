@@ -7,11 +7,10 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.widget.TextView;
 
-import com.viewpagerindicator.TabPageIndicator;
 import com.viewpagerindicator.IcsLinearLayout;
+import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.AttentionIndicatorAdapter;
