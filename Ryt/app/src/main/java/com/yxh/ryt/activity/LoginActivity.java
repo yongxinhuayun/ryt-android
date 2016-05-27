@@ -6,14 +6,12 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
@@ -29,13 +27,11 @@ import com.yxh.ryt.util.avalidations.EditTextValidator;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.PasswordValidation;
 import com.yxh.ryt.validations.UserNameValidation;
-import com.yxh.ryt.vo.PageinfoList;
 import com.yxh.ryt.vo.User;
 import com.yxh.ryt.vo.WxUser;
 import com.yxh.ryt.wxapi.WxUtil;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -160,8 +156,7 @@ public class LoginActivity extends BaseActivity {
             mReciver = new WxLoginBroadcastReciver(new WxLoginBroadcastReciver.WxLoginCallBack() {
                 @Override
                 public void response(String wxUser) {
-                    if (wxUser!=null){
-                        WxUser user=AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(wxUser), WxUser.class);
+                        WxUser user=AppApplication.getSingleGson().fromJson(wxUser, WxUser.class);
                         Map<String,String> paramsMap=new HashMap<>();
                         paramsMap.put("nickname",user.getNickname());
                         paramsMap.put("headimgurl",user.getHeadimgurl());
@@ -173,7 +168,7 @@ public class LoginActivity extends BaseActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        NetRequestUtil.post(Constants.BASE_PATH + "WxLogin.do.do", paramsMap, new RZCommentCallBack() {
+                        NetRequestUtil.post(Constants.BASE_PATH + "WxLogin.do", paramsMap, new RZCommentCallBack() {
                             @Override
                             public void onError(Call call, Exception e) {
                                 e.printStackTrace();
@@ -190,7 +185,7 @@ public class LoginActivity extends BaseActivity {
                         });
                     }
 
-                }
+
             });
             registerReceiver(mReciver, intentFilter);
             WxUtil.wxlogin();
