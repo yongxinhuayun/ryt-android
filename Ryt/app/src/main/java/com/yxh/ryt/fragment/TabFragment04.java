@@ -1,6 +1,5 @@
 package com.yxh.ryt.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,13 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.PublicProject01Activity;
-import com.yxh.ryt.activity.RegisterScActivity;
 import com.yxh.ryt.activity.UserEditZiLiaoActivity;
 import com.yxh.ryt.activity.UserPtIndexActivity;
 import com.yxh.ryt.activity.UserQianBaoActivity;
@@ -29,15 +26,11 @@ import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
-import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
-import com.yxh.ryt.vo.HomeYSJArtWork;
 import com.yxh.ryt.vo.User;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -216,7 +209,7 @@ public class TabFragment04 extends BaseFragment {
             tvUserHeaderName.setText(user.getName()+"");
             tvUserHeaderFsNum.setText(user.getCount1()+"");
             tvUserHeaderGzNum.setText(user.getCount()+"");
-            tvUserHeaderTxt.setText("null".equals(user.getUserBrief())?"一句话20字以内":user.getUserBrief());
+           // tvUserHeaderTxt.setText("null".equals(user.getUserBrief())?"一句话20字以内":user.getUserBrief());
             tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
             tvUserHeaderJeValue02.setText("￥"+user.getRoiMoney());
             tvUserHeaderJeValue03.setText(0==user.getRate()?"0%":user.getRate()*100+"%");
@@ -227,7 +220,7 @@ public class TabFragment04 extends BaseFragment {
             tvUserHeaderName.setText(user.getName()+"");
             tvUserHeaderFsNum.setText(user.getCount1()+"");
             tvUserHeaderGzNum.setText(user.getCount()+"");
-            tvUserHeaderTxt.setText("null".equals(user.getUserBrief())?"一句话20字以内":user.getUserBrief());
+            //tvUserHeaderTxt.setText("null".equals(user.getUserBrief())?"一句话20字以内":user.getUserBrief());
             tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
             tvUserHeaderJeValue02.setText("￥"+user.getRoiMoney());
             tvUserHeaderJeValue03.setText(0==user.getRate()?"0%":user.getRate()*100+"%");
