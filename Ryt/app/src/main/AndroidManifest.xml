@@ -57,7 +57,7 @@
         android:supportsRtl="true"
         android:name=".AppApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.LoginActivity" android:screenOrientation="portrait">
+        <activity android:name=".activity.SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -73,7 +73,7 @@
         <activity android:name=".activity.UserSettingAboutActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserChongZhiActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserQianBaoActivity" android:screenOrientation="portrait"/>
-        <!--<activity android:name=".activity.LoginActivity" android:screenOrientation="portrait"/>-->
+        <activity android:name=".activity.LoginActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.CommentActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ProjectCommentReply" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ForgetPwdActivity" android:screenOrientation="portrait"/>
