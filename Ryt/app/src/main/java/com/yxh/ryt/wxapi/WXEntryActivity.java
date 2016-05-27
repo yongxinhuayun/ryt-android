@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.yxh.ryt.AppApplication;
@@ -44,25 +46,25 @@ public class WXEntryActivity  extends BaseActivity implements IWXAPIEventHandler
 	        }  
 	        switch(resp.errCode) {  
 	            case BaseResp.ErrCode.ERR_OK:
-	            	 /*if (AppApplication.resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
+	            	 if (AppApplication.resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
 	    				 String wxCode = ((SendAuth.Resp)AppApplication.resp).code;
 	    				 getAccessTokenByCode(wxCode);
-	    			 }*/
+	    			 }
 	                break;  
 	            case BaseResp.ErrCode.ERR_USER_CANCEL:  
-	               /* result = "取消登陆";
+	               result = "取消登陆";
 	                Toast.makeText(this, result, Toast.LENGTH_LONG).show();  
-	                finish();*/
+	                finish();
 	                break;  
 	            case BaseResp.ErrCode.ERR_AUTH_DENIED:  
-	               /* result = "登陆被拒绝";
+	                result = "登陆被拒绝";
 	                Toast.makeText(this, result, Toast.LENGTH_LONG).show();
-	                finish(); */
+	                finish();
 	                break;  
 	            default:  
-	               /* result = "登陆返回";
-	                Toast.makeText(this, result, Toast.LENGTH_LONG).show();  */
-	               // finish();
+	               result = "登陆返回";
+	                Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+	                finish();
 	                break;  
 	        }
 		
