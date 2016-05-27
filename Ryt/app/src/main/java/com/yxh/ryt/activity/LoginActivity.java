@@ -185,7 +185,6 @@ public class LoginActivity extends BaseActivity {
                                 if ("0".equals(response.get("resultCode"))) {
                                     System.out.println(response.get("resultCode")+"dudududuuuuuuuuuuuuuuuuuuuuu");
 
-
                                 }
                             }
                         });
