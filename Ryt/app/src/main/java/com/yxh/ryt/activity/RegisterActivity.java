@@ -186,7 +186,7 @@ public class RegisterActivity extends BaseActivity {
                 @Override
                 public void response(String wxUser) {
                     if (wxUser!=null){
-                        WxUser user=AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(wxUser), WxUser.class);
+                        WxUser user=AppApplication.getSingleGson().fromJson(wxUser, WxUser.class);
                         Map<String,String> paramsMap=new HashMap<>();
                         paramsMap.put("nickname",user.getNickname());
                         paramsMap.put("headimgurl",user.getHeadimgurl());
@@ -198,7 +198,7 @@ public class RegisterActivity extends BaseActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        NetRequestUtil.post(Constants.BASE_PATH + "WxLogin.do.do", paramsMap, new RZCommentCallBack() {
+                        NetRequestUtil.post(Constants.BASE_PATH + "WxLogin.do", paramsMap, new RZCommentCallBack() {
                             @Override
                             public void onError(Call call, Exception e) {
                                 e.printStackTrace();
