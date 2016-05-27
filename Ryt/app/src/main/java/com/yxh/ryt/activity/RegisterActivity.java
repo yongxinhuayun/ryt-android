@@ -24,11 +24,13 @@ import com.yxh.ryt.obsever.Smsobserver;
 import com.yxh.ryt.receiver.WxLoginBroadcastReciver;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.PasswordValidation;
 import com.yxh.ryt.validations.UserNameValidation;
+import com.yxh.ryt.vo.User;
 import com.yxh.ryt.vo.WxUser;
 import com.yxh.ryt.wxapi.WxUtil;
 
@@ -204,9 +206,11 @@ public class RegisterActivity extends BaseActivity {
                             }
                             @Override
                             public void onResponse(Map<String, Object> response) {
-                                System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
                                 if ("0".equals(response.get("resultCode"))) {
-                                    System.out.println(response.get("resultCode")+"dudududuuuuuuuuuuuuuuuuuuuuu");
+                                    getUser(response);
+                                    Intent intent=new Intent(RegisterActivity.this,IndexActivity.class);
+                                    startActivity(intent);
+                                    finish();
 
                                 }
                             }
@@ -218,6 +222,23 @@ public class RegisterActivity extends BaseActivity {
             registerReceiver(mReciver, intentFilter);
             WxUtil.wxlogin();
         }
+    }
+    private void getUser(Map<String, Object> response) {
+        User user = new User();
+        user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+        if (user.getMaster()!=null){
+            user.setMaster1("master");
+        }else {
+            user.setMaster1("");
+        }
+        SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster1()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");
+        AppApplication.gUser = user;
+        System.out.print(AppApplication.gUser.toString());
     }
     private void event() {
 
