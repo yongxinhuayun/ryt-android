@@ -6,16 +6,19 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.LoginCallBack;
+import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.receiver.WxLoginBroadcastReciver;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -26,10 +29,13 @@ import com.yxh.ryt.util.avalidations.EditTextValidator;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.PasswordValidation;
 import com.yxh.ryt.validations.UserNameValidation;
+import com.yxh.ryt.vo.PageinfoList;
 import com.yxh.ryt.vo.User;
+import com.yxh.ryt.vo.WxUser;
 import com.yxh.ryt.wxapi.WxUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -151,10 +157,44 @@ public class LoginActivity extends BaseActivity {
         if(WxUtil.regAndCheckWx(LoginActivity.this)){
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.WX_LOGIN_ACTION);
-            mReciver = new WxLoginBroadcastReciver();
+            mReciver = new WxLoginBroadcastReciver(new WxLoginBroadcastReciver.WxLoginCallBack() {
+                @Override
+                public void response(String wxUser) {
+                    if (wxUser!=null){
+                        WxUser user=AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(wxUser), WxUser.class);
+                        Map<String,String> paramsMap=new HashMap<>();
+                        paramsMap.put("nickname",user.getNickname());
+                        paramsMap.put("headimgurl",user.getHeadimgurl());
+                        paramsMap.put("unionid",user.getUnionid());
+                        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                        try {
+                            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+                            paramsMap.put("signmsg", AppApplication.signmsg);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        NetRequestUtil.post(Constants.BASE_PATH + "WxLogin.do.do", paramsMap, new RZCommentCallBack() {
+                            @Override
+                            public void onError(Call call, Exception e) {
+                                e.printStackTrace();
+                                System.out.println("444444失败了");
+                            }
+                            @Override
+                            public void onResponse(Map<String, Object> response) {
+                                System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
+                                if ("0".equals(response.get("resultCode"))) {
+                                    System.out.println(response.get("resultCode")+"dudududuuuuuuuuuuuuuuuuuuuuu");
+
+
+                                }
+                            }
+                        });
+                    }
+
+                }
+            });
             registerReceiver(mReciver, intentFilter);
             WxUtil.wxlogin();
-            finish();
         }
     }
 
@@ -229,31 +269,17 @@ public class LoginActivity extends BaseActivity {
     private void getUser(Map<String, Object> response) {
         User user = new User();
         user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
-        /*user.setFlag(response.get("flag") + "");
-        user.setCount(((Double) response.get("count")).intValue());
-        user.setCount1(((Double) response.get("count1")).intValue());
-        user.setRoiMoney(((Double) response.get("roiMoney")).intValue());
-        user.setRate(((Double) response.get("rate")).intValue());
-        user.setUserBrief(response.get("userBrief") + "");*/
         if (user.getMaster()!=null){
             user.setMaster1("master");
         }else {
             user.setMaster1("");
         }
-        /*user.setInvestsMoney(((Double) response.get("investsMoney")).intValue());*/
         SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
         SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster1()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");
-        /*SPUtil.put(AppApplication.getSingleContext(), "current_count1", user.getCount1()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_count", user.getCount()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_roiMoney", user.getRoiMoney()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_flag", user.getFlag() + "");
-        SPUtil.put(AppApplication.getSingleContext(), "current_rate", user.getRate()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_investsMoney", user.getInvestsMoney()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_userBrief", user.getUserBrief()+"");*/
         AppApplication.gUser = user;
         System.out.print(AppApplication.gUser.toString());
     }
