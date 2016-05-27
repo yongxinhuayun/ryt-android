@@ -60,7 +60,7 @@ public class User {
     private int rate;
     private int investsMoney;
     private int count;
-    private String  userBrief;
+    private UserBrief  userBrief;
     private int roiMoney;
     private int count1;
 
@@ -120,14 +120,14 @@ public class User {
         this.count1 = count1;
     }
 
-    public String getUserBrief() {
+
+    public UserBrief getUserBrief() {
         return userBrief;
     }
 
-    public void setUserBrief(String userBrief) {
+    public void setUserBrief(UserBrief userBrief) {
         this.userBrief = userBrief;
     }
-
 
     public String getFlag() {
         return flag;
