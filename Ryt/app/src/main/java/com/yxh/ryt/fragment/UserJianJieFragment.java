@@ -37,7 +37,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 	private TextView content;
 	private TextView wenZi;
 	private TextView edit;
-
+	private  static String currentId,userId;
 	public UserJianJieFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -52,9 +52,11 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 		return listFragment;
 	}
 
-	public static UserJianJieFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
+	public static UserJianJieFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh,String currentID,String userID) {
 		UserJianJieFragment listFragment = new UserJianJieFragment(manager, position, isCanPulltoRefresh);
 		stickHeaderViewPagerManager=manager;
+		currentId=currentID;
+		userId=userID;
 		return listFragment;
 	}
 	@Override

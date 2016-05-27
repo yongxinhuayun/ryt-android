@@ -176,10 +176,11 @@ public class LoginActivity extends BaseActivity {
                             }
                             @Override
                             public void onResponse(Map<String, Object> response) {
-                                System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
                                 if ("0".equals(response.get("resultCode"))) {
-                                    System.out.println(response.get("resultCode")+"dudududuuuuuuuuuuuuuuuuuuuuu");
-
+                                    getUser(response);
+                                    Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                 }
                             }
                         });

@@ -133,13 +133,14 @@ public class UserYsjIndexActivity extends BaseActivity {
         mFragmentList = new ArrayList<Fragment>();
         mFragmentList.add(YSJHomeFragment.newInstance(manager, 0, false));
         /*manager1 = new StickHeaderViewPagerManager(root, mViewPager);*/
-        mFragmentList.add(UserJianJieFragment.newInstance(manager, 1, false));
+       /* mFragmentList.add(UserJianJieFragment.newInstance(manager, 1, false));*/
         /*manager2 = new StickHeaderViewPagerManager(root, mViewPager);*/
         mFragmentList.add(YSJWorkFragment.newInstance(manager, 2, false));
         /*manager3 = new StickHeaderViewPagerManager(root, mViewPager);*/
-        mFragmentList.add(UserTouGuoFragment.newInstance(manager, 3, false));
+        mFragmentList.add(YSJWorkFragment.newInstance(manager, 3, false));
+        /*mFragmentList.add(UserTouGuoFragment.newInstance(manager, 3, false));*/
        /* manager4 = new StickHeaderViewPagerManager(root, mViewPager);*/
-        mFragmentList.add(UserZanGuoFragment.newInstance(manager, 4, false));
+        /*mFragmentList.add(UserZanGuoFragment.newInstance(manager, 4, false));*/
         UserYsjTabPageIndicatorAdapter pagerAdapter = new UserYsjTabPageIndicatorAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setOffscreenPageLimit(5);
         mViewPager.setAdapter(pagerAdapter);
@@ -162,10 +163,11 @@ public class UserYsjIndexActivity extends BaseActivity {
 
     //登录成功设置控件元素的值
     private void setLoginedViewValues() {
+            AppApplication.displayImage(AppApplication.gUser.getPictureUrl(),rsIvHeadPortrait);
             tvUserHeaderName.setText(AppApplication.gUser.getUsername());
             tvUserHeaderFsNum.setText(AppApplication.gUser.getCount1()+"");
             tvUserHeaderGzNum.setText(AppApplication.gUser.getCount()+"");
-            tvUserHeaderTxt.setText("null".equals(AppApplication.gUser.getUserBrief())?"一句话20字以内":AppApplication.gUser.getUserBrief());
+            tvUserHeaderTxt.setText("".equals(AppApplication.gUser.getUserBrief().getContent())?"一句话20字以内":AppApplication.gUser.getUserBrief().getContent());
             tvUserHeaderJeValue01.setText("￥"+AppApplication.gUser.getInvestsMoney());
             tvUserHeaderJeValue02.setText("￥"+AppApplication.gUser.getRoiMoney());
             tvUserHeaderJeValue03.setText(0==AppApplication.gUser.getRate()?"0%":AppApplication.gUser.getRate()*100+"%");
