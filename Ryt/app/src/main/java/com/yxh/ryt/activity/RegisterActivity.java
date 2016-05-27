@@ -2,12 +2,10 @@ package com.yxh.ryt.activity;
 
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -16,23 +14,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
-import com.yxh.ryt.callback.LoginCallBack;
+import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.obsever.Smsobserver;
 import com.yxh.ryt.receiver.WxLoginBroadcastReciver;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.PasswordValidation;
 import com.yxh.ryt.validations.UserNameValidation;
+import com.yxh.ryt.vo.WxUser;
 import com.yxh.ryt.wxapi.WxUtil;
 
 import java.util.HashMap;
@@ -183,7 +180,41 @@ public class RegisterActivity extends BaseActivity {
         if(WxUtil.regAndCheckWx(RegisterActivity.this)){
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.WX_LOGIN_ACTION);
-            mReciver = new WxLoginBroadcastReciver();
+            mReciver = new WxLoginBroadcastReciver(new WxLoginBroadcastReciver.WxLoginCallBack() {
+                @Override
+                public void response(String wxUser) {
+                    if (wxUser!=null){
+                        WxUser user=AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(wxUser), WxUser.class);
+                        Map<String,String> paramsMap=new HashMap<>();
+                        paramsMap.put("nickname",user.getNickname());
+                        paramsMap.put("headimgurl",user.getHeadimgurl());
+                        paramsMap.put("unionid",user.getUnionid());
+                        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                        try {
+                            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+                            paramsMap.put("signmsg", AppApplication.signmsg);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        NetRequestUtil.post(Constants.BASE_PATH + "WxLogin.do.do", paramsMap, new RZCommentCallBack() {
+                            @Override
+                            public void onError(Call call, Exception e) {
+                                e.printStackTrace();
+                                System.out.println("444444失败了");
+                            }
+                            @Override
+                            public void onResponse(Map<String, Object> response) {
+                                System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
+                                if ("0".equals(response.get("resultCode"))) {
+                                    System.out.println(response.get("resultCode")+"dudududuuuuuuuuuuuuuuuuuuuuu");
+
+                                }
+                            }
+                        });
+                    }
+
+                }
+            });
             registerReceiver(mReciver, intentFilter);
             WxUtil.wxlogin();
         }
