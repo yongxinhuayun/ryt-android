@@ -3,8 +3,8 @@ package com.yxh.ryt;
 public class Constants {
 
     //网络请求基地址
-    //public static final String BASE_PATH="http://192.168.1.75:8080/app/";
-    public static final String BASE_PATH="http://craft.efeiyi.com/app-wikiServer/";
+    public static final String BASE_PATH="http://192.168.1.75:8080/app/";
+    //public static final String BASE_PATH="http://craft.efeiyi.com/app-wikiServer/app/";
     //融艺投APP_KEY
     public static final String APP_KEY="BL2QEuXUXNoGbNeHObD4EzlX+KuGc70U";
     //微信APP_ID
