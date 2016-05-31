@@ -243,7 +243,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                 if (Integer.valueOf((String) response.get("resultCode")) > 0) {
-                    ToastUtil.showShort(LoginActivity.this, ((String) response.get("resultMsg")));
+                    ToastUtil.showShort(LoginActivity.this, "登录失败");
                     return;
                 }
                 getUser(response);
