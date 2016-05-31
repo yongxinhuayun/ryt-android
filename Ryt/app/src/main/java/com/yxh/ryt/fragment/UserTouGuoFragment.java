@@ -44,7 +44,6 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	private TextView tvTotal,tvNoData;
 	private ProgressBar loading;
 	private int lastItem;
-	private static String userId,currentId;
 	private boolean loadComplete=true;
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
 	public UserTouGuoFragment(StickHeaderViewPagerManager manager, int position) {
@@ -54,18 +53,16 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	public UserTouGuoFragment(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
 		super(manager, position, isCanPulltoRefresh);
 	}
-	public static UserTouGuoFragment newInstance(StickHeaderViewPagerManager manager, int position,int currentID,int userID) {
+	public static UserTouGuoFragment newInstance(StickHeaderViewPagerManager manager, int position) {
 		UserTouGuoFragment listFragment = new UserTouGuoFragment(manager, position);
 		return listFragment;
 	}
 	public UserTouGuoFragment(){
 		super();
 	}
-	public static UserTouGuoFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh,String currentID,String userID) {
+	public static UserTouGuoFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
 		UserTouGuoFragment listFragment = new UserTouGuoFragment(manager, position, isCanPulltoRefresh);
 		stickHeaderViewPagerManager=manager;
-		userId=userID;
-		currentId=currentID;
 		return listFragment;
 	}
 	@Override
@@ -148,8 +145,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId",userId);
-		paramsMap.put("currentId",currentId);
+		paramsMap.put("userId","ieatht97wfw30hfd");
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");

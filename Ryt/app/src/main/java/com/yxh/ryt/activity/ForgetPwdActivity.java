@@ -258,8 +258,7 @@ public class ForgetPwdActivity extends BaseActivity {
                     public void onResponse(Map<String, Object> response) {
                         if (response.get("resultCode").equals("0")) {
                             ToastUtil.showShort(AppApplication.getSingleContext(), "修改密码成功!");
-                            Intent intent=new Intent(ForgetPwdActivity.this,LoginActivity.class);
-                            startActivity(intent);
+                            finish();
                         } else {
                             ToastUtil.showShort(AppApplication.getSingleContext(), "修改密码失败!");
                         }

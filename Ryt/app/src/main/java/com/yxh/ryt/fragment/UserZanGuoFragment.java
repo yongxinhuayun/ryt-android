@@ -45,7 +45,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 	private boolean loadComplete=true;
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
 	private TextView tv_noData;
-	private static String currentId,userId;
+
 	public UserZanGuoFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -60,11 +60,9 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		return listFragment;
 	}
 
-	public static UserZanGuoFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh,String currentID,String userID) {
+	public static UserZanGuoFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
 		UserZanGuoFragment listFragment = new UserZanGuoFragment(manager, position, isCanPulltoRefresh);
 		stickHeaderViewPagerManager=manager;
-		currentId=currentID;
-		userId=userID;
 		return listFragment;
 	}
 	@Override
@@ -146,7 +144,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId",userId);
+		paramsMap.put("userId","ieatht97wfw30hfd");
 		paramsMap.put("type","1");
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");

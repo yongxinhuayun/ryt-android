@@ -142,11 +142,9 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 	}
 	@Subscribe
 	public void onEventMainThread(ChatMsgEntity entity) {
-		if (fromId.equals(entity.getUserId())){
-			mDataArrays.add(entity);
-			mAdapter.notifyDataSetChanged();
-			mListView.setSelection(mListView.getCount() - 1);
-		}
+		mDataArrays.add(entity);
+		mAdapter.notifyDataSetChanged();
+		mListView.setSelection(mListView.getCount() - 1);
 	}
 
 	@Override

@@ -23,8 +23,6 @@ public class GetImageTask extends AsyncTask<String, Void, Bitmap> {
         this.location=location;
     }
 
-
-
     @Override
     protected Bitmap doInBackground(String... params) {
 

@@ -138,6 +138,7 @@ public class UserYsjIndexActivity extends BaseActivity {
         }
         setLoginedViewValues();
     }
+
     //登录成功设置控件元素的值
     private void setLoginedViewValues() {
             tvUserHeaderName.setText(AppApplication.gUser.getUsername());
