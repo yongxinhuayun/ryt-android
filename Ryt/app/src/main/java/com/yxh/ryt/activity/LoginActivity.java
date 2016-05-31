@@ -63,6 +63,7 @@ public class LoginActivity extends BaseActivity {
     private boolean isPhone;
     private boolean isPassword;
     private LoginReceiver receiver;
+    private String guide;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, LoginActivity.class));
@@ -78,6 +79,7 @@ public class LoginActivity extends BaseActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.intent.action.WX_Login_BROADCAST");
         registerReceiver(receiver, filter);
+        guide = getIntent().getStringExtra("guide");
     }
 
     private void clickable() {
@@ -163,34 +165,41 @@ public class LoginActivity extends BaseActivity {
             mReciver = new WxLoginBroadcastReciver(new WxLoginBroadcastReciver.WxLoginCallBack() {
                 @Override
                 public void response(String wxUser) {
-                        WxUser user=AppApplication.getSingleGson().fromJson(wxUser, WxUser.class);
-                        Map<String,String> paramsMap=new HashMap<>();
-                        paramsMap.put("nickname",user.getNickname());
-                        paramsMap.put("headimgurl",user.getHeadimgurl());
-                        paramsMap.put("unionid",user.getUnionid());
-                        paramsMap.put("timestamp", System.currentTimeMillis() + "");
-                        try {
-                            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
-                            paramsMap.put("signmsg", AppApplication.signmsg);
-                        } catch (Exception e) {
+                    WxUser user=AppApplication.getSingleGson().fromJson(wxUser, WxUser.class);
+                    Map<String,String> paramsMap=new HashMap<>();
+                    paramsMap.put("nickname",user.getNickname());
+                    paramsMap.put("headimgurl",user.getHeadimgurl());
+                    paramsMap.put("unionid",user.getUnionid());
+                    paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                    try {
+                        AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+                        paramsMap.put("signmsg", AppApplication.signmsg);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    NetRequestUtil.post(Constants.BASE_PATH + "WxLogin.do", paramsMap, new RZCommentCallBack() {
+                        @Override
+                        public void onError(Call call, Exception e) {
                             e.printStackTrace();
+                            System.out.println("444444失败了");
                         }
-                        NetRequestUtil.post(Constants.BASE_PATH + "WxLogin.do", paramsMap, new RZCommentCallBack() {
-                            @Override
-                            public void onError(Call call, Exception e) {
-                                e.printStackTrace();
-                                System.out.println("444444失败了");
-                            }
-                            @Override
-                            public void onResponse(Map<String, Object> response) {
-                                System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
-                                if ("0".equals(response.get("resultCode"))) {
-                                    System.out.println(response.get("resultCode")+"dudududuuuuuuuuuuuuuuuuuuuuu");
-
+                        @Override
+                        public void onResponse(Map<String, Object> response) {
+                            if ("0".equals(response.get("resultCode"))) {
+                                getUser(response);
+                                if ("guide".equals(guide)){
+                                    Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
+                                    startActivity(intent);
+                                    ToastUtil.showLong(LoginActivity.this,"登录成功");
+                                    finish();
+                                }else {
+                                    ToastUtil.showLong(LoginActivity.this,"登录成功");
+                                    finish();
                                 }
                             }
-                        });
-                    }
+                        }
+                    });
+                }
 
 
             });
@@ -202,7 +211,7 @@ public class LoginActivity extends BaseActivity {
     /*登录按钮点击事件触发*/
     @OnClick(R.id.btn_center_login)
     public void loginClick(){
-       AppApplication.getSingleEditTextValidator()
+        AppApplication.getSingleEditTextValidator()
                 .add(new ValidationModel(etUsername,new UserNameValidation()))
                 .add(new ValidationModel(etPassword,new PasswordValidation()))
                 .execute();
@@ -257,10 +266,15 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(Map<String, Object> response) {
-                        ToastUtil.showLong(LoginActivity.this, "登录绑定成功");
-                        Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if ("guide".equals(guide)){
+                            Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
+                            startActivity(intent);
+                            ToastUtil.showLong(LoginActivity.this,"登录成功");
+                            finish();
+                        }else {
+                            ToastUtil.showLong(LoginActivity.this,"登录成功");
+                            finish();
+                        }
                     }
                 });
             }
