@@ -157,7 +157,6 @@ public class UserPtIndexActivity extends BaseActivity {
                 e.printStackTrace();
                 System.out.println("444444失败了");
             }
-
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
