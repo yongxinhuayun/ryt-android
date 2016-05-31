@@ -57,7 +57,6 @@ public class MyReceiver extends BroadcastReceiver {
 			String s=bundle.getString(JPushInterface.EXTRA_EXTRA);
 			JpushEntity entity = AppApplication.getSingleGson().fromJson(s, JpushEntity.class);
 			chatMsgEntity.setUserId(entity.getUserId()+"");
-			Log.d("userDI", entity.getUserId() + "");
 			chatMsgEntity.setText(bundle.getString(JPushInterface.EXTRA_ALERT));
 			EventBus.getDefault().post(chatMsgEntity);
 			Intent inten = new Intent("android.intent.action.Server_BROADCAST");

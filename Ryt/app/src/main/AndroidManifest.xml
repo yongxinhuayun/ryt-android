@@ -81,6 +81,7 @@
         <activity android:name=".activity.PushWoraActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.GuideActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserPtIndexActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.YsjRzActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
@@ -97,6 +98,7 @@
         <activity android:name=".activity.PrivateLetterActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.PublicProject01Activity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ShowMsgActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.UserEditZiLiaoActivity" android:screenOrientation="portrait"/>
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:screenOrientation="portrait"
@@ -201,6 +203,11 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="539b73fd73c82f1134120a57" />
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <!-- </>值来自开发者平台取得的AppKey -->
 
     </application>

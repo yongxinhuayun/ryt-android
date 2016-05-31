@@ -151,7 +151,9 @@ public class GuideActivity extends Activity implements OnClickListener {
             case R.id.btn_guide_login:
 
                 //进行跳转到主页的操作
-                startActivity(new Intent(GuideActivity.this,LoginActivity.class));
+                Intent intent=new Intent(GuideActivity.this,LoginActivity.class);
+                intent.putExtra("guide","guide");
+                startActivity(intent);
                 //更改保存的是否是第一次进入的状态，状态是splashactivity中使用
                 SPUtil.put(getApplicationContext(), Constants.ISFIRSTENTER, false);
 

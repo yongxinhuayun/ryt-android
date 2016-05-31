@@ -63,6 +63,7 @@ public class LoginActivity extends BaseActivity {
     private boolean isPhone;
     private boolean isPassword;
     private LoginReceiver receiver;
+    private String guide;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, LoginActivity.class));
@@ -78,6 +79,7 @@ public class LoginActivity extends BaseActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.intent.action.WX_Login_BROADCAST");
         registerReceiver(receiver, filter);
+        guide = getIntent().getStringExtra("guide");
     }
 
     private void clickable() {
@@ -183,10 +185,17 @@ public class LoginActivity extends BaseActivity {
                             }
                             @Override
                             public void onResponse(Map<String, Object> response) {
-                                System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
                                 if ("0".equals(response.get("resultCode"))) {
-                                    System.out.println(response.get("resultCode")+"dudududuuuuuuuuuuuuuuuuuuuuu");
-
+                                    getUser(response);
+                                    if ("guide".equals(guide)){
+                                        Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
+                                        startActivity(intent);
+                                        ToastUtil.showLong(LoginActivity.this,"登录成功");
+                                        finish();
+                                    }else {
+                                        ToastUtil.showLong(LoginActivity.this,"登录成功");
+                                        finish();
+                                    }
                                 }
                             }
                         });
@@ -257,10 +266,15 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(Map<String, Object> response) {
-                        ToastUtil.showLong(LoginActivity.this, "登录绑定成功");
-                        Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if ("guide".equals(guide)){
+                            Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
+                            startActivity(intent);
+                            ToastUtil.showLong(LoginActivity.this,"登录成功");
+                            finish();
+                        }else {
+                            ToastUtil.showLong(LoginActivity.this,"登录成功");
+                            finish();
+                        }
                     }
                 });
             }
