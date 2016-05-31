@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import wuhj.com.mylibrary.StickHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
@@ -248,6 +249,10 @@ public class UserYsjIndexActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+    @OnClick(R.id.ib_top_lf)
+    public void back(){
+        finish();
     }
 }
 

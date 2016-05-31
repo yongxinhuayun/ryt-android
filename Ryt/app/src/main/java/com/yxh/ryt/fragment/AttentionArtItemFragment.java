@@ -6,10 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
-import android.widget.ImageView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
@@ -21,7 +17,6 @@ import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.vo.ArtUserFollowed;
 import com.yxh.ryt.vo.FollowUserUtil;
 
 import java.util.ArrayList;
@@ -39,6 +34,9 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 	private List<FollowUserUtil> attentionDatas;
 	private int currentPage=1;
 	private String flag="1";
+	private boolean bo = false;
+	private String followId;
+	private String artUserFollowed;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,9 +51,9 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
+			paramsMap.put("flag",flag);
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
 			paramsMap.put("signmsg", AppApplication.signmsg);
-			paramsMap.put("flag",flag);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -71,6 +69,8 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 				Constants.ATTENTION_TITLE[0]="艺术家("+AppApplication.getSingleGson().toJson(response.get("followsNum"))+")";
 				Intent intent = new Intent("android.intent.action.MY_BROADCAST");
 				AppApplication.getSingleContext().sendBroadcast(intent);
+				/*Map<String, String> map1 = (Map<String, String>) response.get("pageInfoList");*/
+				//Log.w("YZJ",response.get("pageInfoList").toString());
 				if (state == AutoListView.REFRESH) {
 					lstv.onRefreshComplete();
 					attentionDatas.clear();
@@ -112,7 +112,22 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 		lstv.setPageSize(Constants.pageSize);
 		attentionCommonAdapter=new CommonAdapter<FollowUserUtil>(AppApplication.getSingleContext(),attentionDatas,R.layout.fragment_attention_item) {
 			@Override
-			public void convert(ViewHolder helper, FollowUserUtil item) {
+			public void convert(final ViewHolder helper, final FollowUserUtil item) {
+				helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						followId = item.getArtUserFollowed().getFollower().getId();
+						artUserFollowed = item.getArtUserFollowed().getId();
+						//if (!bo) {
+							helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuqian);
+						NoAttention_art(followId);
+							/*bo = true;
+						} else {
+							helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuhou);
+							bo = false;
+						}*/
+					}
+				});
 				helper.setText(R.id.fai_tv_name,item.getArtUserFollowed().getFollower().getName());
 				helper.setText(R.id.fai_tv_brief, item.getMaster().getTitle());
 				helper.setImageByUrl(R.id.fai_iv_icon, "http://tenant.efeiyi.com/"+item.getMaster().getFavicon());
@@ -120,6 +135,7 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 			}
 		};
 		lstv.setAdapter(attentionCommonAdapter);
+
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
 		return contextView;
@@ -146,4 +162,64 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 		LoadData(AutoListView.LOAD, currentPage);
 	}
 
+	private void NoAttention_art(String followId) {
+		Map<String,String> paramsMap=new HashMap<>();
+
+		//paramsMap.put("userId","ieatht97wfw30hfd");
+		//paramsMap.put("followId",followId);
+		Log.w("YZJ",followId);
+		paramsMap.put("identifier", "1");
+		paramsMap.put("artUserFollowId", artUserFollowed);
+		//paramsMap.put("followType", "2");
+		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		try {
+			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+			paramsMap.put("signmsg", AppApplication.signmsg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		NetRequestUtil.post(Constants.BASE_PATH + "changeFollowStatus.do", paramsMap, new AttentionListCallBack() {
+			@Override
+			public void onError(Call call, Exception e) {
+				e.printStackTrace();
+			}
+
+			@Override
+			public void onResponse(Map<String, Object> response) {/*
+				if (state == AutoListView.REFRESH) {
+					lstv.onRefreshComplete();
+					attentionDatas.clear();
+					List<FollowUserUtil> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<FollowUserUtil>>() {
+					}.getType());
+					if (null == objectList || objectList.size() == 0) {
+						lstv.setResultSize(0);
+					}
+					if (null != objectList && objectList.size() > 0) {
+						lstv.setResultSize(objectList.size());
+						attentionDatas.addAll(objectList);
+						attentionCommonAdapter.notifyDataSetChanged();
+					}
+					return;
+				}
+				if (state == AutoListView.LOAD) {
+					lstv.onLoadComplete();
+					List<FollowUserUtil> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<FollowUserUtil>>() {
+					}.getType());
+					if (null == objectList || objectList.size() == 0) {
+						lstv.setResultSize(1);
+					}
+					if (null != objectList && objectList.size() > 0) {
+						lstv.setResultSize(objectList.size());
+						attentionDatas.addAll(objectList);
+						attentionCommonAdapter.notifyDataSetChanged();
+					}
+					return;
+				}*/
+				Log.w("YZJ","suc");
+				//attentionCommonAdapter.notifyDataSetChanged();
+				//LoadData(AutoListView.REFRESH,currentPage);
+				onRefresh();
+			}
+		});
+	}
 }

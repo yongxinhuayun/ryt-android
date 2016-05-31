@@ -2,31 +2,21 @@ package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
-import com.yxh.ryt.adapter.CommonAdapter;
-import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
-import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.vo.Artwork;
-import com.yxh.ryt.vo.UserBrief;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import butterknife.OnClick;
 import okhttp3.Call;
 import wuhj.com.mylibrary.PlaceHoderHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;

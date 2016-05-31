@@ -6,14 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.TextView;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.viewpagerindicator.IcsLinearLayout;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
@@ -23,8 +20,6 @@ import com.yxh.ryt.callback.NotifaicationCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Utils;
-import com.yxh.ryt.vo.Notification;
 import com.yxh.ryt.vo.PrivateLetter;
 
 import java.util.ArrayList;
@@ -34,6 +29,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 /**
@@ -190,5 +186,9 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
             currentPage=1;
             LoadData(AutoListView.REFRESH, currentPage);
         }
+    }
+    @OnClick(R.id.pl_ib_back)
+    public void back(){
+        finish();
     }
 }

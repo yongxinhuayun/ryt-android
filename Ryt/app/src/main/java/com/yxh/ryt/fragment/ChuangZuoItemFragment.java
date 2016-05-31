@@ -12,7 +12,6 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.ChuangZuoXQActivity;
-import com.yxh.ryt.activity.RongZiXQActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
@@ -20,7 +19,6 @@ import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.vo.Create;
-import com.yxh.ryt.vo.RongZi;
 
 import java.util.ArrayList;
 import java.util.HashMap;

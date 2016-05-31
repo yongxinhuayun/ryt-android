@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.yxh.ryt.Constants;
@@ -27,6 +28,7 @@ public class UserYiJianActivity extends BaseActivity{
     private EditText suggestion;
     private TextView tv_send;
     private EditText et_email;
+    private ImageButton imageButton;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserYiJianActivity.class));
@@ -42,6 +44,13 @@ public class UserYiJianActivity extends BaseActivity{
             @Override
             public void onClick(View v) {
                 sendSuggestion(suggestion);
+            }
+        });
+        imageButton = (ImageButton) findViewById(R.id.usyj_ib_back);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -79,4 +88,5 @@ public class UserYiJianActivity extends BaseActivity{
         });
     }
     }
+
 }

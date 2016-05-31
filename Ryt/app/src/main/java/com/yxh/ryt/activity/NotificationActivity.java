@@ -2,11 +2,9 @@ package com.yxh.ryt.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ImageView;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -41,11 +39,20 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
     private int currentPage=1;
     @Bind(R.id.nl_message_listView)
     AutoListView ntflistview;
+    private ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notification_listview);
         ButterKnife.bind(this);/*启用注解绑定*/
+        imageView = (ImageView) findViewById(R.id.rg_ib_back);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         notificationDatas=new ArrayList<Notification>();
         ntflistview.setPageSize(Constants.pageSize);
         initView();

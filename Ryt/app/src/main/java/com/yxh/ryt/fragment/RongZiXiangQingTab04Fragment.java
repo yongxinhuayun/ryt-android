@@ -2,15 +2,12 @@ package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -20,33 +17,20 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
-import com.yxh.ryt.callback.RongZiListCallBack;
-import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.custemview.CircleImageView;
-import com.yxh.ryt.custemview.CustomGridView;
 import com.yxh.ryt.custemview.CustomListview;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
-import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.ArtworkInvest;
-import com.yxh.ryt.vo.RongZi;
-import com.yxh.ryt.vo.User;
 
-import java.math.BigDecimal;
-import java.sql.SQLOutput;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import okhttp3.Call;
 import wuhj.com.mylibrary.PlaceHoderHeaderLayout;
-import wuhj.com.mylibrary.ScrollHolder;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
 

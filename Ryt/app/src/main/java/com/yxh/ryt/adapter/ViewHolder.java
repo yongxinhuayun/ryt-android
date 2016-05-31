@@ -22,9 +22,9 @@ import com.yxh.ryt.R;
 
 public class ViewHolder
 {  
-	   private final SparseArray<View> mViews;  
-	    private int mPosition;  
-	    private View mConvertView;  
+	   private final SparseArray<View> mViews;
+		private int mPosition;
+	    private View mConvertView;
 	    private ImageLoadingListener animateFirstListener ;
 	    DisplayImageOptions options;
 	    private ViewHolder(Context context, ViewGroup parent,int layoutId,  
@@ -34,7 +34,7 @@ public class ViewHolder
 	        this.animateFirstListener=animateFirstListener;
 	        this.mViews = new SparseArray<View>();  
 	        mConvertView = LayoutInflater.from(context).inflate(layoutId, parent,  
-	                false);  
+	                false);
 	        // setTag  
 	        mConvertView.setTag(this); 
 	        DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder();

@@ -2,7 +2,6 @@ package com.yxh.ryt.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,10 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.activity.RongZiXQActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
-import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.RongZi;
 

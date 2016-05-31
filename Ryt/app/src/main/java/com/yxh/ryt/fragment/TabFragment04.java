@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.AttentionActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.PublicProject01Activity;
 import com.yxh.ryt.activity.UserEditZiLiaoActivity;
@@ -150,7 +151,17 @@ public class TabFragment04 extends BaseFragment {
             UserPtIndexActivity.openActivity(getActivity());
         }
     }
-
+    //关注点击事件
+    @OnClick(R.id.ll_header_gz)
+    void userGuanZhuClick() {
+        AttentionActivity.openActivity(getActivity());
+    }
+    //粉丝点击事件
+   /* @OnClick(R.id.ll_header_fs)
+    void userFenSiClick() {
+        AttentionActivity.openActivity(getActivity());
+    }
+*/
     @Override
     public void onResume() {
         super.onResume();

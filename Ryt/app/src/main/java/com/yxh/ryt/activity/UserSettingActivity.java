@@ -10,16 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.R;
 import com.yxh.ryt.util.DataCleanManager;
 import com.yxh.ryt.util.FileSizeUtil;
+import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.ToastUtil;
 
 import java.io.File;
-
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -77,9 +76,10 @@ public class UserSettingActivity extends BaseActivity {
                 break;
             case R.id.btn_out:
                 AppApplication.gUser=null;
+                SPUtil.clear(AppApplication.getSingleContext());
                 btnOut.setVisibility(View.GONE);
-                Intent intent=new Intent(this, IndexActivity.class);
-                intent.setAction("com.yxh.ryt.gouser");
+                Intent intent=new Intent(this, LoginActivity.class);
+                //intent.setAction("com.yxh.ryt.gouser");
                 startActivity(intent);
                 break;
             case R.id.rl_hc:
@@ -100,5 +100,9 @@ public class UserSettingActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+    @OnClick(R.id.us_ib_back)
+    public void back() {
+        finish();
     }
 }

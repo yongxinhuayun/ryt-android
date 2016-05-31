@@ -6,24 +6,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
-import com.yxh.ryt.activity.RongZiXQActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
-import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Utils;
-import com.yxh.ryt.vo.ArtUserFollowed;
 import com.yxh.ryt.vo.FollowUserUtil;
-import com.yxh.ryt.vo.RongZi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +34,9 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 	private List<FollowUserUtil> attentionDatas;
 	private int currentPage=1;
 	private String flag="1";
+	private String followId;
+	private String artUserFollowed;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,9 +51,9 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
+			paramsMap.put("flag",flag);
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
 			paramsMap.put("signmsg", AppApplication.signmsg);
-			paramsMap.put("flag",flag);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,12 +61,11 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
-				System.out.println("失败了");
 			}
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				Log.d("AttentionUserItemFragment",AppApplication.getSingleGson().toJson(response.get("followsNum")));
+				//Log.d("AttentionUserItemFragment",AppApplication.getSingleGson().toJson(response.get("followsNum")));
 				Constants.ATTENTION_TITLE[1]="用户("+AppApplication.getSingleGson().toJson(response.get("followsNum"))+")";
 				Intent intent = new Intent("android.intent.action.MY_BROADCAST");
 				AppApplication.getSingleContext().sendBroadcast(intent);
@@ -114,7 +110,16 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		lstv.setPageSize(Constants.pageSize);
 		attentionCommonAdapter=new CommonAdapter<FollowUserUtil>(AppApplication.getSingleContext(),attentionDatas,R.layout.fragment_attention_item) {
 			@Override
-			public void convert(ViewHolder helper, FollowUserUtil item) {
+			public void convert(final ViewHolder helper, final FollowUserUtil item) {
+				helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						followId = item.getArtUserFollowed().getFollower().getId();
+						artUserFollowed = item.getArtUserFollowed().getId();
+						helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuqian);
+						NoAttention_user();
+					}
+				});
 				helper.setText(R.id.fai_tv_name,item.getArtUserFollowed().getFollower().getName());
 				helper.setText(R.id.fai_tv_brief,item.getUserBrief().getContent());
 				helper.setImageByUrl(R.id.fai_iv_icon, item.getArtUserFollowed().getFollower().getPictureUrl());
@@ -148,5 +153,33 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		currentPage++;
 		LoadData(AutoListView.LOAD, currentPage);
 	}
+
+	private void NoAttention_user() {
+		Map<String,String> paramsMap=new HashMap<>();
+		Log.w("YZJ",followId);
+		paramsMap.put("identifier", "1");
+		paramsMap.put("artUserFollowId", artUserFollowed);
+		//paramsMap.put("followType", "2");
+		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		try {
+			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+			paramsMap.put("signmsg", AppApplication.signmsg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		NetRequestUtil.post(Constants.BASE_PATH + "changeFollowStatus.do", paramsMap, new AttentionListCallBack() {
+			@Override
+			public void onError(Call call, Exception e) {
+				e.printStackTrace();
+			}
+
+			@Override
+			public void onResponse(Map<String, Object> response) {
+
+				onRefresh();
+			}
+		});
+	}
+
 
 }

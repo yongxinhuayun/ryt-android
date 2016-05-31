@@ -2,7 +2,6 @@ package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +17,8 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
-import com.yxh.ryt.callback.RongZiListCallBack;
-import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.vo.Artwork;
-import com.yxh.ryt.vo.ConvertWork;
-import com.yxh.ryt.vo.MyZan;
 import com.yxh.ryt.vo.PageinfoList;
 
 import java.util.ArrayList;

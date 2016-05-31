@@ -180,7 +180,7 @@ public class RongZiXQActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
     }
-    @OnClick({R.id.iv_tab_02,R.id.ib_top_lf,R.id.ib_top_rt,R.id.iv_tab_01,R.id.rzxq_tv_invest})
+    @OnClick({R.id.iv_tab_02,R.id.ib_top_lf,R.id.ib_top_rt,R.id.iv_tab_01,R.id.rzxq_tv_invest,R.id.rzxq_tv_pinglun})
     public void comment(View view){
         switch (view.getId()){
             case R.id.iv_tab_02:
@@ -196,6 +196,9 @@ public class RongZiXQActivity extends BaseActivity {
                 break;*/
             case R.id.ib_top_lf:
                 finish();
+                break;
+            case R.id.rzxq_tv_pinglun:
+                startActivity(new Intent(this, CommentActivity.class));
                 break;
             case R.id.ib_top_rt:
                 showShareDialog();

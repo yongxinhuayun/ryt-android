@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import wuhj.com.mylibrary.StickHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
@@ -137,6 +138,10 @@ public class UserPtIndexActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+    @OnClick(R.id.ib_top_lf)
+    public void back(){
+        finish();
     }
 }
 

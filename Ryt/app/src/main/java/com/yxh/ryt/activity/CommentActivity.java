@@ -23,7 +23,6 @@ import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.ShuoMClickableSpan;
 import com.yxh.ryt.util.Utils;
-import com.yxh.ryt.vo.ArtworkComment;
 import com.yxh.ryt.vo.ArtworkCommentMsg;
 
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
 
     private void initView() {
         cmAdapter=new CommonAdapter<ArtworkCommentMsg>(AppApplication.getSingleContext(), artworkCommentDatas,R.layout.comment_item) {
-            @Override
+           // @Override
             public void convert(ViewHolder helper, final ArtworkCommentMsg item) {
                 helper.getView(R.id.ci_ll_artwork).setOnClickListener(new View.OnClickListener() {
                     @Override

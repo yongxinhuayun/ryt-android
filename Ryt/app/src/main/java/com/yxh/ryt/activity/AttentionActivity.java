@@ -1,5 +1,6 @@
 package com.yxh.ryt.activity;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,13 +30,16 @@ import butterknife.OnClick;
  * Created by Administrator on 2016/4/25.
  */
 public class AttentionActivity extends BaseActivity {
-    List<BaseFragment> indexChildFragments=new ArrayList<>();
+    List<BaseFragment> indexChildFragments = new ArrayList<>();
     FragmentPagerAdapter indexChildAdapter;
     @Bind(R.id.attention_pager)
     ViewPager pager;
     @Bind(R.id.attention_indicator)
     TabPageIndicator indicator;
     private AttentionReceiver receiver;
+    public static void openActivity(Activity activity) {
+        activity.startActivity(new Intent(activity, AttentionActivity.class));
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,7 @@ public class AttentionActivity extends BaseActivity {
         ButterKnife.bind(this);/*启用注解绑定*/
         indexChildFragments.add(new AttentionArtItemFragment());
         indexChildFragments.add(new AttentionUserItemFragment());
-        indexChildAdapter = new AttentionIndicatorAdapter(getSupportFragmentManager(),indexChildFragments);
+        indexChildAdapter = new AttentionIndicatorAdapter(getSupportFragmentManager(), indexChildFragments);
         pager.setOffscreenPageLimit(2);
         pager.setAdapter(indexChildAdapter);
         //实例化TabPageIndicator然后设置ViewPager与之关联
@@ -53,9 +57,13 @@ public class AttentionActivity extends BaseActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.intent.action.MY_BROADCAST");
         registerReceiver(receiver, filter);
+
     }
+
+
+
     @OnClick(R.id.attention_ib_top)
-    public void back(){
+    public void back() {
         finish();
     }
 
@@ -65,7 +73,7 @@ public class AttentionActivity extends BaseActivity {
         unregisterReceiver(receiver);
     }
 
-    public class AttentionReceiver extends BroadcastReceiver{
+    public class AttentionReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -73,4 +81,6 @@ public class AttentionActivity extends BaseActivity {
             ((TextView) ((IcsLinearLayout) indicator.getChildAt(0)).getChildAt(1)).setText(Constants.ATTENTION_TITLE[1]);
         }
     }
+
+
 }

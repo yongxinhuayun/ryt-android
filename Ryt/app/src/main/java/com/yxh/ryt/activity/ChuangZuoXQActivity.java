@@ -22,10 +22,6 @@ import com.yxh.ryt.fragment.ChuangZuoXiangQingTab01Fragment;
 import com.yxh.ryt.fragment.ChuangZuoXiangQingTab02Fragment;
 import com.yxh.ryt.fragment.ChuangZuoXiangQingTab03Fragment;
 import com.yxh.ryt.fragment.ChuangZuoXiangQingTab04Fragment;
-import com.yxh.ryt.fragment.RongZiXiangQingTab01Fragment;
-import com.yxh.ryt.fragment.RongZiXiangQingTab02Fragment;
-import com.yxh.ryt.fragment.RongZiXiangQingTab03Fragment;
-import com.yxh.ryt.fragment.RongZiXiangQingTab04Fragment;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.vo.Artwork;
@@ -39,11 +35,12 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 import wuhj.com.mylibrary.StickHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
-public class ChuangZuoXQActivity extends BaseActivity {
+public class ChuangZuoXQActivity extends BaseActivity implements View.OnClickListener {
     @Bind(R.id.cl_01_tv_prc)
     ImageView cl01TvPrc;
     @Bind(R.id.cl_01_tv_title)
@@ -60,6 +57,9 @@ public class ChuangZuoXQActivity extends BaseActivity {
     LinearLayout cl01LlZhicheng;
     @Bind(R.id.cl_01_tv_brief)
     TextView cl01TvBrief;
+    private LinearLayout linearLayout1;
+    private LinearLayout linearLayout2;
+
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, ChuangZuoXQActivity.class));
     }
@@ -72,6 +72,8 @@ public class ChuangZuoXQActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chuangzuo_xiangqing);
+        linearLayout1 = (LinearLayout) findViewById(R.id.rl_tab_01);
+        linearLayout2 = (LinearLayout) findViewById(R.id.rl_tab_02);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         Intent intent = getIntent();
@@ -90,8 +92,23 @@ public class ChuangZuoXQActivity extends BaseActivity {
         TabPageIndicator indicator = (TabPageIndicator) findViewById(R.id.indicator);
         indicator.setViewPager(mViewPager);
         LoadData(0, 1);
+        linearLayout1.setOnClickListener(this);
+        linearLayout2.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rl_tab_01:
+                startActivity(new Intent(this, CommentActivity.class));
+                break;
+            case R.id.rl_tab_02:
+                startActivity(new Intent(this, InvestActivity.class));
+                break;
+            default:
+                break;
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -147,5 +164,9 @@ public class ChuangZuoXQActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    @OnClick(R.id.ib_top_lf)
+    public void back(){
+        finish();
+    }
 }
 

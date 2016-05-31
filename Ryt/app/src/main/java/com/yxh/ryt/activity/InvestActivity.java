@@ -1,13 +1,11 @@
 package com.yxh.ryt.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -139,5 +137,9 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+    @OnClick(R.id.ip_ib_back)
+    public void back(){
+        finish();
     }
 }

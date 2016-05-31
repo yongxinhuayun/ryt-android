@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -35,7 +34,6 @@ import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.ArtworkComment;
-import com.yxh.ryt.vo.ArtworkInvest;
 
 import java.util.ArrayList;
 import java.util.HashMap;

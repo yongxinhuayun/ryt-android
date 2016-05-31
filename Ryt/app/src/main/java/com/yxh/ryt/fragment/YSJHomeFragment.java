@@ -20,8 +20,6 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Utils;
-import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.HomeYSJArtWork;
 
 import java.util.ArrayList;

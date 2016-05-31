@@ -16,7 +16,6 @@ import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.vo.Investor;
-import com.yxh.ryt.vo.RongZi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
