@@ -161,7 +161,6 @@ public class RongZiXQActivity extends BaseActivity {
             dianzan.setImageResource(R.mipmap.dianzanhou);
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -213,9 +212,7 @@ public class RongZiXQActivity extends BaseActivity {
                         animationSet.setAnimationListener(new Animation.AnimationListener() {
                             @Override
                             public void onAnimationStart(Animation animation) {
-
                             }
-
                             @Override
                             public void onAnimationEnd(Animation animation) {
                                 AnimationSet animationSet = new AnimationSet(true);
@@ -231,20 +228,15 @@ public class RongZiXQActivity extends BaseActivity {
                                 dianzan.setEnabled(false);
                                 database.insert("rzxq_praise", null, values);
                                 praise(artworkId,AppApplication.gUser.getId()+"");
-
                             }
-
                             @Override
                             public void onAnimationRepeat(Animation animation) {
-
                             }
                         });
                         dianzan.setImageResource(R.mipmap.dianzanhou);
                         dianzan.startAnimation(animationSet);
                     }
                 }
-
-
                 break;
         }
 
