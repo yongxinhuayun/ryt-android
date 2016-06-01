@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
@@ -50,7 +51,8 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
 
-		paramsMap.put("userId",userId);
+		/*paramsMap.put("userId",userId);*/
+		paramsMap.put("userId","ieatht97wfw30hfd");
 		paramsMap.put("type","2");
 		paramsMap.put("pageSize", Constants.pageSize + "");
 		paramsMap.put("pageIndex", pageNum + "");
@@ -116,15 +118,25 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		attentionCommonAdapter=new CommonAdapter<FollowUserUtil>(AppApplication.getSingleContext(),attentionDatas,R.layout.fragment_attention_item) {
 			@Override
 			public void convert(final ViewHolder helper, final FollowUserUtil item) {
-				helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						followId = item.getArtUserFollowed().getFollower().getId();
-						artUserFollowed = item.getArtUserFollowed().getId();
-						helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuqian);
-						NoAttention_user();
-					}
-				});
+				followId = item.getArtUserFollowed().getFollower().getId();
+				artUserFollowed = item.getArtUserFollowed().getId();
+				if ("2".equals(item.getFlag())){
+					helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuqian);
+					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Attention_user(v);
+						}
+					});
+				}else if (null==item.getFlag() || "1".equals(item.getFlag())){
+					helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuhou);
+					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							NoAttention_user(v);
+						}
+					});
+				}
 				helper.setText(R.id.fai_tv_name,item.getArtUserFollowed().getFollower().getName());
 				helper.setText(R.id.fai_tv_brief,item.getUserBrief().getContent());
 				helper.setImageByUrl(R.id.fai_iv_icon, item.getArtUserFollowed().getFollower().getPictureUrl());
@@ -137,29 +149,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		return contextView;
 	}
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-	}
-	@Override
-	protected void lazyLoad() {
-		/*if(attentionDatas!=null&&attentionDatas.size()>0)return;
-		LoadData(AutoListView.REFRESH, currentPage);*/
-	}
-	@Override
-	public void onRefresh() {
-		currentPage=1;
-		LoadData(AutoListView.REFRESH,currentPage);
-	}
-
-	@Override
-	public void onLoad() {
-		currentPage++;
-		LoadData(AutoListView.LOAD, currentPage);
-	}
-
-	private void NoAttention_user() {
+	private void Attention_user(final View v) {
 		Map<String,String> paramsMap=new HashMap<>();
 		Log.w("YZJ",followId);
 		paramsMap.put("identifier", "1");
@@ -180,7 +170,56 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
+				((ImageView) v).setImageResource(R.mipmap.guanzhuhou);
+				onRefresh();
+			}
+		});
+	}
 
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+	}
+	@Override
+	protected void lazyLoad() {
+		/*if(attentionDatas!=null&&attentionDatas.size()>0)return;
+		LoadData(AutoListView.REFRESH, currentPage);*/
+	}
+	@Override
+	public void onRefresh() {
+		currentPage=1;
+		LoadData(AutoListView.REFRESH, currentPage);
+	}
+
+	@Override
+	public void onLoad() {
+		currentPage++;
+		LoadData(AutoListView.LOAD, currentPage);
+	}
+
+	private void NoAttention_user(final View v) {
+		Map<String,String> paramsMap=new HashMap<>();
+		Log.w("YZJ",followId);
+		paramsMap.put("identifier", "1");
+		paramsMap.put("artUserFollowId", artUserFollowed);
+		//paramsMap.put("followType", "2");
+		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		try {
+			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+			paramsMap.put("signmsg", AppApplication.signmsg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		NetRequestUtil.post(Constants.BASE_PATH + "changeFollowStatus.do", paramsMap, new AttentionListCallBack() {
+			@Override
+			public void onError(Call call, Exception e) {
+				e.printStackTrace();
+			}
+
+			@Override
+			public void onResponse(Map<String, Object> response) {
+				((ImageView) v).setImageResource(R.mipmap.guanzhuqian);
 				onRefresh();
 			}
 		});

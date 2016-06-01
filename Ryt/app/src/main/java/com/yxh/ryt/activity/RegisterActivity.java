@@ -295,12 +295,6 @@ public class RegisterActivity extends BaseActivity {
         getContentResolver().registerContentObserver(SMS_INBOX, true,
                 smsObserver);
     }
-    @OnClick(R.id.rg_tv_login)
-    public void login(){
-        finish();
-        Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
-        startActivity(intent);
-    }
     @OnClick(R.id.rg_bt_register)
     public void register(){
 
