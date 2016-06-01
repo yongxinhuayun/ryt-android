@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 import cn.jpush.android.api.JPushInterface;
 
-public class CustomMsgActivity extends AppCompatActivity {
+public class CustomMsgActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
