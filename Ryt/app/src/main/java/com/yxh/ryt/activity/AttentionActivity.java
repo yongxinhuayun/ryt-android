@@ -38,6 +38,8 @@ public class AttentionActivity extends BaseActivity {
     TabPageIndicator indicator;
     private AttentionReceiver receiver;
     private String userId;
+    private String otherUserId;
+    private String flag;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, AttentionActivity.class));
@@ -49,8 +51,10 @@ public class AttentionActivity extends BaseActivity {
         setContentView(R.layout.attention);
         ButterKnife.bind(this);/*启用注解绑定*/
         userId = getIntent().getStringExtra("userId");
-        indexChildFragments.add(new AttentionArtItemFragment(userId));
-        indexChildFragments.add(new AttentionUserItemFragment(userId));
+        otherUserId = getIntent().getStringExtra("otherUserId");
+        flag = getIntent().getStringExtra("flag");
+        indexChildFragments.add(new AttentionArtItemFragment(userId,otherUserId,flag));
+        indexChildFragments.add(new AttentionUserItemFragment(userId,otherUserId,flag));
         indexChildAdapter = new AttentionIndicatorAdapter(getSupportFragmentManager(), indexChildFragments);
         pager.setOffscreenPageLimit(2);
         pager.setAdapter(indexChildAdapter);

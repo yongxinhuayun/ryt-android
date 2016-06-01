@@ -46,6 +46,8 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	private int lastItem;
 	private boolean loadComplete=true;
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
+	private static String userId;
+	private static String currentId;
 	public UserTouGuoFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -60,9 +62,11 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	public UserTouGuoFragment(){
 		super();
 	}
-	public static UserTouGuoFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
+	public static UserTouGuoFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh, String userID, String currentID) {
 		UserTouGuoFragment listFragment = new UserTouGuoFragment(manager, position, isCanPulltoRefresh);
 		stickHeaderViewPagerManager=manager;
+		userId=userID;
+		currentId=currentID;
 		return listFragment;
 	}
 	@Override
@@ -145,7 +149,8 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId","ieatht97wfw30hfd");
+		paramsMap.put("userId",userId);
+		paramsMap.put("currentId", currentId);
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");

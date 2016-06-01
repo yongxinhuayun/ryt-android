@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
@@ -34,13 +35,14 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 	private CommonAdapter<FollowUserUtil> attentionCommonAdapter;
 	private List<FollowUserUtil> attentionDatas;
 	private int currentPage=1;
-	private String flag="1";
-	private String followId;
-	private String artUserFollowed;
+	private String flag;
 	private String userId;
-	public AttentionUserItemFragment(String userId) {
+	private String otherUserId;
+	public AttentionUserItemFragment(String userId, String otherUserId, String flag) {
 		super();
 		this.userId=userId;
+		this.otherUserId=otherUserId;
+		this.flag=flag;
 	}
 
 	@Override
@@ -52,11 +54,12 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		Map<String,String> paramsMap=new HashMap<>();
 
 		/*paramsMap.put("userId",userId);*/
-		paramsMap.put("userId","ieatht97wfw30hfd");
-		paramsMap.put("type","2");
+		paramsMap.put("userId",userId);
+		paramsMap.put("type", "2");
 		paramsMap.put("pageSize", Constants.pageSize + "");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		paramsMap.put("otherUserId", otherUserId);
 		try {
 			paramsMap.put("flag",flag);
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -73,7 +76,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 			@Override
 			public void onResponse(Map<String, Object> response) {
 				//Log.d("AttentionUserItemFragment",AppApplication.getSingleGson().toJson(response.get("followsNum")));
-				Constants.ATTENTION_TITLE[1]="用户("+AppApplication.getSingleGson().toJson(response.get("followsNum"))+")";
+				Constants.ATTENTION_TITLE[1] = "用户(" + AppApplication.getSingleGson().toJson(response.get("followsNum")) + ")";
 				Intent intent = new Intent("android.intent.action.MY_BROADCAST");
 				AppApplication.getSingleContext().sendBroadcast(intent);
 				if (state == AutoListView.REFRESH) {
@@ -83,6 +86,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 					}.getType());
 					if (null == objectList || objectList.size() == 0) {
 						lstv.setResultSize(0);
+						attentionCommonAdapter.notifyDataSetChanged();
 					}
 					if (null != objectList && objectList.size() > 0) {
 						lstv.setResultSize(objectList.size());
@@ -97,6 +101,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 					}.getType());
 					if (null == objectList || objectList.size() == 0) {
 						lstv.setResultSize(1);
+						attentionCommonAdapter.notifyDataSetChanged();
 					}
 					if (null != objectList && objectList.size() > 0) {
 						lstv.setResultSize(objectList.size());
@@ -118,14 +123,19 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		attentionCommonAdapter=new CommonAdapter<FollowUserUtil>(AppApplication.getSingleContext(),attentionDatas,R.layout.fragment_attention_item) {
 			@Override
 			public void convert(final ViewHolder helper, final FollowUserUtil item) {
-				followId = item.getArtUserFollowed().getFollower().getId();
-				artUserFollowed = item.getArtUserFollowed().getId();
+				final String followId = item.getArtUserFollowed().getFollower().getId();
 				if ("2".equals(item.getFlag())){
 					helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuqian);
 					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							Attention_user(v);
+							if ("".equals(AppApplication.gUser.getId())){
+								Intent intent=new Intent(getActivity(), LoginActivity.class);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								getActivity().startActivity(intent);
+							}else {
+								Attention_user(v,followId);
+							}
 						}
 					});
 				}else if (null==item.getFlag() || "1".equals(item.getFlag())){
@@ -133,7 +143,13 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							NoAttention_user(v);
+							if ("".equals(AppApplication.gUser.getId())){
+								Intent intent=new Intent(getActivity(), LoginActivity.class);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								getActivity().startActivity(intent);
+							}else {
+								NoAttention_user(v,followId);
+							}
 						}
 					});
 				}
@@ -149,12 +165,12 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		return contextView;
 	}
 
-	private void Attention_user(final View v) {
+	private void Attention_user(final View v, String followId) {
 		Map<String,String> paramsMap=new HashMap<>();
-		Log.w("YZJ",followId);
-		paramsMap.put("identifier", "1");
-		paramsMap.put("artUserFollowId", artUserFollowed);
-		//paramsMap.put("followType", "2");
+		paramsMap.put("userId", AppApplication.gUser.getId());
+		paramsMap.put("followId", followId);
+		paramsMap.put("identifier", "0");
+		paramsMap.put("followType", "2");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -188,7 +204,8 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 	}
 	@Override
 	public void onRefresh() {
-		currentPage=1;
+		currentPage = 1;
+		attentionDatas.clear();
 		LoadData(AutoListView.REFRESH, currentPage);
 	}
 
@@ -198,12 +215,12 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		LoadData(AutoListView.LOAD, currentPage);
 	}
 
-	private void NoAttention_user(final View v) {
+	private void NoAttention_user(final View v, String followId) {
 		Map<String,String> paramsMap=new HashMap<>();
-		Log.w("YZJ",followId);
+		paramsMap.put("userId", AppApplication.gUser.getId());
+		paramsMap.put("followId", followId);
 		paramsMap.put("identifier", "1");
-		paramsMap.put("artUserFollowId", artUserFollowed);
-		//paramsMap.put("followType", "2");
+		paramsMap.put("followType", "2");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);

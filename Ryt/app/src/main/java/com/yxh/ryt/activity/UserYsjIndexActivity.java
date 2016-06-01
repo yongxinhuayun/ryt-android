@@ -38,6 +38,8 @@ import wuhj.com.mylibrary.StickHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
 public class UserYsjIndexActivity extends BaseActivity {
+    private String userId;
+    private String currentId;
    /* private StickHeaderViewPagerManager manager1;
     private StickHeaderViewPagerManager manager2;
     private StickHeaderViewPagerManager manager3;
@@ -106,19 +108,21 @@ public class UserYsjIndexActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_ysj_index);
         ButterKnife.bind(this);
+        userId = getIntent().getStringExtra("userId");
+        currentId = getIntent().getStringExtra("currentId");
         mViewPager = (ViewPager) findViewById(R.id.user_ysj_pager);
         StickHeaderLayout root = (StickHeaderLayout) findViewById(R.id.user_ysj_root);
         manager = new StickHeaderViewPagerManager(root, mViewPager);
         mFragmentList = new ArrayList<Fragment>();
         mFragmentList.add(YSJHomeFragment.newInstance(manager, 0, false));
         /*manager1 = new StickHeaderViewPagerManager(root, mViewPager);*/
-        mFragmentList.add(UserJianJieFragment.newInstance(manager, 1, false));
+        mFragmentList.add(UserJianJieFragment.newInstance(manager, 1, false,userId));
         /*manager2 = new StickHeaderViewPagerManager(root, mViewPager);*/
         mFragmentList.add(YSJWorkFragment.newInstance(manager, 2, false));
         /*manager3 = new StickHeaderViewPagerManager(root, mViewPager);*/
-        mFragmentList.add(UserTouGuoFragment.newInstance(manager, 3, false));
+        mFragmentList.add(UserTouGuoFragment.newInstance(manager, 3, false,userId,currentId));
        /* manager4 = new StickHeaderViewPagerManager(root, mViewPager);*/
-        mFragmentList.add(UserZanGuoFragment.newInstance(manager, 4, false));
+        mFragmentList.add(UserZanGuoFragment.newInstance(manager, 4, false,userId,currentId));
         UserYsjTabPageIndicatorAdapter pagerAdapter = new UserYsjTabPageIndicatorAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setOffscreenPageLimit(5);
         mViewPager.setAdapter(pagerAdapter);

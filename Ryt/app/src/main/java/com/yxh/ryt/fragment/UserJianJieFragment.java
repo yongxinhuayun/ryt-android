@@ -27,7 +27,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 	private TextView content;
 	private TextView wenZi;
 	private TextView edit;
-
+	private static String userId;
 	public UserJianJieFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -37,14 +37,15 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 	public UserJianJieFragment(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
 		super(manager, position, isCanPulltoRefresh);
 	}
-	public static UserJianJieFragment newInstance(StickHeaderViewPagerManager manager, int position) {
+	public static UserJianJieFragment newInstance(StickHeaderViewPagerManager manager, int position ) {
 		UserJianJieFragment listFragment = new UserJianJieFragment(manager, position);
 		return listFragment;
 	}
 
-	public static UserJianJieFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
+	public static UserJianJieFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh,String userID) {
 		UserJianJieFragment listFragment = new UserJianJieFragment(manager, position, isCanPulltoRefresh);
 		stickHeaderViewPagerManager=manager;
+		userId=userID;
 		return listFragment;
 	}
 	@Override
@@ -53,7 +54,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 	}
 	private void LoadData() {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId","ieatht97wfw30hfd");
+		paramsMap.put("userId",userId);
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -72,16 +73,44 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 			public void onResponse(Map<String, Object> response) {
 				if (response.get("resultCode").equals("0")){
 					Map<String,String> userBrief = (Map<String, String>) response.get("userBrief");
-					if (userBrief.get("signer").equals("")){
-						wenZi.setVisibility(View.VISIBLE);
-						edit.setVisibility(View.VISIBLE);
-						content.setVisibility(View.GONE);
+					if (userId.equals(AppApplication.gUser.getId())){
+						if (userBrief!=null){
+							if (userBrief.get("content").equals("")){
+								wenZi.setVisibility(View.VISIBLE);
+								edit.setVisibility(View.VISIBLE);
+								content.setVisibility(View.GONE);
+							}else {
+								wenZi.setVisibility(View.GONE);
+								edit.setVisibility(View.GONE);
+								content.setVisibility(View.VISIBLE);
+								content.setText(userBrief.get("content"));
+							}
+						}
+						else {
+							wenZi.setVisibility(View.VISIBLE);
+							edit.setVisibility(View.VISIBLE);
+							content.setVisibility(View.GONE);
+						}
 					}else {
-						wenZi.setVisibility(View.GONE);
-						edit.setVisibility(View.GONE);
-						content.setVisibility(View.VISIBLE);
-						content.setText(userBrief.get("signer"));
+						if (userBrief!=null){
+							if (userBrief.get("content").equals("")){
+								wenZi.setVisibility(View.VISIBLE);
+								edit.setVisibility(View.GONE);
+								content.setVisibility(View.GONE);
+							}else {
+								wenZi.setVisibility(View.GONE);
+								edit.setVisibility(View.GONE);
+								content.setVisibility(View.VISIBLE);
+								content.setText(userBrief.get("content"));
+							}
+						}
+						else {
+							wenZi.setVisibility(View.VISIBLE);
+							edit.setVisibility(View.GONE);
+							content.setVisibility(View.GONE);
+						}
 					}
+
 				}
 			}
 		});
