@@ -126,7 +126,9 @@ public class TabFragment04 extends BaseFragment {
     public void attention(){
         Intent intent=new Intent(getActivity(), AttentionActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("userId",AppApplication.gUser.getId()+"");
+        intent.putExtra("userId", AppApplication.gUser.getId() + "");
+        intent.putExtra("otherUserId",AppApplication.gUser.getId()+"");
+        intent.putExtra("flag","1");
         getActivity().startActivity(intent);
     }
     //设置点击事件
@@ -163,11 +165,13 @@ public class TabFragment04 extends BaseFragment {
         if (AppApplication.gUser != null&&AppApplication.gUser.getMaster()!=null) {
             Intent intent=new Intent(AppApplication.getSingleContext(),UserYsjIndexActivity.class);
             intent.putExtra("userId", AppApplication.gUser.getId());
+            intent.putExtra("currentId", AppApplication.gUser.getId());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
         }else if (AppApplication.gUser != null&&AppApplication.gUser.getMaster()==null){
             Intent intent=new Intent(AppApplication.getSingleContext(),UserPtIndexActivity.class);
             intent.putExtra("userId", AppApplication.gUser.getId());
+            intent.putExtra("currentId", AppApplication.gUser.getId());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
         }
