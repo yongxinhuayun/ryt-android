@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.AttentionActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.PublicProject01Activity;
 import com.yxh.ryt.activity.RegisterScActivity;
@@ -120,6 +121,13 @@ public class TabFragment04 extends BaseFragment {
             UserEditZiLiaoActivity.openActivity(getActivity());
             return;
         }
+    }
+    @OnClick(R.id.tv_user_header_gz)
+    public void attention(){
+        Intent intent=new Intent(getActivity(), AttentionActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("userId",AppApplication.gUser.getId()+"");
+        getActivity().startActivity(intent);
     }
     //设置点击事件
     @OnClick(R.id.user_setting)

@@ -36,6 +36,11 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 	private String flag="1";
 	private String followId;
 	private String artUserFollowed;
+	private String userId;
+	public AttentionUserItemFragment(String userId) {
+		super();
+		this.userId=userId;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
 
-		paramsMap.put("userId","ieatht97wfw30hfd");
+		paramsMap.put("userId",userId);
 		paramsMap.put("type","2");
 		paramsMap.put("pageSize", Constants.pageSize + "");
 		paramsMap.put("pageIndex", pageNum + "");
