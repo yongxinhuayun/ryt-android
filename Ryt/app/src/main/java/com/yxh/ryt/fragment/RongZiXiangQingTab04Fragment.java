@@ -64,7 +64,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
     private TextView money1;
     private TextView money2;
     private TextView money3;
-
+    private static String artworkId;
     public RongZiXiangQingTab04Fragment(StickHeaderViewPagerManager manager, int position) {
         super(manager, position);
     }
@@ -78,9 +78,10 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         return listFragment;
     }
 
-    public static RongZiXiangQingTab04Fragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
+    public static RongZiXiangQingTab04Fragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh,String artworkID) {
         RongZiXiangQingTab04Fragment listFragment = new RongZiXiangQingTab04Fragment(manager, position, isCanPulltoRefresh);
         stickHeaderViewPagerManager=manager;
+        artworkId=artworkID;
         return listFragment;
     }
     public RongZiXiangQingTab04Fragment(){
@@ -145,24 +146,6 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
     }
 
     private void onScroll() {
-       /* stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
-            @Override
-            public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                lastItem = firstVisibleItem + visibleItemCount - 2;
-            }
-
-            @Override
-            public void onListViewScrollStateChanged(AbsListView view, int scrollState) {
-                if (lastItem==investorRecordCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && loadComplete) {
-                    more.setVisibility(View.GONE);
-                    loading.setVisibility(View.VISIBLE);
-                    loadFull.setVisibility(View.GONE);
-                    noData.setVisibility(View.GONE);
-                    currentPage = currentPage + 1;
-                    LoadData(false, currentPage);
-                }
-            }
-        });*/
         mListview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -221,7 +204,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         loadFull.setVisibility(View.GONE);
         noData.setVisibility(View.GONE);
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("artWorkId","qydeyugqqiugd2");
+        paramsMap.put("artWorkId",artworkId);
         paramsMap.put("pageSize",Constants.pageSize+"");
         paramsMap.put("pageIndex", pageNum + "");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");

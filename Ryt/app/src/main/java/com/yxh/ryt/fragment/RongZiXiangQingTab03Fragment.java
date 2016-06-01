@@ -178,33 +178,6 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
         loadFull.setVisibility(View.GONE);
         noData.setVisibility(View.GONE);
     }
-
-
-    /*public class ShuoMClickableSpan extends ClickableSpan {
-
-        String string;
-        Context context;
-        public ShuoMClickableSpan(String str,Context context){
-            super();
-            this.string = str;
-            this.context = context;
-        }
-
-
-        @Override
-        public void updateDrawState(TextPaint ds) {
-
-            ds.setColor(Color.rgb(7,99,198));
-        }
-
-
-        @Override
-        public void onClick(View widget) {
-            Intent intent=new Intent(context, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        }
-    }*/
     private void onScroll() {
         stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
             @Override
