@@ -184,7 +184,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 
 	}
 	private void onScroll() {
-		stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
+		/*stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
 			@Override
 			public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				lastItem = firstVisibleItem + visibleItemCount - 2;
@@ -201,7 +201,8 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 					LoadData(false, currentPage);
 				}
 			}
-		});
+		});*/
+
 	}
 	@Override
 	protected void lazyLoad() {

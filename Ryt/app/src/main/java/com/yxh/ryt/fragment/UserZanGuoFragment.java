@@ -105,11 +105,11 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 					helper.setText(R.id.uzf_tv_zhicheng,item.getAuthor().getMaster().getTitle());
 					helper.setText(R.id.uzf_tv_zanTotal,item.getPraiseNUm()+"");
 					if (item.isPraise()){
-						helper.getView(R.id.uzf_iv_zan).setBackgroundResource(R.mipmap.dianzanhou);
+						((ImageView) helper.getView(R.id.uzf_iv_zan)).setImageResource(R.mipmap.dianzanhou);
 						helper.getView(R.id.uzf_iv_zan).setOnClickListener(new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								cancelPraise(v,item.getId(), AppApplication.gUser.getId());
+								cancelPraise(v, item.getId(), AppApplication.gUser.getId());
 							}
 						});
 					}else {
@@ -202,7 +202,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 
 	}
 	private void onScroll() {
-		stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
+		/*stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
 			@Override
 			public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				lastItem = firstVisibleItem + visibleItemCount - 2;
@@ -219,7 +219,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 					LoadData(false, currentPage);
 				}
 			}
-		});
+		});*/
 	}
 	@Override
 	protected void lazyLoad() {

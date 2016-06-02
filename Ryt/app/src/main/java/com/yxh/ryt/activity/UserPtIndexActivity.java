@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,7 +39,7 @@ import okhttp3.Call;
 import wuhj.com.mylibrary.StickHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
-public class UserPtIndexActivity extends BaseActivity {
+public class UserPtIndexActivity extends BaseActivity implements StickHeaderViewPagerManager.OnListViewScrollListener {
     private String userId;
     private String currentId;
 
@@ -87,6 +88,7 @@ public class UserPtIndexActivity extends BaseActivity {
         mViewPager = (ViewPager) findViewById(R.id.user_pt_pager);
         StickHeaderLayout root = (StickHeaderLayout) findViewById(R.id.user_pt_root);
         manager = new StickHeaderViewPagerManager(root, mViewPager);
+        manager.setOnListViewScrollListener(this);
         mFragmentList = new ArrayList<Fragment>();
         mFragmentList.add(UserTouGuoFragment.newInstance(manager, 0, false,userId,currentId));
         mFragmentList.add(UserZanGuoFragment.newInstance(manager, 1, false,userId,currentId));
@@ -178,6 +180,16 @@ public class UserPtIndexActivity extends BaseActivity {
     @OnClick(R.id.ib_top_lf)
     public void back(){
         finish();
+    }
+
+    @Override
+    public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+    }
+
+    @Override
+    public void onListViewScrollStateChanged(AbsListView view, int scrollState) {
+
     }
 }
 

@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,13 +47,10 @@ import okhttp3.Call;
 import wuhj.com.mylibrary.StickHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
-public class UserYsjIndexActivity extends BaseActivity {
+public class UserYsjIndexActivity extends BaseActivity implements StickHeaderViewPagerManager.OnListViewScrollListener {
     private String userId;
     private String currentId;
-   /* private StickHeaderViewPagerManager manager1;
-    private StickHeaderViewPagerManager manager2;
-    private StickHeaderViewPagerManager manager3;
-    private StickHeaderViewPagerManager manager4;*/
+
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserYsjIndexActivity.class));
@@ -122,6 +120,7 @@ public class UserYsjIndexActivity extends BaseActivity {
         mViewPager = (ViewPager) findViewById(R.id.user_ysj_pager);
         StickHeaderLayout root = (StickHeaderLayout) findViewById(R.id.user_ysj_root);
         manager = new StickHeaderViewPagerManager(root, mViewPager);
+        manager.setOnListViewScrollListener(this);
         mFragmentList = new ArrayList<Fragment>();
         mFragmentList.add(YSJHomeFragment.newInstance(manager, 0, false,userId,currentId));
         /*manager1 = new StickHeaderViewPagerManager(root, mViewPager);*/
@@ -220,6 +219,17 @@ public class UserYsjIndexActivity extends BaseActivity {
         ButterKnife.unbind(this);
         unregisterReceiver(receiver);
     }
+
+    @Override
+    public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+    }
+
+    @Override
+    public void onListViewScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
     public class PushWorkReceiver extends BroadcastReceiver {
 
         @Override
