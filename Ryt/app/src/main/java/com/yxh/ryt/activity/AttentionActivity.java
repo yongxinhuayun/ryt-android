@@ -89,5 +89,4 @@ public class AttentionActivity extends BaseActivity {
         }
     }
 
-
 }

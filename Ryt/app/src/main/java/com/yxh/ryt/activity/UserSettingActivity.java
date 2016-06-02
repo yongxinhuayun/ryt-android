@@ -75,7 +75,22 @@ public class UserSettingActivity extends BaseActivity {
                 UserSettingAboutActivity.openActivity(this);
                 break;
             case R.id.btn_out:
-                AppApplication.gUser=null;
+                /*
+                SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster1()+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");
+        AppApplication.gUser = user;
+        System.out.print(AppApplication.gUser.toString());
+                 */
+                AppApplication.gUser.setId("");
+                AppApplication.gUser.setUsername("");
+                AppApplication.gUser.setName("");
+                AppApplication.gUser.setSex("");
+                AppApplication.gUser.setMaster1("");
+                AppApplication.gUser.setPictureUrl("");
                 SPUtil.clear(AppApplication.getSingleContext());
                 btnOut.setVisibility(View.GONE);
                 Intent intent=new Intent(this, LoginActivity.class);

@@ -5,5 +5,4 @@ package com.yxh.ryt.activity;
  */
 public class ArtistMyActivity {
 
-
 }

@@ -193,7 +193,7 @@ public class LoginActivity extends BaseActivity {
                                     ToastUtil.showLong(LoginActivity.this,"登录成功");
                                     finish();
                                 }else {
-                                    ToastUtil.showLong(LoginActivity.this,"登录成功");
+                                    ToastUtil.showLong(LoginActivity.this,"登录失败");
                                     finish();
                                 }
                             }
@@ -269,10 +269,10 @@ public class LoginActivity extends BaseActivity {
                         if ("guide".equals(guide)){
                             Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
                             startActivity(intent);
-                            ToastUtil.showLong(LoginActivity.this,"登录成功");
+                            ToastUtil.showLong(LoginActivity.this,"绑定成功");
                             finish();
                         }else {
-                            ToastUtil.showLong(LoginActivity.this,"登录成功");
+                            ToastUtil.showLong(LoginActivity.this,"绑定失败");
                             finish();
                         }
                     }

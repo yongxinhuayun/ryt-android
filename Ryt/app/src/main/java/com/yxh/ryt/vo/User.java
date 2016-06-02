@@ -1,12 +1,7 @@
 package com.yxh.ryt.vo;
 
 
-
 //import com.efeiyi.ec.zero.promotion.model.PromotionPlan;
-
-import com.yxh.ryt.AppApplication;
-
-import java.math.BigDecimal;
 
 public class User {
     /**
@@ -32,6 +27,7 @@ public class User {
      * accountNonLocked : true
      * credentialsNonExpired : true
      */
+    private String signMessage;
     private String master1;
     private String sex;
     private String id;
@@ -60,7 +56,7 @@ public class User {
     private int rate;
     private int investsMoney;
     private int count;
-    private UserBrief  userBrief;
+    private UserBrief userBrief;
     private int roiMoney;
     private int count1;
 
@@ -70,6 +66,14 @@ public class User {
 
     public void setMaster1(String master1) {
         this.master1 = master1;
+    }
+
+    public String getSignMessage() {
+        return signMessage;
+    }
+
+    public void setsignMessage(String signMessage) {
+        this.signMessage = signMessage;
     }
 
     public String getSex() {

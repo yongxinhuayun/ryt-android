@@ -1,8 +1,6 @@
 package com.yxh.ryt.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -11,22 +9,13 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
@@ -39,14 +28,11 @@ import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
-import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.NickNameValidation;
-import com.yxh.ryt.validations.UserNameValidation;
 import com.yxh.ryt.vo.User;
-
 
 import java.io.File;
 import java.util.HashMap;
@@ -97,6 +83,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registersucced);
         ButterKnife.bind(this);/*启用注解绑定*/
+        String userid = getIntent().getStringExtra("userId");
         username = getIntent().getStringExtra("username");
         password = getIntent().getStringExtra("password");
         sexGroup.setOnCheckedChangeListener(this);
@@ -319,7 +306,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
                 if (window != null && window.isShowing()) {
                     window.dismiss();
                     window = null;
@@ -358,7 +344,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                 break;
             case CROP_REQUEST_CODE:
 //                if (data == null) {
-//                    // TODO 如果之前以后有设置过显示之前设置的图片 否则显示默认的图片
 //                    return;
 //                }
 //                Bundle extras = data.getExtras();

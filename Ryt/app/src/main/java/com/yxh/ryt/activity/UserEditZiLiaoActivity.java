@@ -2,22 +2,238 @@ package com.yxh.ryt.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.yxh.ryt.AppApplication;
+import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.callback.CompleteUserInfoCallBack;
+import com.yxh.ryt.custemview.ActionSheetDialog;
+import com.yxh.ryt.custemview.CircleImageView;
+import com.yxh.ryt.util.EncryptUtil;
+import com.yxh.ryt.util.GetPathFromUri4kitkat;
+import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SPUtil;
+import com.yxh.ryt.util.Utils;
+import com.yxh.ryt.vo.User;
 
-import butterknife.Bind;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Call;
 
 /**
  * Created by 吴洪杰 on 2016/4/21.
  */
-public class UserEditZiLiaoActivity extends BaseActivity{
+public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClickListener {
+
+
+    private static final String IMAGE_UNSPECIFIED = "image/*";
+    private static final int PHOTO_RESOULT = 4;
+    private static final int ALBUM_REQUEST_CODE = 1;
+    private static final int CAMERA_REQUEST_CODE = 2;
+    private static final int CROP_REQUEST_CODE = 4;
+    private boolean flag = false;
+    String filePath = "";
+    private String username;
+    private CircleImageView circleImageView;
+    private ImageView imageView;
+    private RelativeLayout nickName;
+    private RelativeLayout sign_message;
+    private RelativeLayout rl_sex;
+    private TextView iv_sign;
+    private TextView tv_nickname;
+
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserEditZiLiaoActivity.class));
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_edit_ziliao);
+        circleImageView = (CircleImageView) findViewById(R.id.uez_iv_icon);
+        imageView = (ImageView) findViewById(R.id.ib_top_lf);
+        nickName = (RelativeLayout) findViewById(R.id.rl_nickName);
+        sign_message = (RelativeLayout) findViewById(R.id.rl_sign);
+        rl_sex = (RelativeLayout) findViewById(R.id.rl_sex);
+        iv_sign = (TextView) findViewById(R.id.iv_sign);
+        tv_nickname = (TextView) findViewById(R.id.tv_nickname);
+        //给控件设置内容
+        AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
+        tv_nickname.setText(AppApplication.gUser.getName());
+        iv_sign.setText(AppApplication.gUser.getSignMessage());
+        //设置点击
+        circleImageView.setOnClickListener(this);
+        imageView.setOnClickListener(this);
+        nickName.setOnClickListener(this);
+        sign_message.setOnClickListener(this);
+        rl_sex.setOnClickListener(this);
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case ALBUM_REQUEST_CODE:
+                if (data == null) {
+                    return;
+                }
+                Bitmap bitmap = getBitmap(data.getData());
+//                Bitmap bitmap=getBitmapFromUri(data.getData());
+                circleImageView.setImageBitmap(bitmap);
+//                saveFile(bitmap);
+                flag = true;
+                break;
+            case CAMERA_REQUEST_CODE:
+                File picture = new File(Environment.getExternalStorageDirectory()
+                        + "/temp.jpg");
+                Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
+                filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
+                Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
+                bitmap1.recycle();
+                circleImageView.setImageBitmap(bitmap2);
+//                saveFile(bitmap1);
+//                startCrop(Uri.fromFile(picture));
+                flag = true;
+                break;
+            case CROP_REQUEST_CODE:
+//
+            default:
+                break;
+        }
+    }
+
+    public Bitmap getBitmap(Uri data) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        options.inSampleSize = 4;
+//        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+        filePath = GetPathFromUri4kitkat.getPath(data);
+//        }else{
+//            filePath=ImageUtils.getRealPathByUriOld(data);
+//        }
+        Bitmap bm = BitmapFactory.decodeFile(filePath, options);
+        options.inJustDecodeBounds = false;
+        bm = BitmapFactory.decodeFile(filePath, options);
+        return bm;
+    }
+
+    private Bitmap getBitmapFromUri(Uri uri) {
+        try {
+            filePath = GetPathFromUri4kitkat.getPath(uri);
+            System.out.println(filePath);
+            // 读取uri所在的图片
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            return bitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void getUser(Map<String, Object> response) {
+        User user = new User();
+        user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+        SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_signMessage", user.getSignMessage() + "");
+        if (user.getMaster() != null) {
+            SPUtil.put(AppApplication.getSingleContext(), "current_master", "master");
+        } else {
+            SPUtil.put(AppApplication.getSingleContext(), "current_master", "");
+        }
+        SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl() + "");
+        AppApplication.gUser = user;
+        if (user.getMaster() != null) {
+            AppApplication.gUser.setMaster1("master");
+        } else {
+            AppApplication.gUser.setMaster1("");
+        }
+        System.out.print(AppApplication.gUser.toString());
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.uez_iv_icon:
+                new ActionSheetDialog(UserEditZiLiaoActivity.this)
+                        .builder()
+                        .setCancelable(false)
+                        .setCanceledOnTouchOutside(true)
+                        .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
+                                new ActionSheetDialog.OnSheetItemClickListener() {
+                                    @Override
+                                    public void onClick(int which) {
+                                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
+                                                getExternalStorageDirectory(), "temp.jpg")));
+                                        startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                                    }
+                                })
+                        .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
+                                new ActionSheetDialog.OnSheetItemClickListener() {
+                                    @Override
+                                    public void onClick(int which) {
+                                        Intent intent = new Intent(Intent.ACTION_PICK, null);
+                                        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_UNSPECIFIED);
+                                        startActivityForResult(intent, ALBUM_REQUEST_CODE);
+                                    }
+                                })
+                        .show();
+                break;
+            case R.id.ib_top_lf:
+                Map<String, File> fileMap = new HashMap<>();
+                File file = new File(filePath);
+                fileMap.put(file.getName(), file);
+                Log.w("niaho ", filePath);
+                Log.w("nihao ", fileMap.toString());
+                Map<String, String> paramsMap = new HashMap<>();
+                paramsMap.put("userId", AppApplication.gUser.getId());
+                paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                try {
+                    paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Map<String, String> headers = new HashMap<>();
+                headers.put("APP-Key", "APP-Secret222");
+                headers.put("APP-Secret", "APP-Secret111");
+                NetRequestUtil.postFile(Constants.BASE_PATH + "editPicUrl.do", "headPortrait", fileMap, paramsMap, headers, new CompleteUserInfoCallBack() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(Map<String, Object> response) {
+                        getUser(response);
+                    }
+                });
+                finish();
+                break;
+            case R.id.rl_nickName:
+                startActivity(new Intent(this, EditNicknameActivity.class));
+            case R.id.rl_sign:
+                startActivity(new Intent(this, EditSignActivity.class));
+            case R.id.rl_sex:
+
+            default:
+                break;
+        }
     }
 }
