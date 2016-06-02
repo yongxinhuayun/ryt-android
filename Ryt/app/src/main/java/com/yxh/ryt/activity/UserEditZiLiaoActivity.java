@@ -1,7 +1,10 @@
 package com.yxh.ryt.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -18,6 +21,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
+import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
@@ -54,6 +58,8 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
     private RelativeLayout rl_sex;
     private TextView iv_sign;
     private TextView tv_nickname;
+    private TextView tv_sex;
+    private EditReceiver receiver;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserEditZiLiaoActivity.class));
@@ -70,16 +76,36 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         rl_sex = (RelativeLayout) findViewById(R.id.rl_sex);
         iv_sign = (TextView) findViewById(R.id.iv_sign);
         tv_nickname = (TextView) findViewById(R.id.tv_nickname);
+        tv_sex = (TextView) findViewById(R.id.tv_sex);
         //给控件设置内容
         AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
-        tv_nickname.setText(AppApplication.gUser.getName());
-        iv_sign.setText(AppApplication.gUser.getSignMessage());
+        //tv_nickname.setText(AppApplication.gUser.getName());
+       // iv_sign.setText(AppApplication.gUser.getUserBrief().getSigner());
         //设置点击
         circleImageView.setOnClickListener(this);
         imageView.setOnClickListener(this);
         nickName.setOnClickListener(this);
         sign_message.setOnClickListener(this);
         rl_sex.setOnClickListener(this);
+
+    }
+    /*
+    receiver = new AttentionReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.intent.action.EDIT_NICK_BROADCAST");
+        registerReceiver(receiver, filter);
+
+     */
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //注册这两个广播
+         receiver = new EditReceiver();
+        IntentFilter myFilter = new IntentFilter();
+        myFilter.addAction("android.intent.action.EDIT_NICK_BROADCAST");
+        myFilter.addAction("android.intent.action.EDIT_SIGN_BROADCAST");
+        registerReceiver(receiver, myFilter);
 
 
     }
@@ -96,6 +122,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 circleImageView.setImageBitmap(bitmap);
 //                saveFile(bitmap);
                 flag = true;
+                commitHead();
                 break;
             case CAMERA_REQUEST_CODE:
                 File picture = new File(Environment.getExternalStorageDirectory()
@@ -108,6 +135,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
 //                saveFile(bitmap1);
 //                startCrop(Uri.fromFile(picture));
                 flag = true;
+                commitHead();
                 break;
             case CROP_REQUEST_CODE:
 //
@@ -116,6 +144,36 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         }
     }
 
+    //上传头像
+    public void commitHead() {
+        Map<String, File> fileMap = new HashMap<>();
+        File file = new File(filePath);
+        fileMap.put(file.getName(), file);
+        Log.w("niaho ", filePath);
+        Log.w("nihao ", fileMap.toString());
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("userId", AppApplication.gUser.getId());
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Map<String, String> headers = new HashMap<>();
+        headers.put("APP-Key", "APP-Secret222");
+        headers.put("APP-Secret", "APP-Secret111");
+        NetRequestUtil.postFile(Constants.BASE_PATH + "editPicUrl.do", "headPortrait", fileMap, paramsMap, headers, new CompleteUserInfoCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                getUser(response);
+            }
+        });
+    }
     public Bitmap getBitmap(Uri data) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -151,7 +209,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername() + "");
         SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName() + "");
         SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex() + "");
-        SPUtil.put(AppApplication.getSingleContext(), "current_signMessage", user.getSignMessage() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_userBrief", user.getUserBrief().getSigner() + "");
         if (user.getMaster() != null) {
             SPUtil.put(AppApplication.getSingleContext(), "current_master", "master");
         } else {
@@ -197,43 +255,86 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                         .show();
                 break;
             case R.id.ib_top_lf:
-                Map<String, File> fileMap = new HashMap<>();
-                File file = new File(filePath);
-                fileMap.put(file.getName(), file);
-                Log.w("niaho ", filePath);
-                Log.w("nihao ", fileMap.toString());
-                Map<String, String> paramsMap = new HashMap<>();
-                paramsMap.put("userId", AppApplication.gUser.getId());
-                paramsMap.put("timestamp", System.currentTimeMillis() + "");
-                try {
-                    paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Map<String, String> headers = new HashMap<>();
-                headers.put("APP-Key", "APP-Secret222");
-                headers.put("APP-Secret", "APP-Secret111");
-                NetRequestUtil.postFile(Constants.BASE_PATH + "editPicUrl.do", "headPortrait", fileMap, paramsMap, headers, new CompleteUserInfoCallBack() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        e.printStackTrace();
-                    }
 
-                    @Override
-                    public void onResponse(Map<String, Object> response) {
-                        getUser(response);
-                    }
-                });
                 finish();
                 break;
             case R.id.rl_nickName:
                 startActivity(new Intent(this, EditNicknameActivity.class));
+                break;
             case R.id.rl_sign:
                 startActivity(new Intent(this, EditSignActivity.class));
+                break;
             case R.id.rl_sex:
-
+                new ActionSheetDialog(UserEditZiLiaoActivity.this)
+                        .builder()
+                        .setCancelable(false)
+                        .setCanceledOnTouchOutside(true)
+                        .addSheetItem("男", ActionSheetDialog.SheetItemColor.Blue,
+                                new ActionSheetDialog.OnSheetItemClickListener() {
+                                    @Override
+                                    public void onClick(int which) {
+                                        tv_sex.setText("男");
+                                        postSex("1");
+                                    }
+                                })
+                        .addSheetItem("女", ActionSheetDialog.SheetItemColor.Blue,
+                                new ActionSheetDialog.OnSheetItemClickListener() {
+                                    @Override
+                                    public void onClick(int which) {
+                                        tv_sex.setText("女");
+                                        postSex("2");
+                                    }
+                                })
+                        .addSheetItem("保密", ActionSheetDialog.SheetItemColor.Blue,
+                                new ActionSheetDialog.OnSheetItemClickListener() {
+                                    @Override
+                                    public void onClick(int which) {
+                                        tv_sex.setText("保密");
+                                        postSex("0");
+                                    }
+                                })
+                        .show();
+                break;
             default:
                 break;
         }
+    }
+    public void postSex(String sex) {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("userId", AppApplication.gUser.getId());
+        paramsMap.put("type", "14");
+        paramsMap.put("content", sex);
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + " editProfile.do", paramsMap, new RegisterCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                //getUser(response);
+            }
+        });
+    }
+
+    public class EditReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+                if(action.equals("android.intent.action.EDIT_NICK_BROADCAST")){
+                    String name = intent.getExtras().getString("nick");
+                    tv_nickname.setText(name);
+                }else if (action.equals("android.intent.action.EDIT_SIGN_BROADCAST")){
+                    String signer = intent.getExtras().getString("signer");
+                    iv_sign.setText(signer);
+                }
+            }
+
     }
 }

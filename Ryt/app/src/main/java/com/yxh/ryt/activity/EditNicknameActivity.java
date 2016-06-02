@@ -1,6 +1,7 @@
 package com.yxh.ryt.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -63,7 +64,10 @@ public class EditNicknameActivity extends Activity implements View.OnClickListen
 
                     @Override
                     public void onResponse(Map<String, Object> response) {
-                        getUser(response);
+                        Intent intent = new Intent();
+                        intent.setAction("android.intent.action.EDIT_NICK_BROADCAST");
+                        intent.putExtra("nick", nickName.getText().toString());
+                        EditNicknameActivity.this.sendBroadcast(intent);
                     }
                 });
                 finish();

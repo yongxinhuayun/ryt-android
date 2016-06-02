@@ -27,7 +27,7 @@ public class User {
      * accountNonLocked : true
      * credentialsNonExpired : true
      */
-    private String signMessage;
+//    private String signMessage;
     private String master1;
     private String sex;
     private String id;
@@ -68,13 +68,13 @@ public class User {
         this.master1 = master1;
     }
 
-    public String getSignMessage() {
+   /* public String getSignMessage() {
         return signMessage;
     }
 
     public void setsignMessage(String signMessage) {
         this.signMessage = signMessage;
-    }
+    }*/
 
     public String getSex() {
         return sex;

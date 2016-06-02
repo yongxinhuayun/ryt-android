@@ -1,6 +1,7 @@
 package com.yxh.ryt.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -13,8 +14,6 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.SPUtil;
-import com.yxh.ryt.vo.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +62,10 @@ public class EditSignActivity extends Activity implements View.OnClickListener {
 
                     @Override
                     public void onResponse(Map<String, Object> response) {
-                        getUser(response);
+                        Intent intent = new Intent();
+                        intent.setAction("android.intent.action.EDIT_SIGN_BROADCAST");
+                        intent.putExtra("signer", nickName.getText().toString());
+                        EditSignActivity.this.sendBroadcast(intent);
                     }
                 });
                 finish();
@@ -72,14 +74,15 @@ public class EditSignActivity extends Activity implements View.OnClickListener {
                 break;
         }
     }
-    private void getUser(Map<String, Object> response) {
+    /*private void getUser(Map<String, Object> response) {
         User user = new User();
         user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
         SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
         SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex() + "");
-        SPUtil.put(AppApplication.getSingleContext(), "current_signMessage", user.getSignMessage() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_userBrief", user.getUserBrief().getSigner() + "");
+
         if (user.getMaster()!=null){
             SPUtil.put(AppApplication.getSingleContext(), "current_master","master");
         }else {
@@ -93,5 +96,5 @@ public class EditSignActivity extends Activity implements View.OnClickListener {
             AppApplication.gUser.setMaster1("");
         }
         System.out.print(AppApplication.gUser.toString());
-    }
+    }*/
 }
