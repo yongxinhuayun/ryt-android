@@ -276,6 +276,7 @@ public class TabFragment04 extends BaseFragment {
 
     //未登录成功设置控件元素的值
     private void setLoginViewValues() {
+        rsIvHeadPortrait.setImageResource(R.mipmap.jibenziliao_touxiang);
         tvUserHeaderFsNum.setText("0");
         tvUserHeaderGzNum.setText("0");
         tvUserHeaderName.setText("游客");

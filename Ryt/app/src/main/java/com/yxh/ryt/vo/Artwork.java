@@ -23,14 +23,22 @@ public class Artwork implements Serializable {
     private List<ArtworkComment> artworkComments;//项目评论
     private List<ArtworkInvest> artworkInvests;//项目投资
     private List<ArtworkInvest> artworkInvestTopList;//投资者前三名
-    private String praiseNUm;
-
+    private int praiseNUm;
+    private  boolean praise;
     public Master getMaster() {
         return master;
     }
 
     public void setMaster(Master master) {
         this.master = master;
+    }
+
+    public boolean isPraise() {
+        return praise;
+    }
+
+    public void setPraise(boolean praise) {
+        this.praise = praise;
     }
 
     public List<ArtworkInvest> getArtworkInvestTopList() {
@@ -41,11 +49,11 @@ public class Artwork implements Serializable {
         this.artworkInvestTopList = artworkInvestTopList;
     }
 
-    public String getPraiseNUm() {
+    public int getPraiseNUm() {
         return praiseNUm;
     }
 
-    public void setPraiseNUm(String praiseNUm) {
+    public void setPraiseNUm(int praiseNUm) {
         this.praiseNUm = praiseNUm;
     }
 

@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -91,7 +95,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 	private void setAdapter() {
 		userZGCommonAdapter=new CommonAdapter<Artwork>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__zanguo_item) {
 			@Override
-			public void convert(ViewHolder helper, Artwork item) {
+			public void convert(ViewHolder helper, final Artwork item) {
 				if (item!=null){
 					helper.setImageByUrl(R.id.uzf_iv_icon, item.getPicture_url());
 					helper.setText(R.id.uzf_tv_proName, item.getTitle());
@@ -99,8 +103,24 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 					helper.setText(R.id.uzf_tv_money,"项目金额:"+item.getInvestGoalMoney());
 					helper.setText(R.id.uzf_tv_name,item.getAuthor().getName());
 					helper.setText(R.id.uzf_tv_zhicheng,item.getAuthor().getMaster().getTitle());
+					helper.setText(R.id.uzf_tv_zanTotal,item.getPraiseNUm()+"");
+					if (item.isPraise()){
+						helper.getView(R.id.uzf_iv_zan).setBackgroundResource(R.mipmap.dianzanhou);
+						helper.getView(R.id.uzf_iv_zan).setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								cancelPraise(v,item.getId(), AppApplication.gUser.getId());
+							}
+						});
+					}else {
+						helper.getView(R.id.uzf_iv_zan).setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								praise(v, item.getId(), AppApplication.gUser.getId());
+							}
+						});
+					}
 				}
-
 			}
 		};
 		lstv.setAdapter(userZGCommonAdapter);
@@ -114,6 +134,68 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 	}
+
+	private void praise(final View v, String id, String id1) {
+		Map<String,String> paramsMap=new HashMap<>();
+		paramsMap.put("artworkId",id);
+		paramsMap.put("currentUserId",id1);
+		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		try {
+			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+			paramsMap.put("signmsg", AppApplication.signmsg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		NetRequestUtil.post(Constants.BASE_PATH + "artworkPraise.do", paramsMap, new RZCommentCallBack() {
+			@Override
+			public void onError(Call call, Exception e) {
+				e.printStackTrace();
+				System.out.println("444444失败了");
+			}
+			@Override
+			public void onResponse(Map<String, Object> response) {
+				System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
+				if ("0".equals(response.get("resultCode"))) {
+					((ImageView) v).setImageResource(R.mipmap.dianzanhou);
+					AnimationSet animationSet=new AnimationSet(true);
+					ScaleAnimation scaleAnimation=new ScaleAnimation(1,1.5f,1,1.5f, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+					scaleAnimation.setDuration(200);
+					animationSet.addAnimation(scaleAnimation);
+					animationSet.setFillAfter(true);
+					animationSet.setAnimationListener(new Animation.AnimationListener() {
+						@Override
+						public void onAnimationStart(Animation animation) {
+
+						}
+
+						@Override
+						public void onAnimationEnd(Animation animation) {
+							AnimationSet animationSet=new AnimationSet(true);
+							ScaleAnimation scaleAnimation=new ScaleAnimation(1.5f,1f,1.5f,1f, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+							scaleAnimation.setDuration(200);
+							animationSet.addAnimation(scaleAnimation);
+							animationSet.setFillAfter(true);
+							((ImageView) v).startAnimation(animationSet);
+							currentPage=1;
+							userZGDatas.clear();
+							LoadData(true,currentPage);
+						}
+
+						@Override
+						public void onAnimationRepeat(Animation animation) {
+
+						}
+					});
+					((ImageView) v).startAnimation(animationSet);
+				}
+			}
+		});
+	}
+
+	private void cancelPraise(View v, String id, String id1) {
+
+	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
