@@ -166,7 +166,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 
 	}
 	private void onScroll() {
-		stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
+		/*stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
 			@Override
 			public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				Log.d("TTTTTTTTTTTTTTTTT","jskljfsfslfjslfjfs");
@@ -185,7 +185,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 					LoadData(false, currentPage);
 				}
 			}
-		});
+		});*/
 	}
 	@Override
 	protected void lazyLoad() {

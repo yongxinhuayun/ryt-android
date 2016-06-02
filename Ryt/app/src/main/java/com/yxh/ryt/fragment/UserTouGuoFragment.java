@@ -99,23 +99,6 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 					helper.setText(R.id.utf_tv_money,"项目金额:"+item.getGoalMoney());
 					helper.setText(R.id.utf_tv_name,item.getUser().getName());
 					helper.setText(R.id.utf_tv_zhicheng,item.getUser().getMaster().getTitle());
-					//helper.setText(R.id.uzf_tv_zanTotal,item.getPraiseNUm()+"");
-					/*if (item.isPraise()){
-						helper.getView(R.id.uzf_iv_zan).setBackgroundResource(R.mipmap.dianzanhou);
-						helper.getView(R.id.uzf_iv_zan).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								cancelPraise(v,item.getId(), AppApplication.gUser.getId());
-							}
-						});
-					}else {
-						helper.getView(R.id.uzf_iv_zan).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								praise(v, item.getId(), AppApplication.gUser.getId());
-							}
-						});
-					}*/
 				}
 			}
 		};
@@ -136,7 +119,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 
 	}
 	private void onScroll() {
-		stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
+		/*stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
 			@Override
 			public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				Log.d("jjjjjjjjjjjjjjjjj","kjskjksjflslfs");
@@ -154,6 +137,17 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 					LoadData(false, currentPage);
 				}
 			}
+		});*/
+		lstv.setOnScrollListener(new AbsListView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+			}
 		});
 	}
 	@Override
@@ -166,7 +160,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId","ieatht97wfw30hfd");
+		paramsMap.put("userId",userId);
 		paramsMap.put("currentId", currentId);
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
