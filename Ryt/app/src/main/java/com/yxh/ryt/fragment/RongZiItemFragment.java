@@ -12,6 +12,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.RongZiXQActivity;
+import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
@@ -101,7 +102,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 		lstv.setPageSize(Constants.pageSize);
 		rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.finance_list_item) {
 			@Override
-			public void convert(ViewHolder helper, RongZi item) {
+			public void convert(ViewHolder helper, final RongZi item) {
 				if (item!=null){
 					helper.setText(R.id.cl_01_tv_title,item.getTitle());
 					helper.setText(R.id.cl_01_tv_brief,item.getBrief());
@@ -120,6 +121,16 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 					double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
 					helper.setProgress(R.id.progressBar1, (int)(value*100));
 					helper.setText(R.id.tv_pb_value, (int) (value * 100) + "%");
+					helper.getView(R.id.cl_01_civ_headPortrait).setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent intent=new Intent(getActivity(), UserYsjIndexActivity.class);
+							intent.putExtra("userId",item.getAuthor().getId());
+							intent.putExtra("currentId",AppApplication.gUser.getId());
+							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							getActivity().startActivity(intent);
+						}
+					});
 				}
 			}
 		};

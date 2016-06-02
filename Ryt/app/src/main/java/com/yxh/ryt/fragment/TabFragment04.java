@@ -162,13 +162,13 @@ public class TabFragment04 extends BaseFragment {
             LoginActivity.openActivity(getActivity());
             return;
         }
-        if (AppApplication.gUser != null&&AppApplication.gUser.getMaster()!=null) {
+        if (AppApplication.gUser != null&&"master".equals(AppApplication.gUser.getMaster1())) {
             Intent intent=new Intent(AppApplication.getSingleContext(),UserYsjIndexActivity.class);
             intent.putExtra("userId", AppApplication.gUser.getId());
             intent.putExtra("currentId", AppApplication.gUser.getId());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
-        }else if (AppApplication.gUser != null&&AppApplication.gUser.getMaster()==null){
+        }else if (AppApplication.gUser != null&&"".equals(AppApplication.gUser.getMaster1())){
             Intent intent=new Intent(AppApplication.getSingleContext(),UserPtIndexActivity.class);
             intent.putExtra("userId", AppApplication.gUser.getId());
             intent.putExtra("currentId", AppApplication.gUser.getId());
@@ -218,6 +218,7 @@ public class TabFragment04 extends BaseFragment {
                                         YsjRzActivity.openActivity(getActivity());
                                     }
                                 });
+                                AppApplication.gUser.setMaster1("");
                             } else if (user.getMaster()!=null) {
                                 btnLf.setText("发起项目");
                                 setLoginedViewValues(2, user);
@@ -227,6 +228,7 @@ public class TabFragment04 extends BaseFragment {
                                         PublicProject01Activity.openActivity(getActivity());
                                     }
                                 });
+                                AppApplication.gUser.setMaster1("master");
                             }
                         }
                     }
@@ -249,7 +251,7 @@ public class TabFragment04 extends BaseFragment {
             tvUserHeaderName.setText(user.getName()+"");
             tvUserHeaderFsNum.setText(user.getCount1()+"");
             tvUserHeaderGzNum.setText(user.getCount()+"");
-            tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getContent());
+            tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getContent()+"");
             tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
             tvUserHeaderJeValue02.setText("￥"+user.getRoiMoney());
             tvUserHeaderJeValue03.setText(0==user.getRate()?"0%":user.getRate()*100+"%");
@@ -261,7 +263,7 @@ public class TabFragment04 extends BaseFragment {
             tvUserHeaderName.setText(user.getName()+"");
             tvUserHeaderFsNum.setText(user.getCount1()+"");
             tvUserHeaderGzNum.setText(user.getCount()+"");
-            tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getContent());
+            tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getContent()+"");
             tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
             tvUserHeaderJeValue02.setText("￥"+user.getRoiMoney());
             tvUserHeaderJeValue03.setText(0==user.getRate()?"0%":user.getRate()*100+"%");

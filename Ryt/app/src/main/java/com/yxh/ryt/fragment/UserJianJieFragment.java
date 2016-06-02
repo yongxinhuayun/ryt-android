@@ -72,10 +72,10 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 			@Override
 			public void onResponse(Map<String, Object> response) {
 				if (response.get("resultCode").equals("0")){
-					Map<String,String> userBrief = (Map<String, String>) response.get("userBrief");
+					Map<String,Object> userBrief = (Map<String, Object>) response.get("userBrief");
 					if (userId.equals(AppApplication.gUser.getId())){
 						if (userBrief!=null){
-							if (userBrief.get("content").equals("")){
+							if (null==userBrief.get("content")|| "".equals(userBrief.get("content").toString())){
 								wenZi.setVisibility(View.VISIBLE);
 								edit.setVisibility(View.VISIBLE);
 								content.setVisibility(View.GONE);
@@ -83,7 +83,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 								wenZi.setVisibility(View.GONE);
 								edit.setVisibility(View.GONE);
 								content.setVisibility(View.VISIBLE);
-								content.setText(userBrief.get("content"));
+								content.setText(userBrief.get("content").toString());
 							}
 						}
 						else {
@@ -93,7 +93,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 						}
 					}else {
 						if (userBrief!=null){
-							if (userBrief.get("content").equals("")){
+							if (null==userBrief.get("content") || "".equals(userBrief.get("content").toString())){
 								wenZi.setVisibility(View.VISIBLE);
 								edit.setVisibility(View.GONE);
 								content.setVisibility(View.GONE);
@@ -101,7 +101,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 								wenZi.setVisibility(View.GONE);
 								edit.setVisibility(View.GONE);
 								content.setVisibility(View.VISIBLE);
-								content.setText(userBrief.get("content"));
+								content.setText(userBrief.get("content").toString());
 							}
 						}
 						else {
