@@ -142,14 +142,14 @@ public class TabFragment04 extends BaseFragment {
         UserQianBaoActivity.openActivity(getActivity());
     }
     //左上角点击事件
-    @OnClick(R.id.btn_lf)
+    /*@OnClick(R.id.btn_lf)
     void btnLfClick() {
         if ("master".equals(AppApplication.gUser.getMaster1())) {
             PublicProject01Activity.openActivity(getActivity());
         }else if ("".equals(AppApplication.gUser.getMaster1())){
             YsjRzActivity.openActivity(getActivity());
         }
-    }
+    }*/
     //意见点击事件
     @OnClick(R.id.rl_yijian)
     void userYiJianClick() {
@@ -162,13 +162,13 @@ public class TabFragment04 extends BaseFragment {
             LoginActivity.openActivity(getActivity());
             return;
         }
-        if (AppApplication.gUser != null&&AppApplication.gUser.getMaster()!=null) {
+        if (AppApplication.gUser != null&&"master".equals(AppApplication.gUser.getMaster1())) {
             Intent intent=new Intent(AppApplication.getSingleContext(),UserYsjIndexActivity.class);
             intent.putExtra("userId", AppApplication.gUser.getId());
             intent.putExtra("currentId", AppApplication.gUser.getId());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
-        }else if (AppApplication.gUser != null&&AppApplication.gUser.getMaster()==null){
+        }else if (AppApplication.gUser != null&&"".equals(AppApplication.gUser.getMaster1())){
             Intent intent=new Intent(AppApplication.getSingleContext(),UserPtIndexActivity.class);
             intent.putExtra("userId", AppApplication.gUser.getId());
             intent.putExtra("currentId", AppApplication.gUser.getId());
@@ -209,12 +209,26 @@ public class TabFragment04 extends BaseFragment {
                         Map<String, Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
                         User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")), User.class);
                         if (user != null) {
-                            if ("".equals(SPUtil.get(AppApplication.getSingleContext(), "current_master", ""))) {
+                            if (null==user.getMaster()) {
                                 btnLf.setText("申请为艺术家");
                                 setLoginedViewValues(1, user);
-                            } else if ("master".equals(SPUtil.get(AppApplication.getSingleContext(), "current_master", ""))) {
+                                btnLf.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        YsjRzActivity.openActivity(getActivity());
+                                    }
+                                });
+                                AppApplication.gUser.setMaster1("");
+                            } else if (user.getMaster()!=null) {
                                 btnLf.setText("发起项目");
                                 setLoginedViewValues(2, user);
+                                btnLf.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        PublicProject01Activity.openActivity(getActivity());
+                                    }
+                                });
+                                AppApplication.gUser.setMaster1("master");
                             }
                         }
                     }
@@ -237,7 +251,7 @@ public class TabFragment04 extends BaseFragment {
             tvUserHeaderName.setText(user.getName()+"");
             tvUserHeaderFsNum.setText(user.getCount1()+"");
             tvUserHeaderGzNum.setText(user.getCount()+"");
-            tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getContent());
+            tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getContent()+"");
             tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
             tvUserHeaderJeValue02.setText("￥"+user.getRoiMoney());
             tvUserHeaderJeValue03.setText(0==user.getRate()?"0%":user.getRate()*100+"%");
@@ -249,7 +263,7 @@ public class TabFragment04 extends BaseFragment {
             tvUserHeaderName.setText(user.getName()+"");
             tvUserHeaderFsNum.setText(user.getCount1()+"");
             tvUserHeaderGzNum.setText(user.getCount()+"");
-            tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getContent());
+            tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getContent()+"");
             tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
             tvUserHeaderJeValue02.setText("￥"+user.getRoiMoney());
             tvUserHeaderJeValue03.setText(0==user.getRate()?"0%":user.getRate()*100+"%");

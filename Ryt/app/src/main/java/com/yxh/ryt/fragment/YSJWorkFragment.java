@@ -49,7 +49,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 	private boolean loadComplete=true;
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
 	private View header;
-
+	private static String userId,currentId;
 	public YSJWorkFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -64,9 +64,11 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 		return listFragment;
 	}
 
-	public static YSJWorkFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
+	public static YSJWorkFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh, String userID, String currentID) {
 		YSJWorkFragment listFragment = new YSJWorkFragment(manager, position, isCanPulltoRefresh);
 		stickHeaderViewPagerManager=manager;
+		userId=userID;
+		currentId=currentID;
 		return listFragment;
 	}
 	@Override
@@ -103,34 +105,40 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 			public void convert(ViewHolder helper, final MasterWork item) {
 				helper.setImageByUrl(R.id.mwi_iv_icon, item.getPictureUrl());
 				helper.setText(R.id.mwi_iv_title, item.getName());
-				helper.setText(R.id.mwi_tv_description,item.getMaterial()+"/"+ Utils.timeToFormatTemp("yyyy",item.getCreateDatetime())+"/"+judgeStaus(item.getType()));
-				helper.getView(R.id.mwi_iv_delete).setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
-						builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								dialog.dismiss();
-								//设置你的操作事项
-								delete(item.getId());
-							}
-						});
+				helper.setText(R.id.mwi_tv_description, item.getMaterial() + "/" + Utils.timeToFormatTemp("yyyy", item.getCreateDatetime()) + "/" + judgeStaus(item.getType()));
+				if (userId.equals(currentId)){
+					helper.getView(R.id.mwi_iv_delete).setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
+							builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+									//设置你的操作事项
+									delete(item.getId());
+								}
+							});
 
-						builder.setNegativeButton("取消",
-								new android.content.DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int which) {
-										dialog.dismiss();
-									}
-								});
+							builder.setNegativeButton("取消",
+									new android.content.DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int which) {
+											dialog.dismiss();
+										}
+									});
 
-						builder.create().show();
-					}
-				});
+							builder.create().show();
+						}
+					});
+				}
+
 			}
 		};
 		lstv.setAdapter(ySJWorkCommonAdapter);
 		lstv.addFooterView(footer);
-		lstv.addHeaderView(header);
+		if (userId.equals(currentId)){
+			lstv.addHeaderView(header);
+			header.setOnClickListener(this);
+		}
 		loadFull = (TextView) footer.findViewById(R.id.loadFull);
 		noData = (TextView) footer.findViewById(R.id.noData);
 		more = (TextView) footer.findViewById(R.id.more);
@@ -139,12 +147,11 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 		loading.setVisibility(View.GONE);
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
-		header.setOnClickListener(this);
 	}
 
 	private void delete(String id) {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId", "ieatht97wfw30hfd");
+		paramsMap.put("userId", userId);
 		paramsMap.put("masterWorkId", id);
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
@@ -206,7 +213,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId","ieatht97wfw30hfd");
+		paramsMap.put("userId",userId);
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -278,7 +285,6 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 			}
 		});
 	}
-
 	@Override
 	public void onClick(View v) {
 		Intent intent = new Intent("android.intent.action.FW_BROADCAST");

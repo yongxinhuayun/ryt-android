@@ -43,6 +43,7 @@ public class ProjectCommentReply extends BaseActivity {
     private String fatherCommentId;
     private String artworkId;
     private String messageId;
+    private String currentUserId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class ProjectCommentReply extends BaseActivity {
         fatherCommentId = intent.getStringExtra("fatherCommentId");
         artworkId = intent.getStringExtra("artworkId");
         messageId = intent.getStringExtra("messageId");
+        currentUserId = intent.getStringExtra("currentUserId");
     }
     @OnClick(R.id.pcr_ib_back)
     public void back(){
@@ -78,7 +80,7 @@ public class ProjectCommentReply extends BaseActivity {
         }
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artworkId",artworkId+"");
-        paramsMap.put("currentUserId", "ieatht97wfw30hfd");
+        paramsMap.put("currentUserId", currentUserId);
         if(!"".equals(messageId)){
             paramsMap.put("messageId", messageId);
         }

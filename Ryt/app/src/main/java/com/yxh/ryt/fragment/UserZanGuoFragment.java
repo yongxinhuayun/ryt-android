@@ -19,6 +19,7 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.PageinfoList;
 
 import java.util.ArrayList;
@@ -33,8 +34,8 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 @SuppressLint("ValidFragment")
 public class UserZanGuoFragment extends StickHeaderBaseFragment{
 	private ListView lstv;
-	private CommonAdapter<PageinfoList> userZGCommonAdapter;
-	private List<PageinfoList> userZGDatas;
+	private CommonAdapter<Artwork> userZGCommonAdapter;
+	private List<Artwork> userZGDatas;
 	private int currentPage=1;
 	private View footer;
 	private TextView loadFull;
@@ -71,7 +72,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		userZGDatas=new ArrayList<PageinfoList>();
+		userZGDatas=new ArrayList<Artwork>();
 	}
 	@Override
 	public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,17 +89,18 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		return view;
 	}
 	private void setAdapter() {
-		userZGCommonAdapter=new CommonAdapter<PageinfoList>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__zanguo_item) {
+		userZGCommonAdapter=new CommonAdapter<Artwork>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__zanguo_item) {
 			@Override
-			public void convert(ViewHolder helper, PageinfoList item) {
-				if (userZGDatas!=null){
-					helper.setImageByUrl(R.id.uzf_iv_icon, item.getArtwork().getPicture_url());
-					helper.setText(R.id.uzf_tv_proName, item.getArtwork().getTitle());
-					helper.setText(R.id.uzf_tv_proStage,AppApplication.map.get(item.getArtwork().getStep()));
-					helper.setText(R.id.uzf_tv_money,"项目金额:"+item.getArtwork().getInvestGoalMoney());
-					helper.setText(R.id.uzf_tv_name,item.getArtwork().getAuthor().getName());
-					helper.setText(R.id.uzf_tv_zhicheng,item.getArtwork().getAuthor().getMaster().getTitle());
+			public void convert(ViewHolder helper, Artwork item) {
+				if (item!=null){
+					helper.setImageByUrl(R.id.uzf_iv_icon, item.getPicture_url());
+					helper.setText(R.id.uzf_tv_proName, item.getTitle());
+					helper.setText(R.id.uzf_tv_proStage, AppApplication.map.get(item.getStep()));
+					helper.setText(R.id.uzf_tv_money,"项目金额:"+item.getInvestGoalMoney());
+					helper.setText(R.id.uzf_tv_name,item.getAuthor().getName());
+					helper.setText(R.id.uzf_tv_zhicheng,item.getAuthor().getMaster().getTitle());
 				}
+
 			}
 		};
 		lstv.setAdapter(userZGCommonAdapter);
@@ -171,7 +173,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 				if ("0".equals(response.get("resultCode"))) {
 					System.out.println(response.get("resultCode")+"dudududuuuuuuuuuuuuuuuuuuuuu");
 					if (flag) {
-						List<PageinfoList> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<PageinfoList>>() {
+						List<Artwork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<Artwork>>() {
 						}.getType());
 						if (commentList == null || commentList.size()==0) {
 							more.setVisibility(View.GONE);
@@ -198,7 +200,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 						}
 						userZGCommonAdapter.notifyDataSetChanged();
 					}else {
-						List<PageinfoList> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<PageinfoList>>() {
+						List<Artwork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<Artwork>>() {
 						}.getType());
 						if (commentList == null || commentList.size() < Constants.pageSize) {
 							more.setVisibility(View.GONE);

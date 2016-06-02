@@ -45,7 +45,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 	private int lastItem;
 	private boolean loadComplete=true;
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
-	private boolean isArtist=true;
+	private static String userId,currentId;
 
 	public YSJHomeFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
@@ -61,9 +61,11 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		return listFragment;
 	}
 
-	public static YSJHomeFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh) {
+	public static YSJHomeFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh, String userID, String currentID) {
 		YSJHomeFragment listFragment = new YSJHomeFragment(manager, position, isCanPulltoRefresh);
 		stickHeaderViewPagerManager=manager;
+		userId=userID;
+		currentId=currentID;
 		return listFragment;
 	}
 	@Override
@@ -88,7 +90,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 	private void setAdapter() {
 		ySJHomeCommonAdapter=new CommonAdapter<HomeYSJArtWork>(AppApplication.getSingleContext(),ySJHomeDatas,R.layout.mrdm_project_item) {
 			@Override
-			public void convert(ViewHolder helper, HomeYSJArtWork item) {
+			public void convert(ViewHolder helper, final HomeYSJArtWork item) {
 				helper.setImageByUrl(R.id.mpi_iv_icon, item.getPicture_url());
 				helper.setText(R.id.mpi_tv_tilte, item.getTitle());
 				helper.setText(R.id.mpi_iv_project,"项目描述:"+item.getDescription());
@@ -96,10 +98,16 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 				helper.setText(R.id.mpi_tv_stage,AppApplication.map.get(item.getStep()));
 				helper.getView(R.id.mpi_tv_left).setVisibility(View.GONE);
 				helper.getView(R.id.mpi_tv_right).setVisibility(View.GONE);
-				if (isArtist){
+				if (userId.equals(currentId)){
 					if ("100".equals(item.getStep())){
 						helper.getView(R.id.mpi_tv_left).setVisibility(View.VISIBLE);
 						((TextView) helper.getView(R.id.mpi_tv_left)).setText("提交项目");
+						((TextView) helper.getView(R.id.mpi_tv_left)).setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								submitArtwork(item.getId(),userId,"10");
+							}
+						});
 						helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);
 						((TextView) helper.getView(R.id.mpi_tv_right)).setText("编辑项目");
 					}else if ("21".equals(item.getStep()) || "22".equals(item.getStep())){
@@ -123,6 +131,35 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 	}
+
+	private void submitArtwork(String id, String userId, String s) {
+		Map<String,String> paramsMap=new HashMap<>();
+		paramsMap.put("artworkId",id);
+		paramsMap.put("userId",userId);
+		paramsMap.put("step", s);
+		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		try {
+			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+			paramsMap.put("signmsg", AppApplication.signmsg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		NetRequestUtil.post(Constants.BASE_PATH + "updateArtWork.do", paramsMap, new RZCommentCallBack() {
+			@Override
+			public void onError(Call call, Exception e) {
+				e.printStackTrace();
+				System.out.println("444444失败了");
+			}
+
+			@Override
+			public void onResponse(Map<String, Object> response) {
+				ySJHomeDatas.clear();
+				currentPage=1;
+				LoadData(true, currentPage);
+			}
+		});
+	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -160,7 +197,8 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId","imhfp1yr4636pj49");
+		paramsMap.put("userId",userId);
+		paramsMap.put("currentId",currentId);
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -182,6 +220,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 				if ("0".equals(response.get("resultCode"))) {
 					Map<String, Object> object = (Map<String, Object>) response.get("object");
 					if (flag) {
+						ySJHomeDatas.clear();
 						List<HomeYSJArtWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkList")), new TypeToken<List<HomeYSJArtWork>>() {
 						}.getType());
 						if (commentList == null) {
@@ -207,7 +246,6 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 							ySJHomeDatas.addAll(commentList);
 							commentList.clear();
 						}
-
 						ySJHomeCommonAdapter.notifyDataSetChanged();
 					}else {
 						List<HomeYSJArtWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkList")), new TypeToken<List<HomeYSJArtWork>>() {

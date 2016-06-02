@@ -1,6 +1,7 @@
 package com.yxh.ryt.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Created by Administrator on 2016/5/6.
@@ -39,7 +40,7 @@ public class HomeYSJArtWork implements Serializable {
     private String id;
     private String title;
     private String status;
-    private int investGoalMoney;
+    private BigDecimal investGoalMoney;
     private long investStartDatetime;
     private long investEndDatetime;
     private long auctionStartDatetime;
@@ -47,7 +48,7 @@ public class HomeYSJArtWork implements Serializable {
     private long createDatetime;
     private String picture_url;
     private String step;
-    private int investsMoney;
+    private BigDecimal investsMoney;
     private long creationEndDatetime;
     private String type;
     private long newCreationDate;
@@ -112,13 +113,7 @@ public class HomeYSJArtWork implements Serializable {
         this.status = status;
     }
 
-    public int getInvestGoalMoney() {
-        return investGoalMoney;
-    }
 
-    public void setInvestGoalMoney(int investGoalMoney) {
-        this.investGoalMoney = investGoalMoney;
-    }
 
     public long getInvestStartDatetime() {
         return investStartDatetime;
@@ -157,11 +152,19 @@ public class HomeYSJArtWork implements Serializable {
         this.step = step;
     }
 
-    public int getInvestsMoney() {
+    public BigDecimal getInvestGoalMoney() {
+        return investGoalMoney;
+    }
+
+    public void setInvestGoalMoney(BigDecimal investGoalMoney) {
+        this.investGoalMoney = investGoalMoney;
+    }
+
+    public BigDecimal getInvestsMoney() {
         return investsMoney;
     }
 
-    public void setInvestsMoney(int investsMoney) {
+    public void setInvestsMoney(BigDecimal investsMoney) {
         this.investsMoney = investsMoney;
     }
 

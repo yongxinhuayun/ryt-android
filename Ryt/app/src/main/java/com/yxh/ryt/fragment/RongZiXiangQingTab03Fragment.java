@@ -123,6 +123,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                         }else {
                             intent.putExtra("name", "");
                         }
+                        intent.putExtra("currentUserId", AppApplication.gUser.getId());
                         intent.putExtra("fatherCommentId", item.getId());
                         intent.putExtra("artworkId", artWorkId);
                         intent.putExtra("flag", 0);

@@ -147,7 +147,7 @@ public class UserPtIndexActivity extends BaseActivity {
         tvUserHeaderName.setText(user.getName()+"");
         tvUserHeaderFsNum.setText(user.getCount1()+"");
         tvUserHeaderGzNum.setText(user.getCount()+"");
-        tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getContent());
+        tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getContent()+"");
         tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
         tvUserHeaderJeValue02.setText("￥"+user.getRoiMoney());
         tvUserHeaderJeValue03.setText(0==user.getRate()?"0%":user.getRate()*100+"%");
