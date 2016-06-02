@@ -178,6 +178,7 @@ public class RongZiXQActivity extends BaseActivity {
                     intent.putExtra("messageId","");
                     intent.putExtra("flag",1);
                     intent.putExtra("artworkId",artworkId);
+                    intent.putExtra("currentUserId",AppApplication.gUser.getId());
                     startActivity(intent);
                 }
                 break;

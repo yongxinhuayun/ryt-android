@@ -114,11 +114,11 @@ public class UserYsjIndexActivity extends BaseActivity {
         StickHeaderLayout root = (StickHeaderLayout) findViewById(R.id.user_ysj_root);
         manager = new StickHeaderViewPagerManager(root, mViewPager);
         mFragmentList = new ArrayList<Fragment>();
-        mFragmentList.add(YSJHomeFragment.newInstance(manager, 0, false));
+        mFragmentList.add(YSJHomeFragment.newInstance(manager, 0, false,userId,currentId));
         /*manager1 = new StickHeaderViewPagerManager(root, mViewPager);*/
         mFragmentList.add(UserJianJieFragment.newInstance(manager, 1, false,userId));
         /*manager2 = new StickHeaderViewPagerManager(root, mViewPager);*/
-        mFragmentList.add(YSJWorkFragment.newInstance(manager, 2, false));
+        mFragmentList.add(YSJWorkFragment.newInstance(manager, 2, false,userId,currentId));
         /*manager3 = new StickHeaderViewPagerManager(root, mViewPager);*/
         mFragmentList.add(UserTouGuoFragment.newInstance(manager, 3, false,userId,currentId));
        /* manager4 = new StickHeaderViewPagerManager(root, mViewPager);*/

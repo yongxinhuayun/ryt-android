@@ -128,10 +128,10 @@ public class YsjRzActivity extends BaseActivity {
         fileMap.put("identityFront",fileMap1);
         fileMap.put("identityBack",fileMap2);
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("provinceName","");
-        paramsMap.put("province","");
-        paramsMap.put("artCategory","");
-        paramsMap.put("titleCertificate","");
+        paramsMap.put("provinceName",evAddress.getText().toString());
+        paramsMap.put("province",evDiqu.getText().toString());
+        paramsMap.put("artCategory",evType.getText().toString());
+        paramsMap.put("titleCertificate",evTitle.getText().toString());
         paramsMap.put("userId",AppApplication.gUser.getId());
         paramsMap.put("paramType","0");
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
@@ -154,8 +154,7 @@ public class YsjRzActivity extends BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                 System.out.println("成功了");
-                Log.d("XXXXXXXXXXXXXXXXXXXXX", "YYYYYYYYYYY");
-                Log.d("tagonResponse", response.toString());
+                finish();
             }
         });
     }
@@ -252,6 +251,7 @@ public class YsjRzActivity extends BaseActivity {
                 }
             }
         });
+        btnSubmit.setBackgroundResource(R.mipmap.anniu_kedianji);
     }
 
     private void callMulImageSelector(int sum,int id) {
