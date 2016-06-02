@@ -142,14 +142,14 @@ public class TabFragment04 extends BaseFragment {
         UserQianBaoActivity.openActivity(getActivity());
     }
     //左上角点击事件
-    @OnClick(R.id.btn_lf)
+    /*@OnClick(R.id.btn_lf)
     void btnLfClick() {
         if ("master".equals(AppApplication.gUser.getMaster1())) {
             PublicProject01Activity.openActivity(getActivity());
         }else if ("".equals(AppApplication.gUser.getMaster1())){
             YsjRzActivity.openActivity(getActivity());
         }
-    }
+    }*/
     //意见点击事件
     @OnClick(R.id.rl_yijian)
     void userYiJianClick() {
@@ -209,12 +209,24 @@ public class TabFragment04 extends BaseFragment {
                         Map<String, Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
                         User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")), User.class);
                         if (user != null) {
-                            if ("".equals(SPUtil.get(AppApplication.getSingleContext(), "current_master", ""))) {
+                            if (null==user.getMaster()) {
                                 btnLf.setText("申请为艺术家");
                                 setLoginedViewValues(1, user);
-                            } else if ("master".equals(SPUtil.get(AppApplication.getSingleContext(), "current_master", ""))) {
+                                btnLf.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        YsjRzActivity.openActivity(getActivity());
+                                    }
+                                });
+                            } else if (user.getMaster()!=null) {
                                 btnLf.setText("发起项目");
                                 setLoginedViewValues(2, user);
+                                btnLf.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        PublicProject01Activity.openActivity(getActivity());
+                                    }
+                                });
                             }
                         }
                     }
