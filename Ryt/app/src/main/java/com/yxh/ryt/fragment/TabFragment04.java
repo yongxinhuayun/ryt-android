@@ -271,7 +271,6 @@ public class TabFragment04 extends BaseFragment {
             tvUserHeaderJeTxt02.setText("投资收益");
             tvUserHeaderJeTxt03.setText("投资回报率");
         }
-
     }
 
     //未登录成功设置控件元素的值
