@@ -78,8 +78,6 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 				Constants.ATTENTION_TITLE[0]="艺术家("+AppApplication.getSingleGson().toJson(response.get("followsNum"))+")";
 				Intent intent = new Intent("android.intent.action.MY_BROADCAST");
 				AppApplication.getSingleContext().sendBroadcast(intent);
-				/*Map<String, String> map1 = (Map<String, String>) response.get("pageInfoList");*/
-				//Log.w("YZJ",response.get("pageInfoList").toString());
 				if (state == AutoListView.REFRESH) {
 					lstv.onRefreshComplete();
 					attentionDatas.clear();

@@ -1,7 +1,12 @@
 package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +57,8 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 	private TextView tv_noData;
 	private static String userId;
 	private static String currentId;
+	private ZanReceiver receiver;
+
 	public UserZanGuoFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -90,7 +97,24 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		onScroll();
 		userZGDatas.clear();
 		LoadData(true, currentPage);
+		receiver = new ZanReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("android.intent.action.PRAISE_BROADCAST");
+		AppApplication.getSingleContext().registerReceiver(receiver, filter);
 		return view;
+	}
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		getActivity().unregisterReceiver(receiver);
+	}
+	public class ZanReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			currentPage=currentPage+1;
+			LoadData(false,currentPage);
+		}
 	}
 	private void setAdapter() {
 		userZGCommonAdapter=new CommonAdapter<Artwork>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__zanguo_item) {
@@ -202,24 +226,6 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 
 	}
 	private void onScroll() {
-		/*stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
-			@Override
-			public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				lastItem = firstVisibleItem + visibleItemCount - 2;
-			}
-
-			@Override
-			public void onListViewScrollStateChanged(AbsListView view, int scrollState) {
-				if (lastItem == userZGCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && loadComplete) {
-					more.setVisibility(View.GONE);
-					loading.setVisibility(View.VISIBLE);
-					loadFull.setVisibility(View.GONE);
-					noData.setVisibility(View.GONE);
-					currentPage = currentPage + 1;
-					LoadData(false, currentPage);
-				}
-			}
-		});*/
 	}
 	@Override
 	protected void lazyLoad() {

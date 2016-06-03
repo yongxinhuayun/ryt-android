@@ -1,12 +1,16 @@
 package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,7 +21,6 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
-import com.yxh.ryt.custemview.CustomListview;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.vo.ConvertWork;
@@ -33,7 +36,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
 @SuppressLint("ValidFragment")
 public class UserTouGuoFragment extends StickHeaderBaseFragment{
-	private CustomListview lstv;
+	private ListView lstv;
 	private CommonAdapter<ConvertWork> userZGCommonAdapter;
 	private List<ConvertWork> userZGDatas;
 	private int currentPage=1;
@@ -48,6 +51,9 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
 	private static String userId;
 	private static String currentId;
+	private View header;
+	private InvestReceiver receiver;
+
 	public UserTouGuoFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -78,15 +84,32 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_listview_touguo, null);
 		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
-		lstv = (CustomListview)view.findViewById(R.id.fit_lstv);
+		lstv = (ListView)view.findViewById(R.id.fit_lstv);
 		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
-		tvTotal = (TextView) view.findViewById(R.id.fit_tv);
+		header = LayoutInflater.from(getActivity()).inflate(R.layout.touguo_header, null);
 		tvNoData = (TextView) view.findViewById(R.id.fit_tv_noData);
 		setAdapter();
 		onScroll();
 		userZGDatas.clear();
 		LoadData(true, currentPage);
+		receiver = new InvestReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("android.intent.action.CAST_BROADCAST");
+		AppApplication.getSingleContext().registerReceiver(receiver, filter);
 		return view;
+	}
+	public class InvestReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			currentPage=currentPage+1;
+			LoadData(false,currentPage);
+		}
+	}
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		getActivity().unregisterReceiver(receiver);
 	}
 	private void setAdapter() {
 		userZGCommonAdapter=new CommonAdapter<ConvertWork>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__touguo_item) {
@@ -104,6 +127,8 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		};
 		lstv.setAdapter(userZGCommonAdapter);
 		lstv.addFooterView(footer);
+		lstv.addHeaderView(header);
+		tvTotal=((TextView) header.findViewById(R.id.fit_tv));
 		loadFull = (TextView) footer.findViewById(R.id.loadFull);
 		noData = (TextView) footer.findViewById(R.id.noData);
 		more = (TextView) footer.findViewById(R.id.more);
@@ -138,7 +163,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 				}
 			}
 		});*/
-		lstv.setOnScrollListener(new AbsListView.OnScrollListener() {
+		/*lstv.setOnScrollListener(new AbsListView.OnScrollListener() {
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 
@@ -148,7 +173,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
 			}
-		});
+		});*/
 	}
 	@Override
 	protected void lazyLoad() {
@@ -160,7 +185,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId",userId);
+		paramsMap.put("userId","ieatht97wfw30hfd");
 		paramsMap.put("currentId", currentId);
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
