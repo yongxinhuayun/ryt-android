@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yxh.ryt">
+
+    <uses-sdk android:minSdkVersion="16" />
+
     <permission
         android:name="com.yxh.ryt.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-sdk android:minSdkVersion="16" />
+
     <supports-screens
-        android:smallScreens="true"
-        android:normalScreens="true"
+        android:anyDensity="true"
         android:largeScreens="true"
+        android:normalScreens="true"
         android:resizeable="true"
-        android:anyDensity="true" />
+        android:smallScreens="true" />
     <!-- Required  一些系统要求的权限，如访问网络等 -->
     <uses-permission android:name="com.yxh.ryt.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
@@ -21,14 +24,14 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL"/>
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
     <!-- Optional for location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -43,67 +46,134 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" >
-    </uses-permission>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
+        android:name=".AppApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name=".AppApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SplashActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.IndexActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MsgActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.RegisterActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.UserYiJianActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.UserSettingActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.InvestActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.UserSettingAboutActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.UserChongZhiActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.UserQianBaoActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.LoginActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.CommentActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.ProjectCommentReply" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.ForgetPwdActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.ReleaseVideoActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.PushWoraActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.GuideActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.UserPtIndexActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.YsjRzActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.IndexActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AttentionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MsgActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UserYiJianActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UserSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.InvestActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UserSettingAboutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UserChongZhiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UserQianBaoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CommentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ProjectCommentReply"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ForgetPwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ReleaseVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PushWoraActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.GuideActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UserPtIndexActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UserEditZiLiaoActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".activity.UserYsjIndexActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.ChuangZuoXQActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.RongZiXQActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.RegisterScActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.CustomMsgActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.GalleryActivity" android:screenOrientation="portrait"/>
-        <activity android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.NotificationActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.PrivateLetterActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.PublicProject01Activity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.ShowMsgActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.UserEditZiLiaoActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.UserYsjIndexActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ChuangZuoXQActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RongZiXQActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RegisterScActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.EditSignActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CustomMsgActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.GalleryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.NotificationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PrivateLetterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PublicProject01Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ShowMsgActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
-            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
@@ -195,7 +265,6 @@
                 <category android:name="com.yxh.ryt" />
             </intent-filter>
         </receiver>
-
         <!-- Required  . Enable it you can get statistics data with channel -->
         <meta-data
             android:name="JPUSH_CHANNEL"
@@ -203,13 +272,9 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="539b73fd73c82f1134120a57" />
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
         <!-- </>值来自开发者平台取得的AppKey -->
 
+        <activity android:name=".activity.EditNicknameActivity"></activity>
     </application>
 
 </manifest>
