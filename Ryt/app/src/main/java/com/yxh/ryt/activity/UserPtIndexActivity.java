@@ -25,7 +25,6 @@ import com.yxh.ryt.fragment.UserTouGuoFragment;
 import com.yxh.ryt.fragment.UserZanGuoFragment;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.User;
 
@@ -43,6 +42,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 public class UserPtIndexActivity extends BaseActivity implements StickHeaderViewPagerManager.OnListViewScrollListener {
     private String userId;
     private String currentId;
+    private boolean homeFlag;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserPtIndexActivity.class));
@@ -97,7 +97,7 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
         manager = new StickHeaderViewPagerManager(root, mViewPager);
         manager.setOnListViewScrollListener(this);
         mFragmentList = new ArrayList<Fragment>();
-        mFragmentList.add(UserTouGuoFragment.newInstance(manager, 0, false,userId,currentId));
+        mFragmentList.add(UserTouGuoFragment.newInstance(manager, 0, false, userId, currentId));
         mFragmentList.add(UserZanGuoFragment.newInstance(manager, 1, false,userId,currentId));
         mFragmentList.add(UserJianJieFragment.newInstance(manager, 2, false,userId));
         UserPtTabPageIndicatorAdapter pagerAdapter = new UserPtTabPageIndicatorAdapter(getSupportFragmentManager(), mFragmentList);
@@ -215,12 +215,18 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
 
     @Override
     public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
+        homeFlag=firstVisibleItem+visibleItemCount==totalItemCount+1;
     }
 
     @Override
     public void onListViewScrollStateChanged(AbsListView view, int scrollState) {
-
+        if (R.id.fit_lstv==view.getId() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE&&homeFlag){
+            Intent intent = new Intent("android.intent.action.CAST_BROADCAST");
+            sendBroadcast(intent);
+        }else if (R.id.fiz_lstv==view.getId() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE&&homeFlag){
+            Intent intent = new Intent("android.intent.action.PRAISE_BROADCAST");
+            sendBroadcast(intent);
+        }
     }
 }
 

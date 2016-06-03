@@ -37,6 +37,8 @@ import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.User;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +54,7 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 public class UserYsjIndexActivity extends BaseActivity implements StickHeaderViewPagerManager.OnListViewScrollListener {
     private String userId;
     private String currentId;
-
+    private boolean homeFlag;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserYsjIndexActivity.class));
@@ -130,13 +132,13 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
         manager = new StickHeaderViewPagerManager(root, mViewPager);
         manager.setOnListViewScrollListener(this);
         mFragmentList = new ArrayList<Fragment>();
-        mFragmentList.add(YSJHomeFragment.newInstance(manager, 0, false,userId,currentId));
+        mFragmentList.add(YSJHomeFragment.newInstance(manager, 0, false, userId, currentId));
         /*manager1 = new StickHeaderViewPagerManager(root, mViewPager);*/
         mFragmentList.add(UserJianJieFragment.newInstance(manager, 1, false,userId));
         /*manager2 = new StickHeaderViewPagerManager(root, mViewPager);*/
         mFragmentList.add(YSJWorkFragment.newInstance(manager, 2, false,userId,currentId));
         /*manager3 = new StickHeaderViewPagerManager(root, mViewPager);*/
-        mFragmentList.add(UserTouGuoFragment.newInstance(manager, 3, false,userId,currentId));
+        mFragmentList.add(UserTouGuoFragment.newInstance(manager, 3, false, userId, currentId));
        /* manager4 = new StickHeaderViewPagerManager(root, mViewPager);*/
         mFragmentList.add(UserZanGuoFragment.newInstance(manager, 4, false,userId,currentId));
         UserYsjTabPageIndicatorAdapter pagerAdapter = new UserYsjTabPageIndicatorAdapter(getSupportFragmentManager(), mFragmentList);
@@ -256,14 +258,25 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
 
     @Override
     public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
+        homeFlag=firstVisibleItem+visibleItemCount==totalItemCount+1;
     }
 
     @Override
     public void onListViewScrollStateChanged(AbsListView view, int scrollState) {
-
+        if (R.id.fiyh_lstv==view.getId() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE&&homeFlag){
+            Intent intent = new Intent("android.intent.action.HOME_BROADCAST");
+            sendBroadcast(intent);
+        }else if (R.id.fit_lstv==view.getId() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE&&homeFlag){
+            Intent intent = new Intent("android.intent.action.CAST_BROADCAST");
+            sendBroadcast(intent);
+        }else if (R.id.fiz_lstv==view.getId() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE&&homeFlag){
+            Intent intent = new Intent("android.intent.action.PRAISE_BROADCAST");
+            sendBroadcast(intent);
+        }else if (R.id.fiyw_lstv==view.getId() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE&&homeFlag){
+            Intent intent = new Intent("android.intent.action.WORK_BROADCAST");
+            sendBroadcast(intent);
+        }
     }
-
     public class PushWorkReceiver extends BroadcastReceiver {
 
         @Override

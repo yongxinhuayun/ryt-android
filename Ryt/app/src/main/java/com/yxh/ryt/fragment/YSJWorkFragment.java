@@ -1,9 +1,13 @@
 package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +54,8 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
 	private View header;
 	private static String userId,currentId;
+	private WorkReceiver receiver;
+
 	public YSJWorkFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -88,7 +94,24 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 		onScroll();
 		ySJWorkDatas.clear();
 		LoadData(true, currentPage);
+		receiver = new WorkReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("android.intent.action.WORK_BROADCAST");
+		AppApplication.getSingleContext().registerReceiver(receiver, filter);
 		return view;
+	}
+	public class WorkReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			currentPage=currentPage+1;
+			LoadData(false,currentPage);
+		}
+	}
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		getActivity().unregisterReceiver(receiver);
 	}
 	private String judgeStaus(String type){
 		if (type.equals("0")){
@@ -208,7 +231,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 	protected void lazyLoad() {
 
 	}
-	private void LoadData(final boolean flag,int pageNum) {
+	public void LoadData(final boolean flag,int pageNum) {
 		more.setVisibility(View.GONE);
 		loading.setVisibility(View.VISIBLE);
 		loadFull.setVisibility(View.GONE);

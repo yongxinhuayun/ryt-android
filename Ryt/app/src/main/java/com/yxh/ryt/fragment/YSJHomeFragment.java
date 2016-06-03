@@ -1,6 +1,10 @@
 package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
+import com.viewpagerindicator.IcsLinearLayout;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
@@ -20,7 +25,11 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.vo.ChatMsgEntity;
 import com.yxh.ryt.vo.HomeYSJArtWork;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +55,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 	private boolean loadComplete=true;
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
 	private static String userId,currentId;
+	private HomeReceiver receiver;
 
 	public YSJHomeFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
@@ -82,10 +92,20 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
 		setAdapter();
 		onScroll();
-		Log.d("oncreateView", "oncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateViewoncreateView");
-		ySJHomeDatas.clear();
-		LoadData(true, currentPage);
+		receiver = new HomeReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("android.intent.action.HOME_BROADCAST");
+		AppApplication.getSingleContext().registerReceiver(receiver, filter);
 		return view;
+	}
+	public class HomeReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.d("dududududuudududuudud",currentPage+"");
+			currentPage=currentPage+1;
+			LoadData(false, currentPage);
+		}
 	}
 	private void setAdapter() {
 		ySJHomeCommonAdapter=new CommonAdapter<HomeYSJArtWork>(AppApplication.getSingleContext(),ySJHomeDatas,R.layout.mrdm_project_item) {
@@ -134,8 +154,8 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 
 	private void submitArtwork(String id, String userId, String s) {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("artworkId",id);
-		paramsMap.put("userId",userId);
+		paramsMap.put("artworkId", id);
+		paramsMap.put("userId", userId);
 		paramsMap.put("step", s);
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
@@ -154,7 +174,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 			@Override
 			public void onResponse(Map<String, Object> response) {
 				ySJHomeDatas.clear();
-				currentPage=1;
+				currentPage = 1;
 				LoadData(true, currentPage);
 			}
 		});
@@ -165,6 +185,15 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		super.onActivityCreated(savedInstanceState);
 
 	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		ySJHomeDatas.clear();
+		currentPage=1;
+		LoadData(true, currentPage);
+	}
+
 	private void onScroll() {
 		/*stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
 			@Override
@@ -187,11 +216,13 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 			}
 		});*/
 	}
+
 	@Override
 	protected void lazyLoad() {
 
+
 	}
-	private void LoadData(final boolean flag,int pageNum) {
+	public void LoadData(final boolean flag,int pageNum) {
 		more.setVisibility(View.GONE);
 		loading.setVisibility(View.VISIBLE);
 		loadFull.setVisibility(View.GONE);
@@ -270,5 +301,11 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 				}
 			}
 		});
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		getActivity().unregisterReceiver(receiver);
 	}
 }
