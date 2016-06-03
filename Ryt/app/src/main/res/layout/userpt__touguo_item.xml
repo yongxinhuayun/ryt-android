@@ -73,24 +73,5 @@
                 android:gravity="center"
                 android:layout_marginLeft="10dp"/>
         </LinearLayout>
-        <RelativeLayout
-            android:gravity="right"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/utf_tv_zanTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="1001"
-                android:gravity="center"
-                />
-            <ImageView
-                android:layout_toRightOf="@id/utf_tv_zanTotal"
-                android:id="@+id/utf_iv_zan"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/zan"/>
-        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

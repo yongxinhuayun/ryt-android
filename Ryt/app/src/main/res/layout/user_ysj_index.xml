@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
             android:background="#E9E9E9"
-            android:layout_height="1dp"></View>
+            android:layout_height="1dp"/>
     </RelativeLayout>
     <wuhj.com.mylibrary.StickHeaderLayout
         android:id="@+id/user_ysj_root"
@@ -63,7 +63,7 @@
             android:orientation="vertical"
             android:animateLayoutChanges="true"
             android:gravity="center">
-            <include layout="@layout/user_header" />
+            <include layout="@layout/user_header1" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

@@ -63,7 +63,7 @@
             android:animateLayoutChanges="true"
             android:gravity="center"
             android:orientation="vertical">
-            <include layout="@layout/user_header"/>
+            <include layout="@layout/user_header1"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

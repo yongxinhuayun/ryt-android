@@ -90,7 +90,7 @@
                 android:id="@+id/uzf_iv_zan"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/zan"/>
+                android:src="@mipmap/dianzanqian"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
