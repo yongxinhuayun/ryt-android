@@ -220,6 +220,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 	@Override
 	protected void lazyLoad() {
 
+
 	}
 	public void LoadData(final boolean flag,int pageNum) {
 		more.setVisibility(View.GONE);
