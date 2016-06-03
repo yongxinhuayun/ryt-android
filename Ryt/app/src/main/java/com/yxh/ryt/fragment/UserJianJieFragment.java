@@ -1,6 +1,7 @@
 package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.EditBriefActivity;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -138,6 +140,13 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 
 	@Override
 	public void onClick(View v) {
+		switch(v.getId()) {
+			case R.id.fue_bt_edit:
+				startActivity(new Intent(getActivity(), EditBriefActivity.class));
+				break;
+			default:
+				break;
 
+		}
 	}
 }
