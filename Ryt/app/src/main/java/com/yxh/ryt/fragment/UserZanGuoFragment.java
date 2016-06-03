@@ -106,7 +106,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		getActivity().unregisterReceiver(receiver);
+		AppApplication.getSingleContext().unregisterReceiver(receiver);
 	}
 	public class ZanReceiver extends BroadcastReceiver {
 

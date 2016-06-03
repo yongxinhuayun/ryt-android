@@ -111,7 +111,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		getActivity().unregisterReceiver(receiver);
+		AppApplication.getSingleContext().unregisterReceiver(receiver);
 	}
 	private String judgeStaus(String type){
 		if (type.equals("0")){
@@ -130,6 +130,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 				helper.setText(R.id.mwi_iv_title, item.getName());
 				helper.setText(R.id.mwi_tv_description, item.getMaterial() + "/" + Utils.timeToFormatTemp("yyyy", item.getCreateDatetime()) + "/" + judgeStaus(item.getType()));
 				if (userId.equals(currentId)){
+					helper.getView(R.id.mwi_iv_delete).setVisibility(View.VISIBLE);
 					helper.getView(R.id.mwi_iv_delete).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
@@ -152,6 +153,8 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 							builder.create().show();
 						}
 					});
+				}else {
+					helper.getView(R.id.mwi_iv_delete).setVisibility(View.GONE);
 				}
 
 			}

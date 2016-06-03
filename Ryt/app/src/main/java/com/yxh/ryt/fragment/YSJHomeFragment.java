@@ -82,6 +82,10 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ySJHomeDatas=new ArrayList<HomeYSJArtWork>();
+		receiver = new HomeReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("android.intent.action.HOME_BROADCAST");
+		AppApplication.getSingleContext().registerReceiver(receiver, filter);
 	}
 	@Override
 	public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,10 +96,6 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
 		setAdapter();
 		onScroll();
-		receiver = new HomeReceiver();
-		IntentFilter filter = new IntentFilter();
-		filter.addAction("android.intent.action.HOME_BROADCAST");
-		AppApplication.getSingleContext().registerReceiver(receiver, filter);
 		return view;
 	}
 	public class HomeReceiver extends BroadcastReceiver {
@@ -293,6 +293,6 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		getActivity().unregisterReceiver(receiver);
+		AppApplication.getSingleContext().unregisterReceiver(receiver);
 	}
 }

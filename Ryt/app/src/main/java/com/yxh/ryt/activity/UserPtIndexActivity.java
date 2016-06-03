@@ -85,6 +85,8 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
     ImageView letter;
     @Bind(R.id.uh1_iv_attention)
     ImageView attention;
+    @Bind(R.id.tv_top_ct)
+    TextView top;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,6 +178,7 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
     }
     //登录成功设置控件元素的值
     private void setLoginedViewValues(User user) {
+        top.setText(user.getName());
         AppApplication.displayImage(user.getPictureUrl(),rsIvHeadPortrait);
         tvUserHeaderName.setText(user.getName()+"");
         tvUserHeaderFsNum.setText(user.getCount1()+"");
