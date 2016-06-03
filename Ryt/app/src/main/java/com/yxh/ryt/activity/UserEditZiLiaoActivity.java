@@ -79,8 +79,9 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         tv_sex = (TextView) findViewById(R.id.tv_sex);
         //给控件设置内容
         AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
-        //tv_nickname.setText(AppApplication.gUser.getName());
-       // iv_sign.setText(AppApplication.gUser.getUserBrief().getSigner());
+        tv_nickname.setText(AppApplication.gUser.getName());
+        //iv_sign.setText(AppApplication.gUser.getUserBrief().getSigner());
+        inflatSign();
         //设置点击
         circleImageView.setOnClickListener(this);
         imageView.setOnClickListener(this);
@@ -336,5 +337,38 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 }
             }
 
+    }
+
+    //填充签名
+    public void inflatSign(){
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("userId", AppApplication.gUser.getId());
+        paramsMap.put("currentId", AppApplication.gUser.getId());
+        paramsMap.put("pageIndex", "1");
+        paramsMap.put("pageSize", "20");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "my.do", paramsMap, new RegisterCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                System.out.println("失败了");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                Map<String, Map<String, Map<String,String>>> map1 = (Map<String, Map<String, Map<String,String>>>) response.get("pageInfo");
+                Map<String, Map<String,String>> map2 =  map1.get("user");
+                Map<String,String> map3 = map2.get("userBrief");
+                String sign = map3.get("signer");
+               /* String sign = map.get("signer");*/
+                if (sign == null) {iv_sign.setText("");}else{
+                iv_sign.setText(sign);}
+
+            }
+        });
     }
 }
