@@ -30,7 +30,6 @@ import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.ToastUtil;
-import com.yxh.ryt.vo.Master;
 import com.zhy.http.okhttp.callback.FileCallBack;
 
 import java.io.File;
@@ -92,16 +91,19 @@ public class SplashActivity extends BaseActivity {
         initView();
         setShare();
         startAnimation();
+        checkVersion();
+        mSp = getSharedPreferences("config", Context.MODE_PRIVATE);
+        // 根据保存的状态 判断是否更新
+        boolean isUpdate = mSp.getBoolean(Constants.AUTO_UPDATE, true);
+        if (isUpdate) {
+            checkVersion();
+        } else {
+            handler.sendEmptyMessageDelayed(NO_UPDATE, 2000);
+        }
 
     }
 
     private void setShare() {
-        /*SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
-        SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex() + "");
-        SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");*/
         AppApplication.gUser.setMaster1((String) SPUtil.get(AppApplication.getSingleContext(), "current_master", ""));
         AppApplication.gUser.setId((String) SPUtil.get(AppApplication.getSingleContext(), "current_id", ""));
         AppApplication.gUser.setName((String) SPUtil.get(AppApplication.getSingleContext(), "current_name", ""));
@@ -135,8 +137,8 @@ public class SplashActivity extends BaseActivity {
             public void onResponse(Map<String, Object> response) {
                 Message msg = Message.obtain();
                 Log.w("YZJ",response.get("resultCode").toString());
-                if ("100014".equals(response.get("resultCode"))) {
-                    Map<String, String> map = (Map<String, String>) response.get("responseInfo");
+                if ("100013".equals(response.get("resultCode"))) {
+                    Map<String, String> map = (Map<String, String>) response.get("version_info");
 
                     downloadUrl = map.get("apk_url");
                     versionCode = map.get("version_code");
@@ -347,18 +349,11 @@ public class SplashActivity extends BaseActivity {
                 startActivity(new Intent(SplashActivity.this, GuideActivity.class));
             } else {
                 //跳转到首页
-                startActivity(new Intent(SplashActivity.this, IndexActivity.class));
-                mSp = getSharedPreferences("config", Context.MODE_PRIVATE);
-                // 根据保存的状态 判断是否更新
-                boolean isUpdate = mSp.getBoolean(Constants.AUTO_UPDATE, true);
-                if (isUpdate) {
-                    checkVersion();
-                } else {
-                    handler.sendEmptyMessageDelayed(NO_UPDATE, 2000);
-                }
+                //startActivity(new Intent(SplashActivity.this, IndexActivity.class));
+
             }
-            //跳转完成，移除splash界面
-            finish();
+
+           // finish();
         }
     };
 
