@@ -79,8 +79,9 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         tv_sex = (TextView) findViewById(R.id.tv_sex);
         //给控件设置内容
         AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
-        tv_nickname.setText(AppApplication.gUser.getName());
-        //iv_sign.setText(AppApplication.gUser.getUserBrief().getSigner());
+        //tv_nickname.setText(AppApplication.gUser.getName());
+       // tv_sex.setText(changSex(AppApplication.gUser.getSex()));
+
         inflatSign();
         //设置点击
         circleImageView.setOnClickListener(this);
@@ -179,11 +180,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inSampleSize = 4;
-//        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
         filePath = GetPathFromUri4kitkat.getPath(data);
-//        }else{
-//            filePath=ImageUtils.getRealPathByUriOld(data);
-//        }
         Bitmap bm = BitmapFactory.decodeFile(filePath, options);
         options.inJustDecodeBounds = false;
         bm = BitmapFactory.decodeFile(filePath, options);
@@ -364,11 +361,45 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 Map<String, Map<String,String>> map2 =  map1.get("user");
                 Map<String,String> map3 = map2.get("userBrief");
                 String sign = map3.get("signer");
-               /* String sign = map.get("signer");*/
-                if (sign == null) {iv_sign.setText("");}else{
-                iv_sign.setText(sign);}
+                Map<String,Map<String,Double>> map11 = (Map<String, Map<String, Double>>) response.get("pageInfo");
+                Map<String,Double> map22 = map11.get("user");
+                Double sex = map22.get("sex");
+                Map<String,Map<String,String>> map111 = (Map<String, Map<String, String>>) response.get("pageInfo");
+                Map<String,String> map222 = map111.get("user");
+                String name = map222.get("name");
 
+                /*User user = new User();
+                user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfo")), User.class);*/
+                if (sign == null) {
+                    iv_sign.setText("");
+                }else{
+                iv_sign.setText(sign);
+                }
+
+               tv_sex.setText(changSex(sex));
+                tv_nickname.setText(name);
+
+/*
+                tv_nickname.setText(user.getName());
+*/
             }
         });
     }
+
+    public String changSex(Double s) {
+        if(s.equals("2")) {
+            return "女";
+        }else if(s.equals("1")){
+            return "男";
+        }else{
+            return "保密";
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
 }
