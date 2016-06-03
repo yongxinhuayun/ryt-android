@@ -185,7 +185,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId","ieatht97wfw30hfd");
+		paramsMap.put("userId",userId);
 		paramsMap.put("currentId", currentId);
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");

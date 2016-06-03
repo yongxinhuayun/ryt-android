@@ -227,7 +227,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId","imhfp1yr4636pj49");
+		paramsMap.put("userId",userId);
 		paramsMap.put("currentId",currentId);
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");

@@ -178,7 +178,6 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 			}
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
 				if ("0".equals(response.get("resultCode"))) {
 					((ImageView) v).setImageResource(R.mipmap.dianzanhou);
 					AnimationSet animationSet=new AnimationSet(true);
