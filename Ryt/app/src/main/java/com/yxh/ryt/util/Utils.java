@@ -422,6 +422,16 @@ public class Utils {
 		}
 		return "";
 	}
+	public static Bitmap.CompressFormat getImageFormatBig(String url){
+		if (".jpg".equals(url.endsWith(".jpg"))){
+			return Bitmap.CompressFormat.JPEG;
+		}else if (".jpeg".equals(url.endsWith(".jpeg"))){
+			return Bitmap.CompressFormat.JPEG;
+		}else if ("png".equals(url.endsWith(".png"))){
+			return Bitmap.CompressFormat.PNG;
+		}
+		return Bitmap.CompressFormat.JPEG;
+	}
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
 		ListAdapter listAdapter = listView.getAdapter();
 		if (listAdapter == null) {

@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +29,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-
+@SuppressLint("ValidFragment")
 public class AttentionUserItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener {
 	private AutoListView lstv;
@@ -43,6 +44,9 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		this.userId=userId;
 		this.otherUserId=otherUserId;
 		this.flag=flag;
+	}
+
+	public AttentionUserItemFragment() {
 	}
 
 	@Override

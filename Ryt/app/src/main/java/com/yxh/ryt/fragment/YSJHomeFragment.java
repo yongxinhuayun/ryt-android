@@ -125,11 +125,17 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 						((TextView) helper.getView(R.id.mpi_tv_left)).setOnClickListener(new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								submitArtwork(item.getId(),userId,"10");
+								submitArtwork(item.getId(), userId, "10");
 							}
 						});
 						helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);
 						((TextView) helper.getView(R.id.mpi_tv_right)).setText("编辑项目");
+						helper.getView(R.id.mpi_tv_right).setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+
+							}
+						});
 					}else if ("21".equals(item.getStep()) || "22".equals(item.getStep())){
 						helper.getView(R.id.mpi_tv_left).setVisibility(View.VISIBLE);
 						((TextView) helper.getView(R.id.mpi_tv_left)).setText("创作完成");
@@ -195,26 +201,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 	}
 
 	private void onScroll() {
-		/*stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
-			@Override
-			public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				Log.d("TTTTTTTTTTTTTTTTT","jskljfsfslfjslfjfs");
 
-				lastItem = firstVisibleItem + visibleItemCount - 2;
-			}
-
-			@Override
-			public void onListViewScrollStateChanged(AbsListView view, int scrollState) {
-				if (lastItem == ySJHomeCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && loadComplete) {
-					more.setVisibility(View.GONE);
-					loading.setVisibility(View.VISIBLE);
-					loadFull.setVisibility(View.GONE);
-					noData.setVisibility(View.GONE);
-					currentPage = currentPage + 1;
-					LoadData(false, currentPage);
-				}
-			}
-		});*/
 	}
 
 	@Override
