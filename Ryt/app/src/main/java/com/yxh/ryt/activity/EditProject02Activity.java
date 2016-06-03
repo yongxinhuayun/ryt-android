@@ -21,6 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -29,6 +30,7 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.callback.LoginCallBack;
+import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.custemview.CustomGridView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetImageTask;
@@ -42,6 +44,7 @@ import com.yxh.ryt.util.phote.util.PublicWay;
 import com.yxh.ryt.util.phote.util.Res;
 import com.yxh.ryt.vo.ArtworkComment;
 import com.yxh.ryt.vo.Image;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -78,7 +81,6 @@ public class EditProject02Activity extends  BaseActivity {
     @Bind(R.id.ev_jiehuo)
     EditText evJieHuo;
     List<String> ImageList;
-    List<String> loaclPath;
     //艺术家发布项目第一步接口一网络请求
     private void twoStepRequst() {
         Map<String,String> paramsMap=new HashMap<>();
@@ -158,7 +160,7 @@ public class EditProject02Activity extends  BaseActivity {
                 }
             }
         });
-        loadData();
+        /*loadData();*/
     }
 
     private void loadData() {
@@ -214,7 +216,7 @@ public class EditProject02Activity extends  BaseActivity {
                                         Log.d("hhhhhhhhhhhhhhhhhhhhh",ImageList.get(location));
                                         mRecordFile = File.createTempFile("" + System.currentTimeMillis(), Utils.getImageFormat(ImageList.get(location)), sampleDir); //mp4格式
                                         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(mRecordFile));
-                                        result.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                                        result.compress(Utils.getImageFormatBig(ImageList.get(location)), 100, bos);
                                         bos.flush();
                                         bos.close();
                                         ImageItem imageItem = new ImageItem();
@@ -228,7 +230,6 @@ public class EditProject02Activity extends  BaseActivity {
                             }
                         },i);
                         imageTask.execute(ImageList.get(i));
-
                     }
                 }
             }

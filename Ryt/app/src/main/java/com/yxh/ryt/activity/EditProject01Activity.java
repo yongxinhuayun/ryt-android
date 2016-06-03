@@ -10,25 +10,35 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
+import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
+import com.yxh.ryt.util.phote.util.Bimp;
+import com.yxh.ryt.util.phote.util.ImageItem;
+import com.yxh.ryt.vo.Image;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -37,9 +47,11 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 /**
- * Created by 吴洪杰 on 2016/4/11.
+ *
  */
 public class EditProject01Activity extends  BaseActivity {
+    private int size;
+
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, EditProject01Activity.class));
     }
@@ -60,11 +72,89 @@ public class EditProject01Activity extends  BaseActivity {
     private static final String IMAGE_UNSPECIFIED = "image/*";
     private static final int ALBUM_REQUEST_CODE = 1;
     private static final int CAMERA_REQUEST_CODE = 2;
+    List<String> ImageList;
+    private  boolean next;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.public_project_01);
         ButterKnife.bind(this);
+        loadData();
+    }
+    private void loadData() {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("artWorkId", "imyt7yax314lpzzj");
+        paramsMap.put("currentUserId", "imhfp1yr4636pj49");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg=EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkView.do", paramsMap, new LoginCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                System.out.println("失败了");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                ImageList = new ArrayList<String>();
+                if ("0".equals(response.get("resultCode"))) {
+                    Map<String, Object> object = (Map<String, Object>) response.get("object");
+                    List<Image> list = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkAttachmentList")), new TypeToken<List<Image>>() {
+                    }.getType());
+                    if (list.size() > 9) {
+                        for (int i = 0; i < 9; i++) {
+                            ImageList.add(list.get(i).getFileName());
+                        }
+                    } else {
+                        for (int i = 0; i < list.size(); i++) {
+                            ImageList.add(list.get(i).getFileName());
+                        }
+                    }
+                    Bimp.tempSelectBitmap = new ArrayList<ImageItem>();
+                    for (int i = 0; i < ImageList.size(); i++) {
+                        final int finalI = i;
+                        NetRequestUtil.downloadImage(ImageList.get(i), new BitmapCallback() {
+                            @Override
+                            public void onError(Call call, Exception e) {
+
+                            }
+
+                            @Override
+                            public void onResponse(Bitmap response) {
+                                if (response != null) {
+                                    File sampleDir = new File(Environment.getExternalStorageDirectory() + File.separator + "image" + File.separator);
+                                    if (!sampleDir.exists()) {
+                                        sampleDir.mkdirs();
+                                    }
+                                    if (!sampleDir.isDirectory()) {
+                                        sampleDir.delete();
+                                        sampleDir.mkdirs();
+                                    }
+                                    File mRecordFile = null;
+                                    try {
+                                        mRecordFile = File.createTempFile("" + System.currentTimeMillis(), Utils.getImageFormat(ImageList.get(finalI)), sampleDir); //mp4格式
+                                        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(mRecordFile));
+                                        response.compress(Utils.getImageFormatBig(ImageList.get(finalI)), 100, bos);
+                                        bos.flush();
+                                        bos.close();
+                                        ImageItem imageItem = new ImageItem();
+                                        imageItem.setImagePath(mRecordFile.getAbsolutePath());
+                                        Bimp.tempSelectBitmap.add(imageItem);
+                                        size++;
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
     @OnClick(R.id.btn_next)
     public void next(View v){
@@ -127,11 +217,13 @@ public class EditProject01Activity extends  BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                 System.out.println("成功了");
-                Log.d("XXXXXXXXXXXXXXXXXXXXX", "YYYYYYYYYYY");
-                Log.d("tagonResponse", response.toString());
-                Intent intent=new Intent(EditProject01Activity.this,PublicProject02Activity.class);
-                intent.putExtra("artworkId", (String)response.get("artworkId")+"");
-                startActivity(intent);
+                if ("0".equals(response.get("resultCode"))){
+                    if (size==ImageList.size()){
+                        Intent intent=new Intent(EditProject01Activity.this,PublicProject02Activity.class);
+                        intent.putExtra("artworkId", (String)response.get("artworkId")+"");
+                        startActivity(intent);
+                    }
+                }
             }
         });
     }
