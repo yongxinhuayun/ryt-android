@@ -35,7 +35,7 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016/4/5.
  */
-public class PrivateLetterActivity extends BaseActivity implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener,AdapterView.OnItemClickListener {
+public class PrivateLetterActivity extends BaseActivity implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener{
     private CommonAdapter<PrivateLetter> plfAdapter;
     private List<PrivateLetter> privateLetterDatas;
     private int currentPage=1;
@@ -68,13 +68,13 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
     private void initView() {
         plfAdapter=new CommonAdapter<PrivateLetter>(AppApplication.getSingleContext(),privateLetterDatas,R.layout.privateletter_item) {
             @Override
-            public void convert(ViewHolder helper, PrivateLetter item) {
+            public void convert(ViewHolder helper, final PrivateLetter item) {
                 if ("0".equals(item.getIsWatch())){
                     helper.setColor(R.id.pli_rl_all, Color.rgb(250, 250, 250));
                 }
                 if (item.getFromUser()!=null){
                     helper.setImageByUrl(R.id.pi_iv_icon, item.getFromUser().getPictureUrl());
-                    helper.setText(R.id.pi_tv_name,item.getFromUser().getName());
+                    helper.setText(R.id.pi_tv_name, item.getFromUser().getName());
                 }
                 helper.setText(R.id.pi_tv_content,item.getContent());
                 if (item.getIsRead()==0){
@@ -85,18 +85,34 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
                 }else if (item.getIsRead()<0){
                     helper.getView(R.id.pli_ll_count).setVisibility(View.GONE);
                 }
+                if (item!=null){
+                    helper.getView(R.id.pli_rl_all).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            click(item);
+                        }
+                    });
+                }
 
             }
         };
         plflistview.setAdapter(plfAdapter);
         plflistview.setOnLoadListener(this);
         plflistview.setOnRefreshListener(this);
-        plflistview.setOnItemClickListener(this);
+    }
+
+    private void click(PrivateLetter item) {
+        Intent intent=new Intent(this,MsgActivity.class);
+        intent.putExtra("userId",AppApplication.gUser.getId());
+        intent.putExtra("currentName",item.getTargetUser().getName());
+        intent.putExtra("formId", item.getFromUser().getId());
+        intent.putExtra("name", item.getFromUser().getName());
+        startActivity(intent);
     }
 
     private void LoadData(final int state,int pageNum) {
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId","ieatht97wfw30hfd");
+        paramsMap.put("userId",AppApplication.gUser.getId());
         paramsMap.put("type","2");
         paramsMap.put("pageSize",Constants.pageSize+"");
         paramsMap.put("pageNum", pageNum+"");
@@ -114,7 +130,7 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if (state==AutoListView.REFRESH){
+                if (state == AutoListView.REFRESH) {
                     plflistview.onRefreshComplete();
                     privateLetterDatas.clear();
                     List<PrivateLetter> notificationList = null;
@@ -124,24 +140,24 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
                     } catch (JsonSyntaxException e) {
                         e.printStackTrace();
                     }
-                    if(null==notificationList||notificationList.size()==0){
+                    if (null == notificationList || notificationList.size() == 0) {
                         plflistview.setResultSize(0);
                     }
-                    if (null!=notificationList&&notificationList.size()>0){
+                    if (null != notificationList && notificationList.size() > 0) {
                         plflistview.setResultSize(notificationList.size());
                         privateLetterDatas.addAll(notificationList);
                         plfAdapter.notifyDataSetChanged();
                     }
                     return;
                 }
-                if (state==AutoListView.LOAD){
+                if (state == AutoListView.LOAD) {
                     plflistview.onLoadComplete();
                     List<PrivateLetter> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<PrivateLetter>>() {
                     }.getType());
-                    if(null==notificationList||notificationList.size()==0){
+                    if (null == notificationList || notificationList.size() == 0) {
                         plflistview.setResultSize(1);
                     }
-                    if (null!=notificationList&&notificationList.size()>0) {
+                    if (null != notificationList && notificationList.size() > 0) {
                         plflistview.setResultSize(notificationList.size());
                         privateLetterDatas.addAll(notificationList);
                         plfAdapter.notifyDataSetChanged();
@@ -164,13 +180,6 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
         LoadData(AutoListView.REFRESH,currentPage);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent=new Intent(this,MsgActivity.class);
-        intent.putExtra("formId",privateLetterDatas.get(position-1).getFromUser().getId());
-        intent.putExtra("name",privateLetterDatas.get(position-1).getFromUser().getName());
-        startActivity(intent);
-    }
 
     @Override
     protected void onDestroy() {

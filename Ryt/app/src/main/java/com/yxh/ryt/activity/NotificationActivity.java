@@ -83,7 +83,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
 
     private void LoadData(final int state,int pageNum) {
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId","ieatht97wfw30hfd");
+        paramsMap.put("userId",AppApplication.gUser.getId());
         paramsMap.put("type","0");
         paramsMap.put("pageSize",Constants.pageSize+"");
         paramsMap.put("pageNum", pageNum+"");

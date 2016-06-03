@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -60,6 +61,8 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 	private String fromId="";
 	private String name;
 	private TextView title;
+	private String userId;
+	private String currentName;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,6 +71,8 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		fromId=getIntent().getStringExtra("formId");
 		name = getIntent().getStringExtra("name");
+		userId = getIntent().getStringExtra("userId");
+		currentName = getIntent().getStringExtra("currentName");
 		EventBus.getDefault().register(this);
 		initView();
 	}
@@ -102,8 +107,7 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 		if (contString.length() > 0) {
 			ChatMsgEntity entity = new ChatMsgEntity();
 			entity.setDate(Utils.getCurrentTime());
-			/*entity.setName(AppApplication.gUser.getName());*/
-			entity.setName("温群英");
+			entity.setName(currentName);
 			entity.setMsgType(false);
 			entity.setText(contString);
 			pushMessageRequst();
@@ -118,7 +122,7 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("content",mEditTextContent.getText()+"");
 		/*paramsMap.put("fromUserId",AppApplication.gUser.getId() );*/
-		paramsMap.put("fromUserId","ieatht97wfw30hfd" );
+		paramsMap.put("fromUserId",userId );
 		paramsMap.put("targetUserId",fromId );
 		paramsMap.put("timestamp",System.currentTimeMillis()+"");
 		try {
@@ -142,9 +146,12 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 	}
 	@Subscribe
 	public void onEventMainThread(ChatMsgEntity entity) {
-		mDataArrays.add(entity);
-		mAdapter.notifyDataSetChanged();
-		mListView.setSelection(mListView.getCount() - 1);
+		if (entity.getUserId().equals(fromId)){
+			entity.setName(name);
+			mDataArrays.add(entity);
+			mAdapter.notifyDataSetChanged();
+			mListView.setSelection(mListView.getCount() - 1);
+		}
 	}
 
 	@Override
@@ -160,7 +167,7 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 	}
 	private void LoadData() {
 		Map<String, String> paramsMap = new HashMap<>();
-		paramsMap.put("userId", "ieatht97wfw30hfd");
+		paramsMap.put("userId", userId);
 		paramsMap.put("fromUserId", fromId);
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
@@ -189,7 +196,7 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 						/*if(AppApplication.gUser.getId().equals(next.getFromUser().getId())) {
 							entity.setMsgType(false);
 						}*/
-						if("ieatht97wfw30hfd".equals(next.getFromUser().getId())) {
+						if(userId.equals(next.getFromUser().getId())) {
 							entity.setMsgType(false);
 						}
 						mDataArrays.add(entity);

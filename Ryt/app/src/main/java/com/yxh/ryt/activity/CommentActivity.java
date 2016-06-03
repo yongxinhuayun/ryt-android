@@ -52,7 +52,7 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
         artworkCommentDatas =new ArrayList<ArtworkCommentMsg>();
         initView();
         cmlistview.setPageSize(Constants.pageSize);
-        LoadData(AutoListView.REFRESH, currentPage);
+
     }
 
     private void initView() {
@@ -84,6 +84,7 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
                         Intent intent=new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
                         intent.putExtra("name", item.getCreator().getName());
                         intent.putExtra("fatherCommentId", item.getId());
+                        intent.putExtra("currentUserId",AppApplication.gUser.getId());
                         intent.putExtra("artworkId", item.getArtwork().getId());
                         intent.putExtra("flag", 0);
                         intent.putExtra("messageId", "");
@@ -139,7 +140,7 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
 
     private void LoadData(final int state,int pageNum) {
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId","ieatht97wfw30hfd");
+        paramsMap.put("userId",AppApplication.gUser.getId());
         paramsMap.put("type","1");
         paramsMap.put("pageSize",Constants.pageSize+"");
         paramsMap.put("pageNum", pageNum+"");
@@ -200,6 +201,14 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
     public void onLoad() {
         currentPage++;
         LoadData(AutoListView.LOAD,currentPage);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        currentPage=1;
+        artworkCommentDatas.clear();
+        LoadData(AutoListView.REFRESH, currentPage);
     }
 
     @Override

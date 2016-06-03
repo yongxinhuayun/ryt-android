@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -78,6 +79,12 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
     TextView tvUserHeaderJeValue03;
     @Bind(R.id.tv_user_header_je_txt_03)
     TextView tvUserHeaderJeTxt03;
+    @Bind(R.id.uh1_ll_other)
+    LinearLayout other;
+    @Bind(R.id.uh1_iv_privateLetter)
+    ImageView letter;
+    @Bind(R.id.uh1_iv_attention)
+    ImageView attention;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +105,9 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
         mViewPager.setAdapter(pagerAdapter);
         TabPageIndicator indicator = (TabPageIndicator) findViewById(R.id.user_pt_indicator);
         indicator.setViewPager(mViewPager);
+        if (!userId.equals(currentId)){
+            other.setVisibility(View.GONE);
+        }
     }
     @Override
     public void onResume() {
@@ -128,9 +138,23 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
                     }
                     if (response.get("resultCode").equals("0")) {
                         Map<String, Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
-                        User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")), User.class);
+                        final User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")), User.class);
+                        boolean followed = (boolean) pageInfo.get("followed");
+                        if (followed){
+                            attention.setImageResource(R.mipmap.guanzhuhou);
+                        }else {
+                            attention.setImageResource(R.mipmap.guanzhuqian);
+                        }
                         if (user != null) {
                             setLoginedViewValues(user);
+                            if (!currentId.equals(userId)){
+                                letter.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        letterTrans(user);
+                                    }
+                                });
+                            }
                         }
                     }
 
@@ -142,7 +166,14 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
             return;
         }
     }
-
+    private void letterTrans(User user) {
+        Intent intent=new Intent(this,MsgActivity.class);
+        intent.putExtra("userId",currentId);
+        intent.putExtra("currentName",AppApplication.gUser.getName());
+        intent.putExtra("formId", userId);
+        intent.putExtra("name", user.getName());
+        startActivity(intent);
+    }
     //登录成功设置控件元素的值
     private void setLoginedViewValues(User user) {
         AppApplication.displayImage(user.getPictureUrl(),rsIvHeadPortrait);
