@@ -38,5 +38,6 @@ public class Constants {
     /*自动更新*/
     public static final String AUTO_UPDATE = "auto_update";
 
-
+    // 编辑昵称
+    public static final String EDIT_NICKNAME_SUC = "edit_nickname_suc";
 }

@@ -1,7 +1,6 @@
 package com.yxh.ryt.vo;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class UserBrief implements Serializable {//用户简介表
     private String id;
@@ -9,7 +8,7 @@ public class UserBrief implements Serializable {//用户简介表
     private String type;// 1 大师 2 普通用户
     private User user;//关联用户
     private String content;//简介内容
-    private String signer;//简介内容
+    private String signer;//个性签名
     private long createDatetime;
 
     public String getId() {
