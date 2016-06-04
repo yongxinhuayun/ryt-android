@@ -2,7 +2,6 @@ package com.yxh.ryt.activity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -63,6 +62,7 @@ public class SplashActivity extends BaseActivity {
                     break;
                 case NO_UPDATE:
                     enterHome();
+                    finish();
                     break;
                 case URL_ERROR:
                     ToastUtil.showShort(getApplicationContext(), "网络异常");
@@ -91,15 +91,14 @@ public class SplashActivity extends BaseActivity {
         initView();
         setShare();
         startAnimation();
-        checkVersion();
-        mSp = getSharedPreferences("config", Context.MODE_PRIVATE);
+       /* mSp = getSharedPreferences("config", Context.MODE_PRIVATE);
         // 根据保存的状态 判断是否更新
         boolean isUpdate = mSp.getBoolean(Constants.AUTO_UPDATE, true);
         if (isUpdate) {
             checkVersion();
         } else {
             handler.sendEmptyMessageDelayed(NO_UPDATE, 2000);
-        }
+        }*/
 
     }
 
@@ -149,7 +148,7 @@ public class SplashActivity extends BaseActivity {
                         msg.what = UPDATE_DIALOG;
                     }
                 } else {
-                    msg.what = NET_ERROR;
+                   enterHome();
                 }
 
                 handler.sendMessage(msg);
@@ -158,9 +157,17 @@ public class SplashActivity extends BaseActivity {
 
     }
 
-
     protected void enterHome() {
-        startActivity(new Intent(SplashActivity.this, IndexActivity.class));
+       /* startActivity(new Intent(SplashActivity.this, IndexActivity.class));*/
+         boolean isfirstenter = (boolean) SPUtil.get(getApplicationContext(), Constants.ISFIRSTENTER, true);
+            if (isfirstenter) {
+                //跳转到引导界面
+                startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+            } else {
+                //跳转到首页
+                startActivity(new Intent(SplashActivity.this, IndexActivity.class));
+
+            }
         finish();
     }
 
@@ -343,15 +350,16 @@ public class SplashActivity extends BaseActivity {
         public void onAnimationEnd(Animation animation) {
             //跳转界面
             //判断，如果是第一次打开，跳转引导页面，如果不是第一次打开，跳转到首页
-            boolean isfirstenter = (boolean) SPUtil.get(getApplicationContext(), Constants.ISFIRSTENTER, true);
+            checkVersion();
+           /* boolean isfirstenter = (boolean) SPUtil.get(getApplicationContext(), Constants.ISFIRSTENTER, true);
             if (isfirstenter) {
                 //跳转到引导界面
                 startActivity(new Intent(SplashActivity.this, GuideActivity.class));
             } else {
                 //跳转到首页
-                //startActivity(new Intent(SplashActivity.this, IndexActivity.class));
+                startActivity(new Intent(SplashActivity.this, IndexActivity.class));
 
-            }
+            }*/
 
            // finish();
         }
