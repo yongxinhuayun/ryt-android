@@ -48,7 +48,7 @@
         android:singleLine="false"
         android:gravity="top"
         android:hint="编辑简介"
-        android:background="@drawable/shape_et"
+        android:background="@drawable/public_brief_et_bg"
         android:padding="14dp"
         />
 </LinearLayout>

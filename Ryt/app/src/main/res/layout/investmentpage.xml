@@ -169,6 +169,7 @@
                 android:textSize="14sp"
                 android:layout_marginRight="10dp"
                 android:textColorHint="#808080"
+                android:numeric="integer"
                 android:background="@null"/>
             <TextView
                 android:text="元"

@@ -23,7 +23,6 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.ProjectCommentReply;
-import com.yxh.ryt.activity.RegisterActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
@@ -135,7 +134,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                 user.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(AppApplication.getSingleContext(), RegisterActivity.class);
+                        Intent intent = new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         AppApplication.getSingleContext().startActivity(intent);
                     }

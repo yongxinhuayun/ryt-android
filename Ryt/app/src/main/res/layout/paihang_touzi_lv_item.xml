@@ -37,7 +37,8 @@
                 android:layout_centerVertical="true"
                 android:textSize="14sp"
                 android:textColor="@android:color/black"
-                android:text="用户昵"/>
+                android:layout_marginLeft="5dp"
+                android:text="用户昵称"/>
         </RelativeLayout>
         <TextView
             android:id="@+id/cl_01_civ_rois"
