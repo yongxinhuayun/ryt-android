@@ -7,11 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,16 +43,11 @@ import com.yxh.ryt.util.phote.util.PublicWay02;
 import com.yxh.ryt.util.phote.util.PublicWay03;
 import com.yxh.ryt.util.phote.util.PublicWay04;
 import com.yxh.ryt.util.phote.util.Res;
-import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.CityModel;
 import com.yxh.ryt.vo.DistrictModel;
 import com.yxh.ryt.vo.ProvinceModel;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,8 +62,6 @@ import okhttp3.Call;
  * Created by 吴洪杰 on 2016/4/21.
  */
 public class YsjRzActivity extends BaseActivity {
-    @Bind(R.id.ib_top_lf)
-    ImageButton ibTopLf;
     @Bind(R.id.tv_top_ct)
     TextView tvTopCt;
     @Bind(R.id.rl_top)
@@ -113,6 +103,8 @@ public class YsjRzActivity extends BaseActivity {
     int sum02=3;
     int sum03=3;
     int sum04=3;
+    private ImageButton back;
+
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, YsjRzActivity.class));
     }
@@ -167,6 +159,13 @@ public class YsjRzActivity extends BaseActivity {
         PublicWay.activityList.add(this);
         PublicWay02.activityList.add(this);
         setContentView(R.layout.ysj_sq);
+        back = (ImageButton) findViewById(R.id.ib_top_lf);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         getWindow().setSoftInputMode(WindowManager.LayoutParams.
                 SOFT_INPUT_ADJUST_PAN);
         ButterKnife.bind(this);

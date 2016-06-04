@@ -14,6 +14,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.AttentionActivity;
+import com.yxh.ryt.activity.FansActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.PublicProject01Activity;
 import com.yxh.ryt.activity.UserEditZiLiaoActivity;
@@ -114,9 +115,20 @@ public class TabFragment04 extends BaseFragment {
             return;
         }
     }
-    @OnClick(R.id.tv_user_header_gz)
-    public void attention(){
+    //关注点击事件
+    @OnClick(R.id.ll_header_gz)
+    public void fans(){
         Intent intent=new Intent(getActivity(), AttentionActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("userId", AppApplication.gUser.getId() + "");
+        intent.putExtra("otherUserId",AppApplication.gUser.getId()+"");
+        intent.putExtra("flag","1");
+        getActivity().startActivity(intent);
+    }
+    //粉丝点击事件
+    @OnClick(R.id.ll_header_fs)
+    public void attention(){
+        Intent intent=new Intent(getActivity(), FansActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("userId", AppApplication.gUser.getId() + "");
         intent.putExtra("otherUserId",AppApplication.gUser.getId()+"");
