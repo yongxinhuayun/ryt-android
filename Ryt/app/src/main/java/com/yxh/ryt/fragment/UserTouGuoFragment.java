@@ -109,7 +109,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		getActivity().unregisterReceiver(receiver);
+		AppApplication.getSingleContext().unregisterReceiver(receiver);
 	}
 	private void setAdapter() {
 		userZGCommonAdapter=new CommonAdapter<ConvertWork>(AppApplication.getSingleContext(),userZGDatas,R.layout.userpt__touguo_item) {

@@ -360,7 +360,12 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 Map<String, Map<String, Map<String,String>>> map1 = (Map<String, Map<String, Map<String,String>>>) response.get("pageInfo");
                 Map<String, Map<String,String>> map2 =  map1.get("user");
                 Map<String,String> map3 = map2.get("userBrief");
-                String sign = map3.get("signer");
+                String sign =null;
+                if (map3==null){
+                    sign = "";
+                }else {
+                    sign = map3.get("signer");
+                }
                 Map<String,Map<String,Double>> map11 = (Map<String, Map<String, Double>>) response.get("pageInfo");
                 Map<String,Double> map22 = map11.get("user");
                 Double sex = map22.get("sex");

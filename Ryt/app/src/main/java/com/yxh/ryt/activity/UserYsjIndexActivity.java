@@ -98,6 +98,8 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
     ImageView letter;
     @Bind(R.id.uh1_iv_attention)
     ImageView attention;
+    @Bind(R.id.tv_top_ct)
+    TextView top;
     private PushWorkReceiver receiver;
 //    @Bind({R.id.ll_header_gz, R.id.ll_header_fs, R.id.ll_header_qm, R.id.ll_header_value})
 //    List<LinearLayout> linearLayouts;
@@ -223,6 +225,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
 
     //登录成功设置控件元素的值
     private void setLoginedViewValues(User user) {
+        top.setText(user.getName());
         AppApplication.displayImage(user.getPictureUrl(), rsIvHeadPortrait);
         tvUserHeaderName.setText(user.getName());
         tvUserHeaderFsNum.setText(user.getCount1()+"");
