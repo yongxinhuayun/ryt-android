@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,9 +46,7 @@ import com.yxh.ryt.fragment.RongZiXiangQingTab02Fragment;
 import com.yxh.ryt.fragment.RongZiXiangQingTab03Fragment;
 import com.yxh.ryt.fragment.RongZiXiangQingTab04Fragment;
 import com.yxh.ryt.util.EncryptUtil;
-import com.yxh.ryt.util.GetImageTask;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Artwork;
@@ -63,10 +60,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -165,10 +158,10 @@ public class RongZiXQActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
     }
-    @OnClick({R.id.iv_tab_02,R.id.ib_top_lf,R.id.ib_top_rt,R.id.iv_tab_01,R.id.rzxq_tv_invest})
+    @OnClick({R.id.ll_comment,R.id.ib_top_lf,R.id.ib_top_rt,R.id.iv_tab_01,R.id.rzxq_tv_invest})
     public void comment(View view){
         switch (view.getId()){
-            case R.id.iv_tab_02:
+            case R.id.ll_comment:
                 if ("".equals(AppApplication.gUser.getId())){
                     Intent intent2=new Intent(RongZiXQActivity.this,LoginActivity.class);
                     startActivity(intent2);

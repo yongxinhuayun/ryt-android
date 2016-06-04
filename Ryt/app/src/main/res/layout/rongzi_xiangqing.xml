@@ -328,7 +328,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/iv_tab_02"
+            android:layout_toLeftOf="@+id/ll_comment"
             android:layout_toRightOf="@+id/rzxq_tv_zan"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="28dp">
@@ -345,22 +345,30 @@
         </LinearLayout>
 
 
+<LinearLayout
+    android:layout_centerVertical="true"
+    android:layout_marginRight="28dp"
+    android:layout_alignParentRight="true"
+    android:id="@+id/ll_comment"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_toLeftOf="@+id/rzxq_tv_pinglun"
+        android:id="@+id/iv_tab_02"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@mipmap/pinglun" />
+    <TextView
+        android:id="@+id/rzxq_tv_pinglun"
+        android:text="评论"
 
-            <ImageView
-                android:layout_toLeftOf="@+id/rzxq_tv_pinglun"
-                android:id="@+id/iv_tab_02"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@mipmap/pinglun" />
-        <TextView
-            android:layout_alignParentRight="true"
-            android:id="@+id/rzxq_tv_pinglun"
-            android:text="评论"
-            android:layout_marginRight="28dp"
-            android:layout_marginLeft="6dp"
-            android:gravity="center_vertical"
-            android:textColor="#999999"
-            android:textSize="15sp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+        android:layout_marginLeft="6dp"
+
+        android:textColor="#999999"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+</LinearLayout>
+
     </RelativeLayout></LinearLayout>
