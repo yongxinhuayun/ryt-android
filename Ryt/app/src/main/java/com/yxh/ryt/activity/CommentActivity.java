@@ -75,6 +75,7 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
                         AppApplication.getSingleContext().startActivity(intent);
                     }
                 });
+                helper.setImageByUrl(R.id.ci_iv_projectIcon,item.getArtwork().getPicture_url());
                 helper.setText(R.id.ci_tv_otherNickname,item.getCreator().getName());
                 helper.setText(R.id.ci_tv_date,Utils.timeTrans(item.getCreateDatetime()));
                 helper.setImageByUrl(R.id.ci_iv_otherIcon, item.getCreator().getPictureUrl());
