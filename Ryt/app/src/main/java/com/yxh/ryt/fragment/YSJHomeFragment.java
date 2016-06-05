@@ -5,7 +5,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +23,13 @@ import com.viewpagerindicator.IcsLinearLayout;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.EditProject01Activity;
+import com.yxh.ryt.activity.PublicDongtaiImageActivity;
+import com.yxh.ryt.activity.RecordVedioActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
+import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.vo.ChatMsgEntity;
@@ -31,6 +38,7 @@ import com.yxh.ryt.vo.HomeYSJArtWork;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -133,7 +141,10 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 						helper.getView(R.id.mpi_tv_right).setOnClickListener(new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
-
+								Intent intent=new Intent(getActivity(), EditProject01Activity.class);
+								intent.putExtra("artWorkId",item.getId());
+								intent.putExtra("currentUserId",AppApplication.gUser.getId());
+								getActivity().startActivity(intent);
 							}
 						});
 					}else if ("21".equals(item.getStep()) || "22".equals(item.getStep())){
@@ -141,6 +152,12 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 						((TextView) helper.getView(R.id.mpi_tv_left)).setText("创作完成");
 						helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);
 						((TextView) helper.getView(R.id.mpi_tv_right)).setText("发布动态");
+						helper.getView(R.id.mpi_tv_right).setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								dynamic(item.getId());
+							}
+						});
 					}
 				}
 
@@ -156,6 +173,32 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		loading.setVisibility(View.GONE);
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
+	}
+
+	private void dynamic(final String id) {
+		new ActionSheetDialog(getActivity())
+				.builder()
+				.setCancelable(false)
+				.setCanceledOnTouchOutside(true)
+				.addSheetItem("发布图片", ActionSheetDialog.SheetItemColor.Blue,
+						new ActionSheetDialog.OnSheetItemClickListener() {
+							@Override
+							public void onClick(int which) {
+								Intent intent=new Intent(getActivity(), PublicDongtaiImageActivity.class);
+								intent.putExtra("artWorkId",id);
+								getActivity().startActivity(intent);
+							}
+						})
+				.addSheetItem("发布视频", ActionSheetDialog.SheetItemColor.Blue,
+						new ActionSheetDialog.OnSheetItemClickListener() {
+							@Override
+							public void onClick(int which) {
+								Intent intent=new Intent(getActivity(), RecordVedioActivity.class);
+								intent.putExtra("artWorkId",id);
+								getActivity().startActivity(intent);
+							}
+						})
+				.show();
 	}
 
 	private void submitArtwork(String id, String userId, String s) {

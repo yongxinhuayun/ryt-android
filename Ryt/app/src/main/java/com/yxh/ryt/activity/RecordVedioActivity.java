@@ -22,6 +22,7 @@ public class RecordVedioActivity extends BaseActivity {
 	private Button mShootBtn;//视频开始录制按钮
 	private boolean isFinish = true;
 	private boolean success = false;//防止录制完成后出现多次跳转事件
+	private String artWorkId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class RecordVedioActivity extends BaseActivity {
 		setContentView(R.layout.activity_main);
 		mRecorderView = (MovieRecorderView) findViewById(R.id.movieRecorderView);
 		mShootBtn = (Button) findViewById(R.id.shoot_button);
-
+		artWorkId = getIntent().getStringExtra("artWorkId");
 		//用户长按事件监听
 		mShootBtn.setOnTouchListener(new OnTouchListener() {
 
@@ -109,6 +110,7 @@ public class RecordVedioActivity extends BaseActivity {
 			Intent intent = new Intent(this, ReleaseVideoActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("text", mRecorderView.getmRecordFile().toString());
+			bundle.putString("artWorkId", artWorkId);
 			Log.d("mRecorderView", "222222222222222222");
 			Log.d("mRecorderView", mRecorderView.getmRecordFile().getAbsolutePath());
 			Log.d("mRecorderView", mRecorderView.getmRecordFile().toString());

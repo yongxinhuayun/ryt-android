@@ -46,6 +46,8 @@ public class ReleaseVideoActivity extends  BaseActivity {
     VideoView videoView;//视频播放控件
     @Bind(R.id.rv_et_content)
     EditText content;
+    private String artWorkId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,7 @@ public class ReleaseVideoActivity extends  BaseActivity {
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         Bundle bundle = getIntent().getExtras();
         file = bundle.getString("text");//获得拍摄的短视频保存地址
+        artWorkId = bundle.getString("artWorkId");
         setValue();
     }
     private void setValue() {
@@ -91,7 +94,7 @@ public class ReleaseVideoActivity extends  BaseActivity {
         fileMap.put(file1.getName(), file1);
         String s = content.getText().toString();
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("artworkId","imy8yuae256uv1vp");
+        paramsMap.put("artworkId",artWorkId);
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));

@@ -1,6 +1,5 @@
 package com.yxh.ryt.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
@@ -28,7 +28,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-@SuppressLint("ValidFragment")
+
 public class AttentionArtItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener {
 	private AutoListView lstv;
@@ -44,9 +44,6 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 		this.userId=userId;
 		this.flag=flag;
 		this.otherUserId=otherUserId;
-	}
-
-	public AttentionArtItemFragment() {
 	}
 
 	@Override
@@ -132,7 +129,13 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							Attention_user(v,followId);
+							if ("".equals(AppApplication.gUser.getId())){
+								Intent intent=new Intent(getActivity(), LoginActivity.class);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								getActivity().startActivity(intent);
+							}else {
+								Attention_user(v,followId);
+							}
 						}
 					});
 				}else if (null==item.getFlag() || "1".equals(item.getFlag())){
@@ -140,12 +143,20 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							NoAttention_user(v,followId);
+							if ("".equals(AppApplication.gUser.getId())){
+								Intent intent=new Intent(getActivity(), LoginActivity.class);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								getActivity().startActivity(intent);
+							}else {
+								NoAttention_user(v,followId);
+							}
 						}
 					});
 				}
 				helper.setText(R.id.fai_tv_name, item.getArtUserFollowed().getFollower().getName());
-				helper.setText(R.id.fai_tv_brief, item.getUserBrief().getContent());
+				if (item.getArtUserFollowed().getUser().getMaster()!=null){
+					helper.setText(R.id.fai_tv_brief, item.getArtUserFollowed().getUser().getMaster().getBrief());
+				}
 				helper.setImageByUrl(R.id.fai_iv_icon, item.getArtUserFollowed().getFollower().getPictureUrl());
 
 

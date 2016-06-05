@@ -211,9 +211,50 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
         super.onDestroy();
         ButterKnife.unbind(this);
     }
-    @OnClick(R.id.ib_top_lf)
-    public void back(){
-        finish();
+    @OnClick({R.id.ib_top_lf,R.id.ll_header_gz,R.id.ll_header_fs})
+    public void dianji(View view){
+        switch (view.getId()){
+            case R.id.ib_top_lf:
+                finish();
+                break;
+            case R.id.ll_header_gz:
+                if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
+                    Intent intent=new Intent(this, AttentionActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("userId", currentId);
+                    intent.putExtra("otherUserId",userId);
+                    if(currentId.equals(userId)){
+                        intent.putExtra("flag","1");
+                    }else {
+                        intent.putExtra("flag","2");
+                    }
+                    startActivity(intent);
+                }else {
+                    Intent intent=new Intent(this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_header_fs:
+                if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
+                    Intent intent=new Intent(this, FansActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("userId", currentId);
+                    intent.putExtra("otherUserId",userId);
+                    if(currentId.equals(userId)){
+                        intent.putExtra("flag","1");
+                    }else {
+                        intent.putExtra("flag","2");
+                    }
+                    startActivity(intent);
+                }else {
+                    Intent intent=new Intent(this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                break;
+        }
+
     }
 
     @Override

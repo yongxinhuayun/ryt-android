@@ -358,8 +358,14 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
             @Override
             public void onResponse(Map<String, Object> response) {
                 Map<String, Map<String, Map<String,String>>> map1 = (Map<String, Map<String, Map<String,String>>>) response.get("pageInfo");
-                Map<String, Map<String,String>> map2 =  map1.get("user");
-                Map<String,String> map3 = map2.get("userBrief");
+                Map<String, Map<String,String>> map2 =null;
+                if (map1!=null){
+                    map2 =  map1.get("user");
+                }
+                Map<String,String> map3 =null;
+                if (map2!=null){
+                    map3=map2.get("userBrief");
+                }
                 String sign =null;
                 if (map3==null){
                     sign = "";

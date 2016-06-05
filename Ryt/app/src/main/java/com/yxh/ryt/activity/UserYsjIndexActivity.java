@@ -232,8 +232,8 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
         tvUserHeaderGzNum.setText(user.getCount()+"");
         tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getContent()+"");
         tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
-        tvUserHeaderJeValue02.setText("￥"+user.getRoiMoney());
-        tvUserHeaderJeValue03.setText(0==user.getRate()?"0%":user.getRate()*100+"%");
+        tvUserHeaderJeValue02.setText("￥" + user.getRoiMoney());
+        tvUserHeaderJeValue03.setText(0 == user.getRate() ? "0%" : user.getRate() * 100 + "%");
         tvUserHeaderJeTxt01.setText("项目总金额");
         tvUserHeaderJeTxt02.setText("项目拍卖总金额");
         tvUserHeaderJeTxt03.setText("拍卖溢价率");
@@ -358,9 +358,50 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                 break;
         }
     }
-    @OnClick(R.id.ib_top_lf)
-    public void back(){
-        finish();
+    @OnClick({R.id.ib_top_lf,R.id.ll_header_gz,R.id.ll_header_fs})
+    public void dianji(View view){
+        switch (view.getId()){
+            case R.id.ib_top_lf:
+                finish();
+                break;
+            case R.id.ll_header_gz:
+                if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
+                    Intent intent=new Intent(this, AttentionActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("userId", currentId);
+                    intent.putExtra("otherUserId",userId);
+                    if(currentId.equals(userId)){
+                        intent.putExtra("flag","1");
+                    }else {
+                        intent.putExtra("flag","2");
+                    }
+                    startActivity(intent);
+                }else {
+                    Intent intent=new Intent(this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_header_fs:
+                if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
+                    Intent intent=new Intent(this, FansActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("userId", currentId);
+                    intent.putExtra("otherUserId",userId);
+                    if(currentId.equals(userId)){
+                        intent.putExtra("flag","1");
+                    }else {
+                        intent.putExtra("flag","2");
+                    }
+                    startActivity(intent);
+                }else {
+                    Intent intent=new Intent(this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                break;
+        }
+
     }
 }
 

@@ -25,8 +25,17 @@ public class Artwork implements Serializable {
     private List<ArtworkInvest> artworkInvestTopList;//投资者前三名
     private int praiseNUm;
     private  boolean praise;
+    private int duration;
     public Master getMaster() {
         return master;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public void setMaster(Master master) {

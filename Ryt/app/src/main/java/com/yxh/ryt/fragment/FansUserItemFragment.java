@@ -126,7 +126,7 @@ public class FansUserItemFragment extends BaseFragment implements AutoListView.O
 		attentionCommonAdapter=new CommonAdapter<FollowUserUtil>(AppApplication.getSingleContext(),attentionDatas,R.layout.fragment_attention_item) {
 			@Override
 			public void convert(final ViewHolder helper, final FollowUserUtil item) {
-				final String followId = item.getArtUserFollowed().getFollower().getId();
+				final String followId = item.getArtUserFollowed().getUser().getId();
 				if ("2".equals(item.getFlag())){
 					helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuqian);
 					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
@@ -156,9 +156,13 @@ public class FansUserItemFragment extends BaseFragment implements AutoListView.O
 						}
 					});
 				}
-				helper.setText(R.id.fai_tv_name,item.getArtUserFollowed().getFollower().getName());
-				helper.setText(R.id.fai_tv_brief,item.getUserBrief().getContent());
-				helper.setImageByUrl(R.id.fai_iv_icon, item.getArtUserFollowed().getFollower().getPictureUrl());
+				helper.setText(R.id.fai_tv_name,item.getArtUserFollowed().getUser().getName());
+				if (item.getArtUserFollowed().getUser().getUserBrief()!=null){
+					helper.setText(R.id.fai_tv_brief,item.getArtUserFollowed().getUser().getUserBrief().getSigner());
+				}else {
+					helper.setText(R.id.fai_tv_brief,"");
+				}
+				helper.setImageByUrl(R.id.fai_iv_icon, item.getArtUserFollowed().getUser().getPictureUrl());
 			}
 		};
 		lstv.setAdapter(attentionCommonAdapter);

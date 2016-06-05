@@ -108,7 +108,7 @@ public class PublicProject01Activity extends  BaseActivity {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("title",evTitle.getText().toString());
         paramsMap.put("duration",evDuration.getText().toString());
-        paramsMap.put("userId","ieatht97wfw30hfd");
+        paramsMap.put("userId",AppApplication.gUser.getId());
         paramsMap.put("investGoalMoney",evMenoy.getText().toString());
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
         try {

@@ -118,22 +118,34 @@ public class TabFragment04 extends BaseFragment {
     //关注点击事件
     @OnClick(R.id.ll_header_gz)
     public void fans(){
-        Intent intent=new Intent(getActivity(), AttentionActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("userId", AppApplication.gUser.getId() + "");
-        intent.putExtra("otherUserId",AppApplication.gUser.getId()+"");
-        intent.putExtra("flag","1");
-        getActivity().startActivity(intent);
+        if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
+            Intent intent=new Intent(getActivity(), AttentionActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("userId", AppApplication.gUser.getId() + "");
+            intent.putExtra("otherUserId",AppApplication.gUser.getId()+"");
+            intent.putExtra("flag","1");
+            getActivity().startActivity(intent);
+        }else {
+            Intent intent=new Intent(getActivity(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(intent);
+        }
     }
     //粉丝点击事件
     @OnClick(R.id.ll_header_fs)
     public void attention(){
-        Intent intent=new Intent(getActivity(), FansActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("userId", AppApplication.gUser.getId() + "");
-        intent.putExtra("otherUserId",AppApplication.gUser.getId()+"");
-        intent.putExtra("flag","1");
-        getActivity().startActivity(intent);
+        if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
+            Intent intent=new Intent(getActivity(), FansActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("userId", AppApplication.gUser.getId() + "");
+            intent.putExtra("otherUserId",AppApplication.gUser.getId()+"");
+            intent.putExtra("flag","1");
+            getActivity().startActivity(intent);
+        }else {
+            Intent intent=new Intent(getActivity(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(intent);
+        }
     }
     //设置点击事件
     @OnClick(R.id.user_setting)
@@ -145,15 +157,6 @@ public class TabFragment04 extends BaseFragment {
     void userQbClick() {
         UserQianBaoActivity.openActivity(getActivity());
     }
-    //左上角点击事件
-    /*@OnClick(R.id.btn_lf)
-    void btnLfClick() {
-        if ("master".equals(AppApplication.gUser.getMaster1())) {
-            PublicProject01Activity.openActivity(getActivity());
-        }else if ("".equals(AppApplication.gUser.getMaster1())){
-            YsjRzActivity.openActivity(getActivity());
-        }
-    }*/
     //意见点击事件
     @OnClick(R.id.rl_yijian)
     void userYiJianClick() {

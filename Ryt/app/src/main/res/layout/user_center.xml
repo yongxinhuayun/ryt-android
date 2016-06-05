@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:background="#E9E9E9"></View>
+            android:background="#E9E9E9"/>
     </RelativeLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -57,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="20dp"
-                android:background="#E9E9E9"></View>
+                android:background="#E9E9E9"/>
             <RelativeLayout
                 android:id="@+id/rl_user_index"
                 android:layout_width="match_parent"

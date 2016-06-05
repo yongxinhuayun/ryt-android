@@ -23,6 +23,8 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.ProjectCommentReply;
+import com.yxh.ryt.activity.UserPtIndexActivity;
+import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
@@ -111,7 +113,6 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
         artCommentAdapter=new CommonAdapter<ArtworkComment>(getActivity(),artCommentDatas,R.layout.pdonclicktab_comment_item) {
             @Override
             public void convert(ViewHolder helper, final ArtworkComment item) {
-                TextView user=helper.getView(R.id.pdctci_tv_nickName);
                 LinearLayout linearLayout=helper.getView(R.id.pdctci_ll_all);
                 linearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -131,12 +132,22 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                         AppApplication.getSingleContext().startActivity(intent);
                     }
                 });
-                user.setOnClickListener(new View.OnClickListener() {
+                helper.getView(R.id.pdctci_tv_nickName).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        AppApplication.getSingleContext().startActivity(intent);
+                        if (item.getCreator().getMaster()!=null){
+                            Intent intent=new Intent(getActivity(), UserYsjIndexActivity.class);
+                            intent.putExtra("userId",item.getCreator().getId());
+                            intent.putExtra("currentId",AppApplication.gUser.getId());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(intent);
+                        }else {
+                            Intent intent=new Intent(getActivity(), UserPtIndexActivity.class);
+                            intent.putExtra("userId",item.getCreator().getId());
+                            intent.putExtra("currentId",AppApplication.gUser.getId());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(intent);
+                        }
                     }
                 });
                 if (item.getCreator()!=null){
@@ -151,9 +162,19 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                     ClickableSpan click= new ShuoMClickableSpan(fatherUser, AppApplication.getSingleContext()) {
                         @Override
                         public void onClick(View widget) {
-                            Intent intent=new Intent(AppApplication.getSingleContext(), LoginActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            AppApplication.getSingleContext().startActivity(intent);
+                            if (item.getFatherComment().getCreator().getMaster()!=null){
+                                Intent intent=new Intent(getActivity(), UserYsjIndexActivity.class);
+                                intent.putExtra("userId",item.getFatherComment().getCreator().getId());
+                                intent.putExtra("currentId",AppApplication.gUser.getId());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            }else {
+                                Intent intent=new Intent(getActivity(), UserPtIndexActivity.class);
+                                intent.putExtra("userId",item.getFatherComment().getCreator().getId());
+                                intent.putExtra("currentId",AppApplication.gUser.getId());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            }
                         }
                     };
                     spanFatherUser.setSpan(click, 0, fatherUser.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);

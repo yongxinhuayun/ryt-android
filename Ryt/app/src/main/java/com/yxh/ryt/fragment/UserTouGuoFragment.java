@@ -122,6 +122,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 					helper.setText(R.id.utf_tv_money,"项目金额:"+item.getGoalMoney());
 					helper.setText(R.id.utf_tv_name,item.getUser().getName());
 					helper.setText(R.id.utf_tv_zhicheng,item.getUser().getMaster().getTitle());
+					helper.setImageByUrl(R.id.utf_iv_headPortrait,item.getUser().getPictureUrl());
 				}
 			}
 		};

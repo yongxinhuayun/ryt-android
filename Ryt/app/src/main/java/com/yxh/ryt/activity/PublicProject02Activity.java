@@ -111,7 +111,7 @@ public class PublicProject02Activity extends  BaseActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.
                 SOFT_INPUT_ADJUST_PAN);
         ButterKnife.bind(this);
-        /*artworkId = getIntent().getCharSequenceExtra("artworkId").toString();*/
+        artworkId = getIntent().getStringExtra("artworkId");
         noScrollgridview = (GridView) findViewById(R.id.noScrollgridview);
         noScrollgridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         adapter = new GridAdapter(this);

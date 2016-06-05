@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
@@ -57,7 +58,7 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("userId",userId);
-		paramsMap.put("type","2");
+		paramsMap.put("type","1");
 		paramsMap.put("pageSize", Constants.pageSize + "");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -125,13 +126,19 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 		attentionCommonAdapter=new CommonAdapter<FollowUserUtil>(AppApplication.getSingleContext(),attentionDatas,R.layout.fragment_attention_item) {
 			@Override
 			public void convert(final ViewHolder helper, final FollowUserUtil item) {
-				final String followId = item.getArtUserFollowed().getFollower().getId();
+				final String followId = item.getArtUserFollowed().getUser().getId();
 				if ("2".equals(item.getFlag())){
 					helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuqian);
 					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							Attention_user(v,followId);
+							if ("".equals(AppApplication.gUser.getId())){
+								Intent intent=new Intent(getActivity(), LoginActivity.class);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								getActivity().startActivity(intent);
+							}else {
+								Attention_user(v,followId);
+							}
 						}
 					});
 				}else if (null==item.getFlag() || "1".equals(item.getFlag())){
@@ -139,19 +146,26 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							NoAttention_user(v,followId);
+							if ("".equals(AppApplication.gUser.getId())){
+								Intent intent=new Intent(getActivity(), LoginActivity.class);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								getActivity().startActivity(intent);
+							}else {
+								NoAttention_user(v,followId);
+							}
 						}
 					});
 				}
-				helper.setText(R.id.fai_tv_name, item.getArtUserFollowed().getFollower().getName());
-				helper.setText(R.id.fai_tv_brief, item.getUserBrief().getContent());
-				helper.setImageByUrl(R.id.fai_iv_icon, item.getArtUserFollowed().getFollower().getPictureUrl());
+				helper.setText(R.id.fai_tv_name, item.getArtUserFollowed().getUser().getName());
+				if (item.getArtUserFollowed().getUser().getMaster()!=null){
+					helper.setText(R.id.fai_tv_brief, item.getArtUserFollowed().getUser().getMaster().getBrief());
+				}
+				helper.setImageByUrl(R.id.fai_iv_icon, item.getArtUserFollowed().getUser().getPictureUrl());
 
 
 			}
 		};
 		lstv.setAdapter(attentionCommonAdapter);
-
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
 		return contextView;
@@ -177,7 +191,7 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 		paramsMap.put("userId", AppApplication.gUser.getId());
 		paramsMap.put("followId", followId);
 		paramsMap.put("identifier", "0");
-		paramsMap.put("followType", "2");
+		paramsMap.put("followType", "1");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -209,7 +223,7 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 		paramsMap.put("userId", AppApplication.gUser.getId());
 		paramsMap.put("followId", followId);
 		paramsMap.put("identifier", "1");
-		paramsMap.put("followType", "2");
+		paramsMap.put("followType", "1");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);

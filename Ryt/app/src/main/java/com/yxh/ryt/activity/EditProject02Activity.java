@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,7 @@ import com.yxh.ryt.util.phote.util.ImageItem;
 import com.yxh.ryt.util.phote.util.PublicWay;
 import com.yxh.ryt.util.phote.util.Res;
 import com.yxh.ryt.vo.ArtworkComment;
+import com.yxh.ryt.vo.Artworkdirection;
 import com.yxh.ryt.vo.Image;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 
@@ -80,7 +82,10 @@ public class EditProject02Activity extends  BaseActivity {
     EditText evZhizuo;
     @Bind(R.id.ev_jiehuo)
     EditText evJieHuo;
-    List<String> ImageList;
+    private String description;
+    private String financing_aq;
+    private String make_instru;
+
     //艺术家发布项目第一步接口一网络请求
     private void twoStepRequst() {
         Map<String,String> paramsMap=new HashMap<>();
@@ -125,14 +130,15 @@ public class EditProject02Activity extends  BaseActivity {
                 getResources(),
                 R.mipmap.icon_addpic_unfocused);
         PublicWay.activityList.add(this);
-        setContentView(R.layout.edit_project_02);
+        setContentView(R.layout.public_project_02);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.
                 SOFT_INPUT_ADJUST_PAN);
         ButterKnife.bind(this);
-        /*artworkId = getIntent().getCharSequenceExtra("artworkId").toString();*/
+        artworkId = getIntent().getStringExtra("artworkId");
         noScrollgridview = (GridView) findViewById(R.id.noScrollgridview);
         noScrollgridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         adapter = new GridAdapter(this);
+        adapter.update();
         noScrollgridview.setAdapter(adapter);
         noScrollgridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -160,113 +166,49 @@ public class EditProject02Activity extends  BaseActivity {
                 }
             }
         });
-        /*loadData();*/
+        description = getIntent().getStringExtra("description");
+        make_instru = getIntent().getStringExtra("make_instru");
+        financing_aq = getIntent().getStringExtra("financing_aq");
+        initData();
     }
 
-    private void loadData() {
-        Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("artWorkId", "imyt7yax314lpzzj");
-        paramsMap.put("currentUserId", "imhfp1yr4636pj49");
-        paramsMap.put("timestamp", System.currentTimeMillis() + "");
-        try {
-            AppApplication.signmsg=EncryptUtil.encrypt(paramsMap);
-            paramsMap.put("signmsg", AppApplication.signmsg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkView.do", paramsMap, new LoginCallBack() {
-            @Override
-            public void onError(Call call, Exception e) {
-                System.out.println("失败了");
-            }
-
-            @Override
-            public void onResponse(Map<String, Object> response) {
-                ImageList = new ArrayList<String>();
-                if ("0".equals(response.get("resultCode"))) {
-                    Map<String, Object> object = (Map<String, Object>) response.get("object");
-                    List<Image> list = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkAttachmentList")), new TypeToken<List<Image>>() {
-                    }.getType());
-                    if (list.size() > 9) {
-                        for (int i = 0; i < 9; i++) {
-                            ImageList.add(list.get(i).getFileName());
-                        }
-                    } else {
-                        for (int i = 0; i < list.size(); i++) {
-                            ImageList.add(list.get(i).getFileName());
-                        }
-                    }
-                    Bimp.tempSelectBitmap = new ArrayList<ImageItem>();
-                    for (int i = 0; i < ImageList.size(); i++) {
-                        /*System.out.print(Bimp.tempSelectBitmap.size() + "XXXXXXXXXXXXXXXXXX");*/
-                        GetImageTask imageTask = new GetImageTask(new GetImageTask.ImageCallBack() {
-                            @Override
-                            public void getBitmapAndLc(Bitmap result, int location) {
-                                if (result != null) {
-                                    File sampleDir = new File(Environment.getExternalStorageDirectory() + File.separator + "image" + File.separator);
-                                    if (!sampleDir.exists()) {
-                                        sampleDir.mkdirs();
-                                    }
-                                    if (!sampleDir.isDirectory()) {
-                                        sampleDir.delete();
-                                        sampleDir.mkdirs();
-                                    }
-                                    File mRecordFile = null;
-                                    try {
-                                        Log.d("hhhhhhhhhhhhhhhhhhhhh",ImageList.get(location));
-                                        mRecordFile = File.createTempFile("" + System.currentTimeMillis(), Utils.getImageFormat(ImageList.get(location)), sampleDir); //mp4格式
-                                        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(mRecordFile));
-                                        result.compress(Utils.getImageFormatBig(ImageList.get(location)), 100, bos);
-                                        bos.flush();
-                                        bos.close();
-                                        ImageItem imageItem = new ImageItem();
-                                        imageItem.setImagePath(mRecordFile.getAbsolutePath());
-                                        Bimp.tempSelectBitmap.add(imageItem);
-                                        adapter.notifyDataSetChanged();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        },i);
-                        imageTask.execute(ImageList.get(i));
-                    }
-                }
-            }
-        });
+    private void initData() {
+        evShuoming.setText(description);
+        evZhizuo.setText(make_instru);
+        evJieHuo.setText(financing_aq);
     }
 
     public class GridAdapter extends BaseAdapter {
-            private LayoutInflater inflater;
-            private int selectedPosition = -1;
-            private boolean shape;
+        private LayoutInflater inflater;
+        private int selectedPosition = -1;
+        private boolean shape;
 
-            public boolean isShape() {
-                return shape;
-            }
+        public boolean isShape() {
+            return shape;
+        }
 
-            public void setShape(boolean shape) {
-                this.shape = shape;
-            }
+        public void setShape(boolean shape) {
+            this.shape = shape;
+        }
 
-            public GridAdapter(Context context) {
-                inflater = LayoutInflater.from(context);
-            }
+        public GridAdapter(Context context) {
+            inflater = LayoutInflater.from(context);
+        }
 
-            public void update() {
-                loading();
-            }
+        public void update() {
+            loading();
+        }
 
-            public int getCount() {
-                if(Bimp.tempSelectBitmap.size() == 9){
-                    return 9;
-                }
-                return (Bimp.tempSelectBitmap.size() + 1);
+        public int getCount() {
+            if(Bimp.tempSelectBitmap.size() == 9){
+                return 9;
             }
+            return (Bimp.tempSelectBitmap.size() + 1);
+        }
 
-            public Object getItem(int arg0) {
-                return null;
-            }
+        public Object getItem(int arg0) {
+            return null;
+        }
 
         public long getItemId(int arg0) {
             return 0;
@@ -341,17 +283,17 @@ public class EditProject02Activity extends  BaseActivity {
                 }
             }).start();
         }
-        }
+    }
 
-        protected void onRestart() {
-            adapter.update();
-            super.onRestart();
-        }
-        private static final int TAKE_PICTURE = 0x000001;
+    protected void onRestart() {
+        adapter.update();
+        super.onRestart();
+    }
+    private static final int TAKE_PICTURE = 0x000001;
 
 
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if(requestCode == REQUEST_IMAGE){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_IMAGE){
             if(resultCode == RESULT_OK&&Bimp.tempSelectBitmap.size()<9){
                 // 获取返回的图片列表
                 List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
@@ -359,7 +301,7 @@ public class EditProject02Activity extends  BaseActivity {
                 for (String s:path){
                     File file = new File(s);
                     System.out.println(file.getName()+"=================");
-                    fileMap.put(file.getName(), file);
+                    fileMap.put(file.getName(),file);
                     String fileName = String.valueOf(System.currentTimeMillis());
                     ImageItem takePhoto = new ImageItem();
                     takePhoto.setBitmap(null);
@@ -368,6 +310,6 @@ public class EditProject02Activity extends  BaseActivity {
                 }
             }
         }
-        }
-
     }
+
+}

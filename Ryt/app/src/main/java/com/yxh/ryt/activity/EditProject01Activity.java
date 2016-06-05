@@ -29,6 +29,8 @@ import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.util.phote.util.Bimp;
 import com.yxh.ryt.util.phote.util.ImageItem;
+import com.yxh.ryt.vo.Artwork;
+import com.yxh.ryt.vo.Artworkdirection;
 import com.yxh.ryt.vo.Image;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 
@@ -51,6 +53,10 @@ import okhttp3.Call;
  */
 public class EditProject01Activity extends  BaseActivity {
     private int size;
+    private String artWorkId;
+    private String currentUserId;
+    private Artworkdirection artworkDirection;
+    private String description;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, EditProject01Activity.class));
@@ -79,12 +85,16 @@ public class EditProject01Activity extends  BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.public_project_01);
         ButterKnife.bind(this);
+        artWorkId = getIntent().getStringExtra("artWorkId");
+        currentUserId = getIntent().getStringExtra("currentUserId");
         loadData();
     }
     private void loadData() {
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("artWorkId", "imyt7yax314lpzzj");
-        paramsMap.put("currentUserId", "imhfp1yr4636pj49");
+       /* paramsMap.put("artWorkId", "imyt7yax314lpzzj");
+        paramsMap.put("currentUserId", "imhfp1yr4636pj49");*/
+        paramsMap.put("artWorkId", artWorkId);
+        paramsMap.put("currentUserId", currentUserId);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg=EncryptUtil.encrypt(paramsMap);
@@ -103,6 +113,45 @@ public class EditProject01Activity extends  BaseActivity {
                 ImageList = new ArrayList<String>();
                 if ("0".equals(response.get("resultCode"))) {
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
+                    final Artwork artwork=AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")),Artwork.class);
+                    evTitle.setText(artwork.getTitle());
+                    evDes.setText(artwork.getBrief());
+                    evDuration.setText(artwork.getDuration()+"");
+                    evMenoy.setText(artwork.getInvestGoalMoney()+"");
+                    NetRequestUtil.downloadImage(artwork.getPicture_url(), new BitmapCallback() {
+                        @Override
+                        public void onError(Call call, Exception e) {
+
+                        }
+
+                        @Override
+                        public void onResponse(Bitmap response) {
+                            if (response != null) {
+                                File sampleDir = new File(Environment.getExternalStorageDirectory() + File.separator + "imageOnly" + File.separator);
+                                if (!sampleDir.exists()) {
+                                    sampleDir.mkdirs();
+                                }
+                                if (!sampleDir.isDirectory()) {
+                                    sampleDir.delete();
+                                    sampleDir.mkdirs();
+                                }
+                                File mRecordFile = null;
+                                try {
+                                    mRecordFile = File.createTempFile("" + System.currentTimeMillis(), Utils.getImageFormat(artwork.getPicture_url()), sampleDir); //mp4格式
+                                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(mRecordFile));
+                                    response.compress(Utils.getImageFormatBig(artwork.getPicture_url()), 100, bos);
+                                    bos.flush();
+                                    bos.close();
+                                    filePath=mRecordFile.getPath();
+                                    ivImage.setImageBitmap(response);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
+                   description=artwork.getDescription();
+                    artworkDirection=AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkdirection")),Artworkdirection.class);
                     List<Image> list = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkAttachmentList")), new TypeToken<List<Image>>() {
                     }.getType());
                     if (list.size() > 9) {
@@ -195,12 +244,13 @@ public class EditProject01Activity extends  BaseActivity {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("title",evTitle.getText().toString());
         paramsMap.put("duration",evDuration.getText().toString());
-        paramsMap.put("userId","ieatht97wfw30hfd");
+        paramsMap.put("userId",currentUserId);
         paramsMap.put("investGoalMoney",evMenoy.getText().toString());
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
         try {
             AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
             paramsMap.put("signmsg", AppApplication.signmsg);
+            paramsMap.put("artWorkId",artWorkId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -219,8 +269,11 @@ public class EditProject01Activity extends  BaseActivity {
                 System.out.println("成功了");
                 if ("0".equals(response.get("resultCode"))){
                     if (size==ImageList.size()){
-                        Intent intent=new Intent(EditProject01Activity.this,PublicProject02Activity.class);
+                        Intent intent=new Intent(EditProject01Activity.this,EditProject02Activity.class);
                         intent.putExtra("artworkId", (String)response.get("artworkId")+"");
+                        intent.putExtra("description",description);
+                        intent.putExtra("make_instru",artworkDirection.getMake_instru());
+                        intent.putExtra("financing_aq",artworkDirection.getFinancing_aq());
                         startActivity(intent);
                     }
                 }

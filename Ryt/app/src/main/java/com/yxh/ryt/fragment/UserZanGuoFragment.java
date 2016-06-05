@@ -128,6 +128,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 					helper.setText(R.id.uzf_tv_name,item.getAuthor().getName());
 					helper.setText(R.id.uzf_tv_zhicheng,item.getAuthor().getMaster().getTitle());
 					helper.setText(R.id.uzf_tv_zanTotal,item.getPraiseNUm()+"");
+					helper.setImageByUrl(R.id.uzf_iv_headPortrait,item.getAuthor().getPictureUrl());
 					if (item.isPraise()){
 						((ImageView) helper.getView(R.id.uzf_iv_zan)).setImageResource(R.mipmap.dianzanhou);
 						helper.getView(R.id.uzf_iv_zan).setOnClickListener(new View.OnClickListener() {
@@ -256,9 +257,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 			}
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				System.out.println(response+"dudududuuuuuuuuuuuuuuuuuuuuu");
 				if ("0".equals(response.get("resultCode"))) {
-					System.out.println(response.get("resultCode")+"dudududuuuuuuuuuuuuuuuuuuuuu");
 					if (flag) {
 						List<Artwork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<Artwork>>() {
 						}.getType());

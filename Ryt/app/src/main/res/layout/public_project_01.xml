@@ -182,6 +182,7 @@
                 android:background="@mipmap/anniu_kedianji"
                 android:gravity="center"
                 android:text="下一步"
+                android:layout_marginBottom="20dp"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp" />
         </LinearLayout>
