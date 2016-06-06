@@ -31,7 +31,7 @@ import okhttp3.Call;
 
 
 public class RongZiItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
-		AutoListView.OnLoadListener,AdapterView.OnItemClickListener {
+		AutoListView.OnLoadListener {
 	private AutoListView lstv;
 	private CommonAdapter<RongZi> rongZiCommonAdapter;
 	private List<RongZi> rongZiDatas;
@@ -124,11 +124,19 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 					helper.getView(R.id.cl_01_civ_headPortrait).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							Intent intent=new Intent(getActivity(), UserYsjIndexActivity.class);
-							intent.putExtra("userId",item.getAuthor().getId());
-							intent.putExtra("currentId",AppApplication.gUser.getId());
+							Intent intent = new Intent(getActivity(), UserYsjIndexActivity.class);
+							intent.putExtra("userId", item.getAuthor().getId());
+							intent.putExtra("currentId", AppApplication.gUser.getId());
 							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							getActivity().startActivity(intent);
+						}
+					});
+					helper.getView(R.id.fli_ll_top).setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent intent=new Intent(getActivity(), RongZiXQActivity.class);
+							intent.putExtra("id",item.getId());
+							startActivity(intent);
 						}
 					});
 				}
@@ -137,7 +145,6 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 		lstv.setAdapter(rongZiCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
-		lstv.setOnItemClickListener(this);
 		return contextView;
 	}
 
@@ -161,14 +168,5 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 	public void onLoad() {
 		currentPage++;
 		LoadData(AutoListView.LOAD, currentPage);
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (rongZiDatas.size()>0){
-			Intent intent=new Intent(getActivity(), RongZiXQActivity.class);
-			intent.putExtra("id",rongZiDatas.get(position-1).getId());
-			startActivity(intent);
-		}
 	}
 }

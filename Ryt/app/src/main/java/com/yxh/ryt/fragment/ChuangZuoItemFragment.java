@@ -29,7 +29,7 @@ import okhttp3.Call;
 
 
 public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
-		AutoListView.OnLoadListener ,AdapterView.OnItemClickListener{
+		AutoListView.OnLoadListener{
 	private AutoListView lstv;
 	private CommonAdapter<Create> chuangZuoCommonAdapter;
 	private List<Create> chuangZuoDatas;
@@ -40,14 +40,6 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 		chuangZuoDatas=new ArrayList<Create>();
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (chuangZuoDatas.size()>0){
-			Intent intent=new Intent(getActivity(), ChuangZuoXQActivity.class);
-			intent.putExtra("id", chuangZuoDatas.get(position - 1).getId());
-			startActivity(intent);
-		}
-	}
 
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
@@ -77,7 +69,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 						List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkList")), new TypeToken<List<Create>>() {
 						}.getType());
 						if(null==objectList||objectList.size()==0){
-							lstv.setResultSize(1);
+							lstv.setResultSize(0);
 						}
 						if (null!=objectList&&objectList.size()>0){
 							lstv.setResultSize(objectList.size()); //还有数据加载。。。
@@ -114,18 +106,25 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 		lstv.setPageSize(Constants.pageSize);
 		chuangZuoCommonAdapter=new CommonAdapter<Create>(AppApplication.getSingleContext(),chuangZuoDatas,R.layout.create_list_item) {
 			@Override
-			public void convert(ViewHolder helper, Create item) {
+			public void convert(ViewHolder helper, final Create item) {
 				helper.setText(R.id.cl_01_tv_title,item.getTitle());
 				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
 				helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());
 				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
 				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
+				helper.getView(R.id.cli_ll_top).setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent=new Intent(getActivity(), ChuangZuoXQActivity.class);
+						intent.putExtra("id", item.getId());
+						startActivity(intent);
+					}
+				});
 			}
 		};
 		lstv.setAdapter(chuangZuoCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
-		lstv.setOnItemClickListener(this);
 		return contextView;
 	}
 
