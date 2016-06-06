@@ -150,5 +150,4 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 		currentPage++;
 		LoadData(AutoListView.LOAD,currentPage);
 	}
-
 }
