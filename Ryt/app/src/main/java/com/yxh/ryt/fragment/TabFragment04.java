@@ -209,7 +209,7 @@ public class TabFragment04 extends BaseFragment {
                 @Override
                 public void onResponse(Map<String, Object> response) {
                     if (!response.get("resultCode").equals("0")) {
-                        ToastUtil.showShort(AppApplication.getSingleContext(), "注册失败!");
+                        ToastUtil.showShort(AppApplication.getSingleContext(), "失败!");
                         return;
                     }
                     if (response.get("resultCode").equals("0")) {
