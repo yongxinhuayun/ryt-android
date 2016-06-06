@@ -91,13 +91,13 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         rl_sex.setOnClickListener(this);
 
     }
-    /*
-    receiver = new AttentionReceiver();
+
+  /*  receiver = new AttentionReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.intent.action.EDIT_NICK_BROADCAST");
-        registerReceiver(receiver, filter);
+        registerReceiver(receiver, filter);*/
 
-     */
+
 
     @Override
     protected void onStart() {
@@ -373,12 +373,33 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                     sign = map3.get("signer");
                 }
                 Map<String,Map<String,Double>> map11 = (Map<String, Map<String, Double>>) response.get("pageInfo");
+                Map<String,Double> map22 = null;
+                if (map11 != null) {
+                    map22 = map11.get("user");
+                }
+                Double sex = null;
+                if (map22==null){
+                    sex = 4.0;
+                }else {
+                    sex = map22.get("sex");
+                }
+                Map<String,Map<String,String>> map111 = (Map<String, Map<String, String>>) response.get("pageInfo");
+                Map<String,String> map222 = null;
+                if (map111 != null) {
+                    map222 = map111.get("user");
+                }
+                String name = "";
+                if (map222 == null){
+                    name = "";
+                }else {
+                    name = map222.get("name");
+                }
+                /*Map<String,Map<String,Double>> map11 = (Map<String, Map<String, Double>>) response.get("pageInfo");
                 Map<String,Double> map22 = map11.get("user");
                 Double sex = map22.get("sex");
                 Map<String,Map<String,String>> map111 = (Map<String, Map<String, String>>) response.get("pageInfo");
                 Map<String,String> map222 = map111.get("user");
-                String name = map222.get("name");
-
+                String name = map222.get("name");*/
                 /*User user = new User();
                 user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfo")), User.class);*/
                 if (sign == null) {
@@ -389,10 +410,6 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
 
                tv_sex.setText(changSex(sex));
                 tv_nickname.setText(name);
-
-/*
-                tv_nickname.setText(user.getName());
-*/
             }
         });
     }
@@ -410,7 +427,10 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(receiver);
+        try {
+            unregisterReceiver(receiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
 }

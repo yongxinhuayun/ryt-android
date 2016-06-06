@@ -42,7 +42,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (chuangZuoDatas.size()>0){
+		if (chuangZuoDatas.size()>1){
 			Intent intent=new Intent(getActivity(), ChuangZuoXQActivity.class);
 			intent.putExtra("id", chuangZuoDatas.get(position - 1).getId());
 			startActivity(intent);

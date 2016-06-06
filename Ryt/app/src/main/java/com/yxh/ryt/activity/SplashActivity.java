@@ -129,7 +129,7 @@ public class SplashActivity extends BaseActivity {
         NetRequestUtil.post(Constants.BASE_PATH + "upgrade.do", paramsMap, new UpdataCallBack() {
             @Override
             public void onError(Call call, Exception e) {
-
+                enterHome();
             }
 
             @Override
@@ -163,6 +163,8 @@ public class SplashActivity extends BaseActivity {
             if (isfirstenter) {
                 //跳转到引导界面
                 startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+                //将登录标志位设置为false，下次登录时不在显示首次登录界面
+                SPUtil.put(getApplicationContext(),Constants.ISFIRSTENTER, false);
             } else {
                 //跳转到首页
                 startActivity(new Intent(SplashActivity.this, IndexActivity.class));
