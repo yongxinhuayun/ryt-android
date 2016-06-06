@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -83,7 +84,7 @@ public class EditProject01Activity extends  BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.public_project_01);
+        setContentView(R.layout.edit_project_01);
         ButterKnife.bind(this);
         artWorkId = getIntent().getStringExtra("artWorkId");
         currentUserId = getIntent().getStringExtra("currentUserId");
@@ -118,6 +119,7 @@ public class EditProject01Activity extends  BaseActivity {
                     evDes.setText(artwork.getBrief());
                     evDuration.setText(artwork.getDuration()+"");
                     evMenoy.setText(artwork.getInvestGoalMoney()+"");
+                    AppApplication.displayImage(artwork.getPicture_url(),ivImage);
                     NetRequestUtil.downloadImage(artwork.getPicture_url(), new BitmapCallback() {
                         @Override
                         public void onError(Call call, Exception e) {
@@ -127,7 +129,7 @@ public class EditProject01Activity extends  BaseActivity {
                         @Override
                         public void onResponse(Bitmap response) {
                             if (response != null) {
-                                File sampleDir = new File(Environment.getExternalStorageDirectory() + File.separator + "imageOnly" + File.separator);
+                                File sampleDir = new File(Environment.getExternalStorageDirectory() + File.separator);
                                 if (!sampleDir.exists()) {
                                     sampleDir.mkdirs();
                                 }
@@ -139,11 +141,11 @@ public class EditProject01Activity extends  BaseActivity {
                                 try {
                                     mRecordFile = File.createTempFile("" + System.currentTimeMillis(), Utils.getImageFormat(artwork.getPicture_url()), sampleDir); //mp4格式
                                     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(mRecordFile));
+                                    Log.d("xxxxxxxxxxxxxxxxxxxx", Utils.getImageFormatBig(artwork.getPicture_url())+"");
                                     response.compress(Utils.getImageFormatBig(artwork.getPicture_url()), 100, bos);
                                     bos.flush();
                                     bos.close();
                                     filePath=mRecordFile.getPath();
-                                    ivImage.setImageBitmap(response);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
