@@ -1,7 +1,10 @@
 package com.yxh.ryt.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -36,6 +39,7 @@ public class UserSettingActivity extends BaseActivity {
     Button btnOut;
     @Bind(R.id.go3)
     TextView huanCun;
+    private SettingReceiver receiver;
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -47,6 +51,7 @@ public class UserSettingActivity extends BaseActivity {
             }
         }
     };
+
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserSettingActivity.class));
     }
@@ -56,6 +61,18 @@ public class UserSettingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_setting);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //注册这两个广播
+        receiver = new SettingReceiver();
+        IntentFilter myFilter = new IntentFilter();
+        myFilter.addAction("android.intent.action.LOGIN_SUC_BROADCAST");
+        registerReceiver(receiver, myFilter);
+
+
     }
 
     @Override
@@ -84,7 +101,6 @@ public class UserSettingActivity extends BaseActivity {
                 SPUtil.clear(AppApplication.getSingleContext());
                 btnOut.setVisibility(View.GONE);
                 Intent intent=new Intent(this, LoginActivity.class);
-                //intent.setAction("com.yxh.ryt.gouser");
                 startActivity(intent);
                 break;
             case R.id.rl_hc:
@@ -101,10 +117,25 @@ public class UserSettingActivity extends BaseActivity {
                 break;
         }
     }
+    public class SettingReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(action.equals("android.intent.action.LOGIN_SUC_BROADCAST")){
+                btnOut.setVisibility(View.VISIBLE);
+            }
+        }
+
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        try {
+            unregisterReceiver(receiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @OnClick(R.id.us_ib_back)
     public void back() {

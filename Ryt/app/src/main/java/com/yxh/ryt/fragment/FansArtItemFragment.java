@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
-import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
@@ -123,12 +121,12 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
 		lstv.setPageSize(Constants.pageSize);
-		attentionCommonAdapter=new CommonAdapter<FollowUserUtil>(AppApplication.getSingleContext(),attentionDatas,R.layout.fragment_attention_item) {
+		attentionCommonAdapter=new CommonAdapter<FollowUserUtil>(AppApplication.getSingleContext(),attentionDatas,R.layout.fragment_fans_item) {
 			@Override
 			public void convert(final ViewHolder helper, final FollowUserUtil item) {
 				final String followId = item.getArtUserFollowed().getUser().getId();
-				if ("2".equals(item.getFlag())){
-					helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuqian);
+		/*		if ("2".equals(item.getFlag())){
+					//helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuqian);
 					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
@@ -142,7 +140,7 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 						}
 					});
 				}else if (null==item.getFlag() || "1".equals(item.getFlag())){
-					helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuhou);
+					//helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuhou);
 					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
@@ -155,7 +153,7 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 							}
 						}
 					});
-				}
+				}*/
 				helper.setText(R.id.fai_tv_name, item.getArtUserFollowed().getUser().getName());
 				if (item.getArtUserFollowed().getUser().getMaster()!=null){
 					helper.setText(R.id.fai_tv_brief, item.getArtUserFollowed().getUser().getMaster().getBrief());
@@ -207,7 +205,7 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				((ImageView) v).setImageResource(R.mipmap.guanzhuhou);
+				//((ImageView) v).setImageResource(R.mipmap.guanzhuhou);
 				onRefresh();
 			}
 		});
@@ -239,7 +237,7 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				((ImageView) v).setImageResource(R.mipmap.guanzhuqian);
+				//((ImageView) v).setImageResource(R.mipmap.guanzhuqian);
 				onRefresh();
 			}
 		});
