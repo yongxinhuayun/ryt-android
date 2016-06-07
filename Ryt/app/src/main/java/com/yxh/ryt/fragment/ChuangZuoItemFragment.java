@@ -117,6 +117,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 					public void onClick(View v) {
 						Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);
 						intent.putExtra("id", item.getId());
+						intent.putExtra("name", item.getAuthor().getName());
 						startActivity(intent);
 					}
 				});

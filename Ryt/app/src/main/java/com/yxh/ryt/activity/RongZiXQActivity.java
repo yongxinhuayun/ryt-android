@@ -55,6 +55,7 @@ import com.zhy.http.okhttp.callback.BitmapCallback;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -112,6 +113,7 @@ public class RongZiXQActivity extends BaseActivity {
     private int right;
     private int count;
     private int time=0;
+    private int remainMoney;
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, RongZiXQActivity.class));
     }
@@ -195,8 +197,12 @@ public class RongZiXQActivity extends BaseActivity {
                     Intent intent2=new Intent(RongZiXQActivity.this,LoginActivity.class);
                     startActivity(intent2);
                 }else{
-                    Intent intent1=new Intent(this,InvestActivity.class);
-                    startActivity(intent1);
+                    if (remainMoney>0){
+                        Intent intent1=new Intent(this,InvestActivity.class);
+                        intent1.putExtra("allMoney",remainMoney);
+                        intent1.putExtra("artWorkId",artworkId);
+                        startActivity(intent1);
+                    }
                 }
                 finish();
                 break;
@@ -323,6 +329,7 @@ public class RongZiXQActivity extends BaseActivity {
                         dianzan.setImageResource(R.mipmap.dianzanhou);
                         dianzan.setEnabled(false);
                     }
+                    remainMoney=artwork.getInvestGoalMoney().subtract(artwork.getInvestsMoney()).intValue();
                     zan.setText(artwork.getPraiseNUm()+"");
                     AppApplication.displayImage(artwork.getPicture_url(), cl01TvPrc);
                     EventBus.getDefault().post(object);
