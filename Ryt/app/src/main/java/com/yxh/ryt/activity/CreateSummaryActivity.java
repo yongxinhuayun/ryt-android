@@ -46,7 +46,7 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     IWXAPI api;
     private LinearLayout tab1;
     private LinearLayout tab2;
-
+    private  int a;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
