@@ -64,12 +64,12 @@ function getTimeStr(times) {
     return date.format("hh:mm");
 }
 //异步请求处理模板
-function ajaxSuccessFunctionTemplage(dataDealFunction, data, callback, dealError) {
+function ajaxSuccessFunctionTemplage(dataDealFunction, data, callback, dealError, callbackParam) {
     switch (data["resultCode"]) {
         case "0" :
             dataDealFunction(data);
             if (typeof callback == "function") {
-                callback();
+                callback(callbackParam);
             }
             break;
         default :
@@ -114,7 +114,7 @@ var pageEntity = {
 
 //刷新分页信息
 function refreshPageEntity() {
-    pageEntity.pageSize = 1;  //每页中包含多少数据
+    pageEntity.pageSize = 10;  //每页中包含多少数据
     pageEntity.pageIndex = 1; //当前属于第几页
 }
 
@@ -139,7 +139,8 @@ function pay(price, type, currentUserId) {
     //这里的支付只负责余额的操作，真正的余额充值的操作
 }
 function timeEnd() {
-    //倒计时结束之后从新加载页面
+    // 从新加载页面数据
+    initPage(PageVariable.param.artWorkId, PageVariable.param.currentUserId, PageVariable.param.signmsg, PageVariable.param.timestamp)
 }
 
 function countDown(timestamp) {
