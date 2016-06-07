@@ -16,6 +16,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
@@ -46,20 +47,23 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     IWXAPI api;
     private LinearLayout tab1;
     private LinearLayout tab2;
-    private  int a;
+    private TextView top;
+    private String id;
+    private String name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createsummary);
         back = (ImageButton) findViewById(R.id.ib_top_lf);
         share = (ImageButton) findViewById(R.id.ib_top_rt);
-        tab1 = (LinearLayout) findViewById(R.id.rl_tab_01);
-        tab2 = (LinearLayout) findViewById(R.id.rl_tab_02);
         back.setOnClickListener(this);
         share.setOnClickListener(this);
-        tab1.setOnClickListener(this);
-        tab2.setOnClickListener(this);
         webView = (WebView) findViewById(R.id.acs_wb_all);
+        top = (TextView) findViewById(R.id.tv_top_ct);
+        id = getIntent().getStringExtra("id");
+        name = getIntent().getStringExtra("name");
+        top.setText(name);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("file:///android_asset/A2.html");
         webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo");
@@ -73,12 +77,6 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.ib_top_rt:
                 showShareDialog();
-                break;
-            case R.id.rl_tab_01:
-                startActivity(new Intent(this,CommentActivity.class));
-                break;
-            case R.id.rl_tab_02:
-                startActivity(new Intent(this,InvestActivity.class));
                 break;
             default:
                 break;
