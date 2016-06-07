@@ -191,7 +191,7 @@
             android:id="@+id/imp_tv_invest"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="投资88元"
+            android:text="投资0元"
             android:textSize="14sp"
             android:textColor="#FEFEFE"
             android:gravity="center"

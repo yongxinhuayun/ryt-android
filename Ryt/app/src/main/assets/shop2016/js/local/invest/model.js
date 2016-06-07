@@ -47,16 +47,29 @@ var ArtWorkAuction = function (artWorkBiddingList, biddingTopThree) {
 }
 
 var PageVariable = {
-    isSubmitDepositPrice: "",//是否交了保证金 0 已交 1 未交
+    biddingUsersNum: "",      //竞拍人数
+    isSubmitDepositPrice: "1",//是否交了保证金 0 已交 1 未交
     viewNum: "",            //浏览次数
     startingPrice: "",      //起拍价格
     auctionNum: "",         //竞拍次数
-    artWorkId: "",          //当前项目的id
+    artWorkId: "qydeyugqqiugd2",          //当前项目的id
     artWorkInfo: "",        //当前项目的基本信息对象
     artWorkProject: "",     //当先项目的项目进度以及动态对象
     artWorkView: "",        //当前项目详情的对象
     artWorkComment: "",     //当前项目的用户评价对象
     artWorkInvestRecord: "", //当前项目投资记录对象
     artWorkAuctionStatus: "", //当前项目的拍卖状态
-    artWorkAuction: ""
+    artWorkAuction: "",
+    consumerAddress: {
+        id: "123123",
+        province: {name: "北京市"},
+        city: {name: "北京市"},
+        district: {name: "朝阳区"},
+        details: "酒仙桥东路1111",
+        post: "100000",
+        phone: "13699999999",
+        status: "2",
+        consignee: "王二小",
+        districtStr: ""
+    } //默认地址
 };    //页面中主要的全局变量

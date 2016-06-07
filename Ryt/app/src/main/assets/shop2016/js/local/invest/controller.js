@@ -8,16 +8,17 @@ function initPage(artWorkId, currentUserId, signmsg, timestamp) {
     param.signmsg = signmsg;
     param.timestamp = timestamp;
     PageVariable.param = param;
+    PageVariable.artWorkId = artWorkId;
     refreshPageEntity();
     getArtWorkBaseInfoData(getArtWorkBaseInfo);
     getArtWorkDetailData(getArtWorkDetail);
-    getArtWorkAuctionData(getArtWorkAuctionBidding);
+    getCurrentDefaultConsumerAddressData();
 }
 
 function getAuctionTimeResult() {
     if (PageVariable.artWorkInfo.step == "30") {
         countDown(PageVariable.artWorkInfo.auctionStartDatetime);
-    } else {
+    } else if (PageVariable.artWorkInfo.step == "31") {
         countDown(PageVariable.artWorkInfo.auctionEndDatetime);
     }
 }
@@ -39,6 +40,7 @@ function getArtWorkBaseInfo() {
     $("#winner").html(getArtWorkAuctionWinnerHtml(artWorkInfo));
     getBottomButton();
     getAuctionTimeResult();
+    getArtWorkAuctionData(getArtWorkAuctionBidding);
     tabsHeight();
 }
 //获得项目详情的controller
@@ -61,12 +63,13 @@ function getArtWorkComment() {
 
 function getArtWorkAuctionBidding() {
     var artWorkAuction = PageVariable.artWorkAuction;
-    $("#auctionNum").html(PageVariable.auctionNum + "人参与拍卖");
+    $("#auctionNum").html(PageVariable.biddingUsersNum + "人参与拍卖");
     if (pageEntity.pageIndex == 1) {
         $("#auctionList").html(getArtWorkAuctionBiddingHtml(artWorkAuction));
     } else {
         $("#auctionList").append(getArtWorkAuctionBiddingHtml(artWorkAuction));
     }
+    $("#auctionMessage").html(getArtWorkBaseInfoAuctionMessageHtml(PageVariable.artWorkInfo));
     pageEntity.pageIndex = pageEntity.pageIndex + 1;
     getArtWorkAuctionBiddingTopThree()
     tabsHeight();
@@ -95,29 +98,15 @@ function getArtWorkBaseInfoData(callback) {
             var obj = dataTemp;
             var msgList = obj["artWorkMessage"];
             var artWork = obj["artwork"];
-            var masterLevel = "";
             var auctionStartDatetime = new Date();
             auctionStartDatetime.setTime(artWork.auctionStartDatetime);
-            switch (artWork.author.master.level) {
-                case "1":
-                    masterLevel = "国家级";
-                    break;
-                case "2":
-                    masterLevel = "省级";
-                    break;
-                case "3":
-                    masterLevel = "市级";
-                    break;
-                case "4":
-                    masterLevel = "县级";
-                    break;
-            }
             PageVariable.artWorkInfo = new ArtWorkInfo(artWork.picture_url, artWork.author.name, artWork.brief, artWork.auctionStartDatetime, artWork.step, artWork.title, artWork.author.master.title, artWork.author.pictureUrl, artWork.author.id, artWork.startingPrice, artWork.winner, artWork.auctionEndDatetime, artWork.newBidingPrice, artWork.creationEndDatetime);
             PageVariable.artWorkProject = new ArtWorkProject(artWork.investEndDatetime, artWork.step, artWork.investNum, artWork.investStartDatetime, msgList, artWork.auctionStartDatetime, artWork.creationEndDatetime);
             PageVariable.viewNum = artWork.viewNum;
             PageVariable.auctionNum = artWork.auctionNum;
             PageVariable.startingPrice = artWork.startingPrice;
-            PageVariable.isSubmitDepositPrice = obj["isSubmitDepositPrice"]
+            PageVariable.isSubmitDepositPrice = obj["isSubmitDepositPrice"];
+            // PageVariable.isSubmitDepositPrice = "1";
         }, data, callback);
     }
     ajaxRequest(hostName + RequestUrl.initPage, getParamObject(), success, function () {
@@ -155,13 +144,25 @@ function getArtWorkAuctionData(callback) {
         ajaxSuccessFunctionTemplage(function (dataTemp) {
             var obj = dataTemp;
             PageVariable.artWorkAuction = new ArtWorkAuction(obj.artworkBiddingList, obj.biddingTopThree);
-            PageVariable.auctionNum = obj.artworkBiddingList.length;
+            PageVariable.auctionNum = obj.auctionNum;
+            PageVariable.biddingUsersNum = obj.biddingUsersNum;
         }, data, callback)
     };
     var param = getParamObject();
     param.pageIndex = pageEntity.pageIndex;
     param.pageSize = pageEntity.pageSize;
     ajaxRequest(hostName + RequestUrl.auctionTab, param, success, function () {
+    }, "post");
+}
+
+function getCurrentDefaultConsumerAddressData(callback) {
+    var success = function (data) {
+        ajaxSuccessFunctionTemplage(function (dataTemp) {
+            var obj = dataTemp;
+            PageVariable.consumerAddress = obj.consumerAddress;
+        }, data, callback)
+    };
+    ajaxRequest(hostName + RequestUrl.consumerAddress, getParamObject(), success, function () {
     }, "post");
 }
 

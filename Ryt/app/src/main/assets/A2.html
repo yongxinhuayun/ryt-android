@@ -363,6 +363,7 @@
 <script src="shop2016/js/swiper.min.js"></script>
 <script src="shop2016/js/system.js"></script>
 <script src="shop2016/js/local/common.js"></script>
+<script src="shop2016/js/local/creation/app.js"></script>
 <script src="shop2016/js/local/creation/model.js"></script>
 <script src="shop2016/js/local/creation/view.js"></script>
 <script src="shop2016/js/local/creation/controller.js"></script>
@@ -371,7 +372,7 @@
 
 
     $().ready(function () {
-       initPage();
+        initPage();
         document.addEventListener('touchend', touch, false);
         function touch() {
             if ($(document).scrollTop() + $(window).height() >= $(document).height()) {
@@ -405,8 +406,8 @@
 
     //从app中获取的服务端请求接口的必要参数  需要传递一个密钥参数
     function getParamObject() {
-        //return PageVariable.param;
-       return {artWorkId: "qydeyugqqiugd2", currentUserId: "", signmsg: "", timestamp: ""}
+//        return PageVariable.param;
+        return {artWorkId: "qydeyugqqiugd2", currentUserId: "", signmsg: "", timestamp: ""}
     }
     //从app中获取当前用户id
     function getCurrentUserId() {
@@ -414,11 +415,6 @@
     }
 
 
-    function redirectUser(userid) {
-        window.demo.clickOnAndroid(userid);
-    }
-
-    hostName = "http://192.168.1.43";                           //服务器域名
     RequestUrl = {
         investTab: "/app/investorArtWorkInvest.do",
         commentTab: "/app/investorArtWorkComment.do",

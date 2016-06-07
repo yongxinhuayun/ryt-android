@@ -1208,6 +1208,8 @@ html, body {
       background-position: 0 -113px; }
     .pm_btm_bar .links:last-child:before {
       background-position: 0 -134px; }
+  .pm_btm_bar .links_end:last-child:before {
+    background-position: 0 -299px; }
   .pm_btm_bar .bid {
     width: 100%;
     padding: 8px 80px;
@@ -1325,10 +1327,19 @@ html, body {
       line-height: 57px;
       padding: 0 19px;
       float: left; }
-      .pm_pay_lay .main .p1 p {
+      .pm_pay_lay .main .p1 .info {
         width: 100%;
         float: left;
-        border-bottom: 1px solid #e3e3e3; }
+        border-bottom: 1px solid #e3e3e3;
+        padding: 0 10px; }
+        .pm_pay_lay .main .p1 .info p {
+          width: 100%;
+          float: left; }
+          .pm_pay_lay .main .p1 .info p:nth-of-type(2) {
+            line-height: 18px;
+            color: #808080;
+            font-size: 12px;
+            padding-bottom: 20px; }
       .pm_pay_lay .main .p1 span {
         float: left; }
         .pm_pay_lay .main .p1 span.price {
@@ -1336,18 +1347,62 @@ html, body {
           font-size: 30px;
           color: #ef5b70;
           line-height: 50px; }
-    .pm_pay_lay .main .p2 {
+    .pm_pay_lay .main .t2 {
       width: 100%;
-      line-height: 18px;
-      padding: 20px;
       float: left;
-      color: #666;
-      font-size: 12px; }
+      padding: 0 19px; }
+      .pm_pay_lay .main .t2 .info {
+        width: 100%;
+        float: left;
+        padding: 14px 0 14px 10px;
+        border-bottom: 1px solid #d9d9d9; }
+        .pm_pay_lay .main .t2 .info p {
+          width: 100%;
+          float: left;
+          position: relative;
+          padding-left: 70px; }
+          .pm_pay_lay .main .t2 .info p strong {
+            position: absolute;
+            top: 0;
+            left: 0; }
+          .pm_pay_lay .main .t2 .info p a {
+            width: 100%;
+            float: left;
+            color: #666666;
+            padding-right: 30px;
+            position: relative; }
+            .pm_pay_lay .main .t2 .info p a em {
+              font-style: normal; }
+          .pm_pay_lay .main .t2 .info p:nth-of-type(1) {
+            height: 26px;
+            line-height: 26px;
+            margin-bottom: 5px; }
+          .pm_pay_lay .main .t2 .info p .chevron-right {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 50%;
+            right: 5px;
+            margin-top: -10px; }
+            .pm_pay_lay .main .t2 .info p .chevron-right:before {
+              content: '';
+              width: 8px;
+              height: 8px;
+              border-left: 1px solid #000;
+              border-top: 1px solid #000;
+              -webkit-transform: rotate(135deg);
+              transform: rotate(135deg);
+              display: inline-block;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              margin-top: -4px;
+              margin-left: -4px; }
     .pm_pay_lay .main .p3 {
       width: 100%;
-      height: 18px;
+      height: 58px;
       line-height: 18px;
-      padding: 0 20px;
+      padding: 20px 22px;
       float: left;
       color: #333;
       font-size: 12px; }
@@ -1366,7 +1421,7 @@ html, body {
           position: absolute;
           top: 0;
           left: 0;
-          border: 1.5px solid #000;
+          border: 1.5px solid #ef5b70;
           -webkit-border-radius: 18px;
           border-radius: 18px;
           -webkit-box-sizing: border-box;
@@ -1374,7 +1429,7 @@ html, body {
           z-index: 1; }
         .pm_pay_lay .main .p3 #radio.active:after {
           content: '';
-          background: url(../images/icon-btn.png) no-repeat 0 -173px;
+          background: url(../images/icon-btn.png) no-repeat 0 -279px;
           -webkit-background-size: 24px auto;
           background-size: 24px auto;
           width: 18px;
@@ -1382,13 +1437,50 @@ html, body {
           float: left; }
         .pm_pay_lay .main .p3 #radio.active:before {
           z-index: -1; }
+    .pm_pay_lay .main .p4 {
+      width: 100%;
+      float: left;
+      padding: 0 19px; }
+      .pm_pay_lay .main .p4 .info {
+        width: 100%;
+        float: left;
+        border-bottom: 1px solid #d9d9d9; }
+        .pm_pay_lay .main .p4 .info .link {
+          width: 100%;
+          float: left;
+          padding: 14px 0;
+          line-height: 22px;
+          color: #666;
+          position: relative; }
+          .pm_pay_lay .main .p4 .info .link:before {
+            content: '';
+            width: 22px;
+            height: 22px;
+            background: url(../images/icon-btn.png) no-repeat 0 -247px;
+            -webkit-background-size: 24px auto;
+            background-size: 24px auto;
+            float: left;
+            margin: 0 10px; }
+          .pm_pay_lay .main .p4 .info .link:after {
+            content: '';
+            width: 16px;
+            height: 10px;
+            background: url(../images/icon-btn.png) no-repeat 0 -269px;
+            -webkit-background-size: 24px auto;
+            background-size: 24px auto;
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            margin-top: -5px;
+            display: none; }
+          .pm_pay_lay .main .p4 .info .link.active:after {
+            display: block; }
     .pm_pay_lay .main .submit {
       width: 100%;
       height: 42px;
       line-height: 42px;
       text-align: center;
       float: left;
-      margin-top: 50px;
       color: #fff;
       font-size: 15px;
       background: #ef5b70; }
@@ -1526,5 +1618,119 @@ html, body {
     -webkit-border-radius: 5px;
     border-radius: 5px;
     display: inline-block; }
+
+.rz_invest .items {
+  width: 100%;
+  float: left;
+  padding: 0 14px;
+  border-bottom: 1px solid #e4e4e4; }
+  .rz_invest .items .links {
+    width: 100%;
+    float: left; }
+    .rz_invest .items .links a {
+      color: #ef5b70;
+      width: 30.6%;
+      height: 42px;
+      line-height: 42px;
+      float: left;
+      text-align: center;
+      border: 1px solid #ef5b70;
+      -webkit-border-radius: 2px;
+      border-radius: 2px;
+      margin-top: 15px; }
+      .rz_invest .items .links a.active {
+        background: #ef5b70;
+        color: #fff; }
+      .rz_invest .items .links a:nth-of-type(3n-1) {
+        margin-left: 4%;
+        margin-right: 4%; }
+  .rz_invest .items .ipt {
+    width: 100%;
+    float: left;
+    margin: 15px 0;
+    position: relative; }
+    .rz_invest .items .ipt em {
+      line-height: 42px;
+      position: absolute;
+      top: 0;
+      font-style: normal;
+      font-size: 15px; }
+      .rz_invest .items .ipt em:nth-of-type(1) {
+        left: 15px; }
+      .rz_invest .items .ipt em:nth-of-type(2) {
+        right: 15px; }
+    .rz_invest .items .ipt .txt {
+      width: 100%;
+      height: 42px;
+      line-height: 42px;
+      padding-left: 100px;
+      padding-right: 40px;
+      border: 1px solid #000;
+      -webkit-border-radius: 2px;
+      border-radius: 2px;
+      float: left;
+      text-align: right;
+      font-size: 15px; }
+.rz_invest .pay-info {
+  width: 100%;
+  float: left;
+  margin-top: 15px; }
+  .rz_invest .pay-info .link {
+    width: 100%;
+    float: left;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 14px;
+    border-top: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
+    color: #666;
+    position: relative; }
+    .rz_invest .pay-info .link:before {
+      content: '';
+      width: 22px;
+      height: 22px;
+      background: url(../images/icon-btn.png) no-repeat 0 -247px;
+      -webkit-background-size: 24px auto;
+      background-size: 24px auto;
+      float: left;
+      margin: 13px 10px; }
+    .rz_invest .pay-info .link:after {
+      content: '';
+      width: 16px;
+      height: 10px;
+      background: url(../images/icon-btn.png) no-repeat 0 -269px;
+      -webkit-background-size: 24px auto;
+      background-size: 24px auto;
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      margin-top: -5px;
+      display: none; }
+    .rz_invest .pay-info .link.active:after {
+      display: block; }
+  .rz_invest .pay-info .txt {
+    width: 100%;
+    float: left;
+    padding: 15px 14px;
+    font-size: 12px;
+    color: #666;
+    line-height: 18px; }
+.rz_invest .btm-btn {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 25px;
+  padding: 0 14px; }
+  .rz_invest .btm-btn a {
+    width: 100%;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+    float: left;
+    background: #ef5b70;
+    color: #fff;
+    font-size: 15px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px; }
 
 /*# sourceMappingURL=layout.css.map */

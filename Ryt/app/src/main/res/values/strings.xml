@@ -43,4 +43,5 @@
 
     <string name="tab01">艺术家(%1$s)</string>
     <string name="tab02">用户(%1$s)</string>
+    <string name="title_activity_pay_page">PayPage</string>
 </resources>

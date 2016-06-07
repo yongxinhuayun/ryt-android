@@ -1,3 +1,4 @@
+
 $(function () {
     //模块--滑动导航
     (function () {
@@ -111,9 +112,41 @@ $(function () {
 
     })();
     //拍卖详情
+    // (function () {
+    // var btnPay=$('#btn_pay,#btn_pay_end'),
+    //     btnPayPannel=$('#btn_pay_pannel');
+    // btnPay.click(function () {
+    //     btnPayPannel.addClass('jshow');
+    //     btnPayPannel.find('.close').click(function () {
+    //         btnPayPannel.removeClass('jshow');
+    //     })
+    //     return false;
+    // });
+    // $('#radio').click(function () {
+    //     $(this).toggleClass('active');
+    // });
+    // //余额不足弹出框关闭
+    // var pmDialog=$('.pm_dialog');
+    // pmDialog.find('.close').click(function () {
+    //     pmDialog.fadeOut(100);
+    // });
+    //
+    // //拍卖前详情
+    // $('.pm_pay_lay .main .p4 .info .link,.rz_invest .pay-info .link').click(function () {
+    //     $(this).toggleClass('active');
+    // });
+    // //拍卖详情中--->点击出价提示框
+    // var pmBidTips=$('#pm-bid-tips');
+    // $('#bid-link').click(function () {
+    //     pmBidTips.fadeIn('fast').delay(3000).fadeOut('fast');
+    //     return false;
+    // });
+    // //融资详情
+    // $('.rz_invest .items .links a').click(function () {
+    //     $(this).addClass('active').siblings('a').removeClass('active');
+    // })
     (function () {
         var ParentDiv = $("#bottomButton");
-        var btnPay = $('#btn_pay');
         var click = function () {
             var btnPayPannel = $('#btn_pay_pannel');
             btnPayPannel.addClass('jshow');
@@ -122,7 +155,7 @@ $(function () {
             })
             return false;
         };
-        ParentDiv.on("click", "#btn_pay", click);
+        ParentDiv.on("click", "#btn_pay,#btn_pay_end", click);
         var click2 = function () {
             $(this).toggleClass('active');
         }
@@ -147,4 +180,6 @@ $(function () {
         //     return false;
         // });
     })();
+
+    // })();
 })

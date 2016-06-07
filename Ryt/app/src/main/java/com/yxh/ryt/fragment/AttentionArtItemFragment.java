@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,7 +30,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-
+@SuppressLint("ValidFragment")
 public class AttentionArtItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener {
 	private AutoListView lstv;

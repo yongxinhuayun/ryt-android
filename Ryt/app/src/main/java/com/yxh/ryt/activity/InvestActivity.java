@@ -16,7 +16,6 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.vo.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,11 +59,16 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
     TextView invest;
     @Bind(R.id.imp_et_other)
     EditText other;
+    private int allMoney;
+    private String artworkId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.investmentpage);
         ButterKnife.bind(this);
+        allMoney = getIntent().getIntExtra("allMoney",0);
+        artworkId = getIntent().getStringExtra("artWorkId");
         other.addTextChangedListener(this);
     }
     @OnClick({R.id.imp_ll_2,R.id.imp_ll_5,R.id.imp_ll_10,R.id.imp_ll_28,R.id.imp_ll_88,R.id.imp_ll_all})
@@ -103,7 +107,7 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
             case R.id.imp_ll_all:
                 ButterKnife.apply(tabTvs, SETCOLOR, 5);
                 ButterKnife.apply(tabTvs1, SETCOLOR1, 5);
-                invest.setText("投资" + 1111 + "元");
+                invest.setText("投资" + allMoney + "元");
                 break;
         }
 
@@ -140,10 +144,11 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
             ButterKnife.apply(tabTvs, SETCOLOR,4);
             ButterKnife.apply(tabTvs1, SETCOLOR1,4);
         }
-        if ("1111".equals(s.toString())){
+        if ((allMoney+"").equals(s.toString())){
             ButterKnife.apply(tabTvs, SETCOLOR,5);
             ButterKnife.apply(tabTvs1, SETCOLOR1,5);
         }
+        money=s.toString();
         invest.setText("投资" + s + "元");
     }
 
@@ -160,7 +165,10 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
             case R.id.imp_tv_invest:
                 Map<String,String> paramsMap=new HashMap<>();
                 paramsMap.put("userId", AppApplication.gUser.getId());
-                paramsMap.put("userId", AppApplication.gUser.getId());
+                paramsMap.put("money", money);
+                paramsMap.put("action", "invest");
+                paramsMap.put("type", "1");
+                paramsMap.put("artWorkId", artworkId);
                 paramsMap.put("timestamp", System.currentTimeMillis() + "");
                 try {
                     AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -168,7 +176,7 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                NetRequestUtil.post(Constants.BASE_PATH + "user.do", paramsMap, new AttentionListCallBack() {
+                NetRequestUtil.post(Constants.BASE_PATH + "pay/main.do", paramsMap, new AttentionListCallBack() {
                     @Override
                     public void onError(Call call, Exception e) {
                         e.printStackTrace();
@@ -177,11 +185,10 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
 
                     @Override
                     public void onResponse(Map<String, Object> response) {
-                        if ("0".equals(response.get("resultCode"))) {
-                            Map<Object, Object> data = (Map<Object, Object>) response.get("data");
-                            User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(data.get("user")), User.class);
-
-                        }
+                        String url = response.get("url").toString();
+                        Intent intent=new Intent(InvestActivity.this,PayPageActivity.class);
+                        intent.putExtra("url",url);
+                        InvestActivity.this.startActivity(intent);
                     }
                 });
                 break;
