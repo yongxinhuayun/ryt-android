@@ -76,14 +76,18 @@
         </LinearLayout>
 
     </LinearLayout>
-    <TextView
+    <com.yxh.ryt.custemview.BorderTextView
         android:id="@+id/cl_01_tv_brief"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
         android:textColor="#666666"
         android:text="逐鹿顺意铜雕逐鹿顺意铜雕逐鹿顺意铜雕逐鹿顺意铜雕逐鹿顺意铜雕逐鹿顺意铜雕逐鹿顺意铜雕顺意"
         android:textSize="14sp"
         android:maxLength="300"
+        android:paddingLeft="16dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:paddingRight="16dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="10dp"

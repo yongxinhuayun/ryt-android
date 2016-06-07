@@ -23,4 +23,5 @@
     <color name="action_bar_tittle_color_555555">#FF000000</color>
     <color name="province_line_border1">#cdcdcd</color>
     <color name="province_line_border">#C7C7C7</color>
+    <color name="textview_line_border">#ef5b70</color>
 </resources>
