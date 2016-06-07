@@ -3,9 +3,7 @@ package com.yxh.ryt.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -528,7 +526,6 @@ public class RongZiXQActivity extends BaseActivity {
     mViewPengyou.setOnClickListener(listener);
     mBtnCancel.setOnClickListener(listener);
 
-    // 设置相关位置，一定要在 show()之后
     Window window = dialog.getWindow();
     window.getDecorView().setPadding(0, 0, 0, 0);
     WindowManager.LayoutParams params = window.getAttributes();
