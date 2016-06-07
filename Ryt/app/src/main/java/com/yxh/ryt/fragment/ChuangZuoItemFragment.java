@@ -18,6 +18,7 @@ import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Create;
 
 import java.util.ArrayList;
@@ -109,9 +110,9 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 			public void convert(ViewHolder helper, final Create item) {
 				helper.setText(R.id.cl_01_tv_title,item.getTitle());
 				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
-				helper.setText(R.id.cl_01_tv_name,item.getAuthor().getName());
+				helper.setText(R.id.cl_01_tv_name, item.getAuthor().getName());
 				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
-				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
+				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, item.getAuthor().getPictureUrl());
 				helper.getView(R.id.cli_ll_top).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -121,6 +122,14 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 						startActivity(intent);
 					}
 				});
+				if ("暂无更新状态".equals(item.getNewCreationDate())){
+					helper.setText(R.id.cli_tv_update,"暂无更新状态");
+				}else {
+					helper.setText(R.id.cli_tv_update,"最新一次更新:"+item.getNewCreationDate()+"前");
+				}
+				/*if (item.getCreationEndDatetime()>System.currentTimeMillis()){*/
+					helper.setText(R.id.cli_tv_predictComplete, "预计完工:" + Utils.timeTransMonth(item.getCreationEndDatetime()) + "月" + Utils.timeTransDate(item.getCreationEndDatetime())+"日");
+				/*}*/
 			}
 		};
 		lstv.setAdapter(chuangZuoCommonAdapter);

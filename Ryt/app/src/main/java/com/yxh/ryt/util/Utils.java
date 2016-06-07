@@ -77,6 +77,14 @@ public class Utils {
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		return sdf.format(new Date(time));
 	}
+	public static String timeTransMonth(long time) {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM");
+		return sdf.format(new Date(time));
+	}
+	public static String timeTransDate(long time) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd");
+		return sdf.format(new Date(time));
+	}
 	public static Date timeTransfore(long time) throws Exception{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormater2.get().parse(sdf.format(new Date(time)));

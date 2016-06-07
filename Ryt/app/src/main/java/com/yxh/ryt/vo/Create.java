@@ -53,7 +53,7 @@ public class Create implements Serializable {
     private String picture_url;
     private String step;
     private int investsMoney;
-    private Object creationEndDatetime;
+    private long creationEndDatetime;
     private String type;
     private String newCreationDate;
     private Object auctionNum;
@@ -188,11 +188,11 @@ public class Create implements Serializable {
         this.investsMoney = investsMoney;
     }
 
-    public Object getCreationEndDatetime() {
+    public long getCreationEndDatetime() {
         return creationEndDatetime;
     }
 
-    public void setCreationEndDatetime(Object creationEndDatetime) {
+    public void setCreationEndDatetime(long creationEndDatetime) {
         this.creationEndDatetime = creationEndDatetime;
     }
 
