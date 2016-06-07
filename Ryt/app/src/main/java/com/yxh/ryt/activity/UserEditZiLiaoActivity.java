@@ -60,6 +60,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
     private TextView tv_nickname;
     private TextView tv_sex;
     private EditReceiver receiver;
+    private Double sex;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserEditZiLiaoActivity.class));
@@ -377,10 +378,8 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 if (map11 != null) {
                     map22 = map11.get("user");
                 }
-                Double sex = null;
-                if (map22==null){
-                    sex = 4.0;
-                }else {
+
+                if (map22 !=null){
                     sex = map22.get("sex");
                 }
                 Map<String,Map<String,String>> map111 = (Map<String, Map<String, String>>) response.get("pageInfo");
@@ -415,9 +414,9 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
     }
 
     public String changSex(Double s) {
-        if(s.equals("2")) {
+        if(s == 2.0) {
             return "女";
-        }else if(s.equals("1")){
+        }else if(s == 1.0){
             return "男";
         }else{
             return "保密";

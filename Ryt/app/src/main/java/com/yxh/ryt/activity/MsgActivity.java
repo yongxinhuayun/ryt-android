@@ -1,36 +1,14 @@
 package com.yxh.ryt.activity;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import android.app.Activity;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
@@ -38,16 +16,21 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.ChatMsgViewAdapter;
 import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.callback.NotifaicationCallBack;
-import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.ChatMsgEntity;
 import com.yxh.ryt.vo.PrivateLetter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import okhttp3.Call;
 
 public class MsgActivity extends BaseActivity implements OnClickListener {
@@ -58,7 +41,7 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 	private ListView mListView;
 	private ChatMsgViewAdapter mAdapter;
 	private List<ChatMsgEntity> mDataArrays = new ArrayList<ChatMsgEntity>();
-	private String fromId="";
+	private String fromId;
 	private String name;
 	private TextView title;
 	private String userId;
@@ -85,7 +68,7 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 		mBtnSend.setOnClickListener(this);
 		mBottom = (LinearLayout) findViewById(R.id.btn_bottom);
 		mEditTextContent = (EditText) findViewById(R.id.et_sendmessage);
-		mAdapter = new ChatMsgViewAdapter(this, mDataArrays);
+		mAdapter = new ChatMsgViewAdapter(this, mDataArrays,userId,fromId);
 		mListView.setAdapter(mAdapter);
 	}
 
@@ -110,6 +93,7 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 			entity.setName(currentName);
 			entity.setMsgType(false);
 			entity.setText(contString);
+			//entity.setUserId(fromId);
 			pushMessageRequst();
 			mDataArrays.add(entity);
 			mAdapter.notifyDataSetChanged();
@@ -196,8 +180,10 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 						/*if(AppApplication.gUser.getId().equals(next.getFromUser().getId())) {
 							entity.setMsgType(false);
 						}*/
+						entity.setUserId(next.getFromUser().getId());
 						if(userId.equals(next.getFromUser().getId())) {
 							entity.setMsgType(false);
+
 						}
 						mDataArrays.add(entity);
 					}

@@ -120,15 +120,16 @@ public class NetRequestUtil<T> {
         new Thread() {
             @Override
             public void run() {
-                GetBuilder post = OkHttpUtils.get();
-                post.url(url)
-                        .build();
-                RequestCall build = post.build();
-                build.connTimeOut(500000);
-                build.readTimeOut(500000);
-                build.writeTimeOut(500000);
-                build.execute(callback);
-
+                if(url != null ){
+                    GetBuilder post = OkHttpUtils.get();
+                    post.url(url)
+                            .build();
+                    RequestCall build = post.build();
+                    build.connTimeOut(500000);
+                    build.readTimeOut(500000);
+                    build.writeTimeOut(500000);
+                    build.execute(callback);
+                }
             }
         }.start();
     }
