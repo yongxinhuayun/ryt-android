@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.ChuangZuoXQActivity;
+import com.yxh.ryt.activity.CreateSummaryActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
@@ -115,7 +115,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 				helper.getView(R.id.cli_ll_top).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Intent intent=new Intent(getActivity(), ChuangZuoXQActivity.class);
+						Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);
 						intent.putExtra("id", item.getId());
 						startActivity(intent);
 					}

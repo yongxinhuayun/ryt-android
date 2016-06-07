@@ -103,7 +103,8 @@ public class ChuangZuoXQActivity extends BaseActivity implements View.OnClickLis
                 startActivity(new Intent(this, CommentActivity.class));
                 break;
             case R.id.rl_tab_02:
-                startActivity(new Intent(this, InvestActivity.class));
+                /*Intent intent=new Intent(this,InvestActivity.class);
+                intent.getIntExtra("",)*/
                 break;
             default:
                 break;
@@ -118,7 +119,7 @@ public class ChuangZuoXQActivity extends BaseActivity implements View.OnClickLis
     private void LoadData(int tabtype, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artworkId+"");
-        paramsMap.put("currentUserId", "ieatht97wfw30hfd");
+        paramsMap.put("currentUserId", AppApplication.gUser.getId());
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);

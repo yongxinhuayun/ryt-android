@@ -1,5 +1,6 @@
 package com.yxh.ryt.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,18 +10,28 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yxh.ryt.AppApplication;
+import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.callback.AttentionListCallBack;
+import com.yxh.ryt.util.EncryptUtil;
+import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.vo.User;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 /**
  * Created by Administrator on 2016/5/3.
  */
 public class InvestActivity extends BaseActivity implements TextWatcher {
+    private String money;
     @Bind({ R.id.imp_ll_2, R.id.imp_ll_5, R.id.imp_ll_10 ,R.id.imp_ll_28,R.id.imp_ll_88,R.id.imp_ll_all})
     List<LinearLayout> tabTvs;
     ButterKnife.Setter<View, Integer> SETCOLOR = new ButterKnife.Setter<View, Integer>() {
@@ -56,35 +67,37 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
         ButterKnife.bind(this);
         other.addTextChangedListener(this);
     }
-    @OnClick({R.id.imp_ll_2,R.id.imp_ll_5,R.id.imp_ll_10,R.id.imp_ll_28,R.id.imp_ll_88,R.id.imp_ll_all,R.id.imp_tv_invest})
+    @OnClick({R.id.imp_ll_2,R.id.imp_ll_5,R.id.imp_ll_10,R.id.imp_ll_28,R.id.imp_ll_88,R.id.imp_ll_all})
     public void click(View view){
         switch (view.getId()){
             case R.id.imp_ll_2:
                 ButterKnife.apply(tabTvs, SETCOLOR,0);
                 ButterKnife.apply(tabTvs1, SETCOLOR1,0);
+                money=2+"";
                 invest.setText("投资"+2+"元");
                 break;
             case R.id.imp_ll_5:
                 ButterKnife.apply(tabTvs, SETCOLOR,1);
                 ButterKnife.apply(tabTvs1, SETCOLOR1,1);
+                money=5+"";
                 invest.setText("投资" + 5 + "元");
-                break;
-            case R.id.imp_tv_invest:
-
                 break;
             case R.id.imp_ll_10:
                 ButterKnife.apply(tabTvs, SETCOLOR,2);
                 ButterKnife.apply(tabTvs1, SETCOLOR1,2);
+                money=10+"";
                 invest.setText("投资" + 10 + "元");
                 break;
             case R.id.imp_ll_28:
                 ButterKnife.apply(tabTvs, SETCOLOR,3);
                 ButterKnife.apply(tabTvs1, SETCOLOR1,3);
+                money=28+"";
                 invest.setText("投资" + 28 + "元");
                 break;
             case R.id.imp_ll_88:
                 ButterKnife.apply(tabTvs, SETCOLOR,4);
                 ButterKnife.apply(tabTvs1, SETCOLOR1,4);
+                money=88+"";
                 invest.setText("投资" + 88 + "元");
                 break;
             case R.id.imp_ll_all:
@@ -138,8 +151,40 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
     public void afterTextChanged(Editable s) {
 
     }
-    @OnClick(R.id.ip_ib_back)
-    public void back(){
-        finish();
+    @OnClick({R.id.imp_tv_invest,R.id.ip_ib_back})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.ip_ib_back:
+                finish();
+                break;
+            case R.id.imp_tv_invest:
+                Map<String,String> paramsMap=new HashMap<>();
+                paramsMap.put("userId", AppApplication.gUser.getId());
+                paramsMap.put("userId", AppApplication.gUser.getId());
+                paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                try {
+                    AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+                    paramsMap.put("signmsg", AppApplication.signmsg);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                NetRequestUtil.post(Constants.BASE_PATH + "user.do", paramsMap, new AttentionListCallBack() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        e.printStackTrace();
+                        System.out.println("失败了");
+                    }
+
+                    @Override
+                    public void onResponse(Map<String, Object> response) {
+                        if ("0".equals(response.get("resultCode"))) {
+                            Map<Object, Object> data = (Map<Object, Object>) response.get("data");
+                            User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(data.get("user")), User.class);
+
+                        }
+                    }
+                });
+                break;
+        }
     }
 }

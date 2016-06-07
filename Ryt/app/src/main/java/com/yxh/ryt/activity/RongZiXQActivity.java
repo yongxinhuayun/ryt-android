@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -91,11 +92,20 @@ public class RongZiXQActivity extends BaseActivity {
     TextView zan;
     @Bind(R.id.tv_top_ct)
     TextView topTitle;
+    @Bind(R.id.progressBar1)
+    ProgressBar bar;
+    @Bind(R.id.tv_pb_value)
+    TextView prValue;
+    @Bind(R.id.fli_ll_tv_investGoalMoney)
+    TextView goalMoney;
+    @Bind(R.id.fli_ll_tv_remainingTime)
+    TextView remainTime;
+    @Bind(R.id.fli_ll_tv_investGoalPeople)
+    TextView goalPeople;
     private StickHeaderLayout shl_root;
     private LinearLayout touziren_ll;
     private SQLiteDatabase database;
-    private String isPraise;
-    private String isPraise1;
+    private boolean isPraise1;
     IWXAPI api;
     private List<User> users;
     private int widthzong;
@@ -130,13 +140,12 @@ public class RongZiXQActivity extends BaseActivity {
         mFragmentList.add(RongZiXiangQingTab01Fragment.newInstance(manager, 0, false));
         mFragmentList.add(RongZiXiangQingTab02Fragment.newInstance(manager, 1, false));
         mFragmentList.add(RongZiXiangQingTab03Fragment.newInstance(manager, 2, false, artworkId));
-        mFragmentList.add(RongZiXiangQingTab04Fragment.newInstance(manager, 3, false,artworkId));
+        mFragmentList.add(RongZiXiangQingTab04Fragment.newInstance(manager, 3, false, artworkId));
         RongZiXqTabPageIndicatorAdapter pagerAdapter = new RongZiXqTabPageIndicatorAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(pagerAdapter);
         TabPageIndicator indicator = (TabPageIndicator) findViewById(R.id.indicator);
         indicator.setViewPager(mViewPager);
-        LoadData(0, 1);
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
         widthzong = metric.widthPixels; // 屏幕宽度（像素）
@@ -144,19 +153,20 @@ public class RongZiXQActivity extends BaseActivity {
         height= Utils.dip2px(RongZiXQActivity.this,24);
         right=Utils.dip2px(RongZiXQActivity.this,10);
         count = (widthzong-(Utils.dip2px(RongZiXQActivity.this, 20)*2)) / (width + right);
-        database= AppApplication.getDBHelper().getWritableDatabase();
-        Cursor cursor = database.query("rzxq_praise", null, "project_workID=? AND current_id=?", new String[]{artworkId,AppApplication.gUser.getId()+""}, null, null, null);
-        while (cursor.moveToNext()) {
+        /*database= AppApplication.getDBHelper().getWritableDatabase();
+        Cursor cursor = database.query("rzxq_praise", null, "project_workID=? AND current_id=?", new String[]{artworkId,AppApplication.gUser.getId()+""}, null, null, null);*/
+        /*while (cursor.moveToNext()) {
             isPraise = cursor.getString(cursor.getColumnIndex("isPraise"));
         }
         if ("1".equals(isPraise)){
             dianzan.setEnabled(false);
             dianzan.setImageResource(R.mipmap.dianzanhou);
-        }
+        }*/
     }
     @Override
     protected void onResume() {
         super.onResume();
+        LoadData(0, 1);
     }
     @OnClick({R.id.ll_comment,R.id.ib_top_lf,R.id.ib_top_rt,R.id.iv_tab_01,R.id.rzxq_tv_invest})
     public void comment(View view){
@@ -197,7 +207,7 @@ public class RongZiXQActivity extends BaseActivity {
                    Intent intent2=new Intent(RongZiXQActivity.this,LoginActivity.class);
                     startActivity(intent2);
                 }else {
-                    if (!"1".equals(isPraise)){
+                    if (!isPraise1){
                         AnimationSet animationSet=new AnimationSet(true);
                         ScaleAnimation scaleAnimation=new ScaleAnimation(1,1.5f,1,1.5f, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
                         scaleAnimation.setDuration(200);
@@ -215,12 +225,7 @@ public class RongZiXQActivity extends BaseActivity {
                                 animationSet.addAnimation(scaleAnimation);
                                 animationSet.setFillAfter(true);
                                 dianzan.startAnimation(animationSet);
-                                ContentValues values = new ContentValues();
-                                values.put("project_workID",artworkId);
-                                values.put("current_id",AppApplication.gUser.getId()+"");
-                                values.put("isPraise", "1");
                                 dianzan.setEnabled(false);
-                                database.insert("rzxq_praise", null, values);
                                 praise(artworkId,AppApplication.gUser.getId()+"");
                             }
                             @Override
@@ -295,21 +300,32 @@ public class RongZiXQActivity extends BaseActivity {
                     if (users!=null && users.size()>0){
                         isFirst(users);
                     }
-                    isPraise1=AppApplication.getSingleGson().toJson(object.get("isPraise"));
+                    isPraise1= Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
                     Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
                     topTitle.setText(artwork.getTitle());
                     cl01TvTitle.setText(artwork.getTitle());
                     cl01TvBrief.setText(artwork.getBrief());
-                    cl01TvName.setText(artwork.getAuthor().getName());
-                    cl01LlZhicheng.setVisibility(View.GONE);
+                    tvFinancing.setText(artwork.getInvestsMoney() + "元");
+                    double value = artwork.getInvestsMoney().doubleValue() / artwork.getInvestGoalMoney().doubleValue();
+                    bar.setProgress((int)(value*100));
+                    prValue.setText((int) (value * 100) + "%");
+                    goalMoney.setText(artwork.getInvestGoalMoney()+"");
+                    remainTime.setText(Utils.timeToFormatTemp("HH时MM分SS秒", artwork.getInvestEndDatetime() - artwork.getInvestStartDatetime()));
+                    goalPeople.setText(AppApplication.getSingleGson().toJson(object.get("investNum")));
                     if (artwork.getAuthor() != null) {
+                        cl01TvName.setText(artwork.getAuthor().getName());
+                        AppApplication.displayImage(artwork.getAuthor().getPictureUrl(),cl01CivHeadPortrait);
                         if (artwork.getAuthor().getMaster() != null) {
-                            if (artwork.getAuthor().getMaster().getTitle() != null && !"".equals(artwork.getAuthor().getMaster().getTitle())) {
-                                cl01LlZhicheng.setVisibility(View.VISIBLE);
+                            if (artwork.getAuthor().getMaster() != null ) {
                                 cl01TvZhicheng.setText(artwork.getAuthor().getMaster().getTitle());
                             }
                         }
                     }
+                    if (isPraise1){
+                        dianzan.setImageResource(R.mipmap.dianzanhou);
+                        dianzan.setEnabled(false);
+                    }
+                    zan.setText(artwork.getPraiseNUm()+"");
                     AppApplication.displayImage(artwork.getPicture_url(), cl01TvPrc);
                     EventBus.getDefault().post(object);
                 }
