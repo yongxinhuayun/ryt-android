@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
@@ -125,41 +126,21 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 			@Override
 			public void convert(final ViewHolder helper, final FollowUserUtil item) {
 				final String followId = item.getArtUserFollowed().getUser().getId();
-		/*		if ("2".equals(item.getFlag())){
-					//helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuqian);
-					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							if ("".equals(AppApplication.gUser.getId())){
-								Intent intent=new Intent(getActivity(), LoginActivity.class);
-								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-								getActivity().startActivity(intent);
-							}else {
-								Attention_user(v,followId);
-							}
-						}
-					});
-				}else if (null==item.getFlag() || "1".equals(item.getFlag())){
-					//helper.setImageResource(R.id.fai_iv_attention,R.mipmap.guanzhuhou);
-					helper.getView(R.id.fai_iv_attention).setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							if ("".equals(AppApplication.gUser.getId())){
-								Intent intent=new Intent(getActivity(), LoginActivity.class);
-								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-								getActivity().startActivity(intent);
-							}else {
-								NoAttention_user(v,followId);
-							}
-						}
-					});
-				}*/
 				helper.setText(R.id.fai_tv_name, item.getArtUserFollowed().getUser().getName());
 				if (item.getArtUserFollowed().getUser().getMaster()!=null){
 					helper.setText(R.id.fai_tv_brief, item.getArtUserFollowed().getUser().getMaster().getBrief());
 				}
 				helper.setImageByUrl(R.id.fai_iv_icon, item.getArtUserFollowed().getUser().getPictureUrl());
-
+				helper.getView(R.id.fai_iv_icon).setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+							Intent intent=new Intent(AppApplication.getSingleContext(),UserYsjIndexActivity.class);
+							intent.putExtra("userId", followId);
+							intent.putExtra("currentId", AppApplication.gUser.getId());
+							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							getActivity().startActivity(intent);
+					}
+				});
 
 			}
 		};

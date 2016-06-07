@@ -13,6 +13,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.LoginActivity;
+import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
@@ -158,7 +159,16 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 					helper.setText(R.id.fai_tv_brief, item.getArtUserFollowed().getUser().getMaster().getBrief());
 				}
 				helper.setImageByUrl(R.id.fai_iv_icon, item.getArtUserFollowed().getFollower().getPictureUrl());
-
+				helper.getView(R.id.fai_iv_icon).setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent=new Intent(AppApplication.getSingleContext(),UserYsjIndexActivity.class);
+						intent.putExtra("userId", followId);
+						intent.putExtra("currentId", AppApplication.gUser.getId());
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						getActivity().startActivity(intent);
+					}
+				});
 
 			}
 		};

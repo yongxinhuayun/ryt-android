@@ -1,19 +1,28 @@
 package com.yxh.ryt.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.yxh.ryt.AppApplication;
+import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.callback.RegisterCallBack;
+import com.yxh.ryt.custemview.CircleImageView;
+import com.yxh.ryt.util.EncryptUtil;
+import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.vo.ChatMsgEntity;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import okhttp3.Call;
 
 public class ChatMsgViewAdapter extends BaseAdapter {
 
@@ -22,18 +31,23 @@ public class ChatMsgViewAdapter extends BaseAdapter {
 		int IMVT_TO_MSG = 1;
 	}
 
+	private String userId;
+	private String fromId;
 	private static final String TAG = ChatMsgViewAdapter.class.getSimpleName();
 
 	private List<ChatMsgEntity> coll;
 
 	private Context ctx;
+	private ChatMsgEntity entity;
 
 	private LayoutInflater mInflater;
 	private MediaPlayer mMediaPlayer = new MediaPlayer();
 
-	public ChatMsgViewAdapter(Context context, List<ChatMsgEntity> coll) {
+	public ChatMsgViewAdapter(Context context, List<ChatMsgEntity> coll, String userId, String fromId) {
 		ctx = context;
 		this.coll = coll;
+		this.userId = userId;
+		this.fromId = fromId;
 		mInflater = LayoutInflater.from(context);
 	}
 
@@ -51,7 +65,7 @@ public class ChatMsgViewAdapter extends BaseAdapter {
 
 	public int getItemViewType(int position) {
 		// TODO Auto-generated method stub
-		ChatMsgEntity entity = coll.get(position);
+		entity = coll.get(position);
 
 		if (entity.getMsgType()) {
 			return IMsgViewType.IMVT_COM_MSG;
@@ -90,26 +104,28 @@ public class ChatMsgViewAdapter extends BaseAdapter {
 					.findViewById(R.id.tv_chatcontent);
 			viewHolder.tvTime = (TextView) convertView
 					.findViewById(R.id.tv_time);
+			viewHolder.userHead = (CircleImageView) convertView
+					.findViewById(R.id.iv_userhead);
 			viewHolder.isComMsg = isComMsg;
 
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-
 		viewHolder.tvSendTime.setText(entity.getDate());
-		
+
 //		if (entity.getText().contains(".amr")) {
 //			viewHolder.tvContent.setText("");
 //			viewHolder.tvContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.chatto_voice_playing, 0);
 //			viewHolder.tvTime.setText(entity.getTime());
 //		} else {
-			viewHolder.tvContent.setText(entity.getText());			
-			viewHolder.tvContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-			viewHolder.tvTime.setText("");
+		viewHolder.tvContent.setText(entity.getText());
+		viewHolder.tvContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+		viewHolder.tvTime.setText("");
 //		}
 		viewHolder.tvUserName.setText(entity.getName());
-		
+		inflatImage(userId, entity.getUserId(), viewHolder.userHead);
+
 		return convertView;
 	}
 
@@ -118,12 +134,13 @@ public class ChatMsgViewAdapter extends BaseAdapter {
 		public TextView tvUserName;
 		public TextView tvContent;
 		public TextView tvTime;
+		public CircleImageView userHead;
 		public boolean isComMsg = true;
 	}
 
 	/**
-	 * @Description
 	 * @param name
+	 * @Description
 	 */
 	private void playMusic(String name) {
 		try {
@@ -150,4 +167,66 @@ public class ChatMsgViewAdapter extends BaseAdapter {
 
 	}
 
+	public void inflatImage(String userId, String fromId, final CircleImageView imageView) {
+		Map<String, String> paramsMap = new HashMap<>();
+		paramsMap.put("userId", entity.getUserId());
+		paramsMap.put("currentId", userId);
+		paramsMap.put("pageIndex", "1");
+		paramsMap.put("pageSize", "20");
+		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		try {
+			paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		NetRequestUtil.post(Constants.BASE_PATH + "my.do", paramsMap, new RegisterCallBack() {
+			@Override
+			public void onError(Call call, Exception e) {
+				System.out.println("失败了");
+			}
+
+			@Override
+			public void onResponse(Map<String, Object> response) {
+				//User user = new User();
+				//user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfo")), User.class);
+				Map<String,Map<String,String>> map11 = (Map<String, Map<String, String>>) response.get("pageInfo");
+				Map<String,String> map22 = null;
+				if (map11 != null) {
+					map22 = map11.get("user");
+				}
+				String pic_url = null;
+				if (map22 !=null){
+					 pic_url = map22.get("pictureUrl");
+				}
+				AppApplication.displayImage(pic_url,imageView);
+				/*NetRequestUtil.downloadImage(artwork.getPicture_url(), new BitmapCallback() {
+					@Override
+					public void onError(Call call, Exception e) {
+
+					}
+
+					@Override
+					public void onResponse(Bitmap response) {
+						if (response != null) {
+							File sampleDir = new File(Environment.getExternalStorageDirectory() + File.separator);
+							if (!sampleDir.exists()) {
+*/
+	/*		if(user != null){
+				NetRequestUtil.downloadImage(pic_url, new BitmapCallback() {
+					@Override
+					public void onError(Call call, Exception e) {
+
+					}
+
+					@Override
+					public void onResponse(Bitmap response) {
+						imageView.setImageBitmap(response);
+					}
+				});
+			}*/
+
+
+			}
+		});
+	}
 }
