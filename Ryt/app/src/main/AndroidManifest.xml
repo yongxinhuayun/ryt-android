@@ -274,7 +274,7 @@
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="539b73fd73c82f1134120a57" />
+            android:value="a0418571f14a2f13b7794bcc" />
         <!-- </>值来自开发者平台取得的AppKey -->
 
         <activity android:name=".activity.EditNicknameActivity" />
@@ -283,7 +283,7 @@
         <activity android:name=".activity.YsjRzActivity" />
         <activity
             android:name=".activity.PayPageActivity"
-            android:label="@string/title_activity_pay_page"></activity>
+            android:label="@string/title_activity_pay_page"/>
     </application>
 
 </manifest>
