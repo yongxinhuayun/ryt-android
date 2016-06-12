@@ -14,6 +14,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.AttentionActivity;
+import com.yxh.ryt.activity.AuctionOrderActivity;
 import com.yxh.ryt.activity.FansActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.PublicProject01Activity;
@@ -92,8 +93,6 @@ public class TabFragment04 extends BaseFragment {
     TextView btnLf;
     @Bind(R.id.user_setting)
     RelativeLayout userSetting;
-    @Bind(R.id.rl_qb)
-    RelativeLayout rlQb;
     @Bind(R.id.rl_yijian)
     RelativeLayout userYiJian;
     @Nullable
@@ -147,13 +146,29 @@ public class TabFragment04 extends BaseFragment {
             getActivity().startActivity(intent);
         }
     }
+    @OnClick(R.id.rl_auction)
+    public void order(){
+        if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
+            Intent intent=new Intent(getActivity(), AuctionOrderActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            /*intent.putExtra("userId", AppApplication.gUser.getId() + "");
+            intent.putExtra("otherUserId",AppApplication.gUser.getId()+"");
+            intent.putExtra("flag","1");*/
+            getActivity().startActivity(intent);
+        }else {
+            Intent intent=new Intent(getActivity(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(intent);
+        }
+    }
+
     //设置点击事件
     @OnClick(R.id.user_setting)
     void userSettingClick() {
         UserSettingActivity.openActivity(getActivity());
     }
     //钱包点击事件
-    @OnClick(R.id.rl_qb)
+    @OnClick(R.id.rl_02)
     void userQbClick() {
         UserQianBaoActivity.openActivity(getActivity());
     }
