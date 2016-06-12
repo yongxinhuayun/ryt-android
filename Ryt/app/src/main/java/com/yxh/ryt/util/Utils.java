@@ -260,7 +260,6 @@ public class Utils {
 		matrix.postRotate(degree);
 		// 创建新的图片
 		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-		/*bitmap.recycle();*/
 		return resizedBitmap;
 	}
 	public static int readPictureDegree1(String path) {

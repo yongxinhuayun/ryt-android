@@ -227,10 +227,10 @@ public class ImageUtils
         return newbm;
     }
 
-    public static String getRealPathByUriOld(Intent data){
+    public static String getRealPathByUriOld(Uri data){
         String filename="";
         if (data.getScheme().toString().compareTo("content") == 0) {
-            Cursor cursor = AppApplication.getSingleContext().getContentResolver().query(data.getData(),
+            Cursor cursor = AppApplication.getSingleContext().getContentResolver().query(data,
                     new String[] {MediaStore.Audio.Media.DATA}, null, null, null);
             if (cursor.moveToFirst()) {
                 filename = cursor.getString(0);
