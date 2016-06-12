@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -26,6 +28,7 @@ import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
+import com.yxh.ryt.util.ImageUtils;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.ToastUtil;
@@ -35,6 +38,8 @@ import com.yxh.ryt.validations.NickNameValidation;
 import com.yxh.ryt.vo.User;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,6 +76,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     private static final int CROP_REQUEST_CODE = 4;
     String filePath = "";
     private String username;
+    private Bitmap bitmap2;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -173,8 +179,8 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
             public void onResponse(Map<String, Object> response) {
                 getUser(response);
                 Map<String, String> paramsMap = new HashMap<>();
-                paramsMap.put("username", username+"");
-                paramsMap.put("password", password+"");
+                paramsMap.put("username", username + "");
+                paramsMap.put("password", password + "");
                 paramsMap.put("cid", JPushInterface.getRegistrationID(RegisterScActivity.this));
                 paramsMap.put("timestamp", System.currentTimeMillis() + "");
                 try {
@@ -227,7 +233,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
 
     @OnClick(R.id.rs_iv_headPortrait)
     public void headPortrait() {
-        /*showPopwindowHead();*/
         new ActionSheetDialog(this)
                 .builder()
                 .setCancelable(false)
@@ -315,6 +320,13 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         });
 
     }*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("xxxxxxx","nishisnsihsinsishinsisinsinisndinfis");
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -334,13 +346,13 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                 File picture = new File(Environment.getExternalStorageDirectory()
                         + "/temp.jpg");
                 Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
-                filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
-                Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
-                bitmap1.recycle();
-                circleImageView.setImageBitmap(bitmap2);
+                Bitmap bitmap3 = Utils.rotaingImageView(picture.getPath(), bitmap1);
+                Bitmap bitmap4 = compressHeadPhoto(bitmap3);
+                circleImageView.setImageBitmap(bitmap4);
 //                saveFile(bitmap1);
 //                startCrop(Uri.fromFile(picture));
                 flag = true;
+                dianji(flag, isNickyname, sex);
                 break;
             case CROP_REQUEST_CODE:
 //                if (data == null) {
@@ -367,18 +379,31 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         }
     }
 
+    private Bitmap compressHeadPhoto(Bitmap bitmap3) {
+        File rotateFile = new File(Environment.getExternalStorageDirectory(),
+                "rotate.jpg");
+        try {
+            bitmap3.compress(Bitmap.CompressFormat.JPEG, 70, new FileOutputStream(
+                    rotateFile));
+            return bitmap3;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Bitmap getBitmap(Uri data) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inSampleSize = 4;
-//        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-        filePath = GetPathFromUri4kitkat.getPath(data);
-//        }else{
-//            filePath=ImageUtils.getRealPathByUriOld(data);
-//        }
+       /* if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){*/
+        String filePath1 = GetPathFromUri4kitkat.getPath(data);
+        /*}else{
+            filePath= ImageUtils.getRealPathByUriOld(data);
+        }*/
         Bitmap bm = BitmapFactory.decodeFile(filePath, options);
         options.inJustDecodeBounds = false;
-        bm = BitmapFactory.decodeFile(filePath, options);
+        bm = BitmapFactory.decodeFile(filePath1, options);
         return bm;
     }
 
