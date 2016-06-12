@@ -18,28 +18,10 @@
             />
         <TextView
             android:layout_marginTop="5dp"
-            android:id="@+id/cli_tv_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="正在拍卖中..."
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            />
-        <TextView
-            android:layout_marginTop="5dp"
             android:id="@+id/cli_tv_current_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="当前价格：10000元"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            />
-        <TextView
-            android:layout_marginTop="5dp"
-            android:id="@+id/cli_tv_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="拍卖次数：100次"
+            android:text="起拍价：10000元"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             />
@@ -58,6 +40,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="成交价：10000元"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            />
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/cli_tv_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="拍卖次数：100次"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             />

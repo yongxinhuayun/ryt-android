@@ -37,15 +37,27 @@ function getArtWorkScheduleMessageHtml(it /**/) {
     for (var i = 0; i < it.messageList[0].artworkCommentList.length; i++) {
         var comment = it.messageList[0].artworkCommentList[i];
         if (typeof comment.fatherComment != "undefined" && comment.fatherComment != null) {
-            out += ' <p class="p-list"><a onclick="redirectUser(\'' + comment.creator.id + '\')">';
+            out += ' <p class="p-list"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')">';
             if (comment.creator.id == getCurrentUserId()) {
                 out += '我的';
             } else {
                 out += ' ' + (comment.creator.name) + ' ';
             }
-            out += '</a>回复<a onclick="redirectUser(\'' + comment.fatherComment.creator.id + '\')">' + (comment.fatherComment.creator.name) + '</a>：<span>' + (comment.content) + '</span> </p> ';
+            out += '</a>回复<a onclick="redirectUser(\'' + (comment.fatherComment.creator.id) + '\')">' + (comment.fatherComment.creator.name) + '</a>： <a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'' + (it.messageList[0].id) + '\',\'';
+            if (comment.fatherComment != null) {
+                out += '' + (comment.fatherComment.id);
+            } else {
+                out += '' + ("");
+            }
+            out += ' \')"> <span>' + (comment.content) + '</span> </a> </p> ';
         } else {
-            out += ' <p class="p-list"><a onclick="redirectUser(\'' + comment.creator.id + '\')">' + (comment.creator.name) + '</a>：<span>' + (comment.content) + '</span> </p> ';
+            out += ' <p class="p-list"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')">' + (comment.creator.name) + '</a>： <a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'' + (it.messageList[0].id) + '\',\'';
+            if (comment.fatherComment != null) {
+                out += '' + (comment.fatherComment.id);
+            } else {
+                out += '' + ("");
+            }
+            out += ' \')"> <span>' + (comment.content) + '</span> </a> </p> ';
         }
         out += ' ';
     }
@@ -53,15 +65,27 @@ function getArtWorkScheduleMessageHtml(it /**/) {
     for (var i = 5; i < it.messageList[0].artworkCommentList.length; i++) {
         var comment = it.messageList[0].artworkCommentList[i];
         if (typeof comment.fatherComment != "undefined" && comment.fatherComment != null) {
-            out += ' <p class="p-list"><a onclick="redirectUser(\'' + comment.creator.id + '\')">';
+            out += ' <p class="p-list"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')">';
             if (comment.creator.id == getCurrentUserId()) {
                 out += '我的';
             } else {
                 out += ' ' + (comment.creator.name) + ' ';
             }
-            out += '</a>回复<a onclick="redirectUser(\'' + comment.fatherComment.creator.id + '\')">' + (comment.fatherComment.creator.name) + '</a>：<span>' + (comment.content) + '</span> </p> ';
+            out += '</a>回复<a onclick="redirectUser(\'' + (comment.fatherComment.creator.id) + '\')">' + (comment.fatherComment.creator.name) + '</a>： <a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'' + (it.messageList[0].id) + '\',\'';
+            if (comment.fatherComment != null) {
+                out += '' + (comment.fatherComment.id);
+            } else {
+                out += '' + ("");
+            }
+            out += ' \')"> <span>' + (comment.content) + '</span> </a> </p> ';
         } else {
-            out += ' <p class="p-list"><a onclick="redirectUser(\'' + comment.creator.id + '\')">' + (comment.creator.name) + '</a>：<span>' + (comment.content) + '</span> </p> ';
+            out += ' <p class="p-list"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')">' + (comment.creator.name) + '</a>： <a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'' + (it.messageList[0].id) + '\',\'';
+            if (comment.fatherComment != null) {
+                out += '' + (comment.fatherComment.id);
+            } else {
+                out += '' + ("");
+            }
+            out += ' \')"> <span>' + (comment.content) + '</span> </a> </p> ';
         }
         out += ' ';
     }
@@ -72,15 +96,27 @@ function getArtWorkScheduleMessageHtml(it /**/) {
         for (var i = 0; i < message.artworkCommentList.length; i++) {
             var comment = message.artworkCommentList[i];
             if (typeof comment.fatherComment != "undefined" && comment.fatherComment != null) {
-                out += ' <p class="p-list"><a onclick="redirectUser(\'' + comment.creator.id + '\')">';
+                out += ' <p class="p-list"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')">';
                 if (comment.creator.id == getCurrentUserId()) {
                     out += '我的';
                 } else {
                     out += ' ' + (comment.creator.name) + ' ';
                 }
-                out += '</a>回复<a onclick="redirectUser(\'' + comment.fatherComment.creator.id + '\')">' + (comment.fatherComment.creator.name) + '</a>：<span>' + (comment.content) + '</span> </p> ';
+                out += '</a>回复<a onclick="redirectUser(\'' + (comment.fatherComment.creator.id) + '\')">' + (comment.fatherComment.creator.name) + '</a>： <a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'' + (message.id) + '\',\'';
+                if (comment.fatherComment != null) {
+                    out += '' + (comment.fatherComment.id);
+                } else {
+                    out += '' + ("");
+                }
+                out += ' \')"> <span>' + (comment.content) + '</span> </a> </p> ';
             } else {
-                out += ' <p class="p-list"><a onclick="redirectUser(\'' + comment.creator.id + '\')">' + (comment.creator.name) + '</a>：<span>' + (comment.content) + '</span> </p> ';
+                out += ' <p class="p-list"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')">' + (comment.creator.name) + '</a>： <a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'' + (message.id) + '\',\'';
+                if (comment.fatherComment != null) {
+                    out += '' + (comment.fatherComment.id);
+                } else {
+                    out += '' + ("");
+                }
+                out += ' \')"> <span>' + (comment.content) + '</span> </a> </p> ';
             }
             out += ' ';
         }
@@ -88,15 +124,27 @@ function getArtWorkScheduleMessageHtml(it /**/) {
         for (var i = 5; i < message.artworkCommentList.length; i++) {
             var comment = message.artworkCommentList[i];
             if (typeof comment.fatherComment != "undefined" && comment.fatherComment != null) {
-                out += ' <p class="p-list"><a onclick="redirectUser(\'' + comment.creator.id + '\')">';
+                out += ' <p class="p-list"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')">';
                 if (comment.creator.id == getCurrentUserId()) {
                     out += '我的';
                 } else {
                     out += ' ' + (comment.creator.name) + ' ';
                 }
-                out += '</a>回复<a onclick="redirectUser(\'' + comment.fatherComment.creator.id + '\')">' + (comment.fatherComment.creator.name) + '</a>：<span>' + (comment.content) + '</span> </p> ';
+                out += '</a>回复<a onclick="redirectUser(\'' + (comment.fatherComment.creator.id) + '\')">' + (comment.fatherComment.creator.name) + '</a>： <a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'' + (message.id) + '\',\'';
+                if (comment.fatherComment != null) {
+                    out += '' + (comment.fatherComment.id);
+                } else {
+                    out += '' + ("");
+                }
+                out += ' \')"> <span>' + (comment.content) + '</span> </a> </p> ';
             } else {
-                out += ' <p class="p-list"><a onclick="redirectUser(\'' + comment.creator.id + '\')">' + (comment.creator.name) + '</a>：<span>' + (comment.content) + '</span> </p> ';
+                out += ' <p class="p-list"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')">' + (comment.creator.name) + '</a>： <a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'' + (message.id) + '\',\'';
+                if (comment.fatherComment != null) {
+                    out += '' + (comment.fatherComment.id);
+                } else {
+                    out += '' + ("");
+                }
+                out += ' \')"> <span>' + (comment.content) + '</span> </a> </p> ';
             }
             out += ' ';
         }
@@ -105,6 +153,8 @@ function getArtWorkScheduleMessageHtml(it /**/) {
     out += ' </div> <div class="button"> <a onclick="$(\'.hideMessageList\').show();$(this).hide();tabsHeight();">查看更多动态</a> </div> </div>';
     return out;
 }
+
+
 //获得项目详情的view
 function getArtWorkDetailHtml(it /**/) {
     var out = ' <div class="details"> <h5>项目介绍</h5> <div class="content"> <p>' + (it.description) + '</p> ';
@@ -120,14 +170,27 @@ function getArtWorkCommentHtml(it /**/) {
     for (var i = 0; i < it.commentList.length; i++) {
         var comment = it.commentList[i];
         if (typeof comment.fatherComment != "undefined" && comment.fatherComment != null) {
-            out += ' <li> <div class="pic"><a onclick="redirectUser(\'' + comment.creator.id + '\')"><img src="' + (comment.creator.pictureUrl) + '" alt=""></a></div> <div class="box"> <div class="name"><span>' + (comment.creator.name) + '</span><span class="time">' + (getTimeStr(comment.createDatetime)) + '</span> </div> <!--回复--> <div class="content"> <div class="reply"> <p>回复 <a onclick="redirectUser(\'' + comment.fatherComment.creator.id + '\')">' + (comment.fatherComment.creator.name) + '</a>：<span>' + (comment.content) + '</span> </p> </div> </div> </div> </li> ';
+            out += ' <li> <div class="pic"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')"><img src="' + (comment.creator.pictureUrl) + '" alt=""></a></div> <div class="box"> <div class="name"><span>' + (comment.creator.name) + '</span><span class="time">' + (getTimeStr(comment.createDatetime)) + '</span> </div> <!--回复--> <div class="content"> <div class="reply"> <p>回复 <a onclick="redirectUser(\'' + (comment.fatherComment.creator.id) + '\')">' + (comment.fatherComment.creator.name) + '</a>：<a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'\',\'';
+            if (comment.fatherComment != null) {
+                out += '' + (comment.fatherComment.id);
+            } else {
+                out += '' + ("");
+            }
+            out += '\')"><span style="color: #000;">' + (comment.content) + '</span></a> </p> </div> </div> </div> </li> ';
         } else {
-            out += ' <li> <div class="pic"><a onclick="redirectUser(\'' + comment.creator.id + '\')"><img src="' + (comment.creator.pictureUrl) + '" alt=""></a></div> <div class="box"> <div class="name"><span>' + (comment.creator.name) + '</span><span class="time">' + (getTimeStr(comment.createDatetime)) + '</span> </div> <div class="content">' + (comment.content) + '</div> </div> </li> ';
+            out += ' <li> <div class="pic"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')"><img src="' + (comment.creator.pictureUrl) + '" alt=""></a></div> <div class="box"> <div class="name"><span>' + (comment.creator.name) + '</span><span class="time">' + (getTimeStr(comment.createDatetime)) + '</span> </div> <a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'\',\'';
+            if (comment.fatherComment != null) {
+                out += '' + (comment.fatherComment.id);
+            } else {
+                out += '' + ("");
+            }
+            out += '\')"> <div class="content">' + (comment.content) + '</div> </a> </div> </li> ';
         }
         out += ' ';
     }
     return out;
 }
+
 //获得项目投资记录（排行榜）的view
 function getArtWorkInvestRecordTopHtml(it /**/) {
     var out = ' ';

@@ -313,55 +313,63 @@ public class RegisterActivity extends BaseActivity {
         getContentResolver().registerContentObserver(SMS_INBOX, true,
                 smsObserver);
     }
-    @OnClick(R.id.rg_bt_register)
-    public void register(){
-
-        AppApplication.getSingleEditTextValidator()
-                .add(new ValidationModel(eTPhone, new UserNameValidation()))
-                .add(new ValidationModel(eTPassword,new PasswordValidation()))
-                .execute();
-        //表单没有检验通过直接退出方法
-        if(!AppApplication.getSingleEditTextValidator().validate()){
-            return;
-        }
-        if (eTVerfyCode.getText().toString().equals("")){
-            ToastUtil.showShort(this,"验证码不能为空!");
-            return;
-        }
-        Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("username", eTPhone.getText().toString());
-        paramsMap.put("password", Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));
-        paramsMap.put("timestamp", System.currentTimeMillis() + "");
-        try {
-            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        NetRequestUtil.post(Constants.BASE_PATH + "register.do", paramsMap, new RegisterCallBack() {
-            @Override
-            public void onError(Call call, Exception e) {
-                System.out.println("失败了");
-            }
-
-            @Override
-            public void onResponse(Map<String, Object> response) {
-                if (!response.get("resultCode").equals("0")) {
-                    ToastUtil.showShort(AppApplication.getSingleContext(), "注册失败!");
+    @OnClick({R.id.rg_ib_back,R.id.rg_bt_register})
+    public void register(View view){
+        switch (view.getId()){
+            case R.id.rg_bt_register:
+                AppApplication.getSingleEditTextValidator()
+                        .add(new ValidationModel(eTPhone, new UserNameValidation()))
+                        .add(new ValidationModel(eTPassword,new PasswordValidation()))
+                        .execute();
+                //表单没有检验通过直接退出方法
+                if(!AppApplication.getSingleEditTextValidator().validate()){
                     return;
                 }
-                if (response.get("resultCode").equals("0")) {
+                if (eTVerfyCode.getText().toString().equals("")){
+                    ToastUtil.showShort(this,"验证码不能为空!");
+                    return;
+                }
+                Map<String,String> paramsMap=new HashMap<>();
+                paramsMap.put("username", eTPhone.getText().toString());
+                paramsMap.put("password", Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));
+                paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                try {
+                    paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                NetRequestUtil.post(Constants.BASE_PATH + "register.do", paramsMap, new RegisterCallBack() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        System.out.println("失败了");
+                    }
+
+                    @Override
+                    public void onResponse(Map<String, Object> response) {
+                        if (!response.get("resultCode").equals("0")) {
+                            ToastUtil.showShort(AppApplication.getSingleContext(), "注册失败!");
+                            return;
+                        }
+                        if (response.get("resultCode").equals("0")) {
                     /*SPUtil.put(RegisterActivity.this,"username",eTPhone.getText().toString());
                     SPUtil.put(RegisterActivity.this, "password", Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));*/
-                    ToastUtil.showShort(AppApplication.getSingleContext(), "注册成功!");
-                    Intent intent=new Intent(RegisterActivity.this,RegisterScActivity.class);
-                    intent.putExtra("username",eTPhone.getText().toString());
-                    intent.putExtra("password",Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));
-                    RegisterActivity.this.startActivity(intent);
-                    RegisterActivity.this.finish();
-                }
+                            ToastUtil.showShort(AppApplication.getSingleContext(), "注册成功!");
+                            Intent intent = new Intent(RegisterActivity.this, RegisterScActivity.class);
+                            intent.putExtra("username", eTPhone.getText().toString());
+                            intent.putExtra("password", Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));
+                            RegisterActivity.this.startActivity(intent);
+                            RegisterActivity.this.finish();
+                        }
 
-            }
-        });
+                    }
+                });
+                break;
+            case R.id.rg_ib_back:
+                finish();
+                break;
+        }
+
+
     }
     @OnClick(R.id.rg_bt_verifyCode)
     public void sendCode(){

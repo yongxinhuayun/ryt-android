@@ -99,7 +99,6 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
 		lstv.setPageSize(Constants.pageSize);
-		final java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#.00");
 		paiMaiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),paiMaiDatas,R.layout.auction_list_item) {
 			@Override
 			public void convert(ViewHolder helper, RongZi item) {
@@ -107,37 +106,34 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
 				helper.setText(R.id.cl_01_tv_name, item.getAuthor().getName());
 				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
-				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
-				System.out.println(item.getStep()+"---------------------------");
+				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, item.getAuthor().getPictureUrl());
 				if(Integer.valueOf(item.getStep())==30){
 					helper.getView(R.id.cli_tv_time).setVisibility(View.VISIBLE);
 					helper.getView(R.id.cli_tv_chengjiao_price).setVisibility(View.GONE);
 					helper.getView(R.id.cli_tv_size).setVisibility(View.GONE);
-					helper.getView(R.id.cli_tv_state).setVisibility(View.GONE);
-					helper.getView(R.id.cli_tv_current_price).setVisibility(View.GONE);
+					helper.getView(R.id.cli_tv_current_price).setVisibility(View.VISIBLE);
 					helper.getView(R.id.cli_tv_user).setVisibility(View.GONE);
-					helper.setText(R.id.cli_tv_time, "拍卖时间："+ Utils.timeToFormatTemp("MM月DD日 HH:mm",item.getAuctionStartDatetime())+"--"+ Utils.timeToFormatTemp("HH:mm",item.getAuctionEndDatetime()));
+					helper.setText(R.id.cli_tv_time, "拍卖时间：" + Utils.timeToFormatTemp("MM月DD日 HH:mm", item.getAuctionStartDatetime()) + "--" + Utils.timeToFormatTemp("HH:mm", item.getAuctionEndDatetime()));
+					helper.setText(R.id.cli_tv_current_price,"起拍价："+item.getInvestGoalMoney()+"");
 				}
 				if(Integer.valueOf(item.getStep())==31){
 					helper.getView(R.id.cli_tv_time).setVisibility(View.GONE);
 					helper.getView(R.id.cli_tv_chengjiao_price).setVisibility(View.GONE);
 					helper.getView(R.id.cli_tv_size).setVisibility(View.VISIBLE);
-					helper.getView(R.id.cli_tv_state).setVisibility(View.VISIBLE);
 					helper.getView(R.id.cli_tv_current_price).setVisibility(View.VISIBLE);
 					helper.getView(R.id.cli_tv_user).setVisibility(View.GONE);
-					helper.setText(R.id.cli_tv_size, "拍卖次数：" + item.getAuctionNum() + "次");
-					helper.setText(R.id.cli_tv_state,"正在拍卖中...");
-//					helper.setText(R.id.cli_tv_current_price,item.getNewBidingPrice()!=null?"当前价格："+df.format(item.getNewBidingPrice().doubleValue())+"元":"当前价格：0.00元");
+					helper.setText(R.id.cli_tv_size, "出价次数：" + item.getAuctionNum() + "次");
+					helper.setText(R.id.cli_tv_current_price,"当前出价："+item.getNewBidingPrice()+"元");
 				}
 				if(Integer.valueOf(item.getStep())==32){
 					helper.getView(R.id.cli_tv_time).setVisibility(View.GONE);
-					helper.getView(R.id.cli_tv_size).setVisibility(View.GONE);
-					helper.getView(R.id.cli_tv_state).setVisibility(View.GONE);
+					helper.getView(R.id.cli_tv_size).setVisibility(View.VISIBLE);
 					helper.getView(R.id.cli_tv_current_price).setVisibility(View.GONE);
 					helper.getView(R.id.cli_tv_chengjiao_price).setVisibility(View.VISIBLE);
 					helper.getView(R.id.cli_tv_user).setVisibility(View.VISIBLE);
-//					helper.setText(R.id.cli_tv_chengjiao_price,item.getNewBidingPrice()!=null?"成交价："+df.format(item.getNewBidingPrice().doubleValue())+"元":"成交价：0.00元");
-					helper.setText(R.id.cli_tv_user,"");
+					helper.setText(R.id.cli_tv_chengjiao_price, "成交价格：" + item.getNewBidingPrice() + "元");
+					helper.setText(R.id.cli_tv_user, "拍品得主："+item.getAuthor().getName());
+					helper.setText(R.id.cli_tv_size, "出价次数：" + item.getAuctionNum() + "次");
 				}
 			}
 		};

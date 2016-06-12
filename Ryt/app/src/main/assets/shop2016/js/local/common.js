@@ -133,11 +133,36 @@ function redirectProtocol() {
     console.log("协议跳转");
 }
 
-//去支付
-function pay(price, type, currentUserId) {
-    //首先需要验证余额是否充足
-    //这里的支付只负责余额的操作，真正的余额充值的操作
+function createSignmsg(requestParam) {
+    var paramNameList = new Array();
+    for (var key in requestParam) {
+        paramNameList.push(key);
+    }
+    paramNameList = paramNameList.sort();
+    var msg = ""
+    for (var i = 0; i < paramNameList.length; i++) {
+        var key = paramNameList[i];
+        msg += key + "=" + requestParam[key] + "&";
+    }
+    msg += "key=BL2QEuXUXNoGbNeHObD4EzlX+KuGc70U"
+    return $.md5(msg);
 }
+
+function dealRequestParam(requestParam) {
+    //筛选参数
+    //设置签名
+    //设置时间戳
+    var paramResult = new Object();
+    for (var key in requestParam) {
+        if (requestParam[key] != null && requestParam[key] != "" && typeof requestParam[key] != "undefined") {
+            paramResult[key] = requestParam[key];
+        }
+    }
+    paramResult.timestamp = new Date().getTime();
+    paramResult.signmsg = createSignmsg(paramResult);
+    return paramResult;
+}
+
 function timeEnd() {
     // 从新加载页面数据
     initPage(PageVariable.param.artWorkId, PageVariable.param.currentUserId, PageVariable.param.signmsg, PageVariable.param.timestamp)

@@ -65,7 +65,7 @@ public class RongZi {
     private long creationEndDatetime;
     private String type;
     private Object newCreationDate;
-    private Object auctionNum;
+    private int auctionNum;
     private int newBidingPrice;
     private Object newBiddingDate;
     private String sorts;
@@ -229,11 +229,11 @@ public class RongZi {
         this.newCreationDate = newCreationDate;
     }
 
-    public Object getAuctionNum() {
+    public int getAuctionNum() {
         return auctionNum;
     }
 
-    public void setAuctionNum(Object auctionNum) {
+    public void setAuctionNum(int auctionNum) {
         this.auctionNum = auctionNum;
     }
 

@@ -2,13 +2,15 @@
  * Created by Administrator on 2016/5/31 0031.
  */
 //页面的初始化和渲染页面(统一调配函数)
-function initPage(artWorkId, currentUserId, signmsg, timestamp) {
-    // var param = new Object();
-    // param.artWorkId = artWorkId;
-    // param.currentUserId = currentUserId;
-    // param.signmsg = signmsg;
-    // param.timestamp = timestamp;
-    // PageVariable.param = param;
+function initPage(artWorkId, currentUserId) {
+    var paramStr = window.demo.fetchParamObject();
+    var paramObject = JSON.parse(paramStr);
+    console.log(paramObject);
+    var param = new Object();
+    param.artWorkId = paramObject.artWorkId;
+    param.currentUserId = paramObject.currentUserId;
+    PageVariable.param = param;
+    PageVariable.artWorkId = artWorkId;
     getArtWorkBaseInfoData(getArtWorkBaseInfo);
     getArtWorkDetailData(getArtWorkDetail);
 }
@@ -88,7 +90,7 @@ function getArtWorkBaseInfoData(callback) {
 
         }, data, callback);
     }
-    ajaxRequest(hostName + RequestUrl.initPage, getParamObject(), success, function () {
+    ajaxRequest(hostName + RequestUrl.initPage, dealRequestParam(getParamObject()), success, function () {
     }, "post");
 }
 //获得项目详情信息数据
@@ -99,7 +101,7 @@ function getArtWorkDetailData(callback) {
             PageVariable.artWorkView = new ArtWorkView(obj.artworkAttachmentList, obj.artWork.description, obj.artworkdirection.make_instru, obj.artworkdirection.financing_aq);
         }, data, callback);
     }
-    ajaxRequest(hostName + RequestUrl.artWorkViewTab, getParamObject(), success, function () {
+    ajaxRequest(hostName + RequestUrl.artWorkViewTab, dealRequestParam(getParamObject()), success, function () {
     }, "post");
 }
 //获得项目评价信息数据
@@ -113,8 +115,8 @@ function getArtWorkCommentData(callback) {
     var param = getParamObject();
     param.pageIndex = pageEntity.pageIndex;
     param.pageSize = pageEntity.pageSize;
-    param.messageId = "";
-    ajaxRequest(hostName + RequestUrl.commentTab, param, success, function () {
+
+    ajaxRequest(hostName + RequestUrl.commentTab, dealRequestParam(param), success, function () {
     }, "post");
 }
 //获得项目融资记录的数据
@@ -128,7 +130,7 @@ function getArtWorkInvestRecordData(callback) {
     var param = getParamObject();
     param.pageIndex = pageEntity.pageIndex;
     param.pageSize = pageEntity.pageSize;
-    ajaxRequest(hostName + RequestUrl.investTab, param, success, function () {
+    ajaxRequest(hostName + RequestUrl.investTab, dealRequestParam(param), success, function () {
     }, "post");
 }
 

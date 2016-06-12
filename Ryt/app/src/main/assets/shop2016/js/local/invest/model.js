@@ -40,7 +40,6 @@ var ArtWorkComment = function (commentList) {
     this.commentList = commentList;//1.用户评价列表
 }
 //投资记录（投资记录tab页专用）
-
 var ArtWorkAuction = function (artWorkBiddingList, biddingTopThree) {
     this.artWorkBiddingList = artWorkBiddingList;
     this.biddingTopThree = biddingTopThree;
@@ -70,6 +69,6 @@ var PageVariable = {
         phone: "13699999999",
         status: "2",
         consignee: "王二小",
-        districtStr: ""
+        cityStr: ""
     } //默认地址
 };    //页面中主要的全局变量
