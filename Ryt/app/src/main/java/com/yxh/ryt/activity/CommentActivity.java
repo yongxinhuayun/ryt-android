@@ -56,7 +56,7 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
     }
 
     private void initView() {
-        cmAdapter=new CommonAdapter<ArtworkCommentMsg>(AppApplication.getSingleContext(), artworkCommentDatas,R.layout.comment_item) {
+        cmAdapter=new CommonAdapter<ArtworkCommentMsg>(AppApplication.getSingleContext(), artworkCommentDatas,R.layout.address_item) {
            // @Override
             public void convert(ViewHolder helper, final ArtworkCommentMsg item) {
                 helper.getView(R.id.ci_ll_artwork).setOnClickListener(new View.OnClickListener() {

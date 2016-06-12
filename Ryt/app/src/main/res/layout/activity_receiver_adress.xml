@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -26,18 +26,8 @@
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:textSize="17sp"
-            android:text="编辑签名"/>
-        <TextView
-            android:id="@+id/tv_save"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:textSize="11sp"
-            android:text="保存"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="14dp"
-            />
+            android:text="管理收货地址"/>
+
 
         <View
             android:layout_width="match_parent"
@@ -45,18 +35,26 @@
             android:background="#E9E9E9"
             android:layout_height="1dp"></View>
     </RelativeLayout>
-<EditText
-    android:layout_marginTop="10dp"
-    android:id="@+id/et_nickName"
-    android:layout_width="match_parent"
-    android:layout_height="96dp"
-    android:textSize="12sp"
-    android:lineSpacingExtra="8dp"
-    android:singleLine="false"
-    android:gravity="top"
-    android:hint="签名"
-    android:background="@drawable/public_brief_et_bg"
-    android:padding="14dp"/>
 
-
-</LinearLayout>
+    <com.yxh.ryt.custemview.AutoListView
+        android:id="@+id/pl_message_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:divider="@null"
+        android:background="@null"/>
+    <Button
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btn_add"
+        android:layout_marginTop="24dp"
+        android:layout_width="332dp"
+        android:layout_height="42dp"
+        android:textColor="#B3B3B3"
+        android:textSize="18sp"
+        android:background="@mipmap/anniu_kedianji"
+        android:text="添加地址"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        />
+</RelativeLayout>

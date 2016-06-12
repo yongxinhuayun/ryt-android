@@ -12,10 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,9 +31,11 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.AttentionListCallBack;
+import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.JsInterface;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.User;
 
 import java.util.HashMap;
@@ -51,6 +57,10 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     private TextView top;
     private String id;
     private String name;
+    private ImageView dianzan;
+    private LinearLayout comment;
+    private boolean isPraise1;
+    private String artworkId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +68,12 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_createsummary);
         back = (ImageButton) findViewById(R.id.ib_top_lf);
         share = (ImageButton) findViewById(R.id.ib_top_rt);
+        dianzan = (ImageView) findViewById(R.id.iv_tab_01);
+        comment = (LinearLayout) findViewById(R.id.ll_comment);
         back.setOnClickListener(this);
         share.setOnClickListener(this);
+        dianzan.setOnClickListener(this);
+        comment.setOnClickListener(this);
         webView = (WebView) findViewById(R.id.acs_wb_all);
         top = (TextView) findViewById(R.id.tv_top_ct);
         id = getIntent().getStringExtra("id");
@@ -80,6 +94,44 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.ib_top_rt:
                 showShareDialog();
+                break;
+            case R.id.ll_dianzan:
+                if ("".equals(AppApplication.gUser.getId())){
+                    Intent intent2=new Intent(this,LoginActivity.class);
+                    startActivity(intent2);
+                }else {
+                    if (!isPraise1){
+                        AnimationSet animationSet=new AnimationSet(true);
+                        ScaleAnimation scaleAnimation=new ScaleAnimation(1,1.5f,1,1.5f, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                        scaleAnimation.setDuration(200);
+                        animationSet.addAnimation(scaleAnimation);
+                        animationSet.setFillAfter(true);
+                        animationSet.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                AnimationSet animationSet = new AnimationSet(true);
+                                ScaleAnimation scaleAnimation = new ScaleAnimation(1.5f, 1f, 1.5f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                                scaleAnimation.setDuration(200);
+                                animationSet.addAnimation(scaleAnimation);
+                                animationSet.setFillAfter(true);
+                                dianzan.startAnimation(animationSet);
+                                dianzan.setEnabled(false);
+                                praise(artworkId,AppApplication.gUser.getId()+"");
+                            }
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+                        dianzan.setImageResource(R.mipmap.dianzanhou);
+                        dianzan.startAnimation(animationSet);
+                    }
+                }
+                break;
+            case R.id.ll_comment:
+                startActivity(new Intent(this,CommentActivity.class));
                 break;
             default:
                 break;
@@ -200,5 +252,32 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
 
         api.sendReq(reqShare);
 
+    }
+
+    private void praise(String artworkId, String s) {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("artworkId", artworkId+"");
+        paramsMap.put("currentUserId", s);
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "artworkPraise.do", paramsMap, new RongZiListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))) {
+                    ToastUtil.showLong(getApplicationContext(), "点赞成功");
+                }
+            }
+        });
     }
 }
