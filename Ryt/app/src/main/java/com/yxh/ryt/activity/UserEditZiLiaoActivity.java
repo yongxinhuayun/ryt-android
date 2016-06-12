@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -28,7 +27,6 @@ import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
-import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.User;
 
 import java.io.File;
@@ -134,16 +132,14 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 File picture = new File(Environment.getExternalStorageDirectory()
                         + "/temp.jpg");
                 Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
-                filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
+               /* filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
                 Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
                 bitmap1.recycle();
-                circleImageView.setImageBitmap(bitmap2);
-//                saveFile(bitmap1);
-//                startCrop(Uri.fromFile(picture));
-                flag = true;
+                circleImageView.setImageBitmap(bitmap2);*/
+                circleImageView.setImageBitmap(bitmap1);
+
                 commitHead();
                 break;
-            case CROP_REQUEST_CODE:
 //
             default:
                 break;
@@ -155,8 +151,6 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         Map<String, File> fileMap = new HashMap<>();
         File file = new File(filePath);
         fileMap.put(file.getName(), file);
-        Log.w("niaho ", filePath);
-        Log.w("nihao ", fileMap.toString());
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("timestamp", System.currentTimeMillis() + "");

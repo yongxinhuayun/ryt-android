@@ -47,7 +47,7 @@ public class UserSettingActivity extends BaseActivity {
             switch (msg.what){
                 case 1:
                     huanCun.setText("0b");
-                    ToastUtil.showLong(UserSettingActivity.this, "缓存清楚成功");
+                    ToastUtil.showLong(UserSettingActivity.this, "清除缓存成功");
             }
         }
     };

@@ -152,7 +152,6 @@ public class LoginActivity extends BaseActivity {
     /*忘记密码按钮事件触发*/
     @OnClick(R.id.tv_center_forget)
     public void forgetClick(){
-        finish();
         Intent intent=new Intent(this,ForgetPwdActivity.class);
         startActivity(intent);
     }
