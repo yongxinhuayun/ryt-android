@@ -29,7 +29,6 @@ import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.ToastUtil;
-import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.NickNameValidation;
 import com.yxh.ryt.vo.User;
@@ -334,10 +333,10 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                 File picture = new File(Environment.getExternalStorageDirectory()
                         + "/temp.jpg");
                 Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
-                filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
+                /*filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
                 Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
-                bitmap1.recycle();
-                circleImageView.setImageBitmap(bitmap2);
+                bitmap1.recycle();*/
+                circleImageView.setImageBitmap(bitmap1);
 //                saveFile(bitmap1);
 //                startCrop(Uri.fromFile(picture));
                 flag = true;
