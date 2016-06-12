@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:background="@null"
+            android:src="@mipmap/back" />
+
+        <TextView
+            android:id="@+id/tv_top_ct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="编辑昵称"
+            android:textColor="#000000"
+            android:textSize="17sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#E9E9E9"></View>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/rl_top"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/et_reciever"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@drawable/public_brief_et_bg"
+            android:gravity="top"
+            android:padding="14dp"
+            android:text="收货人："
+            android:textColor="#666666"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_phoneNum"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@drawable/public_brief_et_bg"
+            android:gravity="top"
+            android:padding="14dp"
+            android:text="手机号："
+            android:textColor="#666666"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_local"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@drawable/public_brief_et_bg"
+            android:gravity="top"
+            android:padding="14dp"
+            android:text="所在地区："
+            android:textColor="#666666"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_detail"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/public_brief_et_bg"
+            android:gravity="top"
+            android:padding="14dp"
+            android:text="详细地址："
+            android:textColor="#666666"
+            android:textSize="15sp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:text="设为默认地址"
+            android:textColor="#666666"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+
+    <Button
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btn_add"
+        android:layout_marginTop="24dp"
+        android:layout_width="332dp"
+        android:layout_height="42dp"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:background="@mipmap/anniu_kedianji"
+        android:text="保存"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        />
+
+</RelativeLayout>

@@ -43,9 +43,10 @@
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
             android:background="#E9E9E9"
-            android:layout_height="10dp"></View>
+            android:layout_height="1dp"></View>
     </RelativeLayout>
 <EditText
+    android:layout_marginTop="10dp"
     android:id="@+id/et_nickName"
     android:layout_width="match_parent"
     android:layout_height="46dp"

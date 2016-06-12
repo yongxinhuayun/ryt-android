@@ -55,7 +55,6 @@ import com.zhy.http.okhttp.callback.BitmapCallback;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -112,11 +111,14 @@ public class RongZiXQActivity extends BaseActivity {
     private int height;
     private int right;
     private int count;
-    private int time=0;
+    private int time = 0;
     private int remainMoney;
+    private String share_Url;
+
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, RongZiXQActivity.class));
     }
+
     ArrayList<Fragment> mFragmentList;
     ViewPager mViewPager;
     StickHeaderViewPagerManager manager;
@@ -126,7 +128,7 @@ public class RongZiXQActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rongzi_xiangqing);
-        api= WXAPIFactory.createWXAPI(this,Constants.APP_ID); //初始化api
+        api = WXAPIFactory.createWXAPI(this, Constants.APP_ID); //初始化api
         api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
@@ -149,10 +151,10 @@ public class RongZiXQActivity extends BaseActivity {
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
         widthzong = metric.widthPixels; // 屏幕宽度（像素）
-        width= Utils.dip2px(RongZiXQActivity.this, 24);
-        height= Utils.dip2px(RongZiXQActivity.this,24);
-        right=Utils.dip2px(RongZiXQActivity.this,10);
-        count = (widthzong-(Utils.dip2px(RongZiXQActivity.this, 20)*2)) / (width + right);
+        width = Utils.dip2px(RongZiXQActivity.this, 24);
+        height = Utils.dip2px(RongZiXQActivity.this, 24);
+        right = Utils.dip2px(RongZiXQActivity.this, 10);
+        count = (widthzong - (Utils.dip2px(RongZiXQActivity.this, 20) * 2)) / (width + right);
         /*database= AppApplication.getDBHelper().getWritableDatabase();
         Cursor cursor = database.query("rzxq_praise", null, "project_workID=? AND current_id=?", new String[]{artworkId,AppApplication.gUser.getId()+""}, null, null, null);*/
         /*while (cursor.moveToNext()) {
@@ -163,25 +165,27 @@ public class RongZiXQActivity extends BaseActivity {
             dianzan.setImageResource(R.mipmap.dianzanhou);
         }*/
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         LoadData(0, 1);
     }
-    @OnClick({R.id.ll_comment,R.id.ib_top_lf,R.id.ib_top_rt,R.id.iv_tab_01,R.id.rzxq_tv_invest})
-    public void comment(View view){
-        switch (view.getId()){
+
+    @OnClick({R.id.ll_comment, R.id.ib_top_lf, R.id.ib_top_rt, R.id.iv_tab_01, R.id.rzxq_tv_invest})
+    public void comment(View view) {
+        switch (view.getId()) {
             case R.id.ll_comment:
-                if ("".equals(AppApplication.gUser.getId())){
-                    Intent intent2=new Intent(RongZiXQActivity.this,LoginActivity.class);
+                if ("".equals(AppApplication.gUser.getId())) {
+                    Intent intent2 = new Intent(RongZiXQActivity.this, LoginActivity.class);
                     startActivity(intent2);
-                }else{
-                    Intent intent=new Intent(this, ProjectCommentReply.class);
-                    intent.putExtra("fatherCommentId","");
-                    intent.putExtra("messageId","");
-                    intent.putExtra("flag",1);
-                    intent.putExtra("artworkId",artworkId);
-                    intent.putExtra("currentUserId",AppApplication.gUser.getId());
+                } else {
+                    Intent intent = new Intent(this, ProjectCommentReply.class);
+                    intent.putExtra("fatherCommentId", "");
+                    intent.putExtra("messageId", "");
+                    intent.putExtra("flag", 1);
+                    intent.putExtra("artworkId", artworkId);
+                    intent.putExtra("currentUserId", AppApplication.gUser.getId());
                     startActivity(intent);
                 }
                 break;
@@ -193,27 +197,27 @@ public class RongZiXQActivity extends BaseActivity {
                 break;
 
             case R.id.rzxq_tv_invest:
-                if ("".equals(AppApplication.gUser.getId())){
-                    Intent intent2=new Intent(RongZiXQActivity.this,LoginActivity.class);
+                if ("".equals(AppApplication.gUser.getId())) {
+                    Intent intent2 = new Intent(RongZiXQActivity.this, LoginActivity.class);
                     startActivity(intent2);
-                }else{
-                    if (remainMoney>0){
-                        Intent intent1=new Intent(this,InvestActivity.class);
-                        intent1.putExtra("allMoney",remainMoney);
-                        intent1.putExtra("artWorkId",artworkId);
+                } else {
+                    if (remainMoney > 0) {
+                        Intent intent1 = new Intent(this, InvestActivity.class);
+                        intent1.putExtra("allMoney", remainMoney);
+                        intent1.putExtra("artWorkId", artworkId);
                         startActivity(intent1);
                     }
                 }
                 finish();
                 break;
             case R.id.iv_tab_01:
-                if ("".equals(AppApplication.gUser.getId())){
-                   Intent intent2=new Intent(RongZiXQActivity.this,LoginActivity.class);
+                if ("".equals(AppApplication.gUser.getId())) {
+                    Intent intent2 = new Intent(RongZiXQActivity.this, LoginActivity.class);
                     startActivity(intent2);
-                }else {
-                    if (!isPraise1){
-                        AnimationSet animationSet=new AnimationSet(true);
-                        ScaleAnimation scaleAnimation=new ScaleAnimation(1,1.5f,1,1.5f, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                } else {
+                    if (!isPraise1) {
+                        AnimationSet animationSet = new AnimationSet(true);
+                        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.5f, 1, 1.5f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                         scaleAnimation.setDuration(200);
                         animationSet.addAnimation(scaleAnimation);
                         animationSet.setFillAfter(true);
@@ -221,6 +225,7 @@ public class RongZiXQActivity extends BaseActivity {
                             @Override
                             public void onAnimationStart(Animation animation) {
                             }
+
                             @Override
                             public void onAnimationEnd(Animation animation) {
                                 AnimationSet animationSet = new AnimationSet(true);
@@ -230,8 +235,9 @@ public class RongZiXQActivity extends BaseActivity {
                                 animationSet.setFillAfter(true);
                                 dianzan.startAnimation(animationSet);
                                 dianzan.setEnabled(false);
-                                praise(artworkId,AppApplication.gUser.getId()+"");
+                                praise(artworkId, AppApplication.gUser.getId() + "");
                             }
+
                             @Override
                             public void onAnimationRepeat(Animation animation) {
                             }
@@ -247,7 +253,7 @@ public class RongZiXQActivity extends BaseActivity {
 
     private void praise(String artworkId, String s) {
         Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("artworkId", artworkId+"");
+        paramsMap.put("artworkId", artworkId + "");
         paramsMap.put("currentUserId", s);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -274,10 +280,10 @@ public class RongZiXQActivity extends BaseActivity {
 
     private void LoadData(int tabtype, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("artWorkId", artworkId+"");
-        if ("".equals(AppApplication.gUser.getId())){
+        paramsMap.put("artWorkId", artworkId + "");
+        if ("".equals(AppApplication.gUser.getId())) {
             paramsMap.put("currentUserId", "");
-        }else {
+        } else {
             paramsMap.put("currentUserId", AppApplication.gUser.getId());
         }
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -298,39 +304,39 @@ public class RongZiXQActivity extends BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                 Map<String, Object> object = (Map<String, Object>) response.get("object");
-                if (object!=null){
+                if (object != null) {
                     users = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("investPeople")), new TypeToken<List<User>>() {
                     }.getType());
-                    if (users!=null && users.size()>0){
+                    if (users != null && users.size() > 0) {
                         isFirst(users);
                     }
-                    isPraise1= Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
+                    isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
                     Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
                     topTitle.setText(artwork.getTitle());
                     cl01TvTitle.setText(artwork.getTitle());
                     cl01TvBrief.setText(artwork.getBrief());
                     tvFinancing.setText(artwork.getInvestsMoney() + "元");
                     double value = artwork.getInvestsMoney().doubleValue() / artwork.getInvestGoalMoney().doubleValue();
-                    bar.setProgress((int)(value*100));
+                    bar.setProgress((int) (value * 100));
                     prValue.setText((int) (value * 100) + "%");
-                    goalMoney.setText(artwork.getInvestGoalMoney()+"");
+                    goalMoney.setText(artwork.getInvestGoalMoney() + "");
                     remainTime.setText(Utils.timeToFormatTemp("HH时MM分SS秒", artwork.getInvestEndDatetime() - artwork.getInvestStartDatetime()));
                     goalPeople.setText(AppApplication.getSingleGson().toJson(object.get("investNum")));
                     if (artwork.getAuthor() != null) {
                         cl01TvName.setText(artwork.getAuthor().getName());
-                        AppApplication.displayImage(artwork.getAuthor().getPictureUrl(),cl01CivHeadPortrait);
+                        AppApplication.displayImage(artwork.getAuthor().getPictureUrl(), cl01CivHeadPortrait);
                         if (artwork.getAuthor().getMaster() != null) {
-                            if (artwork.getAuthor().getMaster() != null ) {
+                            if (artwork.getAuthor().getMaster() != null) {
                                 cl01TvZhicheng.setText(artwork.getAuthor().getMaster().getTitle());
                             }
                         }
                     }
-                    if (isPraise1){
+                    if (isPraise1) {
                         dianzan.setImageResource(R.mipmap.dianzanhou);
                         dianzan.setEnabled(false);
                     }
-                    remainMoney=artwork.getInvestGoalMoney().subtract(artwork.getInvestsMoney()).intValue();
-                    zan.setText(artwork.getPraiseNUm()+"");
+                    remainMoney = artwork.getInvestGoalMoney().subtract(artwork.getInvestsMoney()).intValue();
+                    zan.setText(artwork.getPraiseNUm() + "");
                     AppApplication.displayImage(artwork.getPicture_url(), cl01TvPrc);
                     EventBus.getDefault().post(object);
                 }
@@ -340,13 +346,13 @@ public class RongZiXQActivity extends BaseActivity {
     }
 
     private void isFirst(final List<User> users) {
-        if (users.size()>count){
-            final LinearLayout linearLayout=new LinearLayout(RongZiXQActivity.this);
+        if (users.size() > count) {
+            final LinearLayout linearLayout = new LinearLayout(RongZiXQActivity.this);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-            for (int j=0;j<count-1;j++){
-                final CircleImageView imageView=new CircleImageView(RongZiXQActivity.this);
+            for (int j = 0; j < count - 1; j++) {
+                final CircleImageView imageView = new CircleImageView(RongZiXQActivity.this);
                 // 获取LayoutParams，给view对象设置宽度，高度
-                final LayoutParams params = new LayoutParams(width,height);
+                final LayoutParams params = new LayoutParams(width, height);
                 params.setMargins(0, 0, right, 0);
                 /*AppApplication.displayImage(users.get(j).getPictureUrl(), imageView);*/
                 NetRequestUtil.downloadImage(users.get(j).getPictureUrl(), new BitmapCallback() {
@@ -375,14 +381,14 @@ public class RongZiXQActivity extends BaseActivity {
                 });
             }
             touziren_ll.addView(linearLayout);
-            time=0;
-        }else {
-            final LinearLayout linearLayout=new LinearLayout(RongZiXQActivity.this);
+            time = 0;
+        } else {
+            final LinearLayout linearLayout = new LinearLayout(RongZiXQActivity.this);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-            for (int j=0;j<users.size();j++){
-                final CircleImageView imageView=new CircleImageView(RongZiXQActivity.this);
+            for (int j = 0; j < users.size(); j++) {
+                final CircleImageView imageView = new CircleImageView(RongZiXQActivity.this);
                 // 获取LayoutParams，给view对象设置宽度，高度
-                final LayoutParams params = new LayoutParams(width,height);
+                final LayoutParams params = new LayoutParams(width, height);
                 params.setMargins(0, 0, right, 0);
                 /*AppApplication.displayImage(users.get(j).getPictureUrl(), imageView);*/
                 NetRequestUtil.downloadImage(users.get(j).getPictureUrl(), new BitmapCallback() {
@@ -408,14 +414,14 @@ public class RongZiXQActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 touziren_ll.removeAllViews();
-                int xunHuan=0;
-                for (int i=0;i<=((users.size())/count);i++){
-                    final LinearLayout linearLayout=new LinearLayout(RongZiXQActivity.this);
+                int xunHuan = 0;
+                for (int i = 0; i <= ((users.size()) / count); i++) {
+                    final LinearLayout linearLayout = new LinearLayout(RongZiXQActivity.this);
                     linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-                    final LayoutParams params = new LayoutParams(width,height);
+                    final LayoutParams params = new LayoutParams(width, height);
                     params.setMargins(0, 0, right, right);
-                    if (xunHuan<((users.size())/count)){
-                        for (int j=0;j<count;j++){
+                    if (xunHuan < ((users.size()) / count)) {
+                        for (int j = 0; j < count; j++) {
                             NetRequestUtil.downloadImage(users.get(i * count + j).getPictureUrl(), new BitmapCallback() {
                                 @Override
                                 public void onError(Call call, Exception e) {
@@ -424,17 +430,17 @@ public class RongZiXQActivity extends BaseActivity {
 
                                 @Override
                                 public void onResponse(Bitmap response) {
-                                    CircleImageView imageView=new CircleImageView(RongZiXQActivity.this);
+                                    CircleImageView imageView = new CircleImageView(RongZiXQActivity.this);
                                     imageView.setImageBitmap(response);
                                     imageView.setLayoutParams(params);
                                     linearLayout.addView(imageView);
                                 }
                             });
                         }
-                    }else if (xunHuan==((users.size())/count)){
-                        time=0;
-                        for (int j=0;j<((users.size())-(count*(xunHuan)));j++){
-                            final int degree=((users.size())-(count*(xunHuan)));
+                    } else if (xunHuan == ((users.size()) / count)) {
+                        time = 0;
+                        for (int j = 0; j < ((users.size()) - (count * (xunHuan))); j++) {
+                            final int degree = ((users.size()) - (count * (xunHuan)));
                             NetRequestUtil.downloadImage(users.get(i * count + j).getPictureUrl(), new BitmapCallback() {
                                 @Override
                                 public void onError(Call call, Exception e) {
@@ -443,13 +449,13 @@ public class RongZiXQActivity extends BaseActivity {
 
                                 @Override
                                 public void onResponse(Bitmap response) {
-                                    LayoutParams params = new LayoutParams(width,height);
+                                    LayoutParams params = new LayoutParams(width, height);
                                     params.setMargins(0, 0, right, 0);
-                                    CircleImageView imageView=new CircleImageView(RongZiXQActivity.this);
+                                    CircleImageView imageView = new CircleImageView(RongZiXQActivity.this);
                                     imageView.setImageBitmap(response);
                                     imageView.setLayoutParams(params);
                                     linearLayout.addView(imageView);
-                                    if (time == degree-1) {
+                                    if (time == degree - 1) {
                                         CircleImageView imageView1 = new CircleImageView(RongZiXQActivity.this);
                                         // 获取LayoutParams，给view对象设置宽度，高度
                                         imageView1.setImageResource(R.mipmap.rongzixiangqing_shouqianniu);
@@ -465,7 +471,7 @@ public class RongZiXQActivity extends BaseActivity {
                     }
                     xunHuan++;
                     touziren_ll.addView(linearLayout);
-                    time=0;
+                    time = 0;
                 }
             }
         });
@@ -482,8 +488,9 @@ public class RongZiXQActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void onEventMainThread(Artwork artwork){
+    public void onEventMainThread(Artwork artwork) {
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -491,79 +498,101 @@ public class RongZiXQActivity extends BaseActivity {
     }
 
     private void showShareDialog() {
-    View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_share_weixin_view, null);
-    // 设置style 控制默认dialog带来的边距问题
-    final Dialog dialog = new Dialog(this, R.style.common_dialog);
-    dialog.setContentView(view);
-    dialog.show();
+        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_share_weixin_view, null);
+        // 设置style 控制默认dialog带来的边距问题
+        final Dialog dialog = new Dialog(this, R.style.common_dialog);
+        dialog.setContentView(view);
+        dialog.show();
 
-    // 监听
-    View.OnClickListener listener = new View.OnClickListener() {
+        // 监听
+        View.OnClickListener listener = new View.OnClickListener() {
 
-        @Override
-        public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
 
-            switch (v.getId()) {
+                switch (v.getId()) {
 
-                case R.id.view_share_weixin:
-                    // 分享到微信
-                    shareWx(0);
-                    break;
+                    case R.id.view_share_weixin:
+                        // 分享到微信
+                        shareWx(0);
+                        break;
 
-                case R.id.view_share_pengyou:
-                    // 分享到朋友圈
-                    shareWx(1);
-                    break;
+                    case R.id.view_share_pengyou:
+                        // 分享到朋友圈
+                        shareWx(1);
+                        break;
 
-                case R.id.share_cancel_btn:
-                    // 取消
-                    break;
+                    case R.id.share_cancel_btn:
+                        // 取消
+                        break;
 
+                }
+
+                dialog.dismiss();
             }
 
-            dialog.dismiss();
-        }
+        };
+        ViewGroup mViewWeixin = (ViewGroup) view.findViewById(R.id.view_share_weixin);
+        ViewGroup mViewPengyou = (ViewGroup) view.findViewById(R.id.view_share_pengyou);
+        Button mBtnCancel = (Button) view.findViewById(R.id.share_cancel_btn);
+        //mBtnCancel.setTextColor(R.none_color);
+        mViewWeixin.setOnClickListener(listener);
+        mViewPengyou.setOnClickListener(listener);
+        mBtnCancel.setOnClickListener(listener);
 
-    };
-    ViewGroup mViewWeixin = (ViewGroup) view.findViewById(R.id.view_share_weixin);
-    ViewGroup mViewPengyou = (ViewGroup) view.findViewById(R.id.view_share_pengyou);
-    Button mBtnCancel = (Button) view.findViewById(R.id.share_cancel_btn);
-    //mBtnCancel.setTextColor(R.none_color);
-    mViewWeixin.setOnClickListener(listener);
-    mViewPengyou.setOnClickListener(listener);
-    mBtnCancel.setOnClickListener(listener);
+        Window window = dialog.getWindow();
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.width = LayoutParams.MATCH_PARENT;
+        params.gravity = Gravity.BOTTOM;
+        window.setAttributes(params);
 
-    Window window = dialog.getWindow();
-    window.getDecorView().setPadding(0, 0, 0, 0);
-    WindowManager.LayoutParams params = window.getAttributes();
-    params.width = LayoutParams.MATCH_PARENT;
-    params.gravity = Gravity.BOTTOM;
-    window.setAttributes(params);
+    }
 
-}
-private void shareWx(int flag) {
+    private void shareWx(int flag) {
     /*if(!api.isWXAppInstalled()) {
         Toast.makeText(WXEntryActivity.this, "您还未安装微信客户端",
                 Toast.LENGTH_SHORT).show();
         return;
     }*/
 
-    WXWebpageObject webpage = new WXWebpageObject();
-    webpage.webpageUrl = "http://baidu.com";
-    WXMediaMessage msg = new WXMediaMessage(webpage);
+        WXWebpageObject webpage = new WXWebpageObject();
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("userId", AppApplication.gUser.getId());
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "toShareView.do", paramsMap, new RongZiListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
 
-    msg.title = "title";
-    msg.description = getResources().getString(
-            R.string.app_name);
-    Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-            R.mipmap.logo_qq);
-    msg.setThumbImage(thumb);
-    SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
-    reqShare.transaction = String.valueOf(System.currentTimeMillis());
-    reqShare.message = msg;
-    reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
+            }
 
-    api.sendReq(reqShare);
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                 share_Url = (String) response.get("url");
+            }
+        });
+
+        webpage.webpageUrl = share_Url;
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+
+        msg.title = "title";
+        msg.description = getResources().getString(
+                R.string.app_name);
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+                R.drawable.ryt_logo);
+        msg.setThumbImage(thumb);
+        SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
+        reqShare.transaction = String.valueOf(System.currentTimeMillis());
+        reqShare.message = msg;
+        reqShare.scene = flag == 0 ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
+
+        api.sendReq(reqShare);
     /*//创建一个用于封装待分享文本的WXTextObject对象
 
     WXTextObject textObject =new WXTextObject();
@@ -579,12 +608,10 @@ private void shareWx(int flag) {
     msg.description= text;//text为String类型，设置描述，可省略*/
 
 
-
 //    api.handleIntent(intent, this);
-}
-}
+    }
 
-
+}
 
 
 

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -63,6 +64,7 @@ public class RegisterActivity extends BaseActivity {
     private boolean isPhone;
     private boolean isVcode;
     private boolean isPassword;
+    private ImageButton back;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -88,10 +90,26 @@ public class RegisterActivity extends BaseActivity {
     };
     private Smsobserver smsObserver;
     private Uri SMS_INBOX = Uri.parse("content://sms/");
+    private TextView protocol;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
+        back = (ImageButton) findViewById(R.id.rg_ib_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        protocol = (TextView) findViewById(R.id.rg_tv_agreement);
+        protocol.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterActivity.this,UserProtocolActivity.class));
+            }
+        });
         ButterKnife.bind(this);/*启用注解绑定*/
         smsBackfill();
         event();

@@ -61,6 +61,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
     private TextView tv_sex;
     private EditReceiver receiver;
     private Double sex;
+    private RelativeLayout address;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserEditZiLiaoActivity.class));
@@ -78,6 +79,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         iv_sign = (TextView) findViewById(R.id.iv_sign);
         tv_nickname = (TextView) findViewById(R.id.tv_nickname);
         tv_sex = (TextView) findViewById(R.id.tv_sex);
+        address = (RelativeLayout) findViewById(R.id.rl_address);
         //给控件设置内容
         AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
         //tv_nickname.setText(AppApplication.gUser.getName());
@@ -90,6 +92,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         nickName.setOnClickListener(this);
         sign_message.setOnClickListener(this);
         rl_sex.setOnClickListener(this);
+        address.setOnClickListener(this);
 
     }
 
@@ -294,6 +297,9 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                                 })
                         .show();
                 break;
+            case R.id.rl_address:
+                startActivity(new Intent(this,ReceiverAdressActivity.class));
+                break;
             default:
                 break;
         }
@@ -337,7 +343,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
 
     }
 
-    //填充签名
+    //填充签名,性别
     public void inflatSign(){
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("userId", AppApplication.gUser.getId());
@@ -388,11 +394,10 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                     map222 = map111.get("user");
                 }
                 String name = "";
-                if (map222 == null){
-                    name = "";
-                }else {
+                if (map222 != null){
                     name = map222.get("name");
                 }
+                //AppApplication.getSingleGson().toJson(response.get("followsNum"));
                 /*Map<String,Map<String,Double>> map11 = (Map<String, Map<String, Double>>) response.get("pageInfo");
                 Map<String,Double> map22 = map11.get("user");
                 Double sex = map22.get("sex");
@@ -406,8 +411,11 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 }else{
                 iv_sign.setText(sign);
                 }
-
-               tv_sex.setText(changSex(sex));
+                if (sex != null) {
+                    tv_sex.setText(changSex(sex));
+                }else{
+                    tv_sex.setText(changSex(3.0));
+                }
                 tv_nickname.setText(name);
             }
         });
