@@ -1,12 +1,10 @@
 /**
  * Created by Administrator on 2016/5/31 0031.
  */
-function initPage(artWorkId, currentUserId, signmsg, timestamp) {
+function initPage(artWorkId, currentUserId) {
     var param = new Object();
     param.artWorkId = artWorkId;
     param.currentUserId = currentUserId;
-    param.signmsg = signmsg;
-    param.timestamp = timestamp;
     PageVariable.param = param;
     PageVariable.artWorkId = artWorkId;
     refreshPageEntity();
@@ -109,7 +107,7 @@ function getArtWorkBaseInfoData(callback) {
             // PageVariable.isSubmitDepositPrice = "1";
         }, data, callback);
     }
-    ajaxRequest(hostName + RequestUrl.initPage, getParamObject(), success, function () {
+    ajaxRequest(hostName + RequestUrl.initPage, dealRequestParam(getParamObject()), success, function () {
     }, "post");
 }
 //获得项目详情信息数据
@@ -120,7 +118,7 @@ function getArtWorkDetailData(callback) {
             PageVariable.artWorkView = new ArtWorkView(obj.artworkAttachmentList, obj.artWork.description, obj.artworkdirection.make_instru, obj.artworkdirection.financing_aq);
         }, data, callback);
     }
-    ajaxRequest(hostName + RequestUrl.artWorkViewTab, getParamObject(), success, function () {
+    ajaxRequest(hostName + RequestUrl.artWorkViewTab, dealRequestParam(getParamObject()), success, function () {
     }, "post");
 }
 //获得项目评价信息数据
@@ -134,8 +132,7 @@ function getArtWorkCommentData(callback) {
     var param = getParamObject();
     param.pageIndex = pageEntity.pageIndex;
     param.pageSize = pageEntity.pageSize;
-    param.messageId = "";
-    ajaxRequest(hostName + RequestUrl.commentTab, param, success, function () {
+    ajaxRequest(hostName + RequestUrl.commentTab, dealRequestParam(param), success, function () {
     }, "post");
 }
 //拍卖纪录
@@ -151,7 +148,7 @@ function getArtWorkAuctionData(callback) {
     var param = getParamObject();
     param.pageIndex = pageEntity.pageIndex;
     param.pageSize = pageEntity.pageSize;
-    ajaxRequest(hostName + RequestUrl.auctionTab, param, success, function () {
+    ajaxRequest(hostName + RequestUrl.auctionTab, dealRequestParam(param), success, function () {
     }, "post");
 }
 
@@ -159,10 +156,10 @@ function getCurrentDefaultConsumerAddressData(callback) {
     var success = function (data) {
         ajaxSuccessFunctionTemplage(function (dataTemp) {
             var obj = dataTemp;
-            PageVariable.consumerAddress = obj.consumerAddress;
+            PageVariable.consumerAddress = obj.defaultAddress;
         }, data, callback)
     };
-    ajaxRequest(hostName + RequestUrl.consumerAddress, getParamObject(), success, function () {
+    ajaxRequest(hostName + RequestUrl.consumerAddress, dealRequestParam(getParamObject()), success, function () {
     }, "post");
 }
 
