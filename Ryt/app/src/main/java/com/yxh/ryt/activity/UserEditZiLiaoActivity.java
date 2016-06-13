@@ -109,9 +109,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         IntentFilter myFilter = new IntentFilter();
         myFilter.addAction("android.intent.action.EDIT_NICK_BROADCAST");
         myFilter.addAction("android.intent.action.EDIT_SIGN_BROADCAST");
-        registerReceiver(receiver, myFilter);
-
-
+        AppApplication.getSingleContext().registerReceiver(receiver, myFilter);
     }
 
     @Override
@@ -255,7 +253,6 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                         .show();
                 break;
             case R.id.ib_top_lf:
-
                 finish();
                 break;
             case R.id.rl_nickName:
@@ -432,10 +429,8 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        try {
-            unregisterReceiver(receiver);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (receiver!=null){
+            AppApplication.getSingleContext().unregisterReceiver(receiver);
         }
     }
 }
