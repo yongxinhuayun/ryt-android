@@ -201,11 +201,15 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
     private void getUser(Map<String, Object> response) {
         User user = new User();
         user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
-        SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
-        SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername() + "");
-        SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName() + "");
-        SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex() + "");
-        SPUtil.put(AppApplication.getSingleContext(), "current_userBrief", user.getUserBrief().getSigner() + "");
+        if (user!=null){
+            SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
+            SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername() + "");
+            SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName() + "");
+            SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex() + "");
+        }
+        if (user.getUserBrief()!=null){
+            SPUtil.put(AppApplication.getSingleContext(), "current_userBrief", user.getUserBrief().getSigner() + "");
+        }
         if (user.getMaster() != null) {
             SPUtil.put(AppApplication.getSingleContext(), "current_master", "master");
         } else {
