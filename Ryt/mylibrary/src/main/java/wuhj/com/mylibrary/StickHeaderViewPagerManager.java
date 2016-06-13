@@ -48,7 +48,6 @@ public class StickHeaderViewPagerManager implements ViewPager.OnPageChangeListen
         mViewPager.addOnPageChangeListener(this);
         mStickHeaderLayout.addOnPlaceHoderListener(this);
     }
-
     public OnListViewScrollListener getOnListViewScrollListener() {
         return onListViewScrollListener;
     }
