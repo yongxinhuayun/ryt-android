@@ -44,6 +44,6 @@ public class UserProtocolActivity extends Activity {
         });
         webView = (WebView) findViewById(R.id.acs_wb_all);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("file:///android_asset/userprotocol.html");
+        webView.loadUrl("file:///android_asset/UserProtocol.html");
     }
 }
