@@ -27,7 +27,7 @@ function getArtWorkBaseInfoMainHtml(it /**/) {
     } else {
         out += ' <span class="time"><strong> 恭喜 ' + (it.winner.name) + '</strong></span> ';
     }
-    out += ' </div> </div> <!--//End--p-time--> <div class="mp"> <div class="pic"><a onclick="redirectUser(\'' + (it.masterId) + '\')"><img src="' + (it.headUrl) + '" alt=""></a></div> <div class="n-page"><span class="name">' + (it.masterName) + '</span><strong></strong><span class="rank">' + (it.title) + '</span></div> </div> <div class="t-page"> <div class="wh"> <i></i> <span>' + (it.brief) + '</span> <em></em> </div> </div> </div>';
+    out += ' </div> </div> <!--//End--p-time--> <div class="mp"> <div class="pic"><a onclick="redirectUser(\'' + (it.masterId) + '\')"><img src="' + (it.headUrl) + '!app-user-head" alt=""></a></div> <div class="n-page"><span class="name">' + (it.masterName) + '</span><strong></strong><span class="rank">' + (it.title) + '</span></div> </div> <div class="t-page"> <div class="wh"> <i></i> <span>' + (it.brief) + '</span> <em></em> </div> </div> </div>';
     return out;
 }
 //获得拍卖信息的view
@@ -47,9 +47,28 @@ function getArtWorkScheduleCreateHtml(it /**/) {
 }
 //获得项目进度（拍卖）的view
 function getArtWorkScheduleAuctionHtml(it /**/) {
-    var out = ' <div class="title"> <div class="l-icon rz-icon"></div> <div class="r-txt"> <span class="head">拍卖</span> <span class="month">' + (getDateStr(it.auctionStartDatetime)) + '</span> <span class="alltime">08:50' + (getTimeStr(it.auctionStartDatetime)) + '</span> </div> </div>';
+    var out = ' <div class="title"> <div class="l-icon rz-icon"></div> <div class="r-txt"> <span class="head">拍卖</span> <span class="month">' + (getDateFormatStr(it.auctionStartDatetime, "MM月dd日hh点mm分")) + '</span> <span class="alltime">';
+    if (PageVariable.artWorkInfo.step == "30") {
+        out += '开始拍卖</span> </div> </div>';
+        out += '<div class="page"> <p>拍卖即将开始，敬请期待...</p> </div>';
+    } else if (PageVariable.artWorkInfo.step == "31") {
+        out += '拍卖中</span> </div> </div>';
+    } else if (PageVariable.artWorkInfo.step == "32") {
+        out += '拍卖</span> </div> </div>';
+    }
     return out;
 }
+
+function getArtWorkScheduleAuctionResultHtml() {
+    var out = "";
+    if (PageVariable.artWorkInfo.step == "32") {
+        out = ' <div class="title"> <div class="l-icon rz-icon"></div> <div class="r-txt"> <span class="head">拍卖</span> <span class="month">' + (getDateFormatStr(PageVariable.artWorkInfo.auctionEndDatetime, "MM月dd日hh点mm分")) + '</span> <span class="alltime">';
+        out += '拍卖结束</span> </div> </div>';
+        out += '<div class="page"> <p>拍卖结束，获得者是' + PageVariable.artWorkInfo.winner.name + '</p> </div>';
+    }
+    return out;
+}
+
 //获得项目进度（动态）的view
 function getArtWorkScheduleMessageHtml(it /**/) {
     var out = '<div class="page"> <div class="tm-box fl wb" style="margin-top:-42px;"> <span class="month" style="margin-right:11px;">' + (getDateStr(it.messageList[0].createDatetime)) + '</span> <span class="alltime">' + (getTimeStr(it.messageList[0].createDatetime)) + '</span> </div> <div class="list"> <div class="messageContent"> ' + (it.messageList[0].content) + ' </div> <div class="p-all" style="width: 100%;float: left"> ';
@@ -187,7 +206,7 @@ function getArtWorkCommentHtml(it /**/) {
     for (var i = 0; i < it.commentList.length; i++) {
         var comment = it.commentList[i];
         if (typeof comment.fatherComment != "undefined" && comment.fatherComment != null) {
-            out += ' <li> <div class="pic"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')"><img src="' + (comment.creator.pictureUrl) + '" alt=""></a></div> <div class="box"> <div class="name"><span>' + (comment.creator.name) + '</span><span class="time">' + (getTimeStr(comment.createDatetime)) + '</span> </div> <!--回复--> <div class="content"> <div class="reply"> <p>回复 <a onclick="redirectUser(\'' + (comment.fatherComment.creator.id) + '\')">' + (comment.fatherComment.creator.name) + '</a>：<a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'\',\'';
+            out += ' <li> <div class="pic"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')"><img src="' + (comment.creator.pictureUrl) + '!app-user-head" alt=""></a></div> <div class="box"> <div class="name"><span>' + (comment.creator.name) + '</span><span class="time">' + (getTimeStr(comment.createDatetime)) + '</span> </div> <!--回复--> <div class="content"> <div class="reply"> <p>回复 <a onclick="redirectUser(\'' + (comment.fatherComment.creator.id) + '\')">' + (comment.fatherComment.creator.name) + '</a>：<a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'\',\'';
             if (comment.fatherComment != null) {
                 out += '' + (comment.fatherComment.id);
             } else {
@@ -195,7 +214,7 @@ function getArtWorkCommentHtml(it /**/) {
             }
             out += '\')"><span style="color: #000;">' + (comment.content) + '</span></a> </p> </div> </div> </div> </li> ';
         } else {
-            out += ' <li> <div class="pic"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')"><img src="' + (comment.creator.pictureUrl) + '" alt=""></a></div> <div class="box"> <div class="name"><span>' + (comment.creator.name) + '</span><span class="time">' + (getTimeStr(comment.createDatetime)) + '</span> </div> <a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'\',\'';
+            out += ' <li> <div class="pic"><a onclick="redirectUser(\'' + (comment.creator.id) + '\')"><img src="' + (comment.creator.pictureUrl) + '!app-user-head" alt=""></a></div> <div class="box"> <div class="name"><span>' + (comment.creator.name) + '</span><span class="time">' + (getTimeStr(comment.createDatetime)) + '</span> </div> <a onclick="redirectComment(\'' + (PageVariable.artWorkId) + '\',\'' + (getCurrentUserId()) + '\',\'\',\'';
             if (comment.fatherComment != null) {
                 out += '' + (comment.fatherComment.id);
             } else {
@@ -212,7 +231,7 @@ function getArtWorkAuctionBiddingHtml(it /**/) {
     var out = ' ';
     for (var i = 0; i < it.artWorkBiddingList.length; i++) {
         var bidding = it.artWorkBiddingList[i];
-        out += ' <li> <span><img src="' + (bidding.creator.pictureUrl) + '" alt=""><strong>' + (dealUsername(bidding.creator.username, 3, 4)) + '</strong></span> <span><strong>出价了</strong> <b>' + (parseInt(bidding.price)) + '元</b></span> <span>' + (getTimeStr(bidding.createDatetime)) + '</span> </li> ';
+        out += ' <li> <span><img src="' + (bidding.creator.pictureUrl) + '!app-user-head" alt=""><strong>' + (dealUsername(bidding.creator.username, 3, 4)) + '</strong></span> <span><strong>出价了</strong> <b>' + (parseInt(bidding.price)) + '元</b></span> <span>' + (getTimeStr(bidding.createDatetime)) + '</span> </li> ';
     }
     return out;
 }
@@ -224,7 +243,7 @@ function getArtWorkAuctionBiddingTopThreeHtml(it /**/) {
         for (var i = 0; i < 3; i++) {
             var bidding = it.biddingTopThree[i];
             if (typeof bidding != "undefined") {
-                out += ' <li> <i class="rank rank1"></i> <span><img src="' + (bidding.creator.pictureUrl) + '" alt=""><strong>' + (dealUsername(bidding.creator.username, 3, 4)) + '</strong></span> <span><strong>出价了</strong> <b>' + (parseInt(bidding.price)) + '元</b></span> <span>' + (getDateStr(bidding.createDatetime)) + '</span> </li> ';
+                out += ' <li> <i class="rank rank1"></i> <span><img src="' + (bidding.creator.pictureUrl) + '!app-user-head" alt=""><strong>' + (dealUsername(bidding.creator.username, 3, 4)) + '</strong></span> <span><strong>出价了</strong> <b>' + (parseInt(bidding.price)) + '元</b></span> <span>' + (getDateStr(bidding.createDatetime)) + '</span> </li> ';
             }
         }
         out += ' </ul>';

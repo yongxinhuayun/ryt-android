@@ -114,7 +114,7 @@ public class RongZiXQActivity extends BaseActivity {
     private int time = 0;
     private int remainMoney;
     private String share_Url;
-
+    private boolean flag=true;
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, RongZiXQActivity.class));
     }
@@ -308,8 +308,9 @@ public class RongZiXQActivity extends BaseActivity {
                 if (object != null) {
                     users = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("investPeople")), new TypeToken<List<User>>() {
                     }.getType());
-                    if (users != null && users.size() > 0) {
+                    if (users != null && users.size() > 0 && flag) {
                         isFirst(users);
+                        flag=false;
                     }
                     isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
                     Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);

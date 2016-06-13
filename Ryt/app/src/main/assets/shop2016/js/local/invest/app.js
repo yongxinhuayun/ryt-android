@@ -13,7 +13,7 @@ function redirectUser(userid) {
 function redirectPay(price, action) {
     var artWorkId = getParamObject()["artWorkId"];
     var currentUserId = getCurrentUserId();
-    window.location.href = "";
+    window.demo1.finalPayment(price,action,artWorkId);
     //去充值 去付尾款
 }      // 跳转到付款的页面
 

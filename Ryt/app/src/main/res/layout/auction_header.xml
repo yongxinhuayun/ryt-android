@@ -19,6 +19,7 @@
             android:textColor="#000000"
             android:text="账户余额"/>
         <TextView
+            android:id="@+id/ah_restMoney"
             android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:textSize="30sp"
@@ -43,10 +44,12 @@
                     android:textColor="#333333"
                     android:text="投资金额"/>
                 <TextView
+                    android:id="@+id/ah_investMoney"
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:textSize="18sp"
                     android:textColor="#000000"
+                    android:layout_gravity="center_horizontal"
                     android:layout_height="wrap_content"
                     android:text="4700元"/>
             </LinearLayout>
@@ -63,9 +66,11 @@
                     android:textColor="#333333"
                     android:text="收益金额"/>
                 <TextView
+                    android:id="@+id/ah_rewardMoney"
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:textSize="18sp"
+                    android:layout_gravity="center_horizontal"
                     android:textColor="#000000"
                     android:layout_height="wrap_content"
                     android:text="4700元"/>

@@ -30,6 +30,4 @@ public class PayPageActivity extends BaseActivity {
         page.loadUrl(url);
 
     }
-
-
 }
