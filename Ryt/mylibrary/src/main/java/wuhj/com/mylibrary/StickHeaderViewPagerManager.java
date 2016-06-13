@@ -34,7 +34,6 @@ import java.util.List;
  * Created by sj on 15/11/22.
  */
 public class StickHeaderViewPagerManager implements ViewPager.OnPageChangeListener, StickHeaderLayout.OnPlaceHoderListener, ScrollHolder {
-
     private SparseArrayCompat<PlaceHoderHeaderLayout> placeHoderHeaderLayoutList = new SparseArrayCompat<>();
     private HashSet<Integer> canPullToRefreshPosiTionSet = new HashSet<>();
     private ViewPager mViewPager;
