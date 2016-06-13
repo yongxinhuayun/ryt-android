@@ -5,12 +5,11 @@
 function initPage(artWorkId, currentUserId) {
     var paramStr = window.demo.fetchParamObject();
     var paramObject = JSON.parse(paramStr);
-    console.log(paramObject);
     var param = new Object();
     param.artWorkId = paramObject.artWorkId;
     param.currentUserId = paramObject.currentUserId;
     PageVariable.param = param;
-    PageVariable.artWorkId = artWorkId;
+    PageVariable.artWorkId = param.artWorkId;
     getArtWorkBaseInfoData(getArtWorkBaseInfo);
     getArtWorkDetailData(getArtWorkDetail);
 }
