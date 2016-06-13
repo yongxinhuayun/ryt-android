@@ -111,12 +111,15 @@ public class AuctionSummaryActivity extends BaseActivity {
         @JavascriptInterface
         public void  finalPayment(final String price,final String action,final String artWorkId) {
             Map<String,String> paramsMap=new HashMap<>();
-            paramsMap.put("userId", AppApplication.gUser.getId());
+            //paramsMap.put("userId", AppApplication.gUser.getId());
+            paramsMap.put("userId", "imhfp1yr4636pj49");
             paramsMap.put("money", price);
             paramsMap.put("action", action);
             paramsMap.put("type", "1");
             paramsMap.put("artWorkId", artWorkId);
+            paramsMap.put("addressId","ip6e59sx17aseim2");
             paramsMap.put("timestamp", System.currentTimeMillis() + "");
+            paramsMap.put("auctionMoney", "6666");
             try {
                 AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
                 paramsMap.put("signmsg", AppApplication.signmsg);
