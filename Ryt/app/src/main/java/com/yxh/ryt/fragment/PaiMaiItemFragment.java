@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
@@ -32,6 +33,8 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 	private CommonAdapter<RongZi> paiMaiCommonAdapter;
 	private List<RongZi> paiMaiDatas;
 	private int currentPage=1;
+	private TextView tv_detail;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

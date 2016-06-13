@@ -585,7 +585,7 @@ public class RongZiXQActivity extends BaseActivity {
         msg.description = getResources().getString(
                 R.string.app_name);
         Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-                R.drawable.ryt_logo);
+                R.mipmap.ryt_logo);
         msg.setThumbImage(thumb);
         SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
         reqShare.transaction = String.valueOf(System.currentTimeMillis());
