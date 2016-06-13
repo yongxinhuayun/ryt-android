@@ -96,26 +96,10 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
     LinearLayout other;
     @Bind(R.id.uh1_iv_privateLetter)
     ImageView letter;
-    @Bind(R.id.uh1_iv_attention)
-    ImageView attention;
-    @Bind(R.id.tv_top_ct)
-    TextView top;
+
+    private ImageView attention;
+    private TextView top;
     private PushWorkReceiver receiver;
-//    @Bind({R.id.ll_header_gz, R.id.ll_header_fs, R.id.ll_header_qm, R.id.ll_header_value})
-//    List<LinearLayout> linearLayouts;
-//    static final ButterKnife.Setter<View, Integer> ISVISIBLE = new ButterKnife.Setter<View, Integer>() {
-//        @Override
-//        public void set(View view, Integer value, int index) {
-//            if (value == 0) {//显示
-//                view.setVisibility(View.VISIBLE);
-//                return;
-//            }
-//            if (value == 1) {//隐藏
-//                view.setVisibility(View.GONE);
-//                return;
-//            }
-//        }
-//    };
 
     private static final String IMAGE_UNSPECIFIED = "image/*";
     private static final int PHOTO_RESOULT = 4;
@@ -127,6 +111,8 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_ysj_index);
         ButterKnife.bind(this);
+        attention=(ImageView) findViewById(R.id.uh1_iv_attention);
+        top=(TextView) findViewById(R.id.tv_top_ct);
         userId = getIntent().getStringExtra("userId");
         currentId = getIntent().getStringExtra("currentId");
         mViewPager = (ViewPager) findViewById(R.id.user_ysj_pager);

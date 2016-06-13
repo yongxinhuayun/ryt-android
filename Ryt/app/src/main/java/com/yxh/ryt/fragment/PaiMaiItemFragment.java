@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.AuctionSummaryActivity;
+import com.yxh.ryt.activity.CreateSummaryActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
@@ -104,12 +107,21 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 		lstv.setPageSize(Constants.pageSize);
 		paiMaiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),paiMaiDatas,R.layout.auction_list_item) {
 			@Override
-			public void convert(ViewHolder helper, RongZi item) {
+			public void convert(ViewHolder helper, final RongZi item) {
 				helper.setText(R.id.cl_01_tv_title,item.getTitle());
 				helper.setText(R.id.cl_01_tv_brief,item.getBrief());
 				helper.setText(R.id.cl_01_tv_name, item.getAuthor().getName());
 				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
 				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, item.getAuthor().getPictureUrl());
+				helper.getView(R.id.ali_all).setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent=new Intent(getActivity(), AuctionSummaryActivity.class);
+						intent.putExtra("id", item.getId());
+						intent.putExtra("name", item.getAuthor().getName());
+						startActivity(intent);
+					}
+				});
 				if(Integer.valueOf(item.getStep())==30){
 					helper.getView(R.id.cli_tv_time).setVisibility(View.VISIBLE);
 					helper.getView(R.id.cli_tv_chengjiao_price).setVisibility(View.GONE);

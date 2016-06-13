@@ -38,7 +38,9 @@ public abstract class StickHeaderBaseFragment extends BaseFragment {
     @Override
     public final View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         View view = oncreateView(inflater, container, savedInstanceState);
-        manager.addPlaceHoderHeaderLayout(position,placeHoderHeaderLayout,isCanPulltoRefresh);
+        if (manager!=null){
+            manager.addPlaceHoderHeaderLayout(position,placeHoderHeaderLayout,isCanPulltoRefresh);
+        }
         return view;
     }
 

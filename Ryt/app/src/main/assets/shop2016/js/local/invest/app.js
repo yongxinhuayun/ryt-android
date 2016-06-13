@@ -3,7 +3,7 @@
  */
 
 
-hostName = "http://localhost";                           //服务器域名
+hostName = "http://192.168.1.75:8080";                           //服务器域名
 
 function redirectUser(userid) {
     //window.location.href = "rongyitou://jumpToUserHome_?" + userid;
@@ -15,12 +15,12 @@ function redirectPay(price, action) {
     var currentUserId = getCurrentUserId();
     window.location.href = "";
     //去充值 去付尾款
-}      //@TODO 跳转到付款的页面
+}      // 跳转到付款的页面
 
 
 function redirectComment(artworkId, currentUserId, messageId, fatherCommentId) {
     window.location.href = "";
-}       //@TODO 跳转到评论
+}       // 跳转到评论
 
 function redirectConsumerAddress() {
     var userId = getCurrentUserId();

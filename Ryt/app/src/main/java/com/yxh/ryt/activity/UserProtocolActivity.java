@@ -45,46 +45,5 @@ public class UserProtocolActivity extends Activity {
         webView = (WebView) findViewById(R.id.acs_wb_all);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("file:///android_asset/UserProtocol.html");
-        webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo");
-    }
-    class JavaInterfaceDemo {
-        @JavascriptInterface
-        public void clickOnAndroid(final  String id) {
-            Map<String,String> paramsMap=new HashMap<>();
-            paramsMap.put("userId", id);
-            paramsMap.put("timestamp", System.currentTimeMillis() + "");
-            try {
-                AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
-                paramsMap.put("signmsg", AppApplication.signmsg);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            NetRequestUtil.post(Constants.BASE_PATH + "user.do", paramsMap, new AttentionListCallBack() {
-                @Override
-                public void onError(Call call, Exception e) {
-                    e.printStackTrace();
-                    System.out.println("失败了");
-                }
-
-                @Override
-                public void onResponse(Map<String, Object> response) {
-                    if ("0".equals(response.get("resultCode"))){
-                        Map<Object,Object> data= (Map<Object, Object>) response.get("data");
-                        User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(data.get("user")), User.class);
-                        if (user.getMaster()!=null){
-                            Intent intent =new Intent(UserProtocolActivity.this,UserYsjIndexActivity.class);
-                            intent.putExtra("userId", id);
-                            intent.putExtra("currentId", AppApplication.gUser.getId());
-                            UserProtocolActivity.this.startActivity(intent);
-                        }else {
-                            Intent intent =new Intent(UserProtocolActivity.this,UserPtIndexActivity.class);
-                            intent.putExtra("userId", id);
-                            intent.putExtra("currentId", AppApplication.gUser.getId());
-                            UserProtocolActivity.this.startActivity(intent);
-                        }
-                    }
-                }
-            });
-        }
     }
 }
