@@ -108,5 +108,36 @@ public class AuctionSummaryActivity extends BaseActivity {
         public String fetchParamObject1() {
             return "{\"artWorkId\":\""+id+"\",\"currentUserId\":\""+AppApplication.gUser.getId()+"\"}";
         }
+        @JavascriptInterface
+        public void  finalPayment(final String price,final String action,final String artWorkId) {
+            Map<String,String> paramsMap=new HashMap<>();
+            paramsMap.put("userId", AppApplication.gUser.getId());
+            paramsMap.put("money", price);
+            paramsMap.put("action", action);
+            paramsMap.put("type", "1");
+            paramsMap.put("artWorkId", artWorkId);
+            paramsMap.put("timestamp", System.currentTimeMillis() + "");
+            try {
+                AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+                paramsMap.put("signmsg", AppApplication.signmsg);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            NetRequestUtil.post(Constants.BASE_PATH + "pay/main.do", paramsMap, new AttentionListCallBack() {
+                @Override
+                public void onError(Call call, Exception e) {
+                    e.printStackTrace();
+                    System.out.println("失败了");
+                }
+
+                @Override
+                public void onResponse(Map<String, Object> response) {
+                    String url = response.get("url").toString();
+                    Intent intent=new Intent(AuctionSummaryActivity.this,PayPageActivity.class);
+                    intent.putExtra("url",url);
+                    AuctionSummaryActivity.this.startActivity(intent);
+                }
+            });
+        }
     }
 }
