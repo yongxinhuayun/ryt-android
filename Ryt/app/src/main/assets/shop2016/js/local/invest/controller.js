@@ -2,11 +2,16 @@
  * Created by Administrator on 2016/5/31 0031.
  */
 function initPage(artWorkId, currentUserId) {
+   /* var paramStr = window.demo1.fetchParamObject1();
+    var paramObject = JSON.parse(paramStr);
     var param = new Object();
-    param.artWorkId = artWorkId;
-    param.currentUserId = currentUserId;
+    param.artWorkId = paramObject.artWorkId;
+    param.currentUserId = paramObject.currentUserId;*/
+    var param = new Object();
+    param.artWorkId = "qydeyugqqiugd2";
+    param.currentUserId = "imhfp1yr4636pj49";
     PageVariable.param = param;
-    PageVariable.artWorkId = artWorkId;
+    PageVariable.artWorkId = param.artWorkId;
     refreshPageEntity();
     getArtWorkBaseInfoData(getArtWorkBaseInfo);
     getArtWorkDetailData(getArtWorkDetail);
@@ -115,6 +120,7 @@ function getArtWorkDetailData(callback) {
     var success = function (data) {
         ajaxSuccessFunctionTemplage(function (dataTemp) {
             var obj = dataTemp["object"];
+            console.log(JSON.stringify(obj));
             PageVariable.artWorkView = new ArtWorkView(obj.artworkAttachmentList, obj.artWork.description, obj.artworkdirection.make_instru, obj.artworkdirection.financing_aq);
         }, data, callback);
     }
