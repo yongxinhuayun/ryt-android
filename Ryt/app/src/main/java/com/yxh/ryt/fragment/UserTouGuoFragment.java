@@ -145,36 +145,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 
 	}
 	private void onScroll() {
-		/*stickHeaderViewPagerManager.setOnListViewScrollListener(new StickHeaderViewPagerManager.OnListViewScrollListener() {
-			@Override
-			public void onListViewScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				Log.d("jjjjjjjjjjjjjjjjj","kjskjksjflslfs");
-				lastItem = firstVisibleItem + visibleItemCount - 2;
-			}
 
-			@Override
-			public void onListViewScrollStateChanged(AbsListView view, int scrollState) {
-				if (lastItem == userZGCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && loadComplete) {
-					more.setVisibility(View.GONE);
-					loading.setVisibility(View.VISIBLE);
-					loadFull.setVisibility(View.GONE);
-					noData.setVisibility(View.GONE);
-					currentPage = currentPage + 1;
-					LoadData(false, currentPage);
-				}
-			}
-		});*/
-		/*lstv.setOnScrollListener(new AbsListView.OnScrollListener() {
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-			}
-
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-			}
-		});*/
 	}
 	@Override
 	protected void lazyLoad() {
@@ -216,6 +187,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 							loading.setVisibility(View.GONE);
 							loadFull.setVisibility(View.GONE);
 							noData.setVisibility(View.VISIBLE);
+							header.setVisibility(View.GONE);
 						} else if (commentList.size() < Constants.pageSize){
 							more.setVisibility(View.GONE);
 							loading.setVisibility(View.GONE);
@@ -236,7 +208,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 						}
 						userZGCommonAdapter.notifyDataSetChanged();
 					}else {
-						List<ConvertWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("pageInfo")), new TypeToken<List<ConvertWork>>() {
+						List<ConvertWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworks")), new TypeToken<List<ConvertWork>>() {
 						}.getType());
 						if (commentList == null || commentList.size() < Constants.pageSize) {
 							more.setVisibility(View.GONE);
