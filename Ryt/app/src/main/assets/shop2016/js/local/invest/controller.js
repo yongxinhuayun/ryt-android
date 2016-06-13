@@ -38,6 +38,7 @@ function getArtWorkBaseInfo() {
     $("#rz").html(getArtWorkScheduleInvestHtml(artWorkProject));
     $("#cz").html(getArtWorkScheduleCreateHtml(artWorkProject));
     $("#pm").html(getArtWorkScheduleAuctionHtml(artWorkProject));
+    $("#pm2").html(getArtWorkScheduleAuctionResultHtml());
     $("#dt").append(getArtWorkScheduleMessageHtml(artWorkProject));
     $("#auctionMessage").html(getArtWorkBaseInfoAuctionMessageHtml(artWorkInfo));
     $("#winner").html(getArtWorkAuctionWinnerHtml(artWorkInfo));
@@ -111,7 +112,7 @@ function getArtWorkBaseInfoData(callback) {
             PageVariable.isSubmitDepositPrice = obj["isSubmitDepositPrice"];
             // PageVariable.isSubmitDepositPrice = "1";
         }, data, callback);
-    }
+    };
     ajaxRequest(hostName + RequestUrl.initPage, dealRequestParam(getParamObject()), success, function () {
     }, "post");
 }
@@ -120,7 +121,6 @@ function getArtWorkDetailData(callback) {
     var success = function (data) {
         ajaxSuccessFunctionTemplage(function (dataTemp) {
             var obj = dataTemp["object"];
-            console.log(JSON.stringify(obj));
             PageVariable.artWorkView = new ArtWorkView(obj.artworkAttachmentList, obj.artWork.description, obj.artworkdirection.make_instru, obj.artworkdirection.financing_aq);
         }, data, callback);
     }
