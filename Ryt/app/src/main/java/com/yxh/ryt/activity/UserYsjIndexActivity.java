@@ -96,7 +96,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
     LinearLayout other;
     @Bind(R.id.uh1_iv_privateLetter)
     ImageView letter;
-    @Bind(R.id.uh1_iv_attention)
+
     ImageView attention;
     @Bind(R.id.tv_top_ct)
     TextView top;
@@ -127,6 +127,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_ysj_index);
         ButterKnife.bind(this);
+        attention=(ImageView) findViewById(R.id.uh1_iv_attention);
         userId = getIntent().getStringExtra("userId");
         currentId = getIntent().getStringExtra("currentId");
         mViewPager = (ViewPager) findViewById(R.id.user_ysj_pager);

@@ -310,9 +310,11 @@ public class ForgetPwdActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(Map<String, Object> response) {
-                            ToastUtil.showShort(AppApplication.getSingleContext(), "验证码发送成功!");
-                            startThrad();
-                            sendCode.setEnabled(false);
+                            if ("0".equals(response.get("resultCode"))){
+                                ToastUtil.showShort(AppApplication.getSingleContext(), "验证码发送成功!");
+                                startThrad();
+                                sendCode.setEnabled(false);
+                            }
                         }
                     });
                 }
