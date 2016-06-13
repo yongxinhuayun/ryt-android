@@ -175,6 +175,7 @@ public class RongZiXQActivity extends BaseActivity {
     @OnClick({R.id.ll_comment, R.id.ib_top_lf, R.id.ib_top_rt, R.id.iv_tab_01, R.id.rzxq_tv_invest})
     public void comment(View view) {
         switch (view.getId()) {
+            //评论
             case R.id.ll_comment:
                 if ("".equals(AppApplication.gUser.getId())) {
                     Intent intent2 = new Intent(RongZiXQActivity.this, LoginActivity.class);

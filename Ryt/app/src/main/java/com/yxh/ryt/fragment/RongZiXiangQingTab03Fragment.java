@@ -21,7 +21,6 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
-import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.ProjectCommentReply;
 import com.yxh.ryt.activity.UserPtIndexActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
@@ -129,7 +128,9 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                         intent.putExtra("flag", 0);
                         intent.putExtra("messageId", "");
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        AppApplication.getSingleContext().startActivity(intent);
+                        if (!item.getId().equals( AppApplication.gUser.getId())) {
+                            AppApplication.getSingleContext().startActivity(intent);
+                        }
                     }
                 });
                 helper.getView(R.id.pdctci_tv_nickName).setOnClickListener(new View.OnClickListener() {
