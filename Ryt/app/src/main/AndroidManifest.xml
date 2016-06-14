@@ -286,6 +286,7 @@
             android:label="@string/title_activity_pay_page" />
         <activity android:name=".activity.ReceiverAdressActivity" />
         <activity android:name=".activity.NewAddressActivity" />
+        <activity android:name=".activity.AuctionSummaryActivity" />
         <activity android:name=".activity.UserProtocolActivity"></activity>
     </application>
 

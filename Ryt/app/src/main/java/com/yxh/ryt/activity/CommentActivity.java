@@ -56,24 +56,26 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
     }
 
     private void initView() {
-        cmAdapter=new CommonAdapter<ArtworkCommentMsg>(AppApplication.getSingleContext(), artworkCommentDatas,R.layout.address_item) {
+        cmAdapter=new CommonAdapter<ArtworkCommentMsg>(AppApplication.getSingleContext(), artworkCommentDatas,R.layout.comment_item) {
            // @Override
             public void convert(ViewHolder helper, final ArtworkCommentMsg item) {
                 helper.getView(R.id.ci_ll_artwork).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent=null;
-                        Log.d("XXXXXXXXXXXX",AppApplication.getStep(item.getArtwork().getStep())+"");
-                        if (AppApplication.getStep(item.getArtwork().getStep())==1 || AppApplication.getStep(item.getArtwork().getStep())==3 ){
-                            intent=new Intent(AppApplication.getSingleContext(), RongZiXQActivity.class);
-                            intent.putExtra("id", item.getArtwork().getId());
-                        }else if(AppApplication.getStep(item.getArtwork().getStep())==2){
-                            intent=new Intent(AppApplication.getSingleContext(), ChuangZuoXQActivity.class);
-                            intent.putExtra("id", item.getArtwork().getId());
+
+                            Intent intent=null;
+                            Log.d("XXXXXXXXXXXX",AppApplication.getStep(item.getArtwork().getStep())+"");
+                            if (AppApplication.getStep(item.getArtwork().getStep())==1 || AppApplication.getStep(item.getArtwork().getStep())==3 ){
+                                intent=new Intent(AppApplication.getSingleContext(), RongZiXQActivity.class);
+                                intent.putExtra("id", item.getArtwork().getId());
+                            }else if(AppApplication.getStep(item.getArtwork().getStep())==2){
+                                intent=new Intent(AppApplication.getSingleContext(), ChuangZuoXQActivity.class);
+                                intent.putExtra("id", item.getArtwork().getId());
+                            }
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            AppApplication.getSingleContext().startActivity(intent);
                         }
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        AppApplication.getSingleContext().startActivity(intent);
-                    }
+
                 });
                 helper.setImageByUrl(R.id.ci_iv_projectIcon,item.getArtwork().getPicture_url());
                 helper.setText(R.id.ci_tv_otherNickname,item.getCreator().getName());

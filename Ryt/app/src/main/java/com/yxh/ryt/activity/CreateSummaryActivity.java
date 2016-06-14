@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
@@ -36,9 +39,11 @@ import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.JsInterface;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.ToastUtil;
+import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.User;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -57,11 +62,25 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     private TextView top;
     private String id;
     private String name;
+    private List<User> users;
     private ImageView dianzan;
     private LinearLayout comment;
     private boolean isPraise1;
+    private TextView zan;
+    protected static final int PRAISE_SUC = 100;
     private String artworkId;
-
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case PRAISE_SUC:
+                    int a = Integer.parseInt(zan.getText().toString());
+                    a++;
+                    zan.setText(a);
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,10 +89,13 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
         share = (ImageButton) findViewById(R.id.ib_top_rt);
         dianzan = (ImageView) findViewById(R.id.iv_tab_01);
         comment = (LinearLayout) findViewById(R.id.ll_comment);
+        zan = (TextView) findViewById(R.id.rzxq_tv_zan);
         back.setOnClickListener(this);
         share.setOnClickListener(this);
         dianzan.setOnClickListener(this);
         comment.setOnClickListener(this);
+        Intent intent = getIntent();
+        if (intent != null) artworkId = intent.getStringExtra("id");
         webView = (WebView) findViewById(R.id.acs_wb_all);
         top = (TextView) findViewById(R.id.tv_top_ct);
         id = getIntent().getStringExtra("id");
@@ -87,14 +109,63 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        LoadData(0, 1);
+    }
+    private void LoadData(int tabtype, int pageNum) {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("artWorkId", artworkId + "");
+        if ("".equals(AppApplication.gUser.getId())) {
+            paramsMap.put("currentUserId", "");
+        } else {
+            paramsMap.put("currentUserId", AppApplication.gUser.getId());
+        }
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "artWorkCreationView.do", paramsMap, new RongZiListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                Map<String, Object> object = (Map<String, Object>) response.get("object");
+                if (object != null) {
+                    users = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("investPeople")), new TypeToken<List<User>>() {
+                    }.getType());
+                    isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
+                    Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
+
+                    if (isPraise1) {
+                        dianzan.setImageResource(R.mipmap.dianzanhou);
+                        dianzan.setEnabled(false);
+                    }
+                    zan.setText(artwork.getPraiseNUm() + "");
+
+                }
+
+            }
+        });
+    }
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ib_top_lf:
                 finish();
                 break;
+            //分享
             case R.id.ib_top_rt:
                 showShareDialog();
                 break;
+            //点赞
             case R.id.ll_dianzan:
                 if ("".equals(AppApplication.gUser.getId())){
                     Intent intent2=new Intent(this,LoginActivity.class);
@@ -130,8 +201,20 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
                     }
                 }
                 break;
+            //评论
             case R.id.ll_comment:
-                startActivity(new Intent(this,CommentActivity.class));
+                if ("".equals(AppApplication.gUser.getId())) {
+                    Intent intent2 = new Intent(this, LoginActivity.class);
+                    startActivity(intent2);
+                } else {
+                    Intent intent = new Intent(this, ProjectCommentReply.class);
+                    intent.putExtra("fatherCommentId", "");
+                    intent.putExtra("messageId", "");
+                    intent.putExtra("flag", 1);
+                    intent.putExtra("artworkId", artworkId);
+                    intent.putExtra("currentUserId", AppApplication.gUser.getId());
+                    startActivity(intent);
+                }
                 break;
             default:
                 break;
@@ -276,6 +359,9 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
                     ToastUtil.showLong(getApplicationContext(), "点赞成功");
+                    Message msg = Message.obtain();
+                    msg.what = PRAISE_SUC;
+                    handler.sendMessage(msg);
                 }
             }
         });

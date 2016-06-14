@@ -39,19 +39,19 @@ import wuhj.com.mylibrary.StickHeaderViewPagerManager;
  * Created by sj on 15/11/25.
  */
 @SuppressLint("ValidFragment")
-public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
+public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
     private CustomListview mListview;
     private CommonAdapter<ArtworkInvest> investorRecordCommonAdapter;
     private List<ArtworkInvest> investorDatas;
     private List<ArtworkTopInvest> investorTOpDatas;
-    private int currentPage=1;
+    private int currentPage = 1;
     private View footer;
     private TextView loadFull;
     private TextView noData;
     private TextView more;
     private ProgressBar loading;
     private int lastItem;
-    private boolean loadComplete=true;
+    private boolean loadComplete = true;
     static StickHeaderViewPagerManager stickHeaderViewPagerManager;
     private CircleImageView icon1;
     private CircleImageView icon2;
@@ -63,6 +63,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
     private TextView money2;
     private TextView money3;
     private static String artworkId;
+
     public RongZiXiangQingTab04Fragment(StickHeaderViewPagerManager manager, int position) {
         super(manager, position);
     }
@@ -76,26 +77,28 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         return listFragment;
     }
 
-    public static RongZiXiangQingTab04Fragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh,String artworkID) {
+    public static RongZiXiangQingTab04Fragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh, String artworkID) {
         RongZiXiangQingTab04Fragment listFragment = new RongZiXiangQingTab04Fragment(manager, position, isCanPulltoRefresh);
-        stickHeaderViewPagerManager=manager;
-        artworkId=artworkID;
+        stickHeaderViewPagerManager = manager;
+        artworkId = artworkID;
         return listFragment;
     }
-    public RongZiXiangQingTab04Fragment(){
+
+    public RongZiXiangQingTab04Fragment() {
         super();
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        investorDatas=new ArrayList<>();
-        investorTOpDatas=new ArrayList<>();
+        investorDatas = new ArrayList<>();
+        investorTOpDatas = new ArrayList<>();
     }
 
     @Override
     public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_record, null);
-        mListview = (CustomListview)view.findViewById(R.id.flr_scroll);
+        mListview = (CustomListview) view.findViewById(R.id.flr_scroll);
         footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer_1, null);
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
         findView(view);
@@ -106,17 +109,31 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         LoadData(true, currentPage);
         return view;
     }
+
     private void topDatas() {
-        if (investorTOpDatas.size()!=0){
-             AppApplication.displayImage(investorTOpDatas.get(1).getUser().getPictureUrl(),icon1);
+        if (investorTOpDatas.size() == 1) {
             AppApplication.displayImage(investorTOpDatas.get(0).getUser().getPictureUrl(), icon2);
-            AppApplication.displayImage(investorTOpDatas.get(2).getUser().getPictureUrl(),icon3);
+            title2.setText(investorTOpDatas.get(0).getUser().getName());
+            money2.setText(investorTOpDatas.get(0).getMoney() + "");
+        }
+        if (investorTOpDatas.size() == 2) {
+            AppApplication.displayImage(investorTOpDatas.get(1).getUser().getPictureUrl(), icon1);
+            AppApplication.displayImage(investorTOpDatas.get(0).getUser().getPictureUrl(), icon2);
+            title1.setText(investorTOpDatas.get(1).getUser().getName());
+            title2.setText(investorTOpDatas.get(0).getUser().getName());
+            money1.setText(investorTOpDatas.get(1).getMoney() + "");
+            money2.setText(investorTOpDatas.get(0).getMoney() + "");
+        }
+        if (investorTOpDatas.size() == 3) {
+            AppApplication.displayImage(investorTOpDatas.get(1).getUser().getPictureUrl(), icon1);
+            AppApplication.displayImage(investorTOpDatas.get(0).getUser().getPictureUrl(), icon2);
+            AppApplication.displayImage(investorTOpDatas.get(2).getUser().getPictureUrl(), icon3);
             title1.setText(investorTOpDatas.get(1).getUser().getName());
             title2.setText(investorTOpDatas.get(0).getUser().getName());
             title3.setText(investorTOpDatas.get(2).getUser().getName());
-            money1.setText(investorTOpDatas.get(1).getMoney()+"");
-            money2.setText(investorTOpDatas.get(0).getMoney()+"");
-            money3.setText(investorTOpDatas.get(2).getMoney()+"");
+            money1.setText(investorTOpDatas.get(1).getMoney() + "");
+            money2.setText(investorTOpDatas.get(0).getMoney() + "");
+            money3.setText(investorTOpDatas.get(2).getMoney() + "");
         }
     }
 
@@ -141,7 +158,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
         mListview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (lastItem==investorRecordCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && loadComplete) {
+                if (lastItem == investorRecordCommonAdapter.getCount() && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && loadComplete) {
                     more.setVisibility(View.GONE);
                     loading.setVisibility(View.VISIBLE);
                     loadFull.setVisibility(View.GONE);
@@ -153,22 +170,23 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                Log.d("xxxxxxxxxxxxxxxx","jksjflsjlfjslfjlsdf");
+                Log.d("xxxxxxxxxxxxxxxx", "jksjflsjlfjslfjlsdf");
                 lastItem = firstVisibleItem + visibleItemCount - 2;
             }
         });
     }
+
     private void setAdapter() {
-        investorRecordCommonAdapter=new CommonAdapter<ArtworkInvest>(getActivity(),investorDatas,R.layout.investorrecord_item) {
+        investorRecordCommonAdapter = new CommonAdapter<ArtworkInvest>(getActivity(), investorDatas, R.layout.investorrecord_item) {
             @Override
             public void convert(ViewHolder helper, ArtworkInvest item) {
-                if (item.getCreator()!=null){
+                if (item.getCreator() != null) {
                     helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
-                    if (item.getCreator().getName()!=null){
-                        if (item.getCreator().getName().length()>3){
-                            helper.setText(R.id.iri_tv_nickname,item.getCreator().getName().substring(0,3)+"...");
-                        }else {
-                            helper.setText(R.id.iri_tv_nickname,item.getCreator().getName());
+                    if (item.getCreator().getName() != null) {
+                        if (item.getCreator().getName().length() > 3) {
+                            helper.setText(R.id.iri_tv_nickname, item.getCreator().getName().substring(0, 3) + "...");
+                        } else {
+                            helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
                         }
                     }
                 }
@@ -190,18 +208,18 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
 
     }
 
-    private void LoadData(final boolean flag,int pageNum) {
+    private void LoadData(final boolean flag, int pageNum) {
         more.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
         loadFull.setVisibility(View.GONE);
         noData.setVisibility(View.GONE);
-        Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("artWorkId",artworkId);
-        paramsMap.put("pageSize",Constants.pageSize+"");
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("artWorkId", artworkId);
+        paramsMap.put("pageSize", Constants.pageSize + "");
         paramsMap.put("pageIndex", pageNum + "");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
-            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
             paramsMap.put("signmsg", AppApplication.signmsg);
         } catch (Exception e) {
             e.printStackTrace();
@@ -214,30 +232,30 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if ("0".equals(response.get("resultCode"))){
-                    Map<String,Object> object= (Map<String, Object>) response.get("object");
-                    if (flag){
+                if ("0".equals(response.get("resultCode"))) {
+                    Map<String, Object> object = (Map<String, Object>) response.get("object");
+                    if (flag) {
                         List<ArtworkTopInvest> topList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestTopList")), new TypeToken<List<ArtworkTopInvest>>() {
                         }.getType());
-                        if (topList==null || topList.size()==0){
+                        if (topList == null || topList.size() == 0) {
                             more.setVisibility(View.GONE);
                             loading.setVisibility(View.GONE);
                             loadFull.setVisibility(View.GONE);
                             noData.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             investorTOpDatas.addAll(topList);
                             topDatas();
                             topList.clear();
                         }
                         List<ArtworkInvest> investList1 = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
                         }.getType());
-                        if (investList1 ==null || investList1.size()==0){
+                        if (investList1 == null || investList1.size() == 0) {
                             more.setVisibility(View.GONE);
                             loading.setVisibility(View.GONE);
                             loadFull.setVisibility(View.GONE);
                             noData.setVisibility(View.VISIBLE);
-                            loadComplete=false;
-                        }else if (investList1.size() < Constants.pageSize){
+                            loadComplete = false;
+                        } else if (investList1.size() < Constants.pageSize) {
                             more.setVisibility(View.GONE);
                             loading.setVisibility(View.GONE);
                             loadFull.setVisibility(View.VISIBLE);
@@ -245,33 +263,33 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
                             investorDatas.addAll(investList1);
                             investList1.clear();
                             investorRecordCommonAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             more.setVisibility(View.VISIBLE);
                             loading.setVisibility(View.GONE);
                             loadFull.setVisibility(View.GONE);
                             noData.setVisibility(View.GONE);
                         }
-                        if (investList1!=null){
+                        if (investList1 != null) {
                             investorDatas.addAll(investList1);
                             investList1.clear();
                         }
                         investorRecordCommonAdapter.notifyDataSetChanged();
-                    }else {
+                    } else {
                         List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
                         }.getType());
-                        if (investList ==null|| investList.size()<Constants.pageSize){
+                        if (investList == null || investList.size() < Constants.pageSize) {
                             more.setVisibility(View.GONE);
                             loading.setVisibility(View.GONE);
                             loadFull.setVisibility(View.VISIBLE);
                             noData.setVisibility(View.GONE);
-                            loadComplete=false;
-                        }else {
+                            loadComplete = false;
+                        } else {
                             more.setVisibility(View.VISIBLE);
                             loading.setVisibility(View.GONE);
                             loadFull.setVisibility(View.GONE);
                             noData.setVisibility(View.GONE);
                         }
-                        if (investList!=null){
+                        if (investList != null) {
                             investorDatas.addAll(investList);
                             investList.clear();
                         }
@@ -281,6 +299,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment{
             }
         });
     }
+
     @Override
     protected void lazyLoad() {
     }

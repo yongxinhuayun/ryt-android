@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
@@ -115,6 +117,7 @@ public class RongZiXQActivity extends BaseActivity {
     private int remainMoney;
     private String share_Url;
     private boolean flag=true;
+    protected static final int PRAISE_SUC = 100;
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, RongZiXQActivity.class));
     }
@@ -123,6 +126,18 @@ public class RongZiXQActivity extends BaseActivity {
     ViewPager mViewPager;
     StickHeaderViewPagerManager manager;
     private String artworkId;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case PRAISE_SUC:
+                    int a = Integer.parseInt(zan.getText().toString());
+                    a++;
+                    zan.setText(a);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,6 +226,7 @@ public class RongZiXQActivity extends BaseActivity {
                 }
                 finish();
                 break;
+            //点赞
             case R.id.iv_tab_01:
                 if ("".equals(AppApplication.gUser.getId())) {
                     Intent intent2 = new Intent(RongZiXQActivity.this, LoginActivity.class);
@@ -274,6 +290,9 @@ public class RongZiXQActivity extends BaseActivity {
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
                     ToastUtil.showLong(RongZiXQActivity.this, "点赞成功");
+                    Message msg = Message.obtain();
+                    msg.what = PRAISE_SUC;
+                    handler.sendMessage(msg);
                 }
             }
         });

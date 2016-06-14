@@ -1,6 +1,7 @@
 package com.yxh.ryt.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ public class EditBriefActivity extends Activity implements View.OnClickListener 
     private TextView back;
     private TextView save;
     private EditText et_brief;
+    private int resultCode = 102;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,10 @@ public class EditBriefActivity extends Activity implements View.OnClickListener 
                     @Override
                     public void onResponse(Map<String, Object> response) {
                         ToastUtil.show(getApplicationContext(),"保存成功",0);
+                        Intent mIntent = new Intent();
+                        mIntent.putExtra("content", et_brief.getText().toString());
+                        // 设置结果，并进行传送
+                        setResult(resultCode, mIntent);
                         finish();
                     }
                 });

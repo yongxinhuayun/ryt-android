@@ -282,6 +282,7 @@ public class EditProject01Activity extends  BaseActivity {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         DisplayMetrics metric = new DisplayMetrics();

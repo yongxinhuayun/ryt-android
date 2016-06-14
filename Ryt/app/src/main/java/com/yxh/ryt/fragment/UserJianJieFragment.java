@@ -30,6 +30,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 	private TextView wenZi;
 	private TextView edit;
 	private static String userId;
+	private final int requestCode = 102;
 	public UserJianJieFragment(StickHeaderViewPagerManager manager, int position) {
 		super(manager, position);
 	}
@@ -83,32 +84,32 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 								content.setVisibility(View.GONE);
 							}else {
 								wenZi.setVisibility(View.GONE);
-								edit.setVisibility(View.GONE);
+								//edit.setVisibility(View.GONE);
 								content.setVisibility(View.VISIBLE);
 								content.setText(userBrief.get("content").toString());
 							}
 						}
 						else {
 							wenZi.setVisibility(View.VISIBLE);
-							edit.setVisibility(View.VISIBLE);
+							//edit.setVisibility(View.VISIBLE);
 							content.setVisibility(View.GONE);
 						}
 					}else {
 						if (userBrief!=null){
 							if (null==userBrief.get("content") || "".equals(userBrief.get("content").toString())){
 								wenZi.setVisibility(View.VISIBLE);
-								edit.setVisibility(View.GONE);
+								//edit.setVisibility(View.GONE);
 								content.setVisibility(View.GONE);
 							}else {
 								wenZi.setVisibility(View.GONE);
-								edit.setVisibility(View.GONE);
+								//edit.setVisibility(View.GONE);
 								content.setVisibility(View.VISIBLE);
 								content.setText(userBrief.get("content").toString());
 							}
 						}
 						else {
 							wenZi.setVisibility(View.VISIBLE);
-							edit.setVisibility(View.GONE);
+							//edit.setVisibility(View.GONE);
 							content.setVisibility(View.GONE);
 						}
 					}
@@ -142,11 +143,24 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 	public void onClick(View v) {
 		switch(v.getId()) {
 			case R.id.fue_bt_edit:
-				startActivity(new Intent(getActivity(), EditBriefActivity.class));
+				//startActivity(new Intent(getActivity(), EditBriefActivity.class));
+				Intent mIntent = new Intent();
+				mIntent.setClass(this.getActivity(), EditBriefActivity.class);
+				startActivityForResult(mIntent, requestCode);
 				break;
 			default:
 				break;
 
+		}
+	}
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+			case 102:
+				LoadData();
+				break;
+			default:
+				break;
 		}
 	}
 }
