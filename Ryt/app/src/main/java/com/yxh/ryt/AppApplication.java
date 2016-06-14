@@ -61,6 +61,7 @@ public class AppApplication extends Application {
 	public static User gUser;
 	public static Map<String,String> map;
 	public static Map<String,String> ptMap;
+	public static Map<String,String> billMap;
 	public static DBHelper helper;
 	@Override
 	public void onCreate() {
@@ -94,6 +95,7 @@ public class AppApplication extends Application {
 		getMap();
 		gUser=new User();
 		getPTMap();
+		getBillMap();
 	}
 	public static DBHelper getDBHelper(){
 		if (helper==null){
@@ -101,6 +103,15 @@ public class AppApplication extends Application {
 			return helper;
 		}
 		return helper;
+	}
+	public static void getBillMap(){
+		billMap=new HashMap<>();
+		billMap.put("1", "投资");
+		billMap.put("2", "支付尾款");
+		billMap.put("3", "支付保证金");
+		billMap.put("4", "返还保证金");
+		billMap.put("5", "返利");
+		billMap.put("61","提现");
 	}
 	public static void getPTMap() {
 		ptMap=new HashMap<String,String>();

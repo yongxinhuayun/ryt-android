@@ -28,6 +28,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.util.phote.util.Bimp;
 import com.yxh.ryt.util.phote.util.ImageItem;
@@ -89,9 +90,10 @@ public class PublicProject02Activity extends  BaseActivity {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                System.out.println("成功了");
-                Log.d("XXXXXXXXXXXXXXXXXXXXX", "YYYYYYYYYYY");
-                Log.d("tagonResponse", response.toString());
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showLong(PublicProject02Activity.this,"项目发布成功");
+                    finish();
+                }
             }
         });
     }

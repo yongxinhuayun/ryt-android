@@ -135,6 +135,12 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 	}
 	@Override
 	protected void lazyLoad() {
+
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 		LoadData();
 	}
 
