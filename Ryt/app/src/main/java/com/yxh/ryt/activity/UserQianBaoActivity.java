@@ -77,15 +77,28 @@ public class UserQianBaoActivity extends BaseActivity {
         billCommonAdapter=new CommonAdapter<Bill>(AppApplication.getSingleContext(),bills,R.layout.item_wallet) {
             @Override
             public void convert(ViewHolder helper, Bill item) {
-
+                if (!"60".equals(item.getType())){
+                    helper.setText(R.id.iw_tv_title,AppApplication.billMap.get(item.getType())+"-"+item.getTitle());
+                    if ("0".equals(item.getOutOrIn())){
+                    /*helper.setText(R.id.iw_tv_changeMoney,"+")*/
+                    }
+                }
             }
         };
         listView.setAdapter(billCommonAdapter);
+        details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(UserQianBaoActivity.this,WalletDetailsActivity.class);
+                UserQianBaoActivity.this.startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        bills.clear();
         loadData();
     }
 
@@ -112,7 +125,7 @@ public class UserQianBaoActivity extends BaseActivity {
             public void onResponse(Map<String, Object> response) {
                 UserMoney userMoney = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("object")), UserMoney.class);
                 if (userMoney!=null){
-                    invest.setText("￥ "+userMoney.getInvestMoney());
+                    invest.setText("¥ "+userMoney.getInvestMoney());
                     rest.setText(userMoney.getRestMoney()+"元");
                     reward.setText(userMoney.getRewardMoney()+"元");
                     if (userMoney.getBillList().size()<=5){
@@ -131,10 +144,9 @@ public class UserQianBaoActivity extends BaseActivity {
     @OnClick({ R.id.btn_tx})
     void btnClick(View v) {
         switch (v.getId()) {
-            /*case R.id.btn_cz:
-                UserChongZhiActivity.openActivity(this);
-                break;*/
             case R.id.btn_tx:
+                Intent intent=new Intent(UserQianBaoActivity.this,CollectMoneyActivity.class);
+                UserQianBaoActivity.this.startActivity(intent);
                 break;
         }
     }
@@ -146,6 +158,7 @@ public class UserQianBaoActivity extends BaseActivity {
 
     @OnClick(R.id.ib_top_rt)
     public void back2() {
-        finish();
+        Intent intent=new Intent(UserQianBaoActivity.this,WalletDetailsActivity.class);
+        UserQianBaoActivity.this.startActivity(intent);
     }
 }

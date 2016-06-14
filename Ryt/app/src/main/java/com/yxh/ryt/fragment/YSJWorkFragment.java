@@ -92,14 +92,21 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
 		setAdapter();
 		onScroll();
-		ySJWorkDatas.clear();
-		LoadData(true, currentPage);
 		receiver = new WorkReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("android.intent.action.WORK_BROADCAST");
 		AppApplication.getSingleContext().registerReceiver(receiver, filter);
 		return view;
 	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		ySJWorkDatas.clear();
+		currentPage=1;
+		LoadData(true, currentPage);
+	}
+
 	public class WorkReceiver extends BroadcastReceiver {
 
 		@Override

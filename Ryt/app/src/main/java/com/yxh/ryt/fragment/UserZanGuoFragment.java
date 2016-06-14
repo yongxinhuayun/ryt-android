@@ -95,14 +95,21 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
 		setAdapter();
 		onScroll();
-		userZGDatas.clear();
-		LoadData(true, currentPage);
 		receiver = new ZanReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("android.intent.action.PRAISE_BROADCAST");
 		AppApplication.getSingleContext().registerReceiver(receiver, filter);
 		return view;
 	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		userZGDatas.clear();
+		currentPage=1;
+		LoadData(true, currentPage);
+	}
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

@@ -9,7 +9,7 @@
     <color name="actionsheet_gray">#8F8F8F</color>
     <color name="actionsheet_single_gray">#E4E4E4</color>
     <color name="none_color">#00000000</color>
-
+    <color name="color_black_dialog">#c7000000</color>
 
 
     <color name="color_gray_eaeaea">#eaeaea</color>

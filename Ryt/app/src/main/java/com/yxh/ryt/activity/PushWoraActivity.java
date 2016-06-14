@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.viewpagerindicator.IcsLinearLayout;
+import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.DatePicker.DatePickerView;
 import com.yxh.ryt.R;
@@ -159,9 +160,17 @@ public class PushWoraActivity extends BaseActivity {
                 Map<String,String> paramsMap=new HashMap<>();
                 paramsMap.put("name",workName.getText().toString());
                 paramsMap.put("material",material.getText().toString());
-                paramsMap.put("type", state.getText().toString());
+                String type="-1";
+                if ("非卖品".equals(state.getText().toString())){
+                    type="0";
+                }else if ("可售".equals(state.getText().toString())){
+                    type="1";
+                }else if ("已售".equals(state.getText().toString())){
+                    type="2";
+                }
+                paramsMap.put("type", type);
                 paramsMap.put("createYear",year.getText().toString());
-                paramsMap.put("currentUserId","ieatht97wfw30hfd");
+                paramsMap.put("currentUserId", AppApplication.gUser.getId());
                 paramsMap.put("timestamp",System.currentTimeMillis()+"");
                 try {
                     paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
@@ -179,9 +188,10 @@ public class PushWoraActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(Map<String, Object> response) {
-                        System.out.println("发布作品成功了");
-                        System.out.println("发布作品成功了"+response.toString());
-                        ToastUtil.showLong(PushWoraActivity.this,"发布作品成功了");
+                        if ("0".equals(response.get("resultCode"))){
+                            ToastUtil.showLong(PushWoraActivity.this,"发布作品成功了");
+                            finish();
+                        }
                     }
                 });
                 break;
