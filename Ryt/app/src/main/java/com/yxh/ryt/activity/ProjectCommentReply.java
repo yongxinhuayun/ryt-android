@@ -2,8 +2,6 @@ package com.yxh.ryt.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,11 +16,6 @@ import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.ContentValidation;
-import com.yxh.ryt.validations.PasswordValidation;
-import com.yxh.ryt.validations.UserNameValidation;
-import com.yxh.ryt.vo.Artwork;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -99,13 +92,13 @@ public class ProjectCommentReply extends BaseActivity {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
-                System.out.println("失败了");
+                System.out.println("评论失败");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
                 if (response.get("resultCode").equals("0")) {
-                    ToastUtil.show(ProjectCommentReply.this, "评论回复成功", Toast.LENGTH_SHORT);
+                    ToastUtil.show(ProjectCommentReply.this, "评论成功", Toast.LENGTH_SHORT);
                     ProjectCommentReply.this.finish();
                 }
             }
