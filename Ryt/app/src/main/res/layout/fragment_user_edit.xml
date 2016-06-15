@@ -20,6 +20,7 @@
                 android:id="@+id/fue_tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="invisible"
                 android:text="444"
                 android:gravity="center_horizontal"/>
             <TextView
@@ -30,6 +31,7 @@
                 android:text="还没有填写简介..."
                 android:gravity="center"
                 android:textSize="16sp"
+                android:visibility="visible"
                 android:textColor="@android:color/black"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,6 +45,7 @@
                     android:gravity="center"
                     android:textSize="20sp"
                     android:background="@android:color/black"
+                    android:visibility="visible"
                     android:text="编辑简介"/>
             </LinearLayout>
         </LinearLayout>

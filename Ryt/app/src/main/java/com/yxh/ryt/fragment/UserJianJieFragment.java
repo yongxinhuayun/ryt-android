@@ -1,11 +1,13 @@
 package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.TextView;
 
 import com.yxh.ryt.AppApplication;
@@ -23,7 +25,7 @@ import okhttp3.Call;
 import wuhj.com.mylibrary.PlaceHoderHeaderLayout;
 import wuhj.com.mylibrary.StickHeaderViewPagerManager;
 
-@SuppressLint("ValidFragment")
+@SuppressLint("ValidFragment")                          //,EditBriefActivity.OnMainListener
 public class UserJianJieFragment extends StickHeaderBaseFragment implements View.OnClickListener {
 	static StickHeaderViewPagerManager stickHeaderViewPagerManager;
 	private TextView content;
@@ -45,7 +47,12 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 		return listFragment;
 	}
 
-	public static UserJianJieFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh,String userID) {
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        return super.onCreateAnimation(transit, enter, nextAnim);
+    }
+
+    public static UserJianJieFragment newInstance(StickHeaderViewPagerManager manager, int position, boolean isCanPulltoRefresh, String userID) {
 		UserJianJieFragment listFragment = new UserJianJieFragment(manager, position, isCanPulltoRefresh);
 		stickHeaderViewPagerManager=manager;
 		userId=userID;
@@ -55,6 +62,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
+
 	private void LoadData() {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("userId",userId);
@@ -81,9 +89,9 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 							if (null==userBrief.get("content")|| "".equals(userBrief.get("content").toString())){
 								wenZi.setVisibility(View.VISIBLE);
 								edit.setVisibility(View.VISIBLE);
-								content.setVisibility(View.GONE);
+								content.setVisibility(View.INVISIBLE);
 							}else {
-								wenZi.setVisibility(View.GONE);
+								wenZi.setVisibility(View.INVISIBLE);
 								//edit.setVisibility(View.GONE);
 								content.setVisibility(View.VISIBLE);
 								content.setText(userBrief.get("content").toString());
@@ -91,26 +99,26 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 						}
 						else {
 							wenZi.setVisibility(View.VISIBLE);
-							//edit.setVisibility(View.VISIBLE);
-							content.setVisibility(View.GONE);
+							edit.setVisibility(View.VISIBLE);
+							content.setVisibility(View.INVISIBLE);
 						}
 					}else {
 						if (userBrief!=null){
 							if (null==userBrief.get("content") || "".equals(userBrief.get("content").toString())){
 								wenZi.setVisibility(View.VISIBLE);
-								//edit.setVisibility(View.GONE);
-								content.setVisibility(View.GONE);
+								edit.setVisibility(View.INVISIBLE);
+								content.setVisibility(View.INVISIBLE);
 							}else {
-								wenZi.setVisibility(View.GONE);
-								//edit.setVisibility(View.GONE);
+								wenZi.setVisibility(View.INVISIBLE);
+								edit.setVisibility(View.INVISIBLE);
 								content.setVisibility(View.VISIBLE);
 								content.setText(userBrief.get("content").toString());
 							}
 						}
 						else {
 							wenZi.setVisibility(View.VISIBLE);
-							//edit.setVisibility(View.GONE);
-							content.setVisibility(View.GONE);
+							edit.setVisibility(View.INVISIBLE);
+							content.setVisibility(View.INVISIBLE);
 						}
 					}
 
@@ -129,7 +137,13 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 		return contextView;
 	}
 
-	@Override
+    @Override
+    public void onAttach(Context context) {//keyile
+
+        super.onAttach(context);
+    }
+
+    @Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
@@ -149,24 +163,57 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 	public void onClick(View v) {
 		switch(v.getId()) {
 			case R.id.fue_bt_edit:
-				//startActivity(new Intent(getActivity(), EditBriefActivity.class));
-				Intent mIntent = new Intent();
-				mIntent.setClass(this.getActivity(), EditBriefActivity.class);
-				startActivityForResult(mIntent, requestCode);
+				startActivity(new Intent(getActivity(), EditBriefActivity.class));
 				break;
 			default:
 				break;
 
 		}
 	}
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-			case 102:
-				LoadData();
-				break;
-			default:
-				break;
+
+	/*@Override
+	public void onMainAction() {
+		Map<String,String> paramsMap=new HashMap<>();
+		paramsMap.put("userId",userId);
+		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		try {
+			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+			paramsMap.put("signmsg", AppApplication.signmsg);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-	}
+		NetRequestUtil.post(Constants.BASE_PATH + "intro.do", paramsMap, new RongZiListCallBack() {
+			@Override
+			public void onError(Call call, Exception e) {
+				e.printStackTrace();
+				System.out.println("失败了");
+			}
+
+			@Override
+			public void onResponse(Map<String, Object> response) {
+				if (response.get("resultCode").equals("0")){
+					Map<String,Object> userBrief = (Map<String, Object>) response.get("userBrief");
+
+						if (userBrief!=null){
+							if (null==userBrief.get("content")|| "".equals(userBrief.get("content").toString())){
+								wenZi.setVisibility(View.VISIBLE);
+								edit.setVisibility(View.VISIBLE);
+								content.setVisibility(View.INVISIBLE);
+							}else {
+								wenZi.setVisibility(View.INVISIBLE);
+								//edit.setVisibility(View.GONE);
+								content.setVisibility(View.VISIBLE);
+								content.setText(userBrief.get("content").toString());
+							}
+						}
+						else {
+							wenZi.setVisibility(View.VISIBLE);
+							edit.setVisibility(View.VISIBLE);
+							content.setVisibility(View.INVISIBLE);
+						}
+
+				}
+			}
+		});
+	}*/
 }

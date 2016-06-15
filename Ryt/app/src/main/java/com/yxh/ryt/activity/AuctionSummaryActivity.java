@@ -1,41 +1,20 @@
 package com.yxh.ryt.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
-import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.AttentionListCallBack;
-import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.JsInterface;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.User;
 
 import java.util.HashMap;
@@ -46,23 +25,38 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016/6/6.
  */
-public class AuctionSummaryActivity extends BaseActivity {
+public class AuctionSummaryActivity extends BaseActivity implements View.OnClickListener {
     private WebView webView;
     private JsInterface jsInterface = new JsInterface();
     private String id;
     private String name;
+    private ImageButton back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auctionsummary);
         webView = (WebView) findViewById(R.id.aas_wb_all);
+        back = (ImageButton) findViewById(R.id.ib_top_lf);
+        back.setOnClickListener(this);
         id = getIntent().getStringExtra("id");
         name = getIntent().getStringExtra("name");
         webView.getSettings().setJavaScriptEnabled(true);
         Log.d("xxxxxxxxxxxxxxxx", id);
         webView.loadUrl("file:///android_asset/A3-1.html");
         webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo1");
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            //返回
+            case R.id.ib_top_lf:
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 
     class JavaInterfaceDemo {

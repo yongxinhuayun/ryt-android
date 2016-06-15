@@ -392,6 +392,10 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 if (map222 != null){
                     name = map222.get("name");
                 }
+                String pictureUrl = "";
+                if (map222 != null){
+                    pictureUrl = map222.get("pictureUrl");
+                }
                 //AppApplication.getSingleGson().toJson(response.get("followsNum"));
                 /*Map<String,Map<String,Double>> map11 = (Map<String, Map<String, Double>>) response.get("pageInfo");
                 Map<String,Double> map22 = map11.get("user");
@@ -412,6 +416,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                     tv_sex.setText(changSex(3.0));
                 }
                 tv_nickname.setText(name);
+                AppApplication.displayImage(pictureUrl, circleImageView);
             }
         });
     }
