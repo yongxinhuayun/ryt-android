@@ -1,28 +1,12 @@
 package com.yxh.ryt.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
-import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
@@ -40,7 +24,7 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016/6/6.
  */
-public class AuctionOrderActivity extends BaseActivity implements View.OnClickListener {
+public class AuctionOrderSummaryActivity extends BaseActivity implements View.OnClickListener {
     private WebView webView;
     private JsInterface jsInterface = new JsInterface();
     private String id;
@@ -49,13 +33,13 @@ public class AuctionOrderActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_auctionorder);
-        webView = (WebView) findViewById(R.id.aao_wb_all);
-        back = ((ImageView) findViewById(R.id.aao_ib_back));
-        id = getIntent().getStringExtra("userId");
+        setContentView(R.layout.activity_auctionordersummary);
+        webView = (WebView) findViewById(R.id.aaos_wb_all);
+        back = ((ImageView) findViewById(R.id.aaos_ib_back));
+        id = getIntent().getStringExtra("artWorkOrderId");
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("file:///android_asset/A5-1.html");
-        webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo2");
+        webView.loadUrl("file:///android_asset/A5-3.html");
+        webView.addJavascriptInterface(new JavaInterfaceDemo(), "summary");
         back.setOnClickListener(this);
     }
 
@@ -89,15 +73,15 @@ public class AuctionOrderActivity extends BaseActivity implements View.OnClickLi
                        Map<Object,Object> data= (Map<Object, Object>) response.get("data");
                         User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(data.get("user")), User.class);
                         if (user.getMaster()!=null){
-                            Intent intent =new Intent(AuctionOrderActivity.this,UserYsjIndexActivity.class);
+                            Intent intent =new Intent(AuctionOrderSummaryActivity.this,UserYsjIndexActivity.class);
                             intent.putExtra("userId", id);
                             intent.putExtra("currentId", AppApplication.gUser.getId());
-                            AuctionOrderActivity.this.startActivity(intent);
+                            AuctionOrderSummaryActivity.this.startActivity(intent);
                         }else {
-                            Intent intent =new Intent(AuctionOrderActivity.this,UserPtIndexActivity.class);
+                            Intent intent =new Intent(AuctionOrderSummaryActivity.this,UserPtIndexActivity.class);
                             intent.putExtra("userId", id);
                             intent.putExtra("currentId", AppApplication.gUser.getId());
-                            AuctionOrderActivity.this.startActivity(intent);
+                            AuctionOrderSummaryActivity.this.startActivity(intent);
                         }
                     }
                 }
@@ -105,13 +89,38 @@ public class AuctionOrderActivity extends BaseActivity implements View.OnClickLi
         }
         @JavascriptInterface
         public String fetchParamObject() {
-            return "{\"currentUserId\":\""+id+"\"}";
+            return "{\"artWorkOrderId\":\""+id+"\",\"currentUserId\":\""+AppApplication.gUser.getId()+"\"}";
         }
         @JavascriptInterface
-        public void skip(final String orderId){
-            Intent intent=new Intent(AuctionOrderActivity.this,AuctionOrderSummaryActivity.class);
-            intent.putExtra("artWorkOrderId",orderId);
-            AuctionOrderActivity.this.startActivity(intent);
+        public void payMoney(final String price,final String type) {
+            Map<String,String> paramsMap=new HashMap<>();
+            paramsMap.put("userId", AppApplication.gUser.getId());
+            paramsMap.put("money", price);
+            paramsMap.put("action", "invest");
+            paramsMap.put("type", "1");
+            //paramsMap.put("artWorkId", artworkId);
+            paramsMap.put("timestamp", System.currentTimeMillis() + "");
+            try {
+                AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+                paramsMap.put("signmsg", AppApplication.signmsg);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            NetRequestUtil.post(Constants.BASE_PATH + "pay/main.do", paramsMap, new AttentionListCallBack() {
+                @Override
+                public void onError(Call call, Exception e) {
+                    e.printStackTrace();
+                    System.out.println("失败了");
+                }
+
+                @Override
+                public void onResponse(Map<String, Object> response) {
+                    String url = response.get("url").toString();
+                    Intent intent=new Intent(AuctionOrderSummaryActivity.this,PayPageActivity.class);
+                    intent.putExtra("url",url);
+                    AuctionOrderSummaryActivity.this.startActivity(intent);
+                }
+            });
         }
     }
 

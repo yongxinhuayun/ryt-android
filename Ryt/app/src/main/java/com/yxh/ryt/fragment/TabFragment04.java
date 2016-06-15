@@ -151,9 +151,7 @@ public class TabFragment04 extends BaseFragment {
         if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
             Intent intent=new Intent(getActivity(), AuctionOrderActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            /*intent.putExtra("userId", AppApplication.gUser.getId() + "");
-            intent.putExtra("otherUserId",AppApplication.gUser.getId()+"");
-            intent.putExtra("flag","1");*/
+            intent.putExtra("userId", AppApplication.gUser.getId() + "");
             getActivity().startActivity(intent);
         }else {
             Intent intent=new Intent(getActivity(), LoginActivity.class);

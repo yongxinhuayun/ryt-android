@@ -2,12 +2,18 @@
  * Created by Administrator on 2016/6/6 0006.
  */
 
-function initPage(currentUserId, signmsg, timestamp) {
-    // var param = new Object();
-    // param.currentUserId = currentUserId;
-    // param.signmsg = signmsg;
-    // param.timestamp = timestamp;
-    // PageVariable.param = param;
+function initPage(currentUserId) {
+    var param = new Object();
+    param.currentUserId = "imhfp1yr4636pj49";
+    PageVariable.param = param;
+    /*var paramStr = window.demo2.fetchParamObject();
+    var paramObject = JSON.parse(paramStr);
+    var param = new Object();
+    param.currentUserId = paramObject.currentUserId;*/
+    /*console.log("++++++++++++++++++++++");
+    console.log(paramStr);
+    console.log("++++++++++++++++++++++");*/
+    PageVariable.param = param;
     getAuctionOrderData("1", function (orderType) {
         getAuctionOrder(orderType);
     })
@@ -72,6 +78,7 @@ function getAuctionOrderData(orderType, callback) {
     }
     var param = getParamObject();
     param["type"] = orderType
+    param = dealRequestParam(param);
     ajaxRequest(hostName + RequestUrl.orderTab, param, success, function () {
     }, "post");
 }

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>订单详情</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="shop2016/css/swiper.min.css?t=20160413">
-    <link rel="stylesheet" href="shop2016/css/layout.css?t=20160413">
-    <link rel="stylesheet" href="shop2016/css/aorder.css?t=20160413">
+    <link rel="stylesheet" href="shop2016/css/swiper.min.css">
+    <link rel="stylesheet" href="shop2016/css/layout.css">
+    <link rel="stylesheet" href="shop2016/css/Aorder.css">
 </head>
 <body>
 <div class="tz2016" style="padding-bottom:51px">
@@ -80,14 +80,14 @@
     }
 
     function redirectPay(price, type) {
-
+        window.summary.payMoney(price, type);
     }
 
 
     var swiperContainerOption = {};
 
 
-    hostName = "http://localhost";                           //服务器域名
+    hostName = "http://192.168.1.75:8080";                           //服务器域名
     RequestUrl = {
         orderTab: "/app/viewOrder.do"
     }//接口对象
@@ -105,9 +105,14 @@
     })
 
     function initPage(currentUserId, artWorkOrderId) {
+        //var param = new Object();
+        //param.currentUserId = currentUserId;
+        //param.artWorkOrderId = artWorkOrderId;
+        var paramStr = window.summary.fetchParamObject();
+        var paramObject = JSON.parse(paramStr);
         var param = new Object();
-        param.currentUserId = currentUserId;
-        param.artWorkOrderId = artWorkOrderId;
+        param.currentUserId = paramObject.currentUserId;
+        param.artWorkOrderId = paramObject.artWorkOrderId;
         PageVariable.param = param;
         getAuctionOrderData(getAuctionOrder);
     }
@@ -125,7 +130,7 @@
     }            //获得当前用户的id
     function redirectUser(userid) {
         console.log("test");
-        window.location.href = "rongyitou://jumpToUserHome_?" + userid;
+        window.summary.clickOnAndroid(userid);
     }          // 跳转到用户的个人主页
 
 
