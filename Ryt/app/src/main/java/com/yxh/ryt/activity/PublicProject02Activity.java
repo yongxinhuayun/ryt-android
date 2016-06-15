@@ -1,5 +1,6 @@
 package com.yxh.ryt.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,6 +27,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
+import com.yxh.ryt.custemview.CustomDialogView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.ToastUtil;
@@ -64,8 +66,21 @@ public class PublicProject02Activity extends  BaseActivity {
     EditText evZhizuo;
     @Bind(R.id.ev_jiehuo)
     EditText evJieHuo;
+    private AlertDialog dialog;
+    private CustomDialogView customDialogView;
+    private RedrawCustomDialogViewThread redrawCdvRunnable;
+
     //艺术家发布项目第一步接口一网络请求
     private void twoStepRequst() {
+        View view = LayoutInflater.from(this).inflate(
+                R.layout.dilog_withwait, null);
+
+        dialog = new AlertDialog.Builder(this).create();
+        dialog.show();
+        dialog.getWindow().setContentView(view);
+        customDialogView = (CustomDialogView) view.findViewById(R.id.view_customdialog);
+        redrawCdvRunnable = new RedrawCustomDialogViewThread();
+        new Thread(redrawCdvRunnable).start();
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("artworkId",artworkId);
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
@@ -91,12 +106,47 @@ public class PublicProject02Activity extends  BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))){
+                    redrawCdvRunnable.setRun(false);
                     ToastUtil.showLong(PublicProject02Activity.this,"项目发布成功");
                     finish();
                 }
             }
         });
     }
+    class RedrawCustomDialogViewThread implements Runnable {
+
+        private boolean isRun = true;
+
+        @Override
+        public void run() {
+
+            while (isRun && dialog != null) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                // 通知重绘
+                customDialogView.postInvalidate();
+            }
+
+        }
+
+        public boolean isRun() {
+            return isRun;
+        }
+
+        public void setRun(boolean isRun) {
+            this.isRun = isRun;
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     @OnClick(R.id.tv_done)
     public void doneClick(View v){
         twoStepRequst();

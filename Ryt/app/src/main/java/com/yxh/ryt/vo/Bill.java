@@ -16,29 +16,38 @@ public class Bill implements Serializable {
     private String status;  //0 废弃  1 可用
     private BigDecimal money;//账单金额
     private User author;
-    private Date createDatetime;
+    private Long createDatetime;
     private String type;//账单类型  1 投资 2 拍卖订单  3 支付保证金 4 返还保证金 5 返利 6余额退款成功
     private String outOrIn;//1 进账 0 出账
     private String number;//支付订单唯一标示
     private String payWay;//支付方式 1 支付宝 2 微信
     private String flowAccount;//流水账号
-
+    private BigDecimal restMoney;//账单余额
     public Bill() {
     }
 
-    public Bill(String id, String flowAccount, String payWay, String number, String type, String outOrIn, Date createDatetime, User author, BigDecimal money, String status, String title, String detail) {
+    public Bill(String id, BigDecimal restMoney, String flowAccount, String payWay, String number, String outOrIn, String type, Long createDatetime, User author, BigDecimal money, String status, String detail, String title) {
         this.id = id;
+        this.restMoney = restMoney;
         this.flowAccount = flowAccount;
         this.payWay = payWay;
         this.number = number;
-        this.type = type;
         this.outOrIn = outOrIn;
+        this.type = type;
         this.createDatetime = createDatetime;
         this.author = author;
         this.money = money;
         this.status = status;
-        this.title = title;
         this.detail = detail;
+        this.title = title;
+    }
+
+    public BigDecimal getRestMoney() {
+        return restMoney;
+    }
+
+    public void setRestMoney(BigDecimal restMoney) {
+        this.restMoney = restMoney;
     }
 
     public String getFlowAccount() {
@@ -81,11 +90,11 @@ public class Bill implements Serializable {
         this.type = type;
     }
 
-    public Date getCreateDatetime() {
+    public Long getCreateDatetime() {
         return createDatetime;
     }
 
-    public void setCreateDatetime(Date createDatetime) {
+    public void setCreateDatetime(Long createDatetime) {
         this.createDatetime = createDatetime;
     }
 

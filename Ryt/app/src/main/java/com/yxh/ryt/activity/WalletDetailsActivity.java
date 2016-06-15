@@ -51,9 +51,17 @@ public class WalletDetailsActivity extends BaseActivity implements AutoListView.
             @Override
             public void convert(ViewHolder helper, final Bill item) {
                 if (!"60".equals(item.getType())){
-                    helper.setText(R.id.iw_tv_title,AppApplication.billMap.get(item.getType())+"-"+item.getTitle());
-                    if ("0".equals(item.getOutOrIn())){
-                    /*helper.setText(R.id.iw_tv_changeMoney,"+")*/
+                    if (!"60".equals(item.getType())){
+                        helper.setText(R.id.iw_tv_title,item.getTitle());
+                        if ("0".equals(item.getOutOrIn())){
+                            helper.setText(R.id.iw_tv_changeMoney,"-"+item.getMoney());
+                        }else if ("1".equals(item.getOutOrIn())){
+                            helper.setText(R.id.iw_tv_changeMoney,"+"+item.getMoney());
+                        }
+                        if (item.getCreateDatetime()!=null){
+                            helper.setText(R.id.iw_tv_date, Utils.timeTrans(item.getCreateDatetime()));
+                        }
+                        helper.setText(R.id.iw_tv_allMoney,item.getRestMoney()+"");
                     }
                 }
             }

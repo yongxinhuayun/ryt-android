@@ -111,7 +111,6 @@ public class PublicProject01Activity extends  BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        redrawCdvRunnable.setRun(false);
     }
 
     //艺术家发布项目第一步接口一网络请求
@@ -162,7 +161,7 @@ public class PublicProject01Activity extends  BaseActivity {
             }
         });
     }
-    final class RedrawCustomDialogViewThread implements Runnable {
+     class RedrawCustomDialogViewThread implements Runnable {
 
         private boolean isRun = true;
 

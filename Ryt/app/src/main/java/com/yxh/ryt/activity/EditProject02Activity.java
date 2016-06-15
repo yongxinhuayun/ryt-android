@@ -1,5 +1,6 @@
 package com.yxh.ryt.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,6 +33,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
+import com.yxh.ryt.custemview.CustomDialogView;
 import com.yxh.ryt.custemview.CustomGridView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetImageTask;
@@ -85,9 +87,21 @@ public class EditProject02Activity extends  BaseActivity {
     private String description;
     private String financing_aq;
     private String make_instru;
+    private AlertDialog dialog;
+    private CustomDialogView customDialogView;
+    private RedrawCustomDialogViewThread redrawCdvRunnable;
 
     //艺术家发布项目第一步接口一网络请求
     private void twoStepRequst() {
+        View view = LayoutInflater.from(this).inflate(
+                R.layout.dilog_withwait, null);
+
+        dialog = new AlertDialog.Builder(this).create();
+        dialog.show();
+        dialog.getWindow().setContentView(view);
+        customDialogView = (CustomDialogView) view.findViewById(R.id.view_customdialog);
+        redrawCdvRunnable = new RedrawCustomDialogViewThread();
+        new Thread(redrawCdvRunnable).start();
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("artworkId",artworkId);
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
@@ -112,12 +126,49 @@ public class EditProject02Activity extends  BaseActivity {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                System.out.println("成功了");
-                Log.d("XXXXXXXXXXXXXXXXXXXXX", "YYYYYYYYYYY");
-                Log.d("tagonResponse", response.toString());
+                if ("0".equals(response.get("resultCode"))){
+                    redrawCdvRunnable.setRun(false);
+                   ToastUtil.showLong(EditProject02Activity.this,"编辑成功");
+                    finish();
+                }
+
             }
         });
     }
+    class RedrawCustomDialogViewThread implements Runnable {
+
+        private boolean isRun = true;
+
+        @Override
+        public void run() {
+
+            while (isRun && dialog != null) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                // 通知重绘
+                customDialogView.postInvalidate();
+            }
+
+        }
+
+        public boolean isRun() {
+            return isRun;
+        }
+
+        public void setRun(boolean isRun) {
+            this.isRun = isRun;
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     @OnClick(R.id.tv_done)
     public void doneClick(View v){
         twoStepRequst();

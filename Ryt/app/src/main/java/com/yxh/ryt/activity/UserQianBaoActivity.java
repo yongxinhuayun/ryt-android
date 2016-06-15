@@ -22,6 +22,7 @@ import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.Bill;
 import com.yxh.ryt.vo.FollowUserUtil;
@@ -78,10 +79,16 @@ public class UserQianBaoActivity extends BaseActivity {
             @Override
             public void convert(ViewHolder helper, Bill item) {
                 if (!"60".equals(item.getType())){
-                    helper.setText(R.id.iw_tv_title,AppApplication.billMap.get(item.getType())+"-"+item.getTitle());
+                    helper.setText(R.id.iw_tv_title,item.getTitle());
                     if ("0".equals(item.getOutOrIn())){
-                    /*helper.setText(R.id.iw_tv_changeMoney,"+")*/
+                        helper.setText(R.id.iw_tv_changeMoney,"-"+item.getMoney());
+                    }else if ("1".equals(item.getOutOrIn())){
+                        helper.setText(R.id.iw_tv_changeMoney,"+"+item.getMoney());
                     }
+                    if (item.getCreateDatetime()!=null){
+                        helper.setText(R.id.iw_tv_date, Utils.timeTrans(item.getCreateDatetime()));
+                    }
+                    helper.setText(R.id.iw_tv_allMoney,item.getRestMoney()+"");
                 }
             }
         };
