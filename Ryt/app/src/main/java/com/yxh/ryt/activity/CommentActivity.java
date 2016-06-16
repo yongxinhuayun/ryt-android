@@ -161,37 +161,37 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                Log.d("response", response.toString());
+                Log.d("response1", response.toString());
                 if (state == AutoListView.REFRESH) {
                     cmlistview.onRefreshComplete();
                     artworkCommentDatas.clear();
-                    List<ArtworkCommentMsg> ArtworkComment = null;
+                    List<ArtworkCommentMsg> artworkComment = null;
                     try {
-                        ArtworkComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<ArtworkCommentMsg>>() {
+                        artworkComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<ArtworkCommentMsg>>() {
                         }.getType());
                     } catch (JsonSyntaxException e) {
                         e.printStackTrace();
                     }
-                    if (null == ArtworkComment || ArtworkComment.size() == 0) {
+                    if (null == artworkComment || artworkComment.size() == 0) {
                         cmlistview.setResultSize(0);
                     }
-                    if (null != ArtworkComment && ArtworkComment.size() > 0) {
-                        cmlistview.setResultSize(ArtworkComment.size());
-                        artworkCommentDatas.addAll(ArtworkComment);
+                    if (null != artworkComment && artworkComment.size() > 0) {
+                        cmlistview.setResultSize(artworkComment.size());
+                        artworkCommentDatas.addAll(artworkComment);
                         cmAdapter.notifyDataSetChanged();
                     }
                     return;
                 }
                 if (state == AutoListView.LOAD) {
                     cmlistview.onLoadComplete();
-                    List<ArtworkCommentMsg> ArtworkComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<ArtworkCommentMsg>>() {
+                    List<ArtworkCommentMsg> artworkComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<ArtworkCommentMsg>>() {
                     }.getType());
-                    if (null == ArtworkComment || ArtworkComment.size() == 0) {
+                    if (null == artworkComment || artworkComment.size() == 0) {
                         cmlistview.setResultSize(1);
                     }
-                    if (null != ArtworkComment && ArtworkComment.size() > 0) {
-                        cmlistview.setResultSize(ArtworkComment.size());
-                        artworkCommentDatas.addAll(ArtworkComment);
+                    if (null != artworkComment && artworkComment.size() > 0) {
+                        cmlistview.setResultSize(artworkComment.size());
+                        artworkCommentDatas.addAll(artworkComment);
                         cmAdapter.notifyDataSetChanged();
                     }
                     return;

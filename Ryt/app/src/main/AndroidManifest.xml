@@ -287,7 +287,8 @@
         <activity android:name=".activity.ReceiverAdressActivity" />
         <activity android:name=".activity.NewAddressActivity" />
         <activity android:name=".activity.AuctionSummaryActivity" />
-        <activity android:name=".activity.UserProtocolActivity"></activity>
+        <activity android:name=".activity.UserProtocolActivity" />
+        <activity android:name=".activity.EditRecAddressActivity"></activity>
     </application>
 
 </manifest>
