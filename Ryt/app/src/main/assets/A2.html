@@ -289,7 +289,7 @@
                                     <!--<div class="content">-->
                                         <!--<div class="reply">-->
                                             <!--<p>回复 <a onclick="redirectUser('{{=comment.fatherComment.creator.id}}')">{{=comment.fatherComment.creator.name}}</a>：<a-->
-                                                    <!--onclick="redirectComment('{{=PageVariable.artWorkId}}','{{=getCurrentUserId()}}','','{{if(comment.fatherComment!=null){ }}{{=comment.fatherComment.id}}{{ }else{ }}{{=""}}{{ } }}')"><span style="color: #000;">{{=comment.content}}</span></a>-->
+                                                    <!--onclick="redirectComment('{{=PageVariable.artWorkId}}','{{=getCurrentUserId()}}','','{{=comment.id}}','{{=comment.creator.name}}')"><span style="color: #000;">{{=comment.content}}</span></a>-->
                                             <!--</p>-->
                                         <!--</div>-->
                                     <!--</div>-->
@@ -302,7 +302,7 @@
                                 <!--<div class="box">-->
                                     <!--<div class="name"><span>{{=comment.creator.name}}</span><span class="time">{{=getTimeStr(comment.createDatetime)}}</span>-->
                                     <!--</div>-->
-                                    <!--<a onclick="redirectComment('{{=PageVariable.artWorkId}}','{{=getCurrentUserId()}}','','{{if(comment.fatherComment!=null){ }}{{=comment.fatherComment.id}}{{ }else{ }}{{=""}}{{ } }}')">-->
+                                    <!--<a onclick="redirectComment('{{=PageVariable.artWorkId}}','{{=getCurrentUserId()}}','','{{=comment.id}}','{{=comment.creator.name}}')">-->
                                         <!--<div class="content">{{=comment.content}}</div>-->
                                     <!--</a>-->
                                 <!--</div>-->

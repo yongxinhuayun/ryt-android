@@ -9,8 +9,13 @@ function redirectUser(userid) {
         window.demo.clickOnAndroid(userid);
 }
 
-function redirectComment(artworkId, currentUserId, messageId, fatherCommentId) {
-    window.location.href = "";
+function redirectComment(artworkId, currentUserId, messageId, fatherCommentId,name) {
+    console.log("artworkId: "+artworkId);
+    console.log("currentUserId: "+currentUserId);
+    console.log("messageId: "+messageId);
+    console.log("fatherCommentId: "+fatherCommentId);
+    console.log("name: "+name);
+    window.demo.comment(artworkId, currentUserId, messageId, fatherCommentId,name);
 }       //跳转到评论
 
 //hostName = "http://192.168.1.75:8080";

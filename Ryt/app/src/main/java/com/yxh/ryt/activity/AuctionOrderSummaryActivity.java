@@ -89,16 +89,16 @@ public class AuctionOrderSummaryActivity extends BaseActivity implements View.On
         }
         @JavascriptInterface
         public String fetchParamObject() {
-            return "{\"artWorkOrderId\":\""+id+"\",\"currentUserId\":\""+AppApplication.gUser.getId()+"\"}";
+            return "{\"artWorkOrderId\":\""+id+"\",\"currentUserId\":\""+"imhfp1yr4636pj49"+"\"}";
         }
         @JavascriptInterface
         public void payMoney(final String price,final String type) {
             Map<String,String> paramsMap=new HashMap<>();
-            paramsMap.put("userId", AppApplication.gUser.getId());
+            paramsMap.put("userId", "imhfp1yr4636pj49");
             paramsMap.put("money", price);
-            paramsMap.put("action", "invest");
+            paramsMap.put("action", type);
             paramsMap.put("type", "1");
-            //paramsMap.put("artWorkId", artworkId);
+            paramsMap.put("orderId", id);
             paramsMap.put("timestamp", System.currentTimeMillis() + "");
             try {
                 AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);

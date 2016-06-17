@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/6/2 0002.
  */
 
-
+//hostName = "http://ryt.efeiyi.com";//服务器域名
 hostName = "http://192.168.1.75:8080";                           //服务器域名
 
 function redirectUser(userid) {

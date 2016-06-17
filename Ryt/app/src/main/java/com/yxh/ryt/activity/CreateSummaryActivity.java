@@ -148,7 +148,9 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
                         dianzan.setImageResource(R.mipmap.dianzanhou);
                         dianzan.setEnabled(false);
                     }
-                    zan.setText(artwork.getPraiseNUm() + "");
+                    if (artwork!=null){
+                        zan.setText(artwork.getPraiseNUm() + "");
+                    }
 
                 }
 
@@ -210,7 +212,8 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
                     Intent intent = new Intent(this, ProjectCommentReply.class);
                     intent.putExtra("fatherCommentId", "");
                     intent.putExtra("messageId", "");
-                    intent.putExtra("flag", 1);
+                    intent.putExtra("name", top.getText().toString());
+                    intent.putExtra("flag", 2);
                     intent.putExtra("artworkId", artworkId);
                     intent.putExtra("currentUserId", AppApplication.gUser.getId());
                     startActivity(intent);
@@ -263,6 +266,22 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
         @JavascriptInterface
         public String fetchParamObject() {
             return "{\"artWorkId\":\""+id+"\",\"currentUserId\":\""+AppApplication.gUser.getId()+"\"}";
+        }
+        @JavascriptInterface
+        public void comment(String artworkId,String currentUserId,String messageId,String fatherCommentId,String name) {
+            if ("".equals(AppApplication.gUser.getId())) {
+                Intent intent2 = new Intent(CreateSummaryActivity.this, LoginActivity.class);
+                CreateSummaryActivity.this.startActivity(intent2);
+            } else {
+                Intent intent = new Intent(CreateSummaryActivity.this, ProjectCommentReply.class);
+                intent.putExtra("fatherCommentId", fatherCommentId);
+                intent.putExtra("messageId", messageId);
+                intent.putExtra("flag", 0);
+                intent.putExtra("name", name);
+                intent.putExtra("artworkId", artworkId);
+                intent.putExtra("currentUserId", AppApplication.gUser.getId());
+                CreateSummaryActivity.this.startActivity(intent);
+            }
         }
     }
 

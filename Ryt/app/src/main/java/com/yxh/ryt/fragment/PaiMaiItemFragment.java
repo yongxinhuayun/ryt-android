@@ -118,6 +118,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 					public void onClick(View v) {
 						Intent intent=new Intent(getActivity(), AuctionSummaryActivity.class);
 						intent.putExtra("id", item.getId());
+						intent.putExtra("title", item.getTitle());
 						intent.putExtra("name", item.getAuthor().getName());
 						startActivity(intent);
 					}

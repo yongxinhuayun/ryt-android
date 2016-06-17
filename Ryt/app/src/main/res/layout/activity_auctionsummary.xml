@@ -10,10 +10,11 @@
         android:layout_height="50dp"
         android:layout_alignParentTop="true">
 
-        <ImageButton
+        <ImageView
+            android:layout_marginLeft="10dp"
             android:id="@+id/ib_top_lf"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="@null"
             android:src="@mipmap/back" />

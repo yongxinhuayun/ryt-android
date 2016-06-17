@@ -52,6 +52,9 @@ public class ProjectCommentReply extends BaseActivity {
             title.setText("回复"+name+"评论");
         }else if (flag==1){
             title.setText("评论");
+        }else if(flag==2){
+            String name=intent.getStringExtra("name");
+            title.setText(name);
         }
         fatherCommentId = intent.getStringExtra("fatherCommentId");
         artworkId = intent.getStringExtra("artworkId");

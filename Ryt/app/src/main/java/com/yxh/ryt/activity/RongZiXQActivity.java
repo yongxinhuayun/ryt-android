@@ -199,7 +199,8 @@ public class RongZiXQActivity extends BaseActivity {
                     Intent intent = new Intent(this, ProjectCommentReply.class);
                     intent.putExtra("fatherCommentId", "");
                     intent.putExtra("messageId", "");
-                    intent.putExtra("flag", 1);
+                    intent.putExtra("name", topTitle.getText().toString());
+                    intent.putExtra("flag", 2);
                     intent.putExtra("artworkId", artworkId);
                     intent.putExtra("currentUserId", AppApplication.gUser.getId());
                     startActivity(intent);
@@ -217,14 +218,11 @@ public class RongZiXQActivity extends BaseActivity {
                     Intent intent2 = new Intent(RongZiXQActivity.this, LoginActivity.class);
                     startActivity(intent2);
                 } else {
-                    if (remainMoney > 0) {
-                        Intent intent1 = new Intent(this, InvestActivity.class);
-                        intent1.putExtra("allMoney", remainMoney);
-                        intent1.putExtra("artWorkId", artworkId);
-                        startActivity(intent1);
-                    }
+                    Intent intent1 = new Intent(this, InvestActivity.class);
+                    intent1.putExtra("allMoney", remainMoney);
+                    intent1.putExtra("artWorkId", artworkId);
+                    startActivity(intent1);
                 }
-                finish();
                 break;
             //点赞
             case R.id.iv_tab_01:

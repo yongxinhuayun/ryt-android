@@ -7,6 +7,8 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
@@ -30,18 +32,23 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
     private JsInterface jsInterface = new JsInterface();
     private String id;
     private String name;
-    private ImageButton back;
+    private ImageView back;
+    private TextView title;
+    private String titleName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auctionsummary);
         webView = (WebView) findViewById(R.id.aas_wb_all);
-        back = (ImageButton) findViewById(R.id.ib_top_lf);
+        back = (ImageView) findViewById(R.id.ib_top_lf);
+        title = (TextView) findViewById(R.id.tv_top_ct);
         back.setOnClickListener(this);
         id = getIntent().getStringExtra("id");
         name = getIntent().getStringExtra("name");
+        titleName = getIntent().getStringExtra("title");
         webView.getSettings().setJavaScriptEnabled(true);
+        title.setText(titleName);
         Log.d("xxxxxxxxxxxxxxxx", id);
         webView.loadUrl("file:///android_asset/A3-1.html");
         webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo1");
@@ -111,9 +118,7 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
             paramsMap.put("action", action);
             paramsMap.put("type", "1");
             paramsMap.put("artWorkId", artWorkId);
-            paramsMap.put("addressId","ip6e59sx17aseim2");
             paramsMap.put("timestamp", System.currentTimeMillis() + "");
-            paramsMap.put("auctionMoney", "6666");
             try {
                 AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
                 paramsMap.put("signmsg", AppApplication.signmsg);
@@ -129,10 +134,10 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
 
                 @Override
                 public void onResponse(Map<String, Object> response) {
-                    String url = response.get("url").toString();
+                    /*String url = response.get("url").toString();
                     Intent intent=new Intent(AuctionSummaryActivity.this,PayPageActivity.class);
                     intent.putExtra("url",url);
-                    AuctionSummaryActivity.this.startActivity(intent);
+                    AuctionSummaryActivity.this.startActivity(intent);*/
                 }
             });
         }
