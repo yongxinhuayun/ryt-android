@@ -75,11 +75,14 @@
                 android:textColor="#666666"
                 android:textSize="15sp" />
             <EditText
-                android:layout_width="wrap_content"
+                android:id="@+id/et_reciever"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_reciever"
                 android:background="@drawable/public_brief_et_bg"
-                android:text="aaaa"/>
+                android:layout_marginRight="10dp"
+                android:text="aaaa"
+                android:textSize="15sp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -104,11 +107,14 @@
                 android:textColor="#666666"
                 android:textSize="15sp" />
             <EditText
-                android:layout_width="wrap_content"
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_phone"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/public_brief_et_bg"
-                android:text="aaaa"/>
+                android:text="aaaa"
+                android:textSize="15sp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -133,11 +139,14 @@
                 android:textColor="#666666"
                 android:textSize="15sp" />
             <EditText
-                android:layout_width="wrap_content"
+                android:id="@+id/et_local"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_local"
                 android:background="@drawable/public_brief_et_bg"
-                android:text="aaaa"/>
+                android:layout_marginRight="10dp"
+                android:text="aaaa"
+                android:textSize="15sp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -148,7 +157,7 @@
         <RelativeLayout
             android:id="@+id/rl_address"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="100dp"
 
             >
 
@@ -164,10 +173,12 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:id="@+id/et_detail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_detail"
-                android:background="@drawable/public_brief_et_bg"
+                android:background="@drawable/new_address_et_bg"
+                android:textSize="15sp"
                 />
 
 
@@ -179,13 +190,14 @@
             android:background="#E9E9E9" />
         <LinearLayout
             android:layout_marginTop="15dp"
+            android:layout_marginLeft="14dp"
             android:id="@+id/ll_defult_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/iv_selected"
+                android:id="@+id/ib_selected"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:background="@mipmap/weixuanze" />

@@ -80,8 +80,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         address = (RelativeLayout) findViewById(R.id.rl_address);
         //给控件设置内容
         AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
-        //tv_nickname.setText(AppApplication.gUser.getName());
-       // tv_sex.setText(changSex(AppApplication.gUser.getSex()));
+
 
         inflatSign();
         //设置点击
