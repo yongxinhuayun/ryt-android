@@ -360,7 +360,7 @@ public class EditProject01Activity extends  BaseActivity {
                 Matrix matrix1 = new Matrix();
                 matrix1.postScale(scaleWidth1, scaleWidth1);//产生缩放后的Bitmap对象
                 Bitmap resizeBitmap1 = Bitmap.createBitmap(bitmap, 0, 0, bmpWidth1, bmpHeight1, matrix1, false);
-                bitmap.recycle();
+                //bitmap.recycle();
                 ivImage.setImageBitmap(resizeBitmap1);
                 break;
             case CAMERA_REQUEST_CODE:
