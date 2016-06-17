@@ -374,15 +374,15 @@ public class EditProject01Activity extends  BaseActivity {
                         + "/temp.jpg");
                 Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
                 filePath= Utils.getFilePathFromUri(Uri.fromFile(picture), this);
-                Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
-                bitmap1.recycle();
-                int bmpWidth  = bitmap2.getWidth();
-                int bmpHeight  = bitmap2.getHeight();
+                /*Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
+                bitmap1.recycle();*/
+                int bmpWidth  = bitmap1.getWidth();
+                int bmpHeight  = bitmap1.getHeight();
                 float scaleWidth  = (float) widthzong / bmpWidth;     //按固定大小缩放  sWidth 写多大就多大
                 Matrix matrix = new Matrix();
                 matrix.postScale(scaleWidth, scaleWidth);//产生缩放后的Bitmap对象
-                Bitmap resizeBitmap = Bitmap.createBitmap(bitmap2, 0, 0, bmpWidth, bmpHeight, matrix, false);
-                bitmap2.recycle();
+                Bitmap resizeBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bmpWidth, bmpHeight, matrix, false);
+                bitmap1.recycle();
                 /*Bitmap btm3=Bitmap.createScaledBitmap(bitmap2, widthzong, height, false); //自定义
                 bitmap2.recycle();*/
                 ivImage.setImageBitmap(resizeBitmap);
