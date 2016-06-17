@@ -19,7 +19,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-public class NewAddressActivity extends BaseActivity implements View.OnClickListener {
+public class EditRecAddressActivity extends BaseActivity implements View.OnClickListener{
 
     private EditText reciever;
     private EditText phone;
@@ -33,7 +33,7 @@ public class NewAddressActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_address);
+        setContentView(R.layout.activity_edit_rec_address);
         reciever = (EditText) findViewById(R.id.et_reciever);
         phone = (EditText) findViewById(R.id.et_phone);
         local = (EditText) findViewById(R.id.et_local);
@@ -44,9 +44,23 @@ public class NewAddressActivity extends BaseActivity implements View.OnClickList
         selected.setOnClickListener(this);
         save.setOnClickListener(this);
         back.setOnClickListener(this);
-        unDefult = 1;
+        loadData();
     }
 
+    private void loadData() {
+
+        reciever.setText(getIntent().getStringExtra("consignee"));
+        phone.setText(getIntent().getStringExtra("phone"));
+        local.setText(getIntent().getStringExtra("provinceStr") + getIntent().getStringExtra("districtStr"));
+        detail.setText(getIntent().getStringExtra("details"));
+        unDefult = Integer.parseInt(getIntent().getStringExtra("status"));
+        if (unDefult == 2) {
+            selected.setBackground(getResources().getDrawable(R.mipmap.yixuanze));
+
+        } else {
+            selected.setBackground(getResources().getDrawable(R.mipmap.weixuanze));
+        }
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -64,7 +78,7 @@ public class NewAddressActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.tv_save:
                 Map<String, String> paramsMap = new HashMap<>();
-                paramsMap.put("addressId", "");
+                paramsMap.put("addressId", getIntent().getStringExtra("addressId"));
                 paramsMap.put("status", unDefult + "");
                 paramsMap.put("consignee", reciever.getText().toString());
                 paramsMap.put("details", detail.getText().toString());
