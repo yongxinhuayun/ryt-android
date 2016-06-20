@@ -236,7 +236,7 @@ public class PublicProject01Activity extends  BaseActivity {
                 Matrix matrix = new Matrix();
                 matrix.postScale(scaleWidth, scaleWidth);//产生缩放后的Bitmap对象
                 Bitmap resizeBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bmpWidth, bmpHeight, matrix, false);
-                bitmap1.recycle();
+                //bitmap1.recycle();
                 /*Bitmap btm3=Bitmap.createScaledBitmap(bitmap2, widthzong, height, false); //自定义
                 bitmap2.recycle();*/
                 ivImage.setImageBitmap(resizeBitmap);
