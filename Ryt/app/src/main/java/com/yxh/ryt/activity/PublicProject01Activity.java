@@ -202,8 +202,11 @@ public class PublicProject01Activity extends  BaseActivity {
                 int height1=Utils.dip2px(PublicProject01Activity.this,224);
                 int left1=Utils.dip2px(PublicProject01Activity.this,14);
                 int right1=Utils.dip2px(PublicProject01Activity.this,14);
+                int top1=Utils.dip2px(PublicProject01Activity.this,10);
+                int bottom=Utils.dip2px(PublicProject01Activity.this,25);
+
                 LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(widthzong,height1);
-                params1.setMargins(left1,0,right1,0);
+                params1.setMargins(left1,top1,right1,bottom);
                 ivImage.setLayoutParams(params1);
                 Bitmap bitmap = getBitmap(data.getData());
                 /*Bitmap btm2=Bitmap.createScaledBitmap(bitmap, widthzong, height1, false); //自定义

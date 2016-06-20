@@ -176,6 +176,7 @@
                     android:src="@mipmap/ic_launcher" />
             </LinearLayout>
             <TextView
+                android:layout_marginTop="25dp"
                 android:id="@+id/btn_next"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"

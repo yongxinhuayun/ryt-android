@@ -19,7 +19,7 @@
             android:text="排名"/>
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="1.2"
+            android:layout_weight="1"
             android:layout_height="wrap_content">
             <com.yxh.ryt.custemview.CircleImageView
                 android:id="@+id/cl_01_civ_headPortrait"
@@ -43,21 +43,13 @@
         <TextView
             android:id="@+id/cl_01_civ_price"
             android:layout_width="0dp"
-            android:layout_weight="1.1"
+            android:layout_weight="1"
             android:gravity="center"
             android:textSize="14sp"
             android:textColor="@android:color/black"
             android:layout_height="wrap_content"
             android:text="项目总金额"/>
-        <TextView
-            android:id="@+id/cl_01_civ_turnover"
-            android:layout_width="0dp"
-            android:layout_weight="1.1"
-            android:gravity="center"
-            android:textSize="14sp"
-            android:textColor="@android:color/black"
-            android:layout_height="wrap_content"
-            android:text="总成交价"/>
+
     </LinearLayout>
     <View
         android:layout_width="match_parent"

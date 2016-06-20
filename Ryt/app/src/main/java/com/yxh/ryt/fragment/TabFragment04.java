@@ -233,10 +233,11 @@ public class TabFragment04 extends BaseFragment {
                     if (response.get("resultCode").equals("0")) {
                         Map<String, Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
                         User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")), User.class);
-                        String followNum = (String) pageInfo.get("followNum");
-                        String num = (String) pageInfo.get("num");
-                       tvUserHeaderFsNum.setText(followNum);
-                        tvUserHeaderGzNum.setText(num);
+                       tvUserHeaderFsNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("num")));
+                        tvUserHeaderGzNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("followNum")));
+                       /* Double sa = (Double) pageInfo.get("followNum");
+                        int a =(int)sa;
+                        tvUserHeaderGzNum.setText(a+"");*/
                         if (user != null) {
                             if (null==user.getMaster()) {
                                 btnLf.setText("申请为艺术家");
