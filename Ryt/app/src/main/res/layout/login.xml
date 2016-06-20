@@ -111,7 +111,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#B3B3B3"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:background="@mipmap/anniu_bukedianji"
                 android:text="登录"

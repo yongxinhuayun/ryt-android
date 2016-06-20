@@ -27,6 +27,7 @@ import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
+import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.User;
 
 import java.io.File;
@@ -79,7 +80,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         tv_sex = (TextView) findViewById(R.id.tv_sex);
         address = (RelativeLayout) findViewById(R.id.rl_address);
         //给控件设置内容
-        AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
+        //AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
 
 
         inflatSign();
@@ -115,6 +116,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case ALBUM_REQUEST_CODE:
+
                 if (data == null) {
                     return;
                 }
@@ -126,16 +128,17 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 commitHead();
                 break;
             case CAMERA_REQUEST_CODE:
+
                 File picture = new File(Environment.getExternalStorageDirectory()
                         + "/temp.jpg");
                 Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
-               /* filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
-                Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
+               filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
+                /* Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
                 bitmap1.recycle();
                 circleImageView.setImageBitmap(bitmap2);*/
                 circleImageView.setImageBitmap(bitmap1);
-
                 commitHead();
+
                 break;
 //
             default:
@@ -415,7 +418,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                     tv_sex.setText(changSex(3.0));
                 }
                 tv_nickname.setText(name);
-                AppApplication.displayImage(pictureUrl, circleImageView);
+                AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
             }
         });
     }
@@ -430,6 +433,12 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         }
     }
 
+   /* @Override
+    protected void onResume() {
+        super.onResume();
+        inflatSign();
+    }
+*/
     @Override
     protected void onDestroy() {
         super.onDestroy();

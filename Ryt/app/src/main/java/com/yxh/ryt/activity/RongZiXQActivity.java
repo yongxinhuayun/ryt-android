@@ -133,7 +133,7 @@ public class RongZiXQActivity extends BaseActivity {
                 case PRAISE_SUC:
                     int a = Integer.parseInt(zan.getText().toString());
                     a++;
-                    zan.setText(a);
+                    zan.setText(a + "");
                     break;
             }
         }

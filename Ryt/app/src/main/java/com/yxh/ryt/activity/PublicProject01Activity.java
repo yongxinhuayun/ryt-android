@@ -11,10 +11,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,13 +31,11 @@ import com.yxh.ryt.util.Utils;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 
 /**
@@ -79,6 +75,10 @@ public class PublicProject01Activity extends  BaseActivity {
     @OnClick(R.id.btn_next)
     public void next(View v){
         oneStepRequst();
+    }
+    @OnClick(R.id.ib_top_lf)
+    public void back(View v){
+        finish();
     }
     @OnClick(R.id.iv_image)
     public void addImage(View v){

@@ -103,6 +103,11 @@ public class TabFragment04 extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
     //头像点击事件
     @OnClick(R.id.ll_user_header)
     void userHeaderClick() {
@@ -228,6 +233,10 @@ public class TabFragment04 extends BaseFragment {
                     if (response.get("resultCode").equals("0")) {
                         Map<String, Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
                         User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")), User.class);
+                        String followNum = (String) pageInfo.get("followNum");
+                        String num = (String) pageInfo.get("num");
+                       tvUserHeaderFsNum.setText(followNum);
+                        tvUserHeaderGzNum.setText(num);
                         if (user != null) {
                             if (null==user.getMaster()) {
                                 btnLf.setText("申请为艺术家");
@@ -269,8 +278,8 @@ public class TabFragment04 extends BaseFragment {
         if (type==2) {
             AppApplication.displayImage(user.getPictureUrl(),rsIvHeadPortrait);
             tvUserHeaderName.setText(user.getName()+"");
-            tvUserHeaderFsNum.setText(user.getCount1()+"");
-            tvUserHeaderGzNum.setText(user.getCount()+"");
+           /* tvUserHeaderFsNum.setText(user.getCount1()+"");
+            tvUserHeaderGzNum.setText(user.getCount()+"");*/
             tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getSigner()+"");
             tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
             tvUserHeaderJeValue02.setText("￥"+user.getRoiMoney());
@@ -281,8 +290,8 @@ public class TabFragment04 extends BaseFragment {
         }else{
             AppApplication.displayImage(user.getPictureUrl(),rsIvHeadPortrait);
             tvUserHeaderName.setText(user.getName()+"");
-            tvUserHeaderFsNum.setText(user.getCount1()+"");
-            tvUserHeaderGzNum.setText(user.getCount()+"");
+            /*tvUserHeaderFsNum.setText(user.getCount1()+"");
+            tvUserHeaderGzNum.setText(user.getCount()+"");*/
             tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getContent()+"");
             tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
             tvUserHeaderJeValue02.setText("￥"+user.getRoiMoney());
