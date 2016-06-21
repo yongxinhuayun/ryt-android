@@ -6,7 +6,7 @@
     android:layout_marginTop="10dp"
     android:background="@android:color/white"
     android:layout_height="wrap_content">
-    <FrameLayout
+    <!--<FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
@@ -28,6 +28,42 @@
                 android:text="逐鹿顺意铜雕"
                 android:textColor="#FEFEFE"
                 android:textSize="18sp"/>
+        </LinearLayout>
+    </FrameLayout>-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="242dp">
+
+        <com.yxh.ryt.custemview.ScaleScreenImageView
+            android:id="@+id/cl_01_tv_prc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ryt_logo"
+            android:layout_gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#33000000" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginBottom="14dp"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:paddingBottom="14dp"
+                android:id="@+id/cl_01_tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="逐鹿顺意铜雕"
+                android:textColor="#FEFEFE"
+                android:textSize="18sp" />
+
         </LinearLayout>
     </FrameLayout>
 

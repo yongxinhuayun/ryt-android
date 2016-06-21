@@ -3,7 +3,6 @@ package com.yxh.ryt.custemview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -29,7 +28,6 @@ public class ScaleScreenImageView extends ImageView {
         super.setImageBitmap(bm);
         if (getWidth() > 0) {
             float es = (float) getWidth() / (float)bm.getWidth();
-            Log.d("eseseseseseseseseseseseseseses",es+"");
             int height = (int) (bm.getHeight() * es);
             int width= (int) (bm.getWidth()*es);
             ViewGroup.LayoutParams params = getLayoutParams();

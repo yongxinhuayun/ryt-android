@@ -195,13 +195,13 @@ public class PublicProject01Activity extends  BaseActivity {
                     return;
                 }
                 int height1=Utils.dip2px(PublicProject01Activity.this,224);
-                int left1=Utils.dip2px(PublicProject01Activity.this,14);
-                int right1=Utils.dip2px(PublicProject01Activity.this,14);
+                int left1=Utils.dip2px(PublicProject01Activity.this,0);
+                int right1=Utils.dip2px(PublicProject01Activity.this,0);
                 int top1=Utils.dip2px(PublicProject01Activity.this,10);
-                int bottom=Utils.dip2px(PublicProject01Activity.this,25);
+                int bottom1=Utils.dip2px(PublicProject01Activity.this,0);
 
                 LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(widthzong,height1);
-                params1.setMargins(left1,top1,right1,bottom);
+                params1.setMargins(left1,top1,right1,bottom1);
                 ivImage.setLayoutParams(params1);
                 Bitmap bitmap = getBitmap(data.getData());
                 /*Bitmap btm2=Bitmap.createScaledBitmap(bitmap, widthzong, height1, false); //自定义
@@ -217,10 +217,12 @@ public class PublicProject01Activity extends  BaseActivity {
                 break;
             case CAMERA_REQUEST_CODE:
                 int height=Utils.dip2px(PublicProject01Activity.this,224);
-                int left=Utils.dip2px(PublicProject01Activity.this,14);
-                int right=Utils.dip2px(PublicProject01Activity.this,14);
+                int left=Utils.dip2px(PublicProject01Activity.this,0);
+                int right=Utils.dip2px(PublicProject01Activity.this,0);
+                int top=Utils.dip2px(PublicProject01Activity.this,10);
+                int bottom=Utils.dip2px(PublicProject01Activity.this,0);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthzong,height);
-                params.setMargins(left,0,right,0);
+                params.setMargins(left,top,right,bottom);
                 ivImage.setLayoutParams(params);
                 File picture = new File(Environment.getExternalStorageDirectory()
                         + "/temp.jpg");
