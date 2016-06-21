@@ -100,7 +100,23 @@ public class PaiHangItemFragment01 extends BaseFragment implements AutoListView.
 			@Override
 			public void convert(ViewHolder helper, Investor item) {
 
-				helper.setText(R.id.cl_01_civ_pm,(helper.getPosition()+1)+"");
+				if (helper.getPosition() == 0) {
+					helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
+					helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
+					helper.setImageResource(R.id.civ_top, R.mipmap.jin);
+				} else if (helper.getPosition() == 1) {
+					helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
+					helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
+					helper.setImageResource(R.id.civ_top, R.mipmap.yin);
+				} else if (helper.getPosition() == 2) {
+					helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
+					helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
+					helper.setImageResource(R.id.civ_top, R.mipmap.tong);
+				} else {
+					helper.getView(R.id.civ_top).setVisibility(View.GONE);
+					helper.getView(R.id.cl_01_civ_pm).setVisibility(View.VISIBLE);
+					helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1) + "");
+				}
 				helper.setText(R.id.cl_01_civ_name, item.getTruename());
 				helper.setText(R.id.cl_01_civ_rois, df.format(item.getRois().doubleValue()));
 				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, "http://rongyitou2.efeiyi.com/headPortrait/" + item.getUsername() + ".jpg");

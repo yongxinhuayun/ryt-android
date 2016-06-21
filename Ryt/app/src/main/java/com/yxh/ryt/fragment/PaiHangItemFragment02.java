@@ -26,115 +26,135 @@ import okhttp3.Call;
 
 
 public class PaiHangItemFragment02 extends BaseFragment implements AutoListView.OnRefreshListener,
-		AutoListView.OnLoadListener {
-	private AutoListView lstv;
-	private CommonAdapter<Artist> artistCommonAdapter;
-	private List<Artist> artistDatas;
-	private int currentPage=1;
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		artistDatas=new ArrayList<Artist>();
-	}
-	private void LoadData(final int state,int pageNum) {
-		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("pageSize",Constants.pageSize+"");
-		paramsMap.put("pageNum", pageNum + "");
-		paramsMap.put("timestamp", System.currentTimeMillis() + "");
-		try {
-			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
-			paramsMap.put("signmsg", AppApplication.signmsg);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		NetRequestUtil.post(Constants.BASE_PATH + "getArtistTopList.do", paramsMap, new RongZiListCallBack() {
-			@Override
-			public void onError(Call call, Exception e) {
-				e.printStackTrace();
-				System.out.println("失败了");
-			}
+        AutoListView.OnLoadListener {
+    private AutoListView lstv;
+    private CommonAdapter<Artist> artistCommonAdapter;
+    private List<Artist> artistDatas;
+    private int currentPage = 1;
 
-			@Override
-			public void onResponse(Map<String, Object> response) {
-				if (state==AutoListView.REFRESH){
-					lstv.onRefreshComplete();
-					artistDatas.clear();
-					List<Artist> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("ArtistTopList")), new TypeToken<List<Artist>>() {
-					}.getType());
-					if(null==objectList||objectList.size()==0){
-						lstv.setResultSize(0);
-					}
-					if (null!=objectList&&objectList.size()>0){
-						lstv.setResultSize(objectList.size());
-						artistDatas.addAll(objectList);
-						artistCommonAdapter.notifyDataSetChanged();
-					}
-					return;
-				}
-				if (state==AutoListView.LOAD){
-					lstv.onLoadComplete();
-					List<Artist> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("ArtistTopList")), new TypeToken<List<Artist>>() {
-					}.getType());
-					if(null==objectList||objectList.size()==0){
-						lstv.setResultSize(1);
-					}
-					if (null!=objectList&&objectList.size()>0) {
-						lstv.setResultSize(objectList.size());
-						artistDatas.addAll(objectList);
-						artistCommonAdapter.notifyDataSetChanged();
-					}
-					return;
-				}
-			}
-		});
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        artistDatas = new ArrayList<Artist>();
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		final java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#.00");
-		View contextView = inflater.inflate(R.layout.paihang_yishujia, container, false);
-		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
-		lstv.setPageSize(Constants.pageSize);
-		artistCommonAdapter=new CommonAdapter<Artist>(AppApplication.getSingleContext(),artistDatas,R.layout.paihang_yishujia_lv_item) {
-			@Override
-			public void convert(ViewHolder helper, Artist item) {
+    }
 
-				helper.setText(R.id.cl_01_civ_pm,(helper.getPosition()+1)+"");
-				helper.setText(R.id.cl_01_civ_name, item.getTruename());
-				helper.setText(R.id.cl_01_civ_price,df.format(item.getInvest_goal_money()));
-				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, "http://rongyitou2.efeiyi.com/headPortrait/" + item.getUsername() + ".jpg");
+    private void LoadData(final int state, int pageNum) {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("pageSize", Constants.pageSize + "");
+        paramsMap.put("pageNum", pageNum + "");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "getArtistTopList.do", paramsMap, new RongZiListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if (state == AutoListView.REFRESH) {
+                    lstv.onRefreshComplete();
+                    artistDatas.clear();
+                    List<Artist> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("ArtistTopList")), new TypeToken<List<Artist>>() {
+                    }.getType());
+                    if (null == objectList || objectList.size() == 0) {
+                        lstv.setResultSize(0);
+                    }
+                    if (null != objectList && objectList.size() > 0) {
+                        lstv.setResultSize(objectList.size());
+                        artistDatas.addAll(objectList);
+                        artistCommonAdapter.notifyDataSetChanged();
+                    }
+                    return;
+                }
+                if (state == AutoListView.LOAD) {
+                    lstv.onLoadComplete();
+                    List<Artist> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("ArtistTopList")), new TypeToken<List<Artist>>() {
+                    }.getType());
+                    if (null == objectList || objectList.size() == 0) {
+                        lstv.setResultSize(1);
+                    }
+                    if (null != objectList && objectList.size() > 0) {
+                        lstv.setResultSize(objectList.size());
+                        artistDatas.addAll(objectList);
+                        artistCommonAdapter.notifyDataSetChanged();
+                    }
+                    return;
+                }
+            }
+        });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        final java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
+        View contextView = inflater.inflate(R.layout.paihang_yishujia, container, false);
+        lstv = (AutoListView) contextView.findViewById(R.id.lstv);
+        lstv.setPageSize(Constants.pageSize);
+        artistCommonAdapter = new CommonAdapter<Artist>(AppApplication.getSingleContext(), artistDatas, R.layout.paihang_yishujia_lv_item) {
+            @Override
+            public void convert(ViewHolder helper, Artist item) {
+                if (helper.getPosition() == 0) {
+                    helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
+                    helper.setImageResource(R.id.civ_top, R.mipmap.jin);
+                } else if (helper.getPosition() == 1) {
+                    helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
+                    helper.setImageResource(R.id.civ_top, R.mipmap.yin);
+                } else if (helper.getPosition() == 2) {
+                    helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
+                    helper.setImageResource(R.id.civ_top, R.mipmap.tong);
+                } else {
+                    helper.getView(R.id.civ_top).setVisibility(View.GONE);
+                    helper.getView(R.id.cl_01_civ_pm).setVisibility(View.VISIBLE);
+                    helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1) + "");
+                }
+                helper.setText(R.id.cl_01_civ_name, item.getTruename());
+                helper.setText(R.id.cl_01_civ_price, df.format(item.getInvest_goal_money()));
+                helper.setImageByUrl(R.id.cl_01_civ_headPortrait, "http://rongyitou2.efeiyi.com/headPortrait/" + item.getUsername() + ".jpg");
 //				helper.setText(R.id.cl_01_civ_rois,df.format(item.getRois().doubleValue()));
 //				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, "http://rongyitou2.efeiyi.com/headPortrait/" + item.getUser_id() + ".jpg");
 //				helper.setImageByUrl(R.id.cl_01_civ_headPortrait,item.getAuthor().getPictureUrl());
-			}
-		};
-		lstv.setAdapter(artistCommonAdapter);
-		lstv.setOnRefreshListener(this);
-		lstv.setOnLoadListener(this);
-		return contextView;
-	}
+            }
+        };
+        lstv.setAdapter(artistCommonAdapter);
+        lstv.setOnRefreshListener(this);
+        lstv.setOnLoadListener(this);
+        return contextView;
+    }
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-	}
-	@Override
-	protected void lazyLoad() {
-		if(artistDatas!=null&&artistDatas.size()>0)return;
-		LoadData(AutoListView.REFRESH, currentPage);
-	}
-	@Override
-	public void onRefresh() {
-		currentPage=1;
-		LoadData(AutoListView.REFRESH,currentPage);
-	}
+    }
 
-	@Override
-	public void onLoad() {
-		currentPage++;
-		LoadData(AutoListView.LOAD,currentPage);
-	}
+    @Override
+    protected void lazyLoad() {
+        if (artistDatas != null && artistDatas.size() > 0) return;
+        LoadData(AutoListView.REFRESH, currentPage);
+    }
+
+    @Override
+    public void onRefresh() {
+        currentPage = 1;
+        LoadData(AutoListView.REFRESH, currentPage);
+    }
+
+    @Override
+    public void onLoad() {
+        currentPage++;
+        LoadData(AutoListView.LOAD, currentPage);
+    }
 
 }

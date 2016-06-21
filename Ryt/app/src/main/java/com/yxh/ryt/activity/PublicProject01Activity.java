@@ -108,11 +108,6 @@ public class PublicProject01Activity extends  BaseActivity {
                 .show();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     //艺术家发布项目第一步接口一网络请求
     private void oneStepRequst() {
         View view = LayoutInflater.from(this).inflate(
@@ -257,5 +252,10 @@ public class PublicProject01Activity extends  BaseActivity {
         options.inJustDecodeBounds = false;
         bm = BitmapFactory.decodeFile(filePath, options);
         return  bm;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

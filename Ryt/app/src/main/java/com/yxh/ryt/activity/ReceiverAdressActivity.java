@@ -78,7 +78,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                 edIntent.putExtra("provinceStr", item.getProvinceStr());
                 edIntent.putExtra("districtStr", item.getDistrictStr());
 
-                delIntent.putExtra("status", item.getStatus());
+               // delIntent.putExtra("status", item.getStatus());
                 helper.setText(R.id.tv_name, item.getConsignee());
                 helper.setText(R.id.tv_phone, item.getPhone());
                 helper.setText(R.id.tv_adress, item.getDetails());
