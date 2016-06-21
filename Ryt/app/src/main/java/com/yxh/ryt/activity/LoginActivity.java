@@ -91,7 +91,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0) {
+                if (s.length() == 11) {
                     isPhone = true;
                     dianji(isPhone, isPassword);
                 } else {
@@ -113,7 +113,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0) {
+                if (s.length() > 5 && s.length() < 17) {
                     isPassword = true;
                     dianji(isPhone, isPassword);
                 } else {

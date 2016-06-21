@@ -73,17 +73,17 @@ public class GuideActivity extends Activity implements OnClickListener {
                 mRegist.setVisibility(View.VISIBLE);
                 mLogin.setVisibility(View.VISIBLE);
                 tv_guide.setVisibility(View.VISIBLE);
-                mRegist.setOnClickListener(GuideActivity.this);//按钮显示时设置按钮的点击事件
-                mLogin.setOnClickListener(GuideActivity.this);//按钮显示时设置按钮的点击事件
-                tv_guide.setOnClickListener(GuideActivity.this);//文本显示时设置按钮的点击事件
+                mRegist.setOnClickListener(GuideActivity.this);
+                mLogin.setOnClickListener(GuideActivity.this);
+                tv_guide.setOnClickListener(GuideActivity.this);
             } else {
                 //隐藏按钮
                 mRegist.setVisibility(View.INVISIBLE);
                 mLogin.setVisibility(View.INVISIBLE);
                 tv_guide.setVisibility(View.INVISIBLE);
-                mRegist.setOnClickListener(null);//按钮隐藏时取消按钮的点击事件
-                mLogin.setOnClickListener(null);//按钮隐藏时取消按钮的点击事件
-                tv_guide.setOnClickListener(null);//文本隐藏时取消文本的点击事件
+                mRegist.setOnClickListener(null);
+                mLogin.setOnClickListener(null);
+                tv_guide.setOnClickListener(null);
             }
         }
 

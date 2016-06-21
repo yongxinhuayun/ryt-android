@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yxh.ryt.AppApplication;
+import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.util.DataCleanManager;
 import com.yxh.ryt.util.FileSizeUtil;
@@ -99,6 +100,7 @@ public class UserSettingActivity extends BaseActivity {
                 AppApplication.gUser.setMaster1("");
                 AppApplication.gUser.setPictureUrl("");
                 SPUtil.clear(AppApplication.getSingleContext());
+                SPUtil.put(getApplicationContext(), Constants.ISFIRSTENTER, false);
                 btnOut.setVisibility(View.GONE);
                 Intent intent=new Intent(this, LoginActivity.class);
                 startActivity(intent);

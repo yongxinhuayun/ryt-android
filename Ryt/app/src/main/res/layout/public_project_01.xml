@@ -54,26 +54,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
+                    android:textColor="#000000"
+                    android:textSize="13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="项目标题：" />
 
                 <EditText
                     android:id="@+id/ev_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textSize="11sp"
                     android:background="@drawable/new_project_biankuang" />
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="#E9E9E9"></View>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,6 +78,8 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:textColor="#000000"
+                    android:textSize="13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="项目简介：" />
@@ -89,64 +87,82 @@
                 <EditText
                     android:id="@+id/ev_des"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="58dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/new_project_biankuang"
                     android:gravity="left"
-                    android:hint="输入项目简介，100字以内" />
+                    android:textSize="11sp"
+                    android:hint="输入项目简介，30字以内" />
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="#E9E9E9"></View>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
+                    android:textColor="#000000"
+                    android:textSize="13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="目标金额：" />
+                    android:text="融资金额：" />
 
                 <EditText
+                    android:layout_marginTop="10dp"
                     android:id="@+id/ev_menoy"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
                     android:background="@drawable/new_project_biankuang"
                     android:hint="输入融资金额，不低于100元"
+                    android:textSize="11sp"
                     android:singleLine="true" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="#E9E9E9"></View>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <TextView
+                android:orientation="vertical">
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="创作时长：" />
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="#000000"
+                        android:textSize="13sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="创作时长 " />
+                    <TextView
+                        android:textColor="#808080"
+                        android:textSize="11sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(创作这件作品大概花多久，默认为30天)" />
+                </LinearLayout>
 
-                <EditText
-                    android:gravity="center"
-                    android:id="@+id/ev_duration"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/new_project_biankuang"
-                    android:text="30" />
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/new_project_biankuang">
+                    <EditText
+                        android:id="@+id/ev_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#FFFFFF"
+                        android:hint="30"
+                        android:textSize="11sp"/>
+                    <TextView
+                        android:layout_marginLeft="14dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="天"
+                        android:textSize="11sp"
+                        android:textColor="#000000"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <View
@@ -164,7 +180,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="请上传项目的效果图或参考图：" />
+                    android:text="请上传项目的效果图或参考图"
+                    android:textColor="#000000"
+                    android:textSize="13sp"/>
 
                 <ImageView
                     android:id="@+id/iv_image"
@@ -182,7 +200,7 @@
                 android:background="@mipmap/anniu_kedianji"
                 android:gravity="center"
                 android:text="下一步"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="20dp"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp" />
