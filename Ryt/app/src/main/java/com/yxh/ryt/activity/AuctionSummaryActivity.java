@@ -47,9 +47,14 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         id = getIntent().getStringExtra("id");
         name = getIntent().getStringExtra("name");
         titleName = getIntent().getStringExtra("title");
-        webView.getSettings().setJavaScriptEnabled(true);
         title.setText(titleName);
         Log.d("xxxxxxxxxxxxxxxx", id);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("file:///android_asset/A3-1.html");
         webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo1");
     }
@@ -134,12 +139,28 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
 
                 @Override
                 public void onResponse(Map<String, Object> response) {
-                    /*String url = response.get("url").toString();
+                    String url = response.get("url").toString();
                     Intent intent=new Intent(AuctionSummaryActivity.this,PayPageActivity.class);
                     intent.putExtra("url",url);
-                    AuctionSummaryActivity.this.startActivity(intent);*/
+                    AuctionSummaryActivity.this.startActivity(intent);
                 }
             });
+        }
+        @JavascriptInterface
+        public void comment(String artworkId,String currentUserId,String messageId,String fatherCommentId,String name) {
+            if ("".equals(AppApplication.gUser.getId())) {
+                Intent intent2 = new Intent(AuctionSummaryActivity.this, LoginActivity.class);
+                AuctionSummaryActivity.this.startActivity(intent2);
+            } else {
+                Intent intent = new Intent(AuctionSummaryActivity.this, ProjectCommentReply.class);
+                intent.putExtra("fatherCommentId", fatherCommentId);
+                intent.putExtra("messageId", messageId);
+                intent.putExtra("flag", 0);
+                intent.putExtra("name", name);
+                intent.putExtra("artworkId", artworkId);
+                intent.putExtra("currentUserId", AppApplication.gUser.getId());
+                AuctionSummaryActivity.this.startActivity(intent);
+            }
         }
     }
 }

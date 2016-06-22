@@ -4,9 +4,10 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    android:id="@+id/fli_ll_top">
+    >
 
-    <include layout="@layout/common_listitem_01" />
+    <include
+        layout="@layout/common_listitem_01" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -20,22 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-
-            <!--<FrameLayout-->
-            <!--android:id="@+id/fli_fl_picture"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginRight="40dp">-->
-            <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="10dp"-->
-            <!--android:background="#E9E9E9"/>-->
-            <!--<TextView-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="10dp"-->
-            <!--android:background="#000000"/>-->
-            <!--</FrameLayout>-->
             <ProgressBar
                 android:id="@+id/progressBar1"
                 style="@style/mProgress_horizontal"
@@ -148,5 +133,4 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#E9E9E9" />
-
 </LinearLayout>

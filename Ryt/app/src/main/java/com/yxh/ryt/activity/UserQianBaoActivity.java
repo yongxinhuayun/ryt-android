@@ -28,6 +28,7 @@ import com.yxh.ryt.vo.Bill;
 import com.yxh.ryt.vo.FollowUserUtil;
 import com.yxh.ryt.vo.UserMoney;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +57,7 @@ public class UserQianBaoActivity extends BaseActivity {
     private TextView invest;
     private TextView rest;
     private LinearLayout details;
-
+    private BigDecimal restMoney;
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserQianBaoActivity.class));
     }
@@ -122,6 +123,7 @@ public class UserQianBaoActivity extends BaseActivity {
             e.printStackTrace();
         }
         NetRequestUtil.post(Constants.BASE_PATH + "transactionRecord.do", paramsMap, new AttentionListCallBack() {
+
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
@@ -134,6 +136,7 @@ public class UserQianBaoActivity extends BaseActivity {
                 if (userMoney!=null){
                     invest.setText("¥ "+userMoney.getInvestMoney());
                     rest.setText(userMoney.getRestMoney()+"元");
+                    restMoney = userMoney.getRestMoney();
                     reward.setText(userMoney.getRewardMoney()+"元");
                     if (userMoney.getBillList().size()<=5){
                         bills.addAll(userMoney.getBillList());
@@ -153,6 +156,7 @@ public class UserQianBaoActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.btn_tx:
                 Intent intent=new Intent(UserQianBaoActivity.this,CollectMoneyActivity.class);
+                intent.putExtra("remainMoney",restMoney+"");
                 UserQianBaoActivity.this.startActivity(intent);
                 break;
         }

@@ -76,11 +76,13 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
                 case PRAISE_SUC:
                     int a = Integer.parseInt(zan.getText().toString());
                     a++;
-                    zan.setText(a);
+                    zan.setText(a+"");
                     break;
             }
         }
     };
+    private LinearLayout ll_Praise;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,9 +92,11 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
         dianzan = (ImageView) findViewById(R.id.iv_tab_01);
         comment = (LinearLayout) findViewById(R.id.ll_comment);
         zan = (TextView) findViewById(R.id.rzxq_tv_zan);
+        ll_Praise = (LinearLayout) findViewById(R.id.ll_dianzan);
         back.setOnClickListener(this);
         share.setOnClickListener(this);
         dianzan.setOnClickListener(this);
+        ll_Praise.setOnClickListener(this);
         comment.setOnClickListener(this);
         Intent intent = getIntent();
         if (intent != null) artworkId = intent.getStringExtra("id");
@@ -102,9 +106,6 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
         name = getIntent().getStringExtra("name");
         top.setText(name);
         webView.getSettings().setJavaScriptEnabled(true);
-        Log.d("xxxxxxxxxxxxxxxx", id);
-        webView.loadUrl("file:///android_asset/A2.html");
-        webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo");
 //        webView.loadUrl("javascript:initPage('" + id + "','" + AppApplication.gUser.getId() + "')");
     }
 
@@ -112,15 +113,17 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     protected void onResume() {
         super.onResume();
         LoadData(0, 1);
+        webView.loadUrl("file:///android_asset/A2.html");
+        webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo");
     }
     private void LoadData(int tabtype, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artworkId + "");
-        if ("".equals(AppApplication.gUser.getId())) {
-            paramsMap.put("currentUserId", "");
-        } else {
+        if (!"".equals(AppApplication.gUser.getId())) {
             paramsMap.put("currentUserId", AppApplication.gUser.getId());
-        }
+        } /*else {
+            paramsMap.put("currentUserId", AppApplication.gUser.getId());
+        }*/
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
@@ -142,7 +145,7 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
                     users = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("investPeople")), new TypeToken<List<User>>() {
                     }.getType());
                     isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
-                    Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
+                    Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artwork")), Artwork.class);
 
                     if (isPraise1) {
                         dianzan.setImageResource(R.mipmap.dianzanhou);
@@ -248,16 +251,18 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
                     if ("0".equals(response.get("resultCode"))){
                        Map<Object,Object> data= (Map<Object, Object>) response.get("data");
                         User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(data.get("user")), User.class);
-                        if (user.getMaster()!=null){
-                            Intent intent =new Intent(CreateSummaryActivity.this,UserYsjIndexActivity.class);
-                            intent.putExtra("userId", id);
-                            intent.putExtra("currentId", AppApplication.gUser.getId());
-                            CreateSummaryActivity.this.startActivity(intent);
-                        }else {
-                            Intent intent =new Intent(CreateSummaryActivity.this,UserPtIndexActivity.class);
-                            intent.putExtra("userId", id);
-                            intent.putExtra("currentId", AppApplication.gUser.getId());
-                            CreateSummaryActivity.this.startActivity(intent);
+                        if (user!=null){
+                            if (user.getMaster()!=null){
+                                Intent intent =new Intent(CreateSummaryActivity.this,UserYsjIndexActivity.class);
+                                intent.putExtra("userId", id);
+                                intent.putExtra("currentId", AppApplication.gUser.getId());
+                                CreateSummaryActivity.this.startActivity(intent);
+                            }else {
+                                Intent intent =new Intent(CreateSummaryActivity.this,UserPtIndexActivity.class);
+                                intent.putExtra("userId", id);
+                                intent.putExtra("currentId", AppApplication.gUser.getId());
+                                CreateSummaryActivity.this.startActivity(intent);
+                            }
                         }
                     }
                 }
@@ -269,18 +274,28 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
         }
         @JavascriptInterface
         public void comment(String artworkId,String currentUserId,String messageId,String fatherCommentId,String name) {
-            if ("".equals(AppApplication.gUser.getId())) {
-                Intent intent2 = new Intent(CreateSummaryActivity.this, LoginActivity.class);
-                CreateSummaryActivity.this.startActivity(intent2);
-            } else {
+            if ("undefined".equals(fatherCommentId)){
                 Intent intent = new Intent(CreateSummaryActivity.this, ProjectCommentReply.class);
-                intent.putExtra("fatherCommentId", fatherCommentId);
+                intent.putExtra("fatherCommentId", "");
                 intent.putExtra("messageId", messageId);
-                intent.putExtra("flag", 0);
-                intent.putExtra("name", name);
+                intent.putExtra("flag", 1);
                 intent.putExtra("artworkId", artworkId);
                 intent.putExtra("currentUserId", AppApplication.gUser.getId());
                 CreateSummaryActivity.this.startActivity(intent);
+            }else {
+                if ("".equals(AppApplication.gUser.getId())) {
+                    Intent intent2 = new Intent(CreateSummaryActivity.this, LoginActivity.class);
+                    CreateSummaryActivity.this.startActivity(intent2);
+                } else {
+                    Intent intent = new Intent(CreateSummaryActivity.this, ProjectCommentReply.class);
+                    intent.putExtra("fatherCommentId", fatherCommentId);
+                    intent.putExtra("messageId", messageId);
+                    intent.putExtra("flag", 0);
+                    intent.putExtra("name", name);
+                    intent.putExtra("artworkId", artworkId);
+                    intent.putExtra("currentUserId", AppApplication.gUser.getId());
+                    CreateSummaryActivity.this.startActivity(intent);
+                }
             }
         }
     }

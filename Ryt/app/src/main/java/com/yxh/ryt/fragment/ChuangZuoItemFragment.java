@@ -102,7 +102,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
+		View contextView = inflater.inflate(R.layout.fragment_item_1, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
 		lstv.setPageSize(Constants.pageSize);
 		chuangZuoCommonAdapter=new CommonAdapter<Create>(AppApplication.getSingleContext(),chuangZuoDatas,R.layout.create_list_item) {
@@ -113,12 +113,12 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 				helper.setText(R.id.cl_01_tv_name, item.getAuthor().getName());
 				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
 				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, item.getAuthor().getPictureUrl());
-				helper.getView(R.id.cli_ll_top).setOnClickListener(new View.OnClickListener() {
+				helper.getView(R.id.cl_01_tv_prc).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);
 						intent.putExtra("id", item.getId());
-						intent.putExtra("name", item.getAuthor().getName());
+						intent.putExtra("name", item.getTitle());
 						startActivity(intent);
 					}
 				});

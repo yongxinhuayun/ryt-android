@@ -102,7 +102,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
+		View contextView = inflater.inflate(R.layout.fragment_item_2, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
 		lstv.setPageSize(Constants.pageSize);
 		paiMaiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),paiMaiDatas,R.layout.auction_list_item) {
@@ -113,7 +113,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 				helper.setText(R.id.cl_01_tv_name, item.getAuthor().getName());
 				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
 				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, item.getAuthor().getPictureUrl());
-				helper.getView(R.id.ali_all).setOnClickListener(new View.OnClickListener() {
+				helper.getView(R.id.cl_01_tv_prc).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						Intent intent=new Intent(getActivity(), AuctionSummaryActivity.class);
@@ -148,7 +148,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 					helper.getView(R.id.cli_tv_chengjiao_price).setVisibility(View.VISIBLE);
 					helper.getView(R.id.cli_tv_user).setVisibility(View.VISIBLE);
 					helper.setText(R.id.cli_tv_chengjiao_price, "成交价格：" + item.getNewBidingPrice() + "元");
-					helper.setText(R.id.cli_tv_user, "拍品得主："+item.getAuthor().getName());
+					helper.setText(R.id.cli_tv_user, "拍品得主："+item.getWinner().getName());
 					helper.setText(R.id.cli_tv_size, "出价次数：" + item.getAuctionNum() + "次");
 				}
 			}

@@ -69,7 +69,7 @@ public class RongZi {
     private int newBidingPrice;
     private Object newBiddingDate;
     private String sorts;
-    private Object winner;
+    private User winner;
     private Object feedback;
     private Object duration;
     private int startingPrice;
@@ -261,11 +261,11 @@ public class RongZi {
         this.sorts = sorts;
     }
 
-    public Object getWinner() {
+    public User getWinner() {
         return winner;
     }
 
-    public void setWinner(Object winner) {
+    public void setWinner(User winner) {
         this.winner = winner;
     }
 

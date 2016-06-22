@@ -133,7 +133,7 @@ public class RongZiXQActivity extends BaseActivity {
                 case PRAISE_SUC:
                     int a = Integer.parseInt(zan.getText().toString());
                     a++;
-                    zan.setText(a + "");
+                    zan.setText(a+"");
                     break;
             }
         }
@@ -299,11 +299,11 @@ public class RongZiXQActivity extends BaseActivity {
     private void LoadData(int tabtype, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artworkId + "");
-        if ("".equals(AppApplication.gUser.getId())) {
-            paramsMap.put("currentUserId", "");
-        } else {
+        if (!"".equals(AppApplication.gUser.getId())) {
             paramsMap.put("currentUserId", AppApplication.gUser.getId());
-        }
+        } /*else {
+            paramsMap.put("currentUserId", AppApplication.gUser.getId());
+        }*/
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);

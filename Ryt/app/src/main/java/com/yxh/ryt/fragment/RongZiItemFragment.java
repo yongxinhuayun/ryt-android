@@ -131,7 +131,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 							getActivity().startActivity(intent);
 						}
 					});
-					helper.getView(R.id.fli_ll_top).setOnClickListener(new View.OnClickListener() {
+					helper.getView(R.id.cl_01_tv_prc).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
 							Intent intent=new Intent(getActivity(), RongZiXQActivity.class);

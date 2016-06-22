@@ -1,5 +1,7 @@
 package com.yxh.ryt.custemview;
 
+import com.yxh.ryt.R;
+import com.yxh.ryt.util.Utils;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -15,9 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
-
-import com.yxh.ryt.R;
-import com.yxh.ryt.util.Utils;
 
 /**
  * @author SunnyCoffee
