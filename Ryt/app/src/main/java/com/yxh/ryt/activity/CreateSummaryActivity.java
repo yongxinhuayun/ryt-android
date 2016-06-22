@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
@@ -142,8 +140,7 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
             public void onResponse(Map<String, Object> response) {
                 Map<String, Object> object = (Map<String, Object>) response.get("object");
                 if (object != null) {
-                    users = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("investPeople")), new TypeToken<List<User>>() {
-                    }.getType());
+
                     isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
                     Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artwork")), Artwork.class);
 

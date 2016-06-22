@@ -92,6 +92,7 @@
                     android:background="@drawable/new_project_biankuang"
                     android:gravity="left"
                     android:textSize="11sp"
+                    android:maxLength="30"
                     android:hint="输入项目简介，30字以内" />
             </LinearLayout>
 
