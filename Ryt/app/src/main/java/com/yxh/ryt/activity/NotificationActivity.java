@@ -73,6 +73,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
                 }
                 helper.setText(R.id.ni_tv_content,item.getContent());
                 helper.setText(R.id.ni_tv_date, Utils.timeTrans(item.getCreateDatetime()));
+               // helper.setImageByUrl(R.id.pi_iv_icon, item.getFromUser().getPictureUrl());
             }
         };
         ntflistview.setAdapter(ntfAdapter);
