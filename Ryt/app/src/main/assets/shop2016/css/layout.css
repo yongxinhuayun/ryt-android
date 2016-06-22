@@ -1732,5 +1732,26 @@ html, body {
     font-size: 15px;
     -webkit-border-radius: 4px;
     border-radius: 4px; }
+.pm_btm_bar.a-button{
+    border-top: 0!important;
+    position: inherit!important;
+    float: right!important;
+    text-align: right!important;
+    background: #fff!important;
+    height: 40px;
+    line-height: 35px;
+}
+.a-button .links{
+    font-size: 14px!important;
+    text-align: right!important;
+    width: 20%;
+}
+
+.a-button .links:before{
+    background-position: 1px -95px!important;
+    width: 19px!important;
+    height: 15px!important;
+    background-size: 20px auto ;
+}
 
 /*# sourceMappingURL=layout.css.map */

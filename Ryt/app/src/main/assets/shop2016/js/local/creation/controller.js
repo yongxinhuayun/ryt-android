@@ -8,6 +8,9 @@ function initPage(artWorkId, currentUserId) {
     var param = new Object();
     param.artWorkId = paramObject.artWorkId;
     param.currentUserId = paramObject.currentUserId;
+    console.log("==============================");
+    console.log("param.artWorkId"+param.artWorkId+"param.currentUserId"+param.currentUserId);
+    console.log("==============================");
     PageVariable.param = param;
     PageVariable.artWorkId = param.artWorkId;
     getArtWorkBaseInfoData(getArtWorkBaseInfo);
@@ -20,39 +23,53 @@ function getArtWorkBaseInfo() {
     if (!artWorkProject.messageList.length > 0) {
         $("#dt").hide();
     }
-    $("#mainPicture").html(getArtWorkBaseInfoPictureHtml(artWorkInfo));
-    $("#mainInfo").html(getArtWorkBaseInfoMainHtml(artWorkInfo));
-    $("#rz").html(getArtWorkScheduleInvestHtml(artWorkProject));
-    $("#cz").html(getArtWorkScheduleCreateHtml(artWorkProject));
-    $("#pm").html(getArtWorkScheduleAuctionHtml(artWorkProject));
-    $("#dt").append(getArtWorkScheduleMessageHtml(artWorkProject));
+    $("#mainPicture").html(generateDOTTemplateResult(Template.artWorkBaseInfoPicture, artWorkInfo));
+    $("#mainInfo").html(generateDOTTemplateResult(Template.artWorkBaseInfoMain, artWorkInfo));
+    $("#rz").html(generateDOTTemplateResult(Template.artWorkScheduleInvest, artWorkProject));
+    $("#cz").html(generateDOTTemplateResult(Template.artWorkScheduleCreate, artWorkProject));
+    $("#pm").html(generateDOTTemplateResult(Template.artWorkScheduleAuction, artWorkProject));
+    $("#dt").html(generateDOTTemplateResult(Template.artWorkScheduleMessage, artWorkProject));
     tabsHeight();
+    for (var i = 0; i < artWorkProject.messageList.length; i++) {
+        var message = artWorkProject.messageList[i];
+        PageVariable.messageMap[message.id] = message;
+        if (message.artworkCommentList != null) {
+            for (var k = 0; k < message.artworkCommentList.length; k++) {
+                var commentTemp = message.artworkCommentList[k];
+                PageVariable.commentMap[commentTemp.id] = commentTemp;
+            }
+        }
+    }
 }
 //获得项目详情的controller
 function getArtWorkDetail() {
     var artWorkView = PageVariable.artWorkView;
-    $("#artWorkView").html(getArtWorkDetailHtml(artWorkView));
+    $("#artWorkView").html(generateDOTTemplateResult(Template.artWorkDetail, artWorkView));
     tabsHeight();
 }
 //获得用户评价的controller
 function getArtWorkComment() {
     var artWorkComment = PageVariable.artWorkComment;
     if (pageEntity.pageIndex == 1) {
-        $("#userComment").html(getArtWorkCommentHtml(artWorkComment));
+        $("#userComment").html(generateDOTTemplateResult(Template.artWorkComment, artWorkComment));
     } else {
-        $("#userComment").append(getArtWorkCommentHtml(artWorkComment));
+        $("#userComment").append(generateDOTTemplateResult(Template.artWorkComment, artWorkComment));
     }
     pageEntity.pageIndex = pageEntity.pageIndex + 1;
     tabsHeight();
+    for (var i = 0; i < artWorkComment.commentList.length; i++) {
+        var comment = artWorkComment.commentList[i];
+        PageVariable.messageMap[comment.id] = comment;
+    }
 }
 //获得项目投资记录的controller
 function getArtWorkInvestRecord() {
     var artWorkInvestRecord = PageVariable.artWorkInvestRecord;
-    $("#topThree").html(getArtWorkInvestRecordTopHtml(artWorkInvestRecord));
+    $("#topThree").html(generateDOTTemplateResult(Template.artWorkInvestRecordTop, artWorkInvestRecord));
     if (pageEntity.pageIndex == 1) {
-        $("#investList").html(getArtWorkInvestRecordListHtml(artWorkInvestRecord));
+        $("#investList").html(generateDOTTemplateResult(Template.artWorkInvestRecordList, artWorkInvestRecord));
     } else {
-        $("#investList").append(getArtWorkInvestRecordListHtml(artWorkInvestRecord));
+        $("#investList").append(generateDOTTemplateResult(Template.artWorkInvestRecordList, artWorkInvestRecord));
     }
     pageEntity.pageIndex = pageEntity.pageIndex + 1;
     tabsHeight();
@@ -136,7 +153,6 @@ function getArtWorkInvestRecordData(callback) {
 
 function artWorkProjectPanelAction() {
     loadDataAction = function () {
-        console.log("bottom");
     }
 }                   //页面滑到项目进度时候的action
 function artWorkCommentPanelAction() {

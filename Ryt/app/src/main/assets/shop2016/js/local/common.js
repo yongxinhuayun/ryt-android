@@ -134,12 +134,12 @@ function redirectProtocol() {
 }
 
 function createSignmsg(requestParam) {
-    var paramNameList = new Array();
+    var paramNameList = [];
     for (var key in requestParam) {
         paramNameList.push(key);
     }
     paramNameList = paramNameList.sort();
-    var msg = ""
+    var msg = "";
     for (var i = 0; i < paramNameList.length; i++) {
         var key = paramNameList[i];
         msg += key + "=" + requestParam[key] + "&";
@@ -152,7 +152,7 @@ function dealRequestParam(requestParam) {
     //筛选参数
     //设置签名
     //设置时间戳
-    var paramResult = new Object();
+    var paramResult = {};
     for (var key in requestParam) {
         if (requestParam[key] != null && requestParam[key] != "" && typeof requestParam[key] != "undefined") {
             paramResult[key] = requestParam[key];
@@ -204,6 +204,74 @@ function countDown(timestamp) {
             countDown(timestamp)
         }, 1000);
     }
+}
+
+function generateDOTTemplateResult(templateId, data) {
+    var viewFunction = doT.template($("#" + templateId).text())
+    return viewFunction(data);
+}
+
+
+
+var Template = {
+    artWorkDetail: "artWorkDetail",
+    artWorkBaseInfoMain: "artWorkBaseInfoMain",
+    artWorkBaseInfoPicture: "artWorkBaseInfoPicture",
+    artWorkScheduleInvest: "artWorkScheduleInvest",
+    artWorkScheduleCreate: "artWorkScheduleCreate",
+    artWorkScheduleMessage: "artWorkScheduleMessage",
+    artWorkScheduleAuction: "artWorkScheduleAuction",
+    artWorkComment: "artWorkComment",
+    artWorkInvestRecordTop: "artWorkInvestRecordTop",
+    artWorkInvestRecordList: "artWorkInvestRecordList",
+    artWorkBaseInfoAuctionMessage: "artWorkBaseInfoAuctionMessage",
+    artWorkAuctionBiddingTop: "artWorkAuctionBiddingTop",
+    artWorkAuctionWinner: "artWorkAuctionWinner",
+    artWorkScheduleAuctionResult: "artWorkScheduleAuctionResult",
+    artWorkAuctionBidding: "artWorkAuctionBidding",
+    preBottomButton: "preBottomButton",
+    beingBottomButton: "beingBottomButton",
+    afterBottomButton: "afterBottomButton"
+}   //模板对应的模块
+
+
+function createMessageComment(messageId) {
+    var artWorkId = getParamObject()["artWorkId"];
+    var currentUserId = getCurrentUserId();
+    var commentid;
+    var creatorName;
+    redirectComment(artWorkId, currentUserId, messageId, commentid, creatorName);
+}
+
+function submitComment(commentid, messageid) {
+    var comment = {};
+    var message = {};
+    var artWorkId = getParamObject()["artWorkId"];
+    var currentUserId = getCurrentUserId();
+    if (typeof PageVariable.commentMap[commentid] != "undefined") {
+        comment = PageVariable.commentMap[commentid];
+    } else {
+        for (var i = 0; i < PageVariable.artWorkComment.commentList.length; i++) {
+            var commentTemp = PageVariable.artWorkComment.commentList[i];
+            PageVariable.commentMap[commentTemp.id] = commentTemp;
+        }
+        comment = PageVariable.commentMap[commentid];
+    }
+    if (typeof PageVariable.messageMap[messageid] != "undefined") {
+        message = PageVariable.messageMap[messageid];
+    } else {
+        for (var i = 0; i < PageVariable.artWorkProject.messageList.length; i++) {
+            var messageTemp = PageVariable.artWorkProject.messageList[i];
+            PageVariable.messageMap[messageTemp.id] = messageTemp;
+        }
+        message = PageVariable.messageMap[messageid];
+    }
+    var creatorName
+    if (comment != null && typeof comment != "undefined") {
+        creatorName = comment.creator.name;
+    }
+    redirectComment(artWorkId, currentUserId, messageid, commentid, creatorName);
+
 }
 
 

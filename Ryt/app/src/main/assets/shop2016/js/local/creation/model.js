@@ -45,5 +45,7 @@ var PageVariable = {
     artWorkProject: "",     //当先项目的项目进度以及动态对象
     artWorkView: "",        //当前项目详情的对象
     artWorkComment: "",     //当前项目的用户评价对象
-    artWorkInvestRecord: "" //当前项目投资记录对象
+    artWorkInvestRecord: "",//当前项目投资记录对象
+    commentMap: {},
+    messageMap: {}
 };    //页面中主要的全局变量

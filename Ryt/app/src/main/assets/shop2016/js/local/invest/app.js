@@ -2,8 +2,8 @@
  * Created by Administrator on 2016/6/2 0002.
  */
 
-//hostName = "http://ryt.efeiyi.com";//服务器域名
-hostName = "http://192.168.1.75:8080";                           //服务器域名
+hostName = "http://ryt.efeiyi.com";//服务器域名
+//hostName = "http://192.168.1.75:8080";                           //服务器域名
 
 function redirectUser(userid) {
     //window.location.href = "rongyitou://jumpToUserHome_?" + userid;
@@ -18,9 +18,13 @@ function redirectPay(price, action) {
 }      // 跳转到付款的页面
 
 
-function redirectComment(artworkId, currentUserId, messageId, fatherCommentId) {
-    window.location.href = "";
-}       // 跳转到评论
+function redirectComment(artworkId, currentUserId, messageId, fatherCommentId,name) {
+    console.log("artworkId: "+artworkId);
+    console.log("currentUserId: "+currentUserId);
+    console.log("messageId: "+messageId);
+    console.log("fatherCommentId: "+fatherCommentId);
+    window.demo1.comment(artworkId, currentUserId, messageId, fatherCommentId,name);
+}       //跳转到评论
 
 function redirectConsumerAddress() {
     var userId = getCurrentUserId();

@@ -70,5 +70,7 @@ var PageVariable = {
         status: "2",
         consignee: "王二小",
         cityStr: ""
-    } //默认地址
+    }, //默认地址
+    commentMap: {},
+    messageMap: {}
 };    //页面中主要的全局变量

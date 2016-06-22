@@ -3,13 +3,13 @@
  */
 
 function initPage(currentUserId) {
-    var param = new Object();
+    /*var param = new Object();
     param.currentUserId = "imhfp1yr4636pj49";
-    PageVariable.param = param;
-    /*var paramStr = window.demo2.fetchParamObject();
+    PageVariable.param = param;*/
+    var paramStr = window.demo2.fetchParamObject();
     var paramObject = JSON.parse(paramStr);
     var param = new Object();
-    param.currentUserId = paramObject.currentUserId;*/
+    param.currentUserId = paramObject.currentUserId;
     /*console.log("++++++++++++++++++++++");
     console.log(paramStr);
     console.log("++++++++++++++++++++++");*/

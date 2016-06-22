@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/5/31 0031.
  */
 function initPage(artWorkId, currentUserId) {
-   /* var paramStr = window.demo1.fetchParamObject1();
+    /*var paramStr = window.demo1.fetchParamObject1();
     var paramObject = JSON.parse(paramStr);
     var param = new Object();
     param.artWorkId = paramObject.artWorkId;
@@ -33,47 +33,61 @@ function getArtWorkBaseInfo() {
     if (!artWorkProject.messageList.length > 0) {
         $("#dt").hide();
     }
-    $("#mainPicture").html(getArtWorkBaseInfoPictureHtml(artWorkInfo));
-    $("#mainInfo").html(getArtWorkBaseInfoMainHtml(artWorkInfo));
-    $("#rz").html(getArtWorkScheduleInvestHtml(artWorkProject));
-    $("#cz").html(getArtWorkScheduleCreateHtml(artWorkProject));
-    $("#pm").html(getArtWorkScheduleAuctionHtml(artWorkProject));
-    $("#pm2").html(getArtWorkScheduleAuctionResultHtml());
-    $("#dt").append(getArtWorkScheduleMessageHtml(artWorkProject));
-    $("#auctionMessage").html(getArtWorkBaseInfoAuctionMessageHtml(artWorkInfo));
-    $("#winner").html(getArtWorkAuctionWinnerHtml(artWorkInfo));
+    $("#mainPicture").html(generateDOTTemplateResult(Template.artWorkBaseInfoPicture, artWorkInfo));
+    $("#mainInfo").html(generateDOTTemplateResult(Template.artWorkBaseInfoMain, artWorkInfo));
+    $("#auctionMessage").html(generateDOTTemplateResult(Template.artWorkBaseInfoAuctionMessage, artWorkInfo));
+    $("#winner").html(generateDOTTemplateResult(Template.artWorkAuctionWinner, artWorkInfo));
+    $("#rz").html(generateDOTTemplateResult(Template.artWorkScheduleInvest, artWorkProject));
+    $("#cz").html(generateDOTTemplateResult(Template.artWorkScheduleCreate, artWorkProject));
+    $("#pm").html(generateDOTTemplateResult(Template.artWorkScheduleAuction, artWorkProject));
+    $("#pm2").html(generateDOTTemplateResult(Template.artWorkScheduleAuctionResult));
+    $("#dt").html(generateDOTTemplateResult(Template.artWorkScheduleMessage, artWorkProject));
     getBottomButton();
     getAuctionTimeResult();
     getArtWorkAuctionData(getArtWorkAuctionBidding);
     tabsHeight();
+    for (var i = 0; i < artWorkProject.messageList.length; i++) {
+        var message = artWorkProject.messageList[i];
+        PageVariable.messageMap[message.id] = message;
+        if (message.artworkCommentList != null) {
+            for (var k = 0; k < message.artworkCommentList.length; k++) {
+                var commentTemp = message.artworkCommentList[k];
+                PageVariable.commentMap[commentTemp.id] = commentTemp;
+            }
+        }
+    }
 }
 //获得项目详情的controller
 function getArtWorkDetail() {
     var artWorkView = PageVariable.artWorkView;
-    $("#artWorkView").html(getArtWorkDetailHtml(artWorkView));
+    $("#artWorkView").html(generateDOTTemplateResult(Template.artWorkDetail, artWorkView));
     tabsHeight();
 }
 //获得用户评价的controller
 function getArtWorkComment() {
     var artWorkComment = PageVariable.artWorkComment;
     if (pageEntity.pageIndex == 1) {
-        $("#userComment").html(getArtWorkCommentHtml(artWorkComment));
+        $("#userComment").html(generateDOTTemplateResult(Template.artWorkComment, artWorkComment));
     } else {
-        $("#userComment").append(getArtWorkCommentHtml(artWorkComment));
+        $("#userComment").append(generateDOTTemplateResult(Template.artWorkComment, artWorkComment));
     }
     pageEntity.pageIndex = pageEntity.pageIndex + 1;
     tabsHeight();
+    for (var i = 0; i < artWorkComment.commentList.length; i++) {
+        var comment = artWorkComment.commentList[i];
+        PageVariable.messageMap[comment.id] = comment;
+    }
 }
 
 function getArtWorkAuctionBidding() {
     var artWorkAuction = PageVariable.artWorkAuction;
     $("#auctionNum").html(PageVariable.biddingUsersNum + "人参与拍卖");
     if (pageEntity.pageIndex == 1) {
-        $("#auctionList").html(getArtWorkAuctionBiddingHtml(artWorkAuction));
+        $("#auctionList").html(generateDOTTemplateResult(Template.artWorkAuctionBidding, artWorkAuction));
     } else {
-        $("#auctionList").append(getArtWorkAuctionBiddingHtml(artWorkAuction));
+        $("#auctionList").append(generateDOTTemplateResult(Template.artWorkAuctionBidding, artWorkAuction));
     }
-    $("#auctionMessage").html(getArtWorkBaseInfoAuctionMessageHtml(PageVariable.artWorkInfo));
+    $("#auctionMessage").html(generateDOTTemplateResult(Template.artWorkBaseInfoAuctionMessage, PageVariable.artWorkInfo));
     pageEntity.pageIndex = pageEntity.pageIndex + 1;
     getArtWorkAuctionBiddingTopThree()
     tabsHeight();
@@ -81,19 +95,26 @@ function getArtWorkAuctionBidding() {
 
 function getArtWorkAuctionBiddingTopThree() {
     var artWorkAuction = PageVariable.artWorkAuction;
-    $("#currentAuctionTopThreeRecord").html(getArtWorkAuctionBiddingTopThreeHtml(artWorkAuction))
+    $("#currentAuctionTopThreeRecord").html(generateDOTTemplateResult(Template.artWorkAuctionBiddingTop, artWorkAuction))
 }
 
 function getBottomButton() {
     var artWorkBaseInfo = PageVariable.artWorkInfo;
-    $("#bottomButton").append(getPreBottomButtonHtml(artWorkBaseInfo));
-    $("#bottomButton").append(getBeingBottomButtonHtml(artWorkBaseInfo));
-    $("#bottomButton").append(getAfterBottomButtonHtml(artWorkBaseInfo));
+    $("#bottomButton").append(generateDOTTemplateResult(Template.preBottomButton, artWorkBaseInfo));
+    $("#bottomButton").append(generateDOTTemplateResult(Template.beingBottomButton, artWorkBaseInfo));
+    $("#bottomButton").append(generateDOTTemplateResult(Template.afterBottomButton, artWorkBaseInfo));
     ChooseCountComponent();
 }
 
 function getAlert(content) {
     $("#bottomButton").append(getAlertHtml(content));
+}
+
+function getAlertHtml(content) {
+    var out = ' <div id="pm-bid-tips" class="pm-bid-tips"> ';
+    out += ' <p>' + content + '</p> ';
+    out += ' </div>';
+    return out;
 }
 //获得项目的基本信息
 function getArtWorkBaseInfoData(callback) {

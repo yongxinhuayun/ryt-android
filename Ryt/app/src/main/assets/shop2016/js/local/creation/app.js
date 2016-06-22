@@ -6,6 +6,7 @@
 function redirectUser(userid) {
     console.log("test");
 //        window.location.href = "rongyitou://userid:skldjflksdjflk"
+        console.log("XXXXXXXXXXXXXXXXXXXXXXXX"+userid);
         window.demo.clickOnAndroid(userid);
 }
 
@@ -14,7 +15,6 @@ function redirectComment(artworkId, currentUserId, messageId, fatherCommentId,na
     console.log("currentUserId: "+currentUserId);
     console.log("messageId: "+messageId);
     console.log("fatherCommentId: "+fatherCommentId);
-    console.log("name: "+name);
     window.demo.comment(artworkId, currentUserId, messageId, fatherCommentId,name);
 }       //跳转到评论
 
