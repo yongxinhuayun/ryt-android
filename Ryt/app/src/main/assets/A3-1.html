@@ -15,116 +15,27 @@
     <!--</div>-->
     <!--//End--模块--header-->
     <div class="swiper-container" id="mainPicture">
-        <!--<div class="swiper-wrapper">-->
-        <!--<div class="swiper-slide">-->
-        <!--<a href=""><img class="itam-img" src="http://s.amazeui.org/media/i/demos/bing-2.jpg"-->
-        <!--alt=""><span>逐鹿顺意铜雕</span></a>-->
-        <!--</div>-->
-        <!--</div>-->
+        <!--项目主图-->
     </div>
     <!--//End--模块--轮播图-->
     <!--分为三种状态  拍卖前 拍马中 拍卖结束-->
     <div class="man">
         <div class="bd" id="mainInfo">
-            <!--<div class="page">-->
-            <!--<div class="p-time">-->
-            <!--<div class="bl"><em>起拍价：</em><em>{{=it.startingPrice}}</em><em>元</em></div>-->
-            <!--<div class="br">-->
-            <!--&lt;!&ndash;@TODO 倒计时 并且根据拍卖进度变化&ndash;&gt;-->
-            <!--{{ if(it.step=="30") { }}-->
-            <!--<em>距拍卖开始</em>-->
-            <!--{{ } else if (it.step =="31"){ }}-->
-            <!--<em>距拍卖结束</em>-->
-            <!--{{ } else if(it.step == "32"){ }}-->
-            <!--<em>拍卖结束</em>-->
-            <!--{{ } }}-->
-            <!--{{ if(it.step=="30" || it.step=="31") { }}-->
-            <!--<span class="time" onload="countDown(this,'{{ if(it.step=="30"){ }}{{=it.auctionStartDatetime}}{{ }else{ }}{{=it.auctionEndDatetime}}{{ } }}')"><em class="num" id="hh">01</em><em class="str">小时</em><em class="num"-->
-            <!--id="mm">30</em><em-->
-            <!--class="str">分</em><em class="num" id="ss">59</em><em class="str">秒</em>-->
-            <!--</span>-->
-            <!--{{ }else { }}-->
-            <!--<span class="time"><strong> 恭喜    {{=it.winner.name}}</strong></span>-->
-            <!--{{ } }}-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash;//End&#45;&#45;p-time&ndash;&gt;-->
-            <!--<div class="mp">-->
-            <!--<div class="pic"><a onclick="redirectUser('{{=it.masterId}}')"><img src="{{=it.headUrl}}"-->
-            <!--alt=""></a></div>-->
-            <!--<div class="n-page"><span class="name">{{=it.masterName}}</span><strong></strong><span-->
-            <!--class="rank">{{=it.title}}</span></div>-->
-            <!--</div>-->
-            <!--<div class="t-page">-->
-            <!--<div class="wh">-->
-            <!--<i></i>-->
-            <!--<span>{{=it.brief}}</span>-->
-            <!--<em></em>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
+            <!--项目基本信息-->
         </div>
         <!--@TODO 根据状态变化-->
         <div class="pm_msg" id="auctionMessage">
-            <!--<ul>-->
-            <!--<li class="">-->
-            <!--<p><span>{{=PageVariable.auctionNum}}</span>次</p>-->
-            <!--<p>有效出价</p>-->
-            <!--</li>-->
-            <!--<li class="">-->
-            <!--<p><span>{{=PageVariable.viewNum}}</span>次</p>-->
-            <!--<p>浏览次数</p>-->
-            <!--</li>-->
-            <!--<li class="">-->
-            <!--<p><span>{{=getAuctionPrice(it.startingPrice) }}</span>元</p>-->
-            <!--<p>加价幅度</p>-->
-            <!--</li>-->
-            <!--<li class="">-->
-            <!--<p><span>30</span>秒</p>-->
-            <!--<p>延时周期</p>-->
-            <!--</li>-->
-            <!--</ul>-->
+            <!--拍卖信息-->
         </div>
         <!--//End---->
-
-        <div class="com-invest pm_com-invest" id="currentAuctionTopThreeRecord">
-
-            <!--<h5>实时出价</h5>-->
-            <!--<ul>-->
-            <!--{{ for(var i = 0 ; i<3 ; i++){-->
-            <!--var bidding = it.artWorkBiddingList[i];-->
-            <!--}}-->
-            <!--<li>-->
-            <!--<i class="rank rank1"></i>-->
-            <!--<span><img src="{{=bidding.creator.pictureUrl}}" alt=""><strong>{{=dealUsername(bidding.creator.username,3,4)}}</strong></span>-->
-            <!--<span><strong>出价了</strong>&nbsp;<b>{{=parseInt(bidding.price)}}元</b></span>-->
-            <!--<span>{{=getDateStr(bidding.createDatetime)}}</span>-->
-            <!--</li>-->
-            <!--{{ } }}-->
-            <!--</ul>-->
-
-
-        </div>
-
         <div id="winner">
-            <!--{{-->
-            <!--if(it.step=="32"){-->
-            <!--}}-->
-            <!--<div class="pm_end_user">-->
-            <!--<div class="title">-->
-            <!--<p>-->
-            <!--<span>拍品得主</span>-->
-            <!--<span>{{=it.winner.name}}</span>-->
-            <!--</p>-->
-            <!--</div>-->
-            <!--<div class="info">-->
-            <!--<span>成交金额： {{=it.currentAuctionPrice}} 元</span>-->
-            <!--<span>参拍人数： {{=PageVariable.auctionNum}} 人</span>-->
-            <!--</div>-->
-
-            <!--</div>-->
-            <!--{{ } }}-->
+            <!--竞拍的主-->
         </div>
+        <div class="com-invest pm_com-invest" id="currentAuctionTopThreeRecord">
+            <!--实时出价-->
+
+        </div>
+
 
     </div>
     <!--//End--模块--人物投资信息-->
@@ -142,178 +53,24 @@
         <div id="tabs-container" class="swiper-container-horizontal">
             <div class="swiper-wrapper">
                 <div date="项目详情" class="swiper-slide swiper-slide-active" id="artWorkView">
-                    <div class="details">
-                        <h5>项目介绍</h5>
-                        <div class="content">
-                            <p>{{=it.description}}</p>
-                            {{ for (var i = 0 ; i < it.artworkAttachmentList.length ; i++){ }}
-                            <a href=""><img src="{{=it.artworkAttachmentList[i].fileName}}" alt=""></a>
-                            {{ } }}
-                        </div>
-                    </div>
-                    <div class="details">
-                        <h5>创作过程说明</h5>
-                        <div class="content">
-                            {{=it.make_instru}}
-                        </div>
-                    </div>
-                    <div class="details">
-                        <h5>融资解惑</h5>
-                        <div class="content">
-                            {{=it.financing_aq}}
-                        </div>
-                    </div>
+                    <!--项目详情-->
                 </div>
                 <div date="项目进度" id="XMJD" class="swiper-slide">
                     <div class="b-box">
                         <div class="timeline" id="rz">
-                            <!--<div class="title">-->
-                            <!--<div class="l-icon rz-icon"></div>-->
-                            <!--<div class="r-txt">-->
-                            <!--<span class="head">融资</span>-->
-                            <!--<span class="month">{{=getDateStr(it.investStartDatetime)}}</span>-->
-                            <!--<span class="alltime">{{=getTimeStr(it.investStartDatetime)}}</span>-->
-                            <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="page">-->
-                            <!--<span class="p-head">{{=(new Date().getTime())-(it.investStartDatetime)}}天前</span>-->
-                            <!--<p>项目审核通过发起融资，共有{{=it.artworkInvestsSize}}位用户投资。</p>-->
-                            <!--</div>-->
+                            <!--项目进度-融资-->
                         </div>
                         <div class="timeline cz" id="cz">
-                            <!--<div class="title">-->
-                            <!--<div class="l-icon rz-icon"></div>-->
-                            <!--<div class="r-txt">-->
-                            <!--<span class="head">创作</span>-->
-                            <!--<span class="month">{{=getDateStr(it.investEndDatetime)}}</span>-->
-                            <!--<span class="alltime">{{=getTimeStr(it.investEndDatetime)}}</span>-->
-                            <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="page">-->
-                            <!--<p>预计作品创作完成还有{{=getDayNums(it.creationEndDatetime-it.investEndDatetime)}}天。</p>-->
-                            <!--</div>-->
+                            <!--项目进度创作-->
                         </div>
                         <div class="timeline dt" id="dt">
-                            <div class="title">
-                                <div class="l-icon rz-icon"></div>
-                                <div class="r-txt">
-                                    <span class="head">动态</span>
-                                </div>
-                            </div>
-                            <!--<div class="page">-->
-                            <!--<div class="tm-box fl wb" style="margin-top:-42px;">-->
-                            <!--<span class="month" style="margin-right:11px;">{{=getDateStr(it.messageList[0].createDatetime)}}</span>-->
-                            <!--<span class="alltime">{{=getTimeStr(it.messageList[0].createDatetime)}}</span>-->
-                            <!--</div>-->
-                            <!--<div class="list">-->
-                            <!--<div class="messageContent">-->
-                            <!--{{=it.messageList[0].content}}-->
-                            <!--</div>-->
-                            <!--<div class="p-all" style="width: 100%;float: left">-->
-                            <!--{{ for (var i = 0 ; i < it.messageList[0].artworkCommentList.length ; i++) {-->
-                            <!--var comment = it.messageList[0].artworkCommentList[i];-->
-                            <!--if( typeof comment.fatherComment != "undefined" && comment.fatherComment-->
-                            <!--!=null){-->
-                            <!--}}-->
-                            <!--<p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{if(comment.creator.id== getCurrentUserId()){-->
-                            <!--}}我的{{ } else{ }} {{=comment.creator.name}} {{ } }}</a>回复<a-->
-                            <!--onclick="redirectUser('{{=comment.fatherComment.creator.id}}')">{{=comment.fatherComment.creator.name}}</a>：<span>{{=comment.content}}</span>-->
-                            <!--</p>-->
-                            <!--{{ }else{ }}-->
-                            <!--<p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{=comment.creator.name}}</a>：<span>{{=comment.content}}</span>-->
-                            <!--</p>-->
-                            <!--{{ } }}-->
-                            <!--{{ } }}-->
-                            <!--<div class="hideCommentList" style="display: none;">-->
-                            <!--{{ for (var i = 5 ; i < it.messageList[0].artworkCommentList.length ; i++) {-->
-                            <!--var comment = it.messageList[0].artworkCommentList[i];-->
-                            <!--if( typeof comment.fatherComment != "undefined" && comment.fatherComment-->
-                            <!--!=null){-->
-                            <!--}}-->
-                            <!--<p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{ if(comment.creator.id== getCurrentUserId())-->
-                            <!--{ }}我的{{ }else{ }} {{=comment.creator.name}} {{ } }}</a>回复<a-->
-                            <!--onclick="redirectUser('{{=comment.fatherComment.creator.id}}')">{{=comment.fatherComment.creator.name}}</a>：<span>{{=comment.content}}</span>-->
-                            <!--</p>-->
-                            <!--{{ }else{ }}-->
-                            <!--<p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{=comment.creator.name}}</a>：<span>{{=comment.content}}</span>-->
-                            <!--</p>-->
-                            <!--{{ } }}-->
-                            <!--{{ } }}-->
-                            <!--</div>-->
-                            <!--</div>-->
-                            <!--<a id="addList" style="font-size: 14px;color:#666"-->
-                            <!--onclick="$('.hideCommentList').show();$(this).hide();tabsHeight();">查看所有评论</a>-->
-                            <!--</div>-->
-                            <!--<div class="hideMessageList" style="display: none;">-->
-                            <!--{{-->
-                            <!--for(var k = 1 ; k < it.messageList.length ; k++){-->
-                            <!--var message = it.messageList[k];-->
-                            <!--}}-->
-                            <!--&lt;!&ndash;<div class="page">&ndash;&gt;-->
-                            <!--<div class="tm-box fl wb" style="margin-top: 15px;">-->
-                            <!--<span class="month" style="margin-right:11px;">{{=getDateStr(message.createDatetime)}}</span>-->
-                            <!--<span class="alltime">{{=getTimeStr(message.createDatetime)}}</span>-->
-                            <!--</div>-->
-                            <!--<div class="list">-->
-                            <!--<div class="messageContent">-->
-                            <!--{{=message.content}}-->
-                            <!--</div>-->
-                            <!--<div class="p-all" style="width: 100%;float: left">-->
-                            <!--{{ for (var i = 0 ; i < message.artworkCommentList.length ; i++) {-->
-                            <!--var comment = message.artworkCommentList[i];-->
-                            <!--if( typeof comment.fatherComment != "undefined" && comment.fatherComment-->
-                            <!--!=null){-->
-                            <!--}}-->
-                            <!--<p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{if(comment.creator.id== getCurrentUserId()){-->
-                            <!--}}我的{{ } else{ }} {{=comment.creator.name}} {{ } }}</a>回复<a-->
-                            <!--onclick="redirectUser('{{=comment.fatherComment.creator.id}}')">{{=comment.fatherComment.creator.name}}</a>：<span>{{=comment.content}}</span>-->
-                            <!--</p>-->
-                            <!--{{ }else{ }}-->
-                            <!--<p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{=comment.creator.name}}</a>：<span>{{=comment.content}}</span>-->
-                            <!--</p>-->
-                            <!--{{ } }}-->
-                            <!--{{ } }}-->
-                            <!--<div class="hideCommentList{{=message.id}}" style="display: none;">-->
-                            <!--{{ for (var i = 5 ; i < message.artworkCommentList.length ; i++) {-->
-                            <!--var comment = message.artworkCommentList[i];-->
-                            <!--if( typeof comment.fatherComment != "undefined" && comment.fatherComment-->
-                            <!--!=null){-->
-                            <!--}}-->
-                            <!--<p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{if(comment.creator.id==-->
-                            <!--getCurrentUserId()){ }}我的{{ } else{ }} {{=comment.creator.name}} {{-->
-                            <!--} }}</a>回复<a-->
-                            <!--onclick="redirectUser('{{=comment.fatherComment.creator.id}}')">{{=comment.fatherComment.creator.name}}</a>：<span>{{=comment.content}}</span>-->
-                            <!--</p>-->
-                            <!--{{ }else{ }}-->
-                            <!--<p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{=comment.creator.name}}</a>：<span>{{=comment.content}}</span>-->
-                            <!--</p>-->
-                            <!--{{ } }}-->
-                            <!--{{ } }}-->
-                            <!--</div>-->
-                            <!--</div>-->
-                            <!--<a style="font-size: 14px;color:#666"-->
-                            <!--onclick="$('.hideCommentList{{=message.id}}').show();$(this).hide();tabsHeight();">查看所有评论</a>-->
-                            <!--</div>-->
-                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                            <!--{{ } }}-->
-                            <!--</div>-->
-                            <!--<div class="button">-->
-                            <!--<a onclick="$('.hideMessageList').show();$(this).hide();tabsHeight();">查看更多动态</a>-->
-                            <!--</div>-->
-                            <!--</div>-->
-
+                            <!--项目进度-动态-->
                         </div>
                         <div class="timeline pm" id="pm">
-                            <!--<div class="title">-->
-                            <!--<div class="l-icon rz-icon"></div>-->
-                            <!--<div class="r-txt">-->
-                            <!--<span class="head">拍卖</span>-->
-                            <!--<span class="month">{{=getDateStr(it.auctionStartDatetime)}}</span>-->
-                            <!--<span class="alltime">08:50{{=getTimeStr(it.auctionStartDatetime)}}</span>-->
-                            <!--</div>-->
-                            <!--</div>-->
+                            <!--项目进度-拍卖-->
                         </div>
                         <div class="timeline pm" id="pm2">
+
                         </div>
                     </div>
                 </div>
@@ -355,40 +112,7 @@
                 <div date="用户评价" class="swiper-slide">
                     <div class="discuss">
                         <ul id="userComment">
-                            <!--{{-->
-                            <!--for(var i = 0 ; i < it.commentList.length ; i++){-->
-                            <!--var comment = it.commentList[i];-->
-
-                            <!--if( typeof comment.fatherComment != "undefined" && comment.fatherComment!=null){-->
-
-                            <!--}}-->
-                            <!--<li>-->
-                            <!--<div class="pic"><a onclick="redirectUser('{{=comment.creator.id}}')"><img src="{{=comment.creator.pictureUrl}}" alt=""></a></div>-->
-                            <!--<div class="box">-->
-                            <!--<div class="name"><span>{{=comment.creator.name}}</span><span class="time">{{=getTimeStr(comment.createDatetime)}}</span>-->
-                            <!--</div>-->
-                            <!--&lt;!&ndash;回复&ndash;&gt;-->
-                            <!--<div class="content">-->
-                            <!--<div class="reply">-->
-                            <!--<p>回复 <a onclick="redirectUser('{{=comment.fatherComment.creator.id}}')">{{=comment.fatherComment.creator.name}}</a>：<span>{{=comment.content}}</span>-->
-                            <!--</p>-->
-                            <!--</div>-->
-                            <!--</div>-->
-                            <!--</div>-->
-                            <!--</li>-->
-                            <!--{{ }else{ }}-->
-                            <!--<li>-->
-                            <!--<div class="pic"><a onclick="redirectUser('{{=comment.creator.id}}')"><img src="{{=comment.creator.pictureUrl}}" alt=""></a></div>-->
-                            <!--<div class="box">-->
-                            <!--<div class="name"><span>{{=comment.creator.name}}</span><span class="time">{{=getTimeStr(comment.createDatetime)}}</span>-->
-                            <!--</div>-->
-                            <!--<div class="content">{{=comment.content}}</div>-->
-                            <!--</div>-->
-                            <!--</li>-->
-                            <!--{{ } }}-->
-
-                            <!--{{ } }}-->
-
+                            <!--用户评价-->
                         </ul>
                     </div>
                 </div>
@@ -396,15 +120,7 @@
                     <div class="com-invest">
                         <h5 id="auctionNum"></h5>
                         <ul id="auctionList">
-                            <!--{{ for (var i = 0 ;i < it.artWorkBiddingList.length ; i++){-->
-                            <!--var bidding = it.artWorkBiddingList[i];-->
-                            <!--}}-->
-                            <!--<li>-->
-                            <!--<span><img src="{{=bidding.creator.pictureUrl}}" alt=""><strong>{{=dealUsername(bidding.creator.username,3,4)}}</strong></span>-->
-                            <!--<span><strong>出价了</strong>&nbsp;<b>{{=parseInt(bidding.price)}}元</b></span>-->
-                            <!--<span>{{=getTimeStr(bidding.createDatetime)}}</span>-->
-                            <!--</li>-->
-                            <!--{{ } }}-->
+                            <!--拍卖纪录-->
                         </ul>
 
                     </div>
@@ -418,165 +134,10 @@
     <!--//End--模块--滑动导航-->
 </div>
 
-<!--@TODO 根据不同拍卖状态显示不同的内容-->
-<!--拍卖前阶段是 评论，缴纳保证金-->
-<!--拍卖中阶段是 出价，input ，评论-->
-<!--拍卖结束阶段是-->
-
-
-<!--拍卖之前-->
-<!--<div class="pm_btm_bar">-->
-<!--<a class="links" href="" title="评论">评论</a>-->
-<!--<a class="links" id="btn_pay" title="缴纳保证金">缴纳保证金</a>-->
-<!--</div>-->
-<!--&lt;!&ndash;//End&#45;&#45;底部悬浮&ndash;&gt;-->
-
-<!--&lt;!&ndash;@TODO 根据拍卖进度的不同显示不同的内容&ndash;&gt;-->
-<!--<div id="btn_pay_pannel" class="pm_pay_lay">-->
-<!--<div class="main">-->
-<!--<em class="close"></em>-->
-<!--<div class="p1">-->
-<!--<p>-->
-<!--<span>保证金</span><span class="price">¥100</span>-->
-<!--</p>-->
-<!--</div>-->
-<!--<div class="p2">保证金将直接从您的个人账户中冻结，若竞拍不成功在72小时之内释放保证金。</div>-->
-<!--<div class="p3"><i id="radio" class="active"></i>竞拍需同意融艺投竞拍协议<a onclick="redirectProtocol()">《融艺投竞拍协议》</a></div>-->
-<!--<a href="" class="submit">提交保证金</a>-->
-<!--</div>-->
-<!--</div>-->
-
-<!--付尾款 在竞拍成功的时候会，拍卖结束会出现这个框-->
-<!--<div id="btn_pay_pannel2" class="pm_pay_lay">-->
-<!--<div class="main">-->
-<!--<em class="close"></em>-->
-<!--<div class="p1">-->
-<!--<p>-->
-<!--<span>尾款金额</span><span class="price">¥100</span>-->
-<!--</p>-->
-<!--</div>-->
-<!--<div class="p2">尾款金额将直接从您的个人账户当中扣除。</div>-->
-<!--<div class="p3"><i id="radio2" class="active"></i>竞拍需同意融艺投竞拍协议<a onclick="redirectProtocol()">《融艺投竞拍协议》</a>-->
-<!--</div>-->
-<!--<a onclick="pay()" class="submit">提交保证金</a>-->
-<!--</div>-->
-<!--</div>-->
-<!--//End--缴纳保证金-->
-
-<!--&lt;!&ndash;@TODO 余额不足的时候弹出 需要判断余额的接口&ndash;&gt;-->
-<!--<div class="pm_dialog">-->
-<!--<div class="content">-->
-<!--<div class="info">-->
-<!--<p>哎呀，很遗憾地告诉您，您的个人账户余额不足。</p>-->
-<!--<p>只需充值（10 %的起拍金额）元，就可以参拍喽~</p>-->
-<!--</div>-->
-<!--<a href="" class="btn" title="去充值">去充值</a>-->
-<!--</div>-->
-<!--</div>-->
-<!--//End--余额不足提示-->
-
-<!--拍卖前-->
 
 <div id="bottomButton">
 
-
-    <!--{{ if(it.step == "30"){ }}-->
-    <!--<div class="pm_btm_bar">-->
-    <!--<a class="links" onclick="redirectComment('{{=getCurrentUserId()}}')" title="评论">评论</a>-->
-    <!--{{ if(PageVariable.isSubmitDepositPrice == "0"){ }}-->
-    <!--<a class="links" title="缴纳保证金">已缴纳保证金</a>-->
-    <!--{{ }else{ }}-->
-    <!--<a class="links" id="btn_pay" title="缴纳保证金">缴纳保证金</a>-->
-    <!--{{ } }}-->
-    <!--</div>-->
-    <!--&lt;!&ndash;//End&#45;&#45;底部悬浮&ndash;&gt;-->
-    <!--<div id="btn_pay_pannel" class="pm_pay_lay">-->
-    <!--<div class="main">-->
-    <!--<em class="close"></em>-->
-    <!--<div class="p1">-->
-    <!--<div class="info">-->
-    <!--<p><span>保证金</span><span class="price">¥{{=getDepositPrice(it.startingPrice)}}</span></p>-->
-    <!--<p>若竞拍不成功在72小时之内释放保证金。</p>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--{{if(typeof PageVariable.consumerAddress!= "undefined" && PageVariable.consumerAddress != null){ }}-->
-    <!--<div class="t2">-->
-    <!--<div class="info">-->
-    <!--<p><strong>收货人</strong><a onclick="redirectConsumerAddress()"><em>{{=PageVariable.consumerAddress.consignee}}</em>&nbsp;&nbsp;&nbsp;<em>{{=PageVariable.consumerAddress.phone}}</em></a>-->
-    <!--</p>-->
-    <!--<p><strong>收货地址</strong><a onclick="redirectConsumerAddress()">{{=PageVariable.consumerAddress.districtStr+PageVariable.consumerAddress.details}}<i-->
-    <!--class="chevron-right"></i></a></p>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--{{ } }}-->
-    <!--<div class="p4">-->
-    <!--<div class="info">-->
-    <!--<a class="link active" href="javascript:" title="支付宝支付">支付宝支付</a>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="p3"><i id="radio" class="active"></i>竞拍需同意融艺投竞拍协议<a onclick="redirectProtocol()">《融艺投竞拍协议》</a>-->
-    <!--</div>-->
-    <!--<a onclick="submitDepositPrice('{{=it.startingPrice}}')" class="submit">提交保证金</a>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--&lt;!&ndash;//End&#45;&#45;缴纳保证金&ndash;&gt;-->
-    <!--{{ } }}-->
-
-    <!--{{ if(it.step == "31"){ }}-->
-    <!--<div class="pm_btm_bar" style="z-index:120;">-->
-    <!--<div class="bid">-->
-    <!--<a id="bid-link" onclick="bid()">出价</a>-->
-    <!--<span class="num addsub"-->
-    <!--data-option='{"upLimit":-1,"inputName":"auctionPrice","downLimit":{{=getCurrentAuctionPrice(it.currentAuctionPrice)}} ,"defaultValue":{{=getCurrentAuctionPrice(it.currentAuctionPrice)}} }'-->
-    <!--onload="ChooseCountComponent()">-->
-    <!--&lt;!&ndash;<em class="sub"></em>&ndash;&gt;-->
-    <!--&lt;!&ndash;<input disabled="true" type="text" value="2000">&ndash;&gt;-->
-    <!--&lt;!&ndash;<em class="add"></em>&ndash;&gt;-->
-    <!--</span>-->
-    <!--<a onclick="redirectComment('{{=getCurrentUserId()}}')">评论</a>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--&lt;!&ndash;//End&#45;&#45;出价部分&ndash;&gt;-->
-
-
-    <!--<<<点击出价后的提示框 出价成功和出价失败都会弹出提示框>>>-->
-    <!--<div id="pm-bid-tips" class="pm-bid-tips">-->
-    <!--<p>出价成功！</p>-->
-    <!--</div>-->
-    <!--//End--点击出价后的提示框-->
-
-    <!--{{ } }}-->
-
-    <!--{{ if(it.step == "32" && it.winner.id == getCurrentUserId()){ }}-->
-    <!--<div class="pm_btm_bar">-->
-    <!--<a class="links" onclick="redirectComment()" title="评论">评论</a>-->
-    <!--<a class="links links_end" id="btn_pay_end" title="追加尾款">追加尾款</a>-->
-    <!--</div>-->
-    <!--<div id="btn_pay_pannel" class="pm_pay_lay">-->
-    <!--<div class="main">-->
-    <!--<em class="close"></em>-->
-    <!--<div class="p1">-->
-    <!--<div class="info">-->
-    <!--<p><span>尾款金额</span><span class="price">¥{{=getCurrentFinalPrice()}}</span></p>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="p4">-->
-    <!--<div class="info">-->
-    <!--<a class="link active" href="javascript:" title="支付宝支付">支付宝支付</a>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="p3"><i id="radio" class="active"></i>竞拍需同意融艺投竞拍协议<a onclick="redirectProtocol()">《融艺投竞拍协议》</a>-->
-    <!--</div>-->
-    <!--<a onclick="submitRestPrice()" class="submit">追加尾款</a>-->
-    <!--</div>-->
-    <!--</div>-->
-
-    <!--{{ }else if(it.step == "32"){ }}-->
-    <!--<div class="pm_btm_bar">-->
-    <!--<a class="links" onclick="redirectComment()" title="评论">评论</a>-->
-    <!--</div>-->
-    <!--{{ } }}-->
-    <!--&lt;!&ndash;//End&#45;&#45;余额不足提示&ndash;&gt;-->
+    <!--//End--余额不足提示-->
 
 </div>
 
@@ -595,14 +156,542 @@
 
 </div>
 
+<!--项目主图片-->
+<script type="text/x-dot-template" id="artWorkBaseInfoPicture">
+    <div class="swiper-slide"><a href=""><img class="itam-img"
+                                              src="{{=it.picture_url}}"
+                                              alt=""><span>{{=it.name}}</span></a>
+    </div>
+</script>
+<!--项目详情-->
+<script type="text/x-dot-template" id="artWorkDetail">
+    <div class="details">
+        <h5>项目介绍</h5>
+        <div class="content">
+            <p>{{=it.description}}</p>
+            {{ for (var i = 0 ; i < it.artworkAttachmentList.length ; i++){ }}
+            <a href=""><img src="{{=it.artworkAttachmentList[i].fileName}}" alt=""></a>
+            {{ } }}
+        </div>
+    </div>
+    <div class="details">
+        <h5>创作过程说明</h5>
+        <div class="content">
+            {{=it.make_instru}}
+        </div>
+    </div>
+    <div class="details">
+        <h5>融资解惑</h5>
+        <div class="content">
+            {{=it.financing_aq}}
+        </div>
+    </div>
+</script>
+<!--项目基本信息-->
+<script type="text/x-dot-template" id="artWorkBaseInfoMain">
+    <div class="page">
+        <div class="p-time">
+            <div class="bl"><em>起拍价：</em><em>{{=it.startingPrice}}</em><em>元</em></div>
+            <div class="br">
+                <!-- 倒计时 并且根据拍卖进度变化-->
+                {{ if(it.step=="30") { }}
+                <em>距拍卖开始</em>
+                {{ } else if (it.step =="31"){ }}
+                <em>距拍卖结束</em>
+                {{ } else if(it.step == "32"){ }}
+                <em>拍卖结束</em>
+                {{ } }}
+                {{ if(it.step=="30" || it.step=="31") { }}
+                <span class="time" onload="countDown(this,'{{ if(it.step==" 30"){
+                }}{{=it.auctionStartDatetime}}{{ }else{ }}{{=it.auctionEndDatetime}}{{ } }}')"><em class="num"
+                                                                                                   id="hh">01</em><em
+                    class="str">小时</em><em class="num"
+                                           id="mm">30</em><em
+                    class="str">分</em><em class="num" id="ss">59</em><em class="str">秒</em>
+                </span>
+                {{ }else { }}
+                <span class="time"><strong> 恭喜    {{=it.winner.name}}</strong></span>
+                {{ } }}
+            </div>
+        </div>
+        <!--//End--p-time-->
+        <div class="mp">
+            <div class="pic"><a onclick="redirectUser('{{=it.masterId}}')"><img src="{{=it.headUrl}}"
+                                                                                alt=""></a></div>
+            <div class="n-page"><span class="name">{{=it.masterName}}</span><strong></strong><span
+                    class="rank">{{=it.title}}</span></div>
+        </div>
+        <div class="t-page">
+            <div class="wh">
+                <i></i>
+                <span>{{=it.brief}}</span>
+                <em></em>
+            </div>
+        </div>
+    </div>
+</script>
+<!--项目基本信息-拍卖信息-->
+<script type="text/x-dot-template" id="artWorkBaseInfoAuctionMessage">
+    <ul>
+        <li class="">
+            <p><span>{{=PageVariable.auctionNum}}</span>次</p>
+            <p>有效出价</p>
+        </li>
+        <li class="">
+            <p><span>{{=PageVariable.viewNum}}</span>次</p>
+            <p>浏览次数</p>
+        </li>
+        <li class="">
+            <p><span>{{=getAuctionPrice(it.startingPrice) }}</span>元</p>
+            <p>加价幅度</p>
+        </li>
+        <li class="">
+            <p><span>30</span>秒</p>
+            <p>延时周期</p>
+        </li>
+    </ul>
+</script>
+<!--实时出价-->
+<script type="text/x-dot-template" id="artWorkAuctionBiddingTop">
+    <h5>实时出价</h5>
+    <ul>
+        {{ for(var i = 0 ; i<3 ; i++){
+        var bidding = it.artWorkBiddingList[i];
+        }}
+        <li>
+            <i class="rank rank1"></i>
+            <span><img src="{{=bidding.creator.pictureUrl}}" alt=""><strong>{{=dealUsername(bidding.creator.username,3,4)}}</strong></span>
+            <span><strong>出价了</strong>&nbsp;<b>{{=parseInt(bidding.price)}}元</b></span>
+            <span>{{=getDateStr(bidding.createDatetime)}}</span>
+        </li>
+        {{ } }}
+    </ul>
+</script>
+<!--竞拍的主-->
+<script type="text/x-dot-template" id="artWorkAuctionWinner">
+    {{
+    if(it.step=="32"){
+    }}
+    <div class="pm_end_user">
+        <div class="title">
+            <p>
+                <span>拍品得主</span>
+                <span>{{=it.winner.name}}</span>
+            </p>
+        </div>
+        <div class="info">
+            <span>成交金额： {{=it.currentAuctionPrice}} 元</span>
+            <span>参拍人数： {{=PageVariable.auctionNum}} 人</span>
+        </div>
+
+    </div>
+    {{ } }}
+</script>
+<!--项目进度-拍卖-->
+<script type="text/x-dot-template" id="artWorkScheduleAuction">
+    <div class="title">
+        <div class="l-icon rz-icon"></div>
+        <div class="r-txt">
+            <span class="head">拍卖</span>
+            <span class="month">{{=getDateFormatStr(it.auctionStartDatetime, "MM月dd日hh点mm分")}}</span>
+            {{ if(PageVariable.artWorkInfo.step == "30"){ }}
+                                    <span class="alltime">
+                                        开始拍卖
+                                    </span>
+            {{ }else if(PageVariable.artWorkInfo.step == "31"){ }}
+                                    <span class="alltime">
+                                    拍卖中
+                                    </span>
+            {{ }else if(PageVariable.artWorkInfo.step == "32"){ }}
+                                    <span class="alltime">
+                                    拍卖
+                                    </span>
+            {{ } }}
+        </div>
+    </div>
+    {{ if(PageVariable.artWorkInfo.step == "30"){ }}
+    <div class="page"><p>拍卖即将开始，敬请期待...</p></div>
+    {{ } }}
+</script>
+<!--项目进度-拍卖结果-->
+<script type="text/x-dot-template" id="artWorkScheduleAuctionResult">
+    {{ if(PageVariable.artWorkInfo.step == "32"){ }}
+    <div class="title">
+        <div class="l-icon rz-icon"></div>
+        <div class="r-txt"><span class="head">拍卖</span>
+            <span class="month">{{=getDateFormatStr(PageVariable.artWorkInfo.auctionEndDatetime, "MM月dd日hh点mm分")}}</span>
+            <span class="alltime">拍卖结束</span>
+        </div>
+    </div>
+    <div class="page"><p>拍卖结束，获得者是{{=PageVariable.artWorkInfo.winner.name}}</p></div>
+    {{ } }}
+</script>
+<!--用户评价-->
+<script type="text/x-dot-template" id="artWorkComment">
+    {{
+    for(var i = 0 ; i < it.commentList.length ; i++){
+    var comment = it.commentList[i];
+
+    if( typeof comment.fatherComment != "undefined" && comment.fatherComment!=null){
+
+    }}
+    <li>
+        <div class="pic"><a onclick="redirectUser('{{=comment.creator.id}}')"><img
+                src="{{=comment.creator.pictureUrl}}" alt=""></a></div>
+        <div class="box">
+            <div class="name"><span>{{=comment.creator.name}}</span><span class="time">{{=getTimeStr(comment.createDatetime)}}</span>
+            </div>
+            <!--回复-->
+            <div class="content">
+                <div class="reply">
+                    <p>回复 <a onclick="redirectUser('{{=comment.fatherComment.creator.id}}')">{{=comment.fatherComment.creator.name}}</a>：<a
+                            onclick="submitComment('{{=comment.id}}')"><span>{{=comment.content}}</span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </li>
+    {{ }else{ }}
+    <li>
+        <div class="pic"><a onclick="redirectUser('{{=comment.creator.id}}')"><img
+                src="{{=comment.creator.pictureUrl}}" alt=""></a></div>
+        <div class="box">
+            <div class="name"><span>{{=comment.creator.name}}</span><span class="time">{{=getTimeStr(comment.createDatetime)}}</span>
+            </div>
+            <a onclick="submitComment('{{=comment.id}}')">
+                <div class="content">{{=comment.content}}</div>
+            </a>
+        </div>
+    </li>
+    {{ } }}
+
+    {{ } }}
+</script>
+<!--拍卖纪录-->
+<script type="text/x-dot-template" id="artWorkAuctionBidding">
+    {{ for (var i = 0 ;i < it.artWorkBiddingList.length ; i++){
+    var bidding = it.artWorkBiddingList[i];
+    }}
+    <li>
+        <span><img src="{{=bidding.creator.pictureUrl}}"
+                   alt=""><strong>{{=dealUsername(bidding.creator.username,3,4)}}</strong></span>
+        <span><strong>出价了</strong>&nbsp;<b>{{=parseInt(bidding.price)}}元</b></span>
+        <span>{{=getTimeStr(bidding.createDatetime)}}</span>
+    </li>
+    {{ } }}
+</script>
+<!--拍卖前底部按钮-->
+<script type="text/x-dot-template" id="preBottomButton">
+    {{ if(it.step == "30"){ }}
+    <div class="pm_btm_bar">
+        <a class="links" onclick="submitComment()" title="评论">评论</a>
+        {{ if(PageVariable.isSubmitDepositPrice == "0"){ }}
+        <a class="links" title="缴纳保证金">已缴纳保证金</a>
+        {{ }else{ }}
+        <a class="links" id="btn_pay" title="缴纳保证金">缴纳保证金</a>
+        {{ } }}
+    </div>
+    <!--//End--底部悬浮-->
+    <div id="btn_pay_pannel" class="pm_pay_lay">
+        <div class="main">
+            <em class="close"></em>
+            <div class="p1">
+                <div class="info">
+                    <p><span>保证金</span><span class="price">¥{{=getDepositPrice(it.startingPrice)}}</span></p>
+                    <p>若竞拍不成功在72小时之内释放保证金。</p>
+                </div>
+            </div>
+            {{if(typeof PageVariable.consumerAddress!= "undefined" && PageVariable.consumerAddress != null){ }}
+            <div class="t2">
+                <div class="info">
+                    <p><strong>收货人</strong><a onclick="redirectConsumerAddress()"><em>{{=PageVariable.consumerAddress.consignee}}</em>&nbsp;&nbsp;&nbsp;<em>{{=PageVariable.consumerAddress.phone}}</em></a>
+                    </p>
+                    <p><strong>收货地址</strong><a onclick="redirectConsumerAddress()">{{=PageVariable.consumerAddress.districtStr+PageVariable.consumerAddress.details}}<i
+                            class="chevron-right"></i></a></p>
+                </div>
+            </div>
+            {{ } }}
+            <div class="p4">
+                <div class="info">
+                    <a class="link active" href="javascript:" title="支付宝支付">支付宝支付</a>
+                </div>
+            </div>
+            <div class="p3"><i id="radio" class="active"></i>竞拍需同意融艺投竞拍协议<a onclick="redirectProtocol()">《融艺投竞拍协议》</a>
+            </div>
+            <a onclick="submitDepositPrice('{{=it.startingPrice}}')" class="submit">提交保证金</a>
+        </div>
+    </div>
+    <!--//End--缴纳保证金-->
+    {{ } }}
+</script>
+<!--拍卖中底部按钮-->
+<script type="text/x-dot-template" id="beingBottomButton">
+    {{ if(it.step == "31" && PageVariable.isSubmitDepositPrice == "1" ){ }}
+    <div class="pm_btm_bar">
+        <a class="links" onclick="submitComment()" title="评论">评论</a>
+        {{ if(PageVariable.isSubmitDepositPrice == "0"){ }}
+        <a class="links" title="缴纳保证金">已缴纳保证金</a>
+        {{ }else{ }}
+        <a class="links" id="btn_pay" title="缴纳保证金">缴纳保证金</a>
+        {{ } }}
+    </div>
+    <!--//End--底部悬浮-->
+    <div id="btn_pay_pannel" class="pm_pay_lay">
+        <div class="main">
+            <em class="close"></em>
+            <div class="p1">
+                <div class="info">
+                    <p><span>保证金</span><span class="price">¥{{=getDepositPrice(it.startingPrice)}}</span></p>
+                    <p>若竞拍不成功在72小时之内释放保证金。</p>
+                </div>
+            </div>
+            {{if(typeof PageVariable.consumerAddress!= "undefined" && PageVariable.consumerAddress != null){ }}
+            <div class="t2">
+                <div class="info">
+                    <p><strong>收货人</strong><a onclick="redirectConsumerAddress()"><em>{{=PageVariable.consumerAddress.consignee}}</em>&nbsp;&nbsp;&nbsp;<em>{{=PageVariable.consumerAddress.phone}}</em></a>
+                    </p>
+                    <p><strong>收货地址</strong><a onclick="redirectConsumerAddress()">{{=PageVariable.consumerAddress.districtStr+PageVariable.consumerAddress.details}}<i
+                            class="chevron-right"></i></a></p>
+                </div>
+            </div>
+            {{ } }}
+            <div class="p4">
+                <div class="info">
+                    <a class="link active" href="javascript:" title="支付宝支付">支付宝支付</a>
+                </div>
+            </div>
+            <div class="p3"><i id="radio" class="active"></i>竞拍需同意融艺投竞拍协议<a onclick="redirectProtocol()">《融艺投竞拍协议》</a>
+            </div>
+            <a onclick="submitDepositPrice('{{=it.startingPrice}}')" class="submit">提交保证金</a>
+        </div>
+    </div>
+    <!--//End--缴纳保证金-->
+    {{ } }}
+
+    {{ if(it.step == "31" && PageVariable.isSubmitDepositPrice == "0"){ }}
+    <div class="pm_btm_bar" style="z-index:120;">
+        <div class="bid">
+            <a id="bid-link" onclick="bid()">出价</a>
+    <span class="num addsub"
+          data-option='{"upLimit":-1,"inputName":"auctionPrice","downLimit":"{{=getCurrentAuctionPrice(it.currentAuctionPrice)}}" ,"defaultValue":"{{=getCurrentAuctionPrice(it.currentAuctionPrice)}}" }'
+          onload="ChooseCountComponent()">
+    </span>
+            <a onclick="submitComment()">评论</a>
+        </div>
+    </div>
+
+
+    <div id="pm-bid-tips" class="pm-bid-tips">
+        <p>出价成功！</p>
+    </div>
+
+    {{ } }}
+
+</script>
+<!--拍卖结束底部按钮-->
+<script type="text/x-dot-template" id="afterBottomButton">
+    {{ if(it.step == "32" && it.winner.id == getCurrentUserId()){ }}
+    <div class="pm_btm_bar">
+        <a class="links" onclick="submitComment()" title="评论">评论</a>
+        <a class="links links_end" id="btn_pay_end" title="追加尾款">追加尾款</a>
+    </div>
+    <div id="btn_pay_pannel" class="pm_pay_lay">
+        <div class="main">
+            <em class="close"></em>
+            <div class="p1">
+                <div class="info">
+                    <p><span>尾款金额</span><span class="price">¥{{=getCurrentFinalPrice()}}</span></p>
+                </div>
+            </div>
+            <div class="p4">
+                <div class="info">
+                    <a class="link active" href="javascript:" title="支付宝支付">支付宝支付</a>
+                </div>
+            </div>
+            <div class="p3"><i id="radio" class="active"></i>竞拍需同意融艺投竞拍协议<a onclick="redirectProtocol()">《融艺投竞拍协议》</a>
+            </div>
+            <a onclick="submitRestPrice()" class="submit">追加尾款</a>
+        </div>
+    </div>
+
+    {{ }else if(it.step == "32"){ }}
+    <div class="pm_btm_bar">
+        <a class="links" onclick="submitComment()" title="评论">评论</a>
+    </div>
+    {{ } }}
+
+</script>
+<!--项目进度-融资-->
+<script type="text/x-dot-template" id="artWorkScheduleInvest">
+    <div class="title">
+        <div class="l-icon rz-icon"></div>
+        <div class="r-txt">
+            <span class="head">融资</span>
+            <span class="month">{{=getDateStr(it.investStartDatetime)}}</span>
+            <span class="alltime">{{=getTimeStr(it.investStartDatetime)}}</span>
+        </div>
+    </div>
+    <div class="page">
+        <span class="p-head">{{=getDayNums((new Date().getTime())-(it.investStartDatetime))}}天前</span>
+        <p>项目审核通过发起融资，共有{{=it.artworkInvestsSize}}位用户投资。</p>
+    </div>
+</script>
+<!--项目进度-创作-->
+<script type="text/x-dot-template" id="artWorkScheduleCreate">
+    <div class="title">
+        <div class="l-icon rz-icon"></div>
+        <div class="r-txt">
+            <span class="head">创作</span>
+            <span class="month">{{=getDateStr(it.investEndDatetime)}}</span>
+            <span class="alltime">{{=getTimeStr(it.investEndDatetime)}}</span>
+        </div>
+    </div>
+    <div class="page">
+        <p>预计作品创作完成还有{{=getDayNums(it.auctionStartDatetime-it.investEndDatetime)}}天。</p>
+    </div>
+</script>
+<!--项目进度-动态-->
+<script type="text/x-dot-template" id="artWorkScheduleMessage">
+    <div class="title">
+        <div class="l-icon rz-icon"></div>
+        <div class="r-txt">
+            <span class="head">动态</span>
+        </div>
+    </div>
+    <div class="page">
+        <div class="tm-box fl wb" style="margin-top:-42px;">
+            <span class="month" style="margin-right:11px;">{{=getDateStr(it.messageList[0].createDatetime)}}</span>
+            <span class="alltime">{{=getTimeStr(it.messageList[0].createDatetime)}}</span>
+        </div>
+        <div class="list">
+            <div class="messageContent">
+                {{=it.messageList[0].content}}
+            </div>
+            <div class="pm_btm_bar a-button">
+                <a class="links" onclick="createMessageComment('{{=it.messageList[0].id}}')" title="评论"
+                   style="font-size: 14px;">评论</a>
+            </div>
+            <div class="p-all" style="width: 100%;float: left">
+                {{ for (var i = 0 ; i < it.messageList[0].artworkCommentList.length ; i++) {
+                var comment = it.messageList[0].artworkCommentList[i];
+                if( typeof comment.fatherComment != "undefined" && comment.fatherComment
+                !=null){
+                }}
+                <p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{if(comment.creator.id==
+                    getCurrentUserId()){
+                    }}我的{{ } else{ }} {{=comment.creator.name}} {{ } }}</a>回复<a
+                        onclick="redirectUser('{{=comment.fatherComment.creator.id}}')">{{=comment.fatherComment.creator.name}}</a>：<a
+                        onclick="submitComment('{{=comment.id}}','{{=it.messageList[0].id}}')"><span>{{=comment.content}}</span></a>
+                </p>
+                {{ }else{ }}
+                <p class="p-list"><a
+                        onclick="redirectUser('{{=comment.creator.id}}')">{{=comment.creator.name}}</a>：<a
+                        onclick="submitComment('{{=comment.id}}','{{=it.messageList[0].id}}')"><span>{{=comment.content}}</span></a>
+                </p>
+                {{ } }}
+                {{ } }}
+                <div class="hideCommentList" style="display: none;">
+                    {{ for (var i = 5 ; i < it.messageList[0].artworkCommentList.length ; i++) {
+                    var comment = it.messageList[0].artworkCommentList[i];
+                    if( typeof comment.fatherComment != "undefined" && comment.fatherComment
+                    !=null){
+                    }}
+                    <p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{
+                        if(comment.creator.id== getCurrentUserId())
+                        { }}我的{{ }else{ }} {{=comment.creator.name}} {{ } }}</a>回复<a
+                            onclick="redirectUser('{{=comment.fatherComment.creator.id}}')">{{=comment.fatherComment.creator.name}}</a>：<a
+                            onclick="submitComment('{{=comment.id}}','{{=it.messageList[0].id}}')"><span>{{=comment.content}}</span></a>
+                    </p>
+                    {{ }else{ }}
+                    <p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{=comment.creator.name}}</a>：<a
+                            onclick="submitComment('{{=comment.id}}','{{=it.messageList[0].id}}')"><span>{{=comment.content}}</span></a>
+                    </p>
+                    {{ } }}
+                    {{ } }}
+                </div>
+            </div>
+            <a id="addList" style="font-size: 14px;color:#666"
+               onclick="$('.hideCommentList').show();$(this).hide();tabsHeight();">查看所有评论</a>
+        </div>
+        <div class="hideMessageList" style="display: none;">
+            {{
+            for(var k = 1 ; k < it.messageList.length ; k++){
+            var message = it.messageList[k];
+            }}
+            <!--<div class="page">-->
+            <div class="tm-box fl wb" style="margin-top: 15px;">
+                <span class="month" style="margin-right:11px;">{{=getDateStr(message.createDatetime)}}</span>
+                <span class="alltime">{{=getTimeStr(message.createDatetime)}}</span>
+            </div>
+            <div class="list">
+                <div class="messageContent">
+                    {{=message.content}}
+                </div>
+                <div class="pm_btm_bar a-button">
+                    <a class="links" onclick="createMessageComment('{{=message.id}}')" title="评论"
+                       style="font-size: 14px;">评论</a>
+                </div>
+                <div class="p-all" style="width: 100%;float: left">
+                    {{ for (var i = 0 ; i < message.artworkCommentList.length ; i++) {
+                    var comment = message.artworkCommentList[i];
+                    if( typeof comment.fatherComment != "undefined" && comment.fatherComment
+                    !=null){
+                    }}
+                    <p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{if(comment.creator.id==
+                        getCurrentUserId()){
+                        }}我的{{ } else{ }} {{=comment.creator.name}} {{ } }}</a>回复<a
+                            onclick="redirectUser('{{=comment.fatherComment.creator.id}}')">{{=comment.fatherComment.creator.name}}</a>：<a
+                            onclick="submitComment('{{=comment.id}}','{{=message.id}}')"><span>{{=comment.content}}</span></a>
+                    </p>
+                    {{ }else{ }}
+                    <p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{=comment.creator.name}}</a>：<a
+                            onclick="submitComment('{{=comment.id}}','{{=message.id}}')"><span>{{=comment.content}}</span></a>
+                    </p>
+                    {{ } }}
+                    {{ } }}
+                    <div class="hideCommentList{{=message.id}}" style="display: none;">
+                        {{ for (var i = 5 ; i < message.artworkCommentList.length ; i++) {
+                        var comment = message.artworkCommentList[i];
+                        if( typeof comment.fatherComment != "undefined" && comment.fatherComment
+                        !=null){
+                        }}
+                        <p class="p-list"><a onclick="redirectUser('{{=comment.creator.id}}')">{{if(comment.creator.id==
+                            getCurrentUserId()){ }}我的{{ } else{ }} {{=comment.creator.name}} {{
+                            } }}</a>回复<a
+                                onclick="redirectUser('{{=comment.fatherComment.creator.id}}')">{{=comment.fatherComment.creator.name}}</a>：<a
+                                onclick="submitComment('{{=comment.id}}','{{=message.id}}')"><span>{{=comment.content}}</span></a>
+                        </p>
+                        {{ }else{ }}
+                        <p class="p-list"><a
+                                onclick="redirectUser('{{=comment.creator.id}}')">{{=comment.creator.name}}</a>：<a
+                                onclick="submitComment('{{=comment.id}}','{{=message.id}}')"><span>{{=comment.content}}</span></a>
+                        </p>
+                        {{ } }}
+                        {{ } }}
+                    </div>
+                </div>
+                <a style="font-size: 14px;color:#666"
+                   onclick="$('.hideCommentList{{=message.id}}').show();$(this).hide();tabsHeight();">查看所有评论</a>
+            </div>
+            <!--</div>-->
+            {{ } }}
+        </div>
+        <div class="button">
+            <a onclick="$('.hideMessageList').show();$(this).hide();tabsHeight();">查看更多动态</a>
+        </div>
+    </div>
+</script>
+
+
 <script src="shop2016/js/jquery.min.js"></script>
 <script src="shop2016/js/jquery.md5.js"></script>
 <script src="shop2016/js/swiper.min.js"></script>
 <script src="shop2016/js/system.js"></script>
+<script src="shop2016/js/local/doT.min.js"></script>
 <script src="shop2016/js/local/common.js"></script>
 <script src="shop2016/js/local/invest/app.js"></script>
 <script src="shop2016/js/local/invest/model.js"></script>
-<script src="shop2016/js/local/invest/view.js"></script>
+<!--<script src="shop2016/js/local/invest/view.js"></script>-->
 <script src="shop2016/js/local/invest/controller.js"></script>
 <script>
 
@@ -654,7 +743,7 @@
     }
 
     function getParamObject() {
-//        return {artWorkId: "qydeyugqqiugd2", currentUserId: "imhfp1yr4636pj49"};
+   //     return {artWorkId: "qydeyugqqiugd2", currentUserId: "imhfp1yr4636pj49"};
         return PageVariable.param;
     }              //从app中获取的服务端请求接口的必要参数  需要传递一个密钥参数
     function getCurrentUserId() {
@@ -735,7 +824,7 @@
         }
         var requestParam = getParamObject();
         requestParam.price = Number(newPrice);
-        ajaxRequest(hostName + RequestUrl.bid, requestParam, success, function () {
+        ajaxRequest(hostName + RequestUrl.bid, dealRequestParam(requestParam), success, function () {
         }, "post");
     }                        // 出价
 
