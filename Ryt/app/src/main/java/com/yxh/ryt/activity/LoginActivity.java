@@ -225,7 +225,7 @@ public class LoginActivity extends BaseActivity {
     private void LoginRequst() {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("username",etUsername.getText().toString());
-        paramsMap.put("password", Sha1.encodePassword(etPassword.getText().toString(), "SHA"));
+        paramsMap.put("password", etPassword.getText().toString());
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg=EncryptUtil.encrypt(paramsMap);

@@ -331,7 +331,7 @@ public class RegisterActivity extends BaseActivity {
                 }
                 Map<String,String> paramsMap=new HashMap<>();
                 paramsMap.put("username", eTPhone.getText().toString());
-                paramsMap.put("password", Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));
+                paramsMap.put("password", eTPassword.getText().toString());
                 paramsMap.put("timestamp", System.currentTimeMillis() + "");
                 try {
                     paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
