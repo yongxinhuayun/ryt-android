@@ -19,7 +19,7 @@
             android:layout_centerVertical="true"
             android:textColor="@android:color/black"
             android:layout_marginLeft="10dp"
-            android:textSize="11sp"
+            android:textSize="14sp"
             android:gravity="center"
             android:text="申请为艺术家" />
 
@@ -31,7 +31,7 @@
             android:layout_centerVertical="true"
             android:text="我的"
             android:textColor="#333333"
-            android:textSize="17sp" />
+            android:textSize="18sp" />
         <!--<TextView-->
         <!--android:visibility="gone"-->
         <!--android:layout_width="50dp"-->

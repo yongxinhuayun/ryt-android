@@ -81,6 +81,24 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
                 helper.setText(R.id.ci_tv_otherNickname,item.getCreator().getName());
                 helper.setText(R.id.ci_tv_date,Utils.timeTrans(item.getCreateDatetime()));
                 helper.setImageByUrl(R.id.ci_iv_otherIcon, item.getCreator().getPictureUrl());
+                helper.getView(R.id.ll_name).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (item.getCreator().getMaster()!=null){
+                            Intent intent=new Intent(CommentActivity.this, UserYsjIndexActivity.class);
+                            intent.putExtra("userId",item.getCreator().getId());
+                            intent.putExtra("currentId",AppApplication.gUser.getId());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }else {
+                            Intent intent=new Intent(CommentActivity.this, UserPtIndexActivity.class);
+                            intent.putExtra("userId",item.getCreator().getId());
+                            intent.putExtra("currentId",AppApplication.gUser.getId());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    }
+                });
                 helper.getView(R.id.ci_tv_reply).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -102,9 +120,26 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
                     ClickableSpan click= new ShuoMClickableSpan(fatherUser, AppApplication.getSingleContext()) {
                         @Override
                         public void onClick(View widget) {
-                            Intent intent=new Intent(AppApplication.getSingleContext(), LoginActivity.class);
+                            /*Intent intent=new Intent(AppApplication.getSingleContext(), LoginActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            AppApplication.getSingleContext().startActivity(intent);
+                            AppApplication.getSingleContext().startActivity(intent);*/
+                            if ("".equals(AppApplication.gUser.getId())) {
+                                LoginActivity.openActivity(CommentActivity.this);
+                                return;
+                            }
+                            if (AppApplication.gUser != null&&"master".equals(AppApplication.gUser.getMaster1())) {
+                                Intent intent=new Intent(AppApplication.getSingleContext(),UserYsjIndexActivity.class);
+                                intent.putExtra("userId", AppApplication.gUser.getId());
+                                intent.putExtra("currentId", AppApplication.gUser.getId());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }else if (AppApplication.gUser != null&&"".equals(AppApplication.gUser.getMaster1())){
+                                Intent intent=new Intent(AppApplication.getSingleContext(),UserPtIndexActivity.class);
+                                intent.putExtra("userId", AppApplication.gUser.getId());
+                                intent.putExtra("currentId", AppApplication.gUser.getId());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
                         }
                     };
                     spanFatherUser.setSpan(click, 0, fatherUser.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -119,9 +154,26 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
                     ClickableSpan click1= new ShuoMClickableSpan(fatherUser1, AppApplication.getSingleContext()) {
                         @Override
                         public void onClick(View widget) {
-                            Intent intent=new Intent(AppApplication.getSingleContext(), LoginActivity.class);
+                            /*Intent intent=new Intent(AppApplication.getSingleContext(), LoginActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            AppApplication.getSingleContext().startActivity(intent);
+                            AppApplication.getSingleContext().startActivity(intent);*/
+                            if ("".equals(AppApplication.gUser.getId())) {
+                                LoginActivity.openActivity(CommentActivity.this);
+                                return;
+                            }
+                            if (AppApplication.gUser != null&&"master".equals(AppApplication.gUser.getMaster1())) {
+                                Intent intent=new Intent(AppApplication.getSingleContext(),UserYsjIndexActivity.class);
+                                intent.putExtra("userId", AppApplication.gUser.getId());
+                                intent.putExtra("currentId", AppApplication.gUser.getId());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }else if (AppApplication.gUser != null&&"".equals(AppApplication.gUser.getMaster1())){
+                                Intent intent=new Intent(AppApplication.getSingleContext(),UserPtIndexActivity.class);
+                                intent.putExtra("userId", AppApplication.gUser.getId());
+                                intent.putExtra("currentId", AppApplication.gUser.getId());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
                         }
                     };
                     spanFatherUser1.setSpan(click1, 0, fatherUser1.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);

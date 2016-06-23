@@ -14,4 +14,11 @@
     <dimen name="header_footer_left_right_padding">24dp</dimen>
     <dimen name="header_footer_top_bottom_padding">12dp</dimen>
 
+    <dimen name="item_text_font">17sp</dimen>
+    <dimen name="item_edit_font">16sp</dimen>
+    //标题
+    <dimen name="title">18sp</dimen>title
+    //常规字体
+    <dimen name="defult_font">14sp</dimen>title
+
 </resources>

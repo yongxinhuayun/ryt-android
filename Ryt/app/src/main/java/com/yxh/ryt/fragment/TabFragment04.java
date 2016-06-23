@@ -151,6 +151,7 @@ public class TabFragment04 extends BaseFragment {
             getActivity().startActivity(intent);
         }
     }
+    //拍卖订单
     @OnClick(R.id.rl_auction)
     public void order(){
         if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){

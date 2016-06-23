@@ -36,7 +36,7 @@ import okhttp3.Call;
 public class NotificationActivity extends BaseActivity implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener, AdapterView.OnItemClickListener {
     private CommonAdapter<Notification> ntfAdapter;
     private List<Notification> notificationDatas;
-    private int currentPage=1;
+    private int currentPage = 1;
     @Bind(R.id.nl_message_listView)
     AutoListView ntflistview;
     private ImageView imageView;
@@ -53,7 +53,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
                 finish();
             }
         });
-        notificationDatas=new ArrayList<Notification>();
+        notificationDatas = new ArrayList<Notification>();
         ntflistview.setPageSize(Constants.pageSize);
         initView();
     }
@@ -65,14 +65,16 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
     }
 
     private void initView() {
-        ntfAdapter=new CommonAdapter<Notification>(AppApplication.getSingleContext(),notificationDatas,R.layout.notification_item) {
+        ntfAdapter = new CommonAdapter<Notification>(AppApplication.getSingleContext(), notificationDatas, R.layout.notification_item) {
             @Override
             public void convert(ViewHolder helper, Notification item) {
-                if (item.getIsWatch()==0){
-                    helper.setColor(R.id.ni_ll_top, Color.rgb(250,250,250));
+                if (item.getIsWatch() == 0) {
+                    helper.setColor(R.id.ni_ll_top, Color.rgb(250, 250, 250));
                 }
-                helper.setText(R.id.ni_tv_content,item.getContent());
+                //helper.setImageByUrl(R.id.ni_iv_icon,item.getTargetUser().getPictureUrl());
+                helper.setText(R.id.ni_tv_content, item.getContent());
                 helper.setText(R.id.ni_tv_date, Utils.timeTrans(item.getCreateDatetime()));
+                helper.setImageByUrl(R.id.ni_iv_icon, item.getFromUser().getPictureUrl());
             }
         };
         ntflistview.setAdapter(ntfAdapter);
@@ -81,12 +83,12 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
         ntflistview.setOnItemClickListener(this);
     }
 
-    private void LoadData(final int state,int pageNum) {
-        Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId",AppApplication.gUser.getId());
-        paramsMap.put("type","0");
-        paramsMap.put("pageSize",Constants.pageSize+"");
-        paramsMap.put("pageNum", pageNum+"");
+    private void LoadData(final int state, int pageNum) {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("userId", AppApplication.gUser.getId());
+        paramsMap.put("type", "0");
+        paramsMap.put("pageSize", Constants.pageSize + "");
+        paramsMap.put("pageNum", pageNum + "");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
@@ -102,7 +104,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if (state==AutoListView.REFRESH){
+                if (state == AutoListView.REFRESH) {
                     ntflistview.onRefreshComplete();
                     notificationDatas.clear();
                     List<Notification> notificationList = null;
@@ -112,24 +114,24 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
                     } catch (JsonSyntaxException e) {
                         e.printStackTrace();
                     }
-                    if(null==notificationList||notificationList.size()==0){
+                    if (null == notificationList || notificationList.size() == 0) {
                         ntflistview.setResultSize(0);
                     }
-                    if (null!=notificationList&&notificationList.size()>0){
+                    if (null != notificationList && notificationList.size() > 0) {
                         ntflistview.setResultSize(notificationList.size());
                         notificationDatas.addAll(notificationList);
                         ntfAdapter.notifyDataSetChanged();
                     }
                     return;
                 }
-                if (state==AutoListView.LOAD){
+                if (state == AutoListView.LOAD) {
                     ntflistview.onLoadComplete();
                     List<Notification> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<Notification>>() {
                     }.getType());
-                    if(null==notificationList||notificationList.size()==0){
+                    if (null == notificationList || notificationList.size() == 0) {
                         ntflistview.setResultSize(1);
                     }
-                    if (null!=notificationList&&notificationList.size()>0) {
+                    if (null != notificationList && notificationList.size() > 0) {
                         ntflistview.setResultSize(notificationList.size());
                         notificationDatas.addAll(notificationList);
                         ntfAdapter.notifyDataSetChanged();
@@ -143,20 +145,20 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
     @Override
     public void onLoad() {
         currentPage++;
-        LoadData(AutoListView.LOAD,currentPage);
+        LoadData(AutoListView.LOAD, currentPage);
     }
 
     @Override
     public void onRefresh() {
-        currentPage=1;
-        LoadData(AutoListView.REFRESH,currentPage);
+        currentPage = 1;
+        LoadData(AutoListView.REFRESH, currentPage);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-        Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId","ieatht97wfw30hfd");
-        paramsMap.put("group","notification");
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("userId", "ieatht97wfw30hfd");
+        paramsMap.put("group", "notification");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
@@ -173,7 +175,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
             @Override
             public void onResponse(Map<String, Object> response) {
                 view.setBackgroundColor(Color.WHITE);
-                ToastUtil.showLong(NotificationActivity.this,"你已经读了这条信息了");
+                ToastUtil.showLong(NotificationActivity.this, "你已经读了这条信息了");
             }
         });
     }

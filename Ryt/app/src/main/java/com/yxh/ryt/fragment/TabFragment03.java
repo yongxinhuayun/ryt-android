@@ -3,8 +3,6 @@ package com.yxh.ryt.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +10,6 @@ import android.view.ViewGroup;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
-import com.yxh.ryt.activity.BaseActivity;
 import com.yxh.ryt.activity.CommentActivity;
 import com.yxh.ryt.activity.NotificationActivity;
 import com.yxh.ryt.activity.PrivateLetterActivity;
@@ -21,9 +18,6 @@ import com.yxh.ryt.custemview.BadgeView;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Sha1;
-import com.yxh.ryt.util.ToastUtil;
-import com.yxh.ryt.vo.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +54,7 @@ public class TabFragment03 extends  BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        loadData();
     }
 
     @Override
