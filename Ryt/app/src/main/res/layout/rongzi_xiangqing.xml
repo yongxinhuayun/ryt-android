@@ -87,11 +87,15 @@
             android:orientation="vertical">
 
             <include layout="@layout/common_xiangqing_header" />
-
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E9E9E9"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -117,7 +121,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginRight="14dp">
 
                     <ProgressBar
@@ -146,13 +150,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
                     android:layout_marginRight="14dp"
-                    android:layout_marginBottom="14dp">
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginTop="15dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        >
 
                         <TextView
                             android:id="@+id/fli_ll_tv_investGoalMoney"
@@ -168,7 +174,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="6dp"
                             android:text="目标金额"
                             android:textColor="#808080"
                             android:textSize="14sp" />
@@ -194,7 +200,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="6dp"
                             android:text="剩余时间"
                             android:textColor="#808080"
                             android:textSize="14sp" />
@@ -220,7 +226,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="6dp"
                             android:text="投资人数"
                             android:textColor="#808080"
                             android:textSize="14sp" />
@@ -229,7 +235,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#808080"
+                    android:background="#e6e6e6"
                     android:layout_marginLeft="14dp"
                     android:layout_marginRight="14dp"/>
                 <LinearLayout
@@ -241,7 +247,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="投资者"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="14dp"
                         android:textSize="15sp"
                         android:textColor="#000000"
                         android:layout_marginLeft="14dp"/>

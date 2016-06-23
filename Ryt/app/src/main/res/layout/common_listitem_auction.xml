@@ -21,7 +21,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#33000000" />
-
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="right"
+            android:id="@+id/cl_01_iv_auction"
+            android:layout_width="68dp"
+            android:layout_height="28dp"
+            android:src="@mipmap/paimaizhuangtai_paimaiyugao"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
