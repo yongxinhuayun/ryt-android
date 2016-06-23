@@ -7,7 +7,6 @@ public class Notification {
     private String content;
     private long createDatetime;
     private int isWatch;
-   // private Notifaction_user fromUser;
     private User fromUser;
 
     public User getFromUser() {
@@ -23,7 +22,6 @@ public class Notification {
         this.content = content;
         this.isWatch = isWatch;
         this.fromUser = fromUser;
-        //this.targetUser = targetUser;
     }
 
     public String getContent() {
@@ -38,10 +36,6 @@ public class Notification {
         return isWatch;
     }
 
-    /*public Notifaction_user getFromUser() {
-        return fromUser;
-    }*/
-
     public void setContent(String content) {
         this.content = content;
     }
@@ -54,7 +48,4 @@ public class Notification {
         this.isWatch = isWatch;
     }
 
-    /*public void setFromUser(Notifaction_user fromUser) {
-        this.fromUser = fromUser;
-    }*/
 }

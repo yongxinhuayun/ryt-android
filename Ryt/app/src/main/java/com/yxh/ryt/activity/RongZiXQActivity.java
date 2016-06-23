@@ -165,10 +165,14 @@ public class RongZiXQActivity extends BaseActivity {
         indicator.setViewPager(mViewPager);
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
-        widthzong = metric.widthPixels; // 屏幕宽度（像素）
+        // 屏幕宽度（像素）
+        widthzong = metric.widthPixels;
+        //图片宽高
         width = Utils.dip2px(RongZiXQActivity.this, 24);
         height = Utils.dip2px(RongZiXQActivity.this, 24);
+        //图片padding
         right = Utils.dip2px(RongZiXQActivity.this, 10);
+        //一行能容纳的图片个数
         count = (widthzong - (Utils.dip2px(RongZiXQActivity.this, 20) * 2)) / (width + right);
         /*database= AppApplication.getDBHelper().getWritableDatabase();
         Cursor cursor = database.query("rzxq_praise", null, "project_workID=? AND current_id=?", new String[]{artworkId,AppApplication.gUser.getId()+""}, null, null, null);*/
@@ -392,12 +396,28 @@ public class RongZiXQActivity extends BaseActivity {
                             params.setMargins(0, 0, right, 0);
                             imageView.setImageResource(R.mipmap.rongzixiangqing_zhankai);
                             imageView.setLayoutParams(params);
+
                             linearLayout.addView(imageView);
                             spread(imageView, users);
                         }
                         time++;
                     }
                 });
+               /* imageView.setOnClickListener(users.get(j).getId(),new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        Intent intent=new Intent(RongZiXQActivity.this, UserYsjIndexActivity.class);
+                        intent.putExtra("userId",users.get(j).getId());
+                        intent.putExtra("currentId",AppApplication.gUser.getId());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getActivity().startActivity(intent);
+
+
+                    }
+                });*/
+
             }
             touziren_ll.addView(linearLayout);
             time = 0;
