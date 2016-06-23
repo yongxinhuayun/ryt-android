@@ -36,14 +36,14 @@
             <ImageView
                 android:id="@+id/iv_tab_01"
                 android:layout_width="wrap_content"
-                android:src="@mipmap/shouye_weixuanze"
+                android:background="@mipmap/shouye_weixuanze"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tv_tab_01"
                 android:layout_marginTop="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="11sp"
+                android:textSize="@dimen/defult_font"
                 android:textColor="#A1A1A1"
                 android:text="首页"/>
         </LinearLayout>
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#A1A1A1"
-                android:textSize="11sp"
+                android:textSize="@dimen/defult_font"
                 android:text="排行"/>
         </LinearLayout>
         <LinearLayout
@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#A1A1A1"
-                android:textSize="11sp"
+                android:textSize="@dimen/defult_font"
                 android:text="消息"/>
         </LinearLayout>
         <LinearLayout
@@ -110,7 +110,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_height="wrap_content"
                 android:textColor="#A1A1A1"
-                android:textSize="11sp"
+                android:textSize="@dimen/defult_font"
                 android:text="我的"/>
         </LinearLayout>
     </LinearLayout>

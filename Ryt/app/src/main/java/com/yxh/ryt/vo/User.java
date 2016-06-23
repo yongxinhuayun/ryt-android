@@ -59,6 +59,7 @@ public class User {
     private UserBrief userBrief;
     private int roiMoney;
     private int count1;
+    private String pictureUrl;
 
     public String getMaster1() {
         return master1;
@@ -144,7 +145,6 @@ public class User {
     //    private String id;
 //    private String username;
 //    private String name;
-    private String pictureUrl;
 
     public String getPictureUrl() {
         return pictureUrl;
