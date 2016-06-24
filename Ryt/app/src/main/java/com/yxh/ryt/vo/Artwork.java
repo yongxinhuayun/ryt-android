@@ -26,8 +26,26 @@ public class Artwork implements Serializable {
     private int praiseNUm;
     private  boolean praise;
     private int duration;
+    private String investRestTime;
+    private int investNum;
+    public String getInvestRestTime() {
+        return investRestTime;
+    }
+
+    public void setInvestRestTime(String investRestTime) {
+        this.investRestTime = investRestTime;
+    }
+
     public Master getMaster() {
         return master;
+    }
+
+    public int getInvestNum() {
+        return investNum;
+    }
+
+    public void setInvestNum(int investNum) {
+        this.investNum = investNum;
     }
 
     public int getDuration() {

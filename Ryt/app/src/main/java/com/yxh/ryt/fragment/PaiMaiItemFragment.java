@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -129,6 +130,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 					helper.getView(R.id.cli_tv_size).setVisibility(View.GONE);
 					helper.getView(R.id.cli_tv_current_price).setVisibility(View.VISIBLE);
 					helper.getView(R.id.cli_tv_user).setVisibility(View.GONE);
+					((ImageView) helper.getView(R.id.cl_01_iv_auction)).setImageResource(R.mipmap.paimaizhuangtai_paimaiyugao);
 					helper.setText(R.id.cli_tv_time, "拍卖时间：" + Utils.timeToFormatTemp("MM月DD日 HH:mm", item.getAuctionStartDatetime()) + "--" + Utils.timeToFormatTemp("HH:mm", item.getAuctionEndDatetime()));
 					helper.setText(R.id.cli_tv_current_price,"起拍价："+item.getInvestGoalMoney()+"");
 				}
@@ -139,6 +141,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 					helper.getView(R.id.cli_tv_current_price).setVisibility(View.VISIBLE);
 					helper.getView(R.id.cli_tv_user).setVisibility(View.GONE);
 					helper.setText(R.id.cli_tv_size, "出价次数：" + item.getAuctionNum() + "次");
+					((ImageView) helper.getView(R.id.cl_01_iv_auction)).setImageResource(R.mipmap.paimaizhuangtai_paimaizhong);
 					helper.setText(R.id.cli_tv_current_price,"当前出价："+item.getNewBidingPrice()+"元");
 				}
 				if(Integer.valueOf(item.getStep())==32){
@@ -149,6 +152,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 					helper.getView(R.id.cli_tv_user).setVisibility(View.VISIBLE);
 					helper.setText(R.id.cli_tv_chengjiao_price, "成交价格：" + item.getNewBidingPrice() + "元");
 					helper.setText(R.id.cli_tv_user, "拍品得主："+item.getWinner().getName());
+					((ImageView) helper.getView(R.id.cl_01_iv_auction)).setImageResource(R.mipmap.paimaizhuangtai_paimaichenggong);
 					helper.setText(R.id.cli_tv_size, "出价次数：" + item.getAuctionNum() + "次");
 				}
 			}

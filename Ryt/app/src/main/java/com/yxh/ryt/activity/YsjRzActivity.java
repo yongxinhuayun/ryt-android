@@ -10,6 +10,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -468,9 +471,15 @@ public class YsjRzActivity extends BaseActivity {
                     holder.image.setVisibility(View.GONE);
                 }
             } else {
+                DisplayMetrics metric = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metric);
+                int widthzong = metric.widthPixels; // 屏幕宽度（像素）
+                float es = (float) (widthzong-2*DisplayUtil.dip2px(20)) / (float)Bimp.tempSelectBitmap.get(position).getBitmap().getWidth();
+                int height = (int) (Bimp.tempSelectBitmap.get(position).getBitmap().getHeight() * es);
+                int width= (int) (Bimp.tempSelectBitmap.get(position).getBitmap().getWidth()*es);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,height);
+                holder.image.setLayoutParams(params);
                 holder.image.setImageBitmap(Bimp.tempSelectBitmap.get(position).getBitmap());
-                holder.image.getLayoutParams().width= ViewGroup.LayoutParams.WRAP_CONTENT;
-                holder.image.getLayoutParams().height=ViewGroup.LayoutParams.WRAP_CONTENT;
             }
 
             return convertView;
@@ -568,9 +577,15 @@ public class YsjRzActivity extends BaseActivity {
                     holder.image.setVisibility(View.GONE);
                 }
             } else {
+                DisplayMetrics metric = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metric);
+                int widthzong = metric.widthPixels; // 屏幕宽度（像素）
+                float es = (float) (widthzong-2*DisplayUtil.dip2px(20)) / (float)Bimp03.tempSelectBitmap.get(position).getBitmap().getWidth();
+                int height = (int) (Bimp03.tempSelectBitmap.get(position).getBitmap().getHeight() * es);
+                int width= (int) (Bimp03.tempSelectBitmap.get(position).getBitmap().getWidth()*es);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,height);
+                holder.image.setLayoutParams(params);
                 holder.image.setImageBitmap(Bimp03.tempSelectBitmap.get(position).getBitmap());
-                holder.image.getLayoutParams().width= ViewGroup.LayoutParams.WRAP_CONTENT;
-                holder.image.getLayoutParams().height=ViewGroup.LayoutParams.WRAP_CONTENT;
             }
 
             return convertView;
@@ -668,9 +683,17 @@ public class YsjRzActivity extends BaseActivity {
                     holder.image.setVisibility(View.GONE);
                 }
             } else {
+                DisplayMetrics metric = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metric);
+                int widthzong = metric.widthPixels; // 屏幕宽度（像素）
+                float es = (float) (widthzong-2*DisplayUtil.dip2px(20)) / (float)Bimp02.tempSelectBitmap.get(position).getBitmap().getWidth();
+                int height = (int) (Bimp02.tempSelectBitmap.get(position).getBitmap().getHeight() * es);
+                int width= (int) (Bimp02.tempSelectBitmap.get(position).getBitmap().getWidth()*es);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,height);
+                holder.image.setLayoutParams(params);
                 holder.image.setImageBitmap(Bimp02.tempSelectBitmap.get(position).getBitmap());
-                holder.image.getLayoutParams().width= ViewGroup.LayoutParams.WRAP_CONTENT;
-                holder.image.getLayoutParams().height=ViewGroup.LayoutParams.WRAP_CONTENT;
+                /*holder.image.getLayoutParams().width= ViewGroup.LayoutParams.WRAP_CONTENT;
+                holder.image.getLayoutParams().height=ViewGroup.LayoutParams.WRAP_CONTENT;*/
             }
 
             return convertView;
@@ -767,9 +790,15 @@ public class YsjRzActivity extends BaseActivity {
                     holder.image.setVisibility(View.GONE);
                 }
             } else {
+                DisplayMetrics metric = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metric);
+                int widthzong = metric.widthPixels; // 屏幕宽度（像素）
+                float es = (float) (widthzong-2*DisplayUtil.dip2px(20)) / (float)Bimp04.tempSelectBitmap.get(position).getBitmap().getWidth();
+                int height = (int) (Bimp04.tempSelectBitmap.get(position).getBitmap().getHeight() * es);
+                int width= (int) (Bimp04.tempSelectBitmap.get(position).getBitmap().getWidth()*es);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,height);
+                holder.image.setLayoutParams(params);
                 holder.image.setImageBitmap(Bimp04.tempSelectBitmap.get(position).getBitmap());
-                holder.image.getLayoutParams().width= ViewGroup.LayoutParams.WRAP_CONTENT;
-                holder.image.getLayoutParams().height=ViewGroup.LayoutParams.WRAP_CONTENT;
             }
 
             return convertView;

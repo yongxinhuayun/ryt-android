@@ -23,6 +23,7 @@ import com.viewpagerindicator.IcsLinearLayout;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.CreateSuccessActivity;
 import com.yxh.ryt.activity.EditProject01Activity;
 import com.yxh.ryt.activity.PublicDongtaiImageActivity;
 import com.yxh.ryt.activity.RecordVedioActivity;
@@ -149,6 +150,15 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 						});
 					}else if ("21".equals(item.getStep()) || "22".equals(item.getStep())){
 						helper.getView(R.id.mpi_tv_left).setVisibility(View.VISIBLE);
+						helper.getView(R.id.mpi_tv_left).setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								Intent intent=new Intent(getActivity(), CreateSuccessActivity.class);
+								intent.putExtra("artworkId",item.getId());
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								getActivity().startActivity(intent);
+							}
+						});
 						((TextView) helper.getView(R.id.mpi_tv_left)).setText("创作完成");
 						helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);
 						((TextView) helper.getView(R.id.mpi_tv_right)).setText("发布动态");

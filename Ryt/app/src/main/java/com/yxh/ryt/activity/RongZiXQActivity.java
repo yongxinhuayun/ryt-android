@@ -13,6 +13,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -343,8 +344,8 @@ public class RongZiXQActivity extends BaseActivity {
                     bar.setProgress((int) (value * 100));
                     prValue.setText((int) (value * 100) + "%");
                     goalMoney.setText(artwork.getInvestGoalMoney() + "");
-                    remainTime.setText(Utils.timeToFormatTemp("HH时MM分SS秒", artwork.getInvestEndDatetime() - artwork.getInvestStartDatetime()));
-                    goalPeople.setText(AppApplication.getSingleGson().toJson(object.get("investNum")));
+                    remainTime.setText(artwork.getInvestRestTime());
+                    goalPeople.setText(artwork.getInvestNum()+"");
                     if (artwork.getAuthor() != null) {
                         cl01TvName.setText(artwork.getAuthor().getName());
                         AppApplication.displayImage(artwork.getAuthor().getPictureUrl(), cl01CivHeadPortrait);
@@ -373,11 +374,14 @@ public class RongZiXQActivity extends BaseActivity {
             final LinearLayout linearLayout = new LinearLayout(RongZiXQActivity.this);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
             for (int j = 0; j < count - 1; j++) {
+                final int  temp=j;
+                Log.d("xxxxxxxxxxxxxxxxxxxxxxxx",temp+"");
                 final CircleImageView imageView = new CircleImageView(RongZiXQActivity.this);
                 // 获取LayoutParams，给view对象设置宽度，高度
                 final LayoutParams params = new LayoutParams(width, height);
                 params.setMargins(0, 0, right, 0);
                 /*AppApplication.displayImage(users.get(j).getPictureUrl(), imageView);*/
+
                 NetRequestUtil.downloadImage(users.get(j).getPictureUrl(), new BitmapCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
@@ -389,6 +393,24 @@ public class RongZiXQActivity extends BaseActivity {
                         imageView.setImageBitmap(response);
                         imageView.setLayoutParams(params);
                         linearLayout.addView(imageView);
+                        Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",users.get(temp).getId());
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (users.get(temp).getMaster()!=null){
+                                    Intent intent=new Intent(RongZiXQActivity.this, UserYsjIndexActivity.class);
+                                    intent.putExtra("userId",users.get(temp).getId());
+                                    intent.putExtra("currentId",AppApplication.gUser.getId());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    RongZiXQActivity.this.startActivity(intent);
+                                }else {
+                                    Intent intent=new Intent(RongZiXQActivity.this, UserPtIndexActivity.class);
+                                    intent.putExtra("userId",users.get(temp).getId());
+                                    intent.putExtra("currentId",AppApplication.gUser.getId());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    RongZiXQActivity.this.startActivity(intent);
+                            }
+                        }});
                         if (time == count - 2) {
                             CircleImageView imageView = new CircleImageView(RongZiXQActivity.this);
                             // 获取LayoutParams，给view对象设置宽度，高度
@@ -396,7 +418,6 @@ public class RongZiXQActivity extends BaseActivity {
                             params.setMargins(0, 0, right, 0);
                             imageView.setImageResource(R.mipmap.rongzixiangqing_zhankai);
                             imageView.setLayoutParams(params);
-
                             linearLayout.addView(imageView);
                             spread(imageView, users);
                         }
@@ -429,6 +450,7 @@ public class RongZiXQActivity extends BaseActivity {
                 // 获取LayoutParams，给view对象设置宽度，高度
                 final LayoutParams params = new LayoutParams(width, height);
                 params.setMargins(0, 0, right, 0);
+                final int  temp=j;
                 /*AppApplication.displayImage(users.get(j).getPictureUrl(), imageView);*/
                 NetRequestUtil.downloadImage(users.get(j).getPictureUrl(), new BitmapCallback() {
                     @Override
@@ -441,6 +463,24 @@ public class RongZiXQActivity extends BaseActivity {
                         imageView.setImageBitmap(response);
                         imageView.setLayoutParams(params);
                         linearLayout.addView(imageView);
+                        Log.d("XSXXXXXXXXXXXXXXXXXXXXXXXXXXX",users.get(temp).getId());
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (users.get(temp).getMaster()!=null){
+                                    Intent intent=new Intent(RongZiXQActivity.this, UserYsjIndexActivity.class);
+                                    intent.putExtra("userId",users.get(temp).getId());
+                                    intent.putExtra("currentId",AppApplication.gUser.getId());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    RongZiXQActivity.this.startActivity(intent);
+                                }else {
+                                    Intent intent=new Intent(RongZiXQActivity.this, UserPtIndexActivity.class);
+                                    intent.putExtra("userId",users.get(temp).getId());
+                                    intent.putExtra("currentId",AppApplication.gUser.getId());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    RongZiXQActivity.this.startActivity(intent);
+                                }
+                            }});
                     }
                 });
             }

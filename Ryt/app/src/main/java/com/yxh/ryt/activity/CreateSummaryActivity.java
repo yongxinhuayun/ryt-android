@@ -272,13 +272,18 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
         @JavascriptInterface
         public void comment(String artworkId,String currentUserId,String messageId,String fatherCommentId,String name) {
             if ("undefined".equals(fatherCommentId)){
-                Intent intent = new Intent(CreateSummaryActivity.this, ProjectCommentReply.class);
-                intent.putExtra("fatherCommentId", "");
-                intent.putExtra("messageId", messageId);
-                intent.putExtra("flag", 1);
-                intent.putExtra("artworkId", artworkId);
-                intent.putExtra("currentUserId", AppApplication.gUser.getId());
-                CreateSummaryActivity.this.startActivity(intent);
+                if ("".equals(AppApplication.gUser.getId())) {
+                    Intent intent2 = new Intent(CreateSummaryActivity.this, LoginActivity.class);
+                    CreateSummaryActivity.this.startActivity(intent2);
+                }else {
+                    Intent intent = new Intent(CreateSummaryActivity.this, ProjectCommentReply.class);
+                    intent.putExtra("fatherCommentId", "");
+                    intent.putExtra("messageId", messageId);
+                    intent.putExtra("flag", 1);
+                    intent.putExtra("artworkId", artworkId);
+                    intent.putExtra("currentUserId", AppApplication.gUser.getId());
+                    CreateSummaryActivity.this.startActivity(intent);
+                }
             }else {
                 if ("".equals(AppApplication.gUser.getId())) {
                     Intent intent2 = new Intent(CreateSummaryActivity.this, LoginActivity.class);

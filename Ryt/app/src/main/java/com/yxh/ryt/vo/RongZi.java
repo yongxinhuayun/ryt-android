@@ -34,7 +34,7 @@ public class RongZi {
      * duration : null
      * startingPrice : 1000
      */
-
+    private String investRestTime;
     private String id;
     private String title;
     private String brief;
@@ -89,6 +89,14 @@ public class RongZi {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getInvestRestTime() {
+        return investRestTime;
+    }
+
+    public void setInvestRestTime(String investRestTime) {
+        this.investRestTime = investRestTime;
     }
 
     public String getTitle() {

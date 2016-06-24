@@ -139,10 +139,10 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
 
                 @Override
                 public void onResponse(Map<String, Object> response) {
-                    String url = response.get("url").toString();
+                    /*String url = response.get("url").toString();
                     Intent intent=new Intent(AuctionSummaryActivity.this,PayPageActivity.class);
                     intent.putExtra("url",url);
-                    AuctionSummaryActivity.this.startActivity(intent);
+                    AuctionSummaryActivity.this.startActivity(intent);*/
                 }
             });
         }
