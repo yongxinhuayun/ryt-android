@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <title>订单详情</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="shop2016/css/swiper.min.css">
-    <link rel="stylesheet" href="shop2016/css/layout.css">
-    <link rel="stylesheet" href="shop2016/css/aorder.css">
+    <link rel="stylesheet" href="shop2016/css/swiper.min.css?t=20160413">
+    <link rel="stylesheet" href="shop2016/css/layout.css?t=20160413">
+    <link rel="stylesheet" href="shop2016/css/aorder.css?t=20160413">
 </head>
 <body>
 <div class="tz2016" style="padding-bottom:51px">
     <!--<div class="header ">-->
-        <!--<a href="" class="chevron chevron-left"></a>-->
-        <!--<h1>订单详情</h1>-->
+    <!--<a href="" class="chevron chevron-left"></a>-->
+    <!--<h1>订单详情</h1>-->
     <!--</div>-->
     <!--//End--模块--人物投资信息-->
     <div id="orderV" class="pm_details" style="padding-top: 12px;">
@@ -78,17 +78,15 @@
     function redirectConfirm(orderId) {
 
     }
-
     function redirectPay(price, type) {
         window.summary.payMoney(price, type);
     }
-
 
     var swiperContainerOption = {};
 
 
     //hostName = "http://192.168.1.75:8080";                           //服务器域名
-    hostName="http://ryt.efeiyi.com";
+    hostName = "http://ryt.efeiyi.com";
     RequestUrl = {
         orderTab: "/app/viewOrder.do"
     }//接口对象
@@ -104,9 +102,13 @@
             }
         }
     })
+    function redirectUser(userid) {
+        console.log("test");
+        window.summary.clickOnAndroid(userid);
+    }          // 跳转到用户的个人主页
 
     function initPage(currentUserId, artWorkOrderId) {
-        //var param = new Object();
+        /ar param = new Object();
         //param.currentUserId = currentUserId;
         //param.artWorkOrderId = artWorkOrderId;
         var paramStr = window.summary.fetchParamObject();
@@ -117,29 +119,13 @@
         PageVariable.param = param;
         getAuctionOrderData(getAuctionOrder);
     }
-
-
-    function getParamObject() {
-//        return {
-//            currentUserId: "imhfp1yr4636pj49",
-//            artWorkOrderId: "123"
-//        }
-        return PageVariable.param;
-    }              //从app中获取的服务端请求接口的必要参数  需要传递一个密钥参数
-    function getCurrentUserId() {
-        return getParamObject()["currentUserId"];
-    }            //获得当前用户的id
-    function redirectUser(userid) {
-        console.log("test");
-        window.summary.clickOnAndroid(userid);
-    }          // 跳转到用户的个人主页
-
-
     function submitPayRest(price) {
         redirectPay(price, "auction");
     }
 
-
+    function getCurrentUserId() {
+        return getParamObject()["currentUserId"];
+    }            //获得当前用户的id
 
     function getAuctionOrderData(callback) {
         var success = function (data) {
@@ -168,7 +154,7 @@
         }
         out += ' </div> <div class="pbody"> <div class="ppic"><a href=""><img src="' + (it.artwork.picture_url) + '" alt=""></a></div> <div class="pcontent"> <div class="hone">' + (it.artwork.title) + '</div> <div class="htext">' + (it.artwork.brief) + '</div> <div class="hmoney">￥<span>' + (it.amount) + '</span></div> </div> </div> </div> ';
         if (it.type != "0") {
-            out += ' <div class="pm_page"> <p>收货人：<span>' + (it.consumerAddress.consignee) + '</span></p> <p>联系方式：<span>' + (it.consumerAddress.phone) + '</span></p> <p>收货地址：<span>' + (it.consumerAddress.province.name + it.consumerAddress.city.name + it.consumerAddress.district.name) + '</span> </p> </div> ';
+            out += ' <div class="pm_page"> <p>收货人：<span>' + (it.consumerAddress.consignee) + '</span></p> <p>联系方式：<span>' + (it.consumerAddress.phone) + '</span></p> <p>收货地址：<span>' + (it.consumerAddress.provinceStr) + (it.consumerAddress.details) + '</span> </p> </div> ';
         }
         out += ' ';
         if (it.payStatus == "0") {

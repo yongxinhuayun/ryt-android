@@ -29,7 +29,7 @@ function getArtWorkBaseInfo() {
     $("#cz").html(generateDOTTemplateResult(Template.artWorkScheduleCreate, artWorkProject));
     $("#pm").html(generateDOTTemplateResult(Template.artWorkScheduleAuction, artWorkProject));
     $("#dt").html(generateDOTTemplateResult(Template.artWorkScheduleMessage, artWorkProject));
-    tabsHeight();
+    setTimeout("tabsHeight()", 1000);
     for (var i = 0; i < artWorkProject.messageList.length; i++) {
         var message = artWorkProject.messageList[i];
         PageVariable.messageMap[message.id] = message;

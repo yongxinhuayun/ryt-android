@@ -28,7 +28,6 @@ function initPage(currentUserId) {
     })
 }
 
-
 var PageVariable = {
     allOrderList: "",
     wpOrderList: "",

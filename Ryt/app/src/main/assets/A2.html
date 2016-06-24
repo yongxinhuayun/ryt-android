@@ -121,7 +121,7 @@
     <div class="bd">
         <div class="page">
             <div class="mp">
-                <div class="pic"><a onclick="redirectUser('{{=it.masterid}}')"><img src="{{=it.headUrl}}"
+                <div class="pic"><a onclick="redirectUser('{{=it.masterid}}')"><img src="{{=it.headUrl}}!app-user-head"
                                                                                     alt=""></a></div>
                 <div class="n-page"><span class="name">{{=it.masterName}}</span><strong></strong><span
                         class="rank">{{=it.title}}</span></div>
@@ -189,6 +189,17 @@
         <div class="list">
             <div class="messageContent">
                 {{=it.messageList[0].content}}
+                {{
+                for(var j = 0 ; j < it.messageList[0].artworkMessageAttachments.length ; j++){
+                var attachments = it.messageList[0].artworkMessageAttachments[j];
+                }}
+
+                {{if(attachments.fileType == "0"){ }}
+                <img src="{{=attachments.fileUri}}">
+                {{ }else if(attachments.fileType == "1"){ }}
+                <video src="{{=attachments.fileUri}}"></video>
+                {{ } }}
+                {{ } }}
             </div>
             <div class="pm_btm_bar a-button">
                 <a class="links" onclick="createMessageComment('{{=it.messageList[0].id}}')" title="评论"
@@ -249,6 +260,17 @@
             <div class="list">
                 <div class="messageContent">
                     {{=message.content}}
+                    {{
+                    for(var j = 0 ; j < message.artworkMessageAttachments.length ; j++){
+                    var attachments = message.artworkMessageAttachments[j];
+                    }}
+
+                    {{if(attachments.fileType == "0"){ }}
+                    <img src="{{=attachments.fileUri}}">
+                    {{ }else if(attachments.fileType == "1"){ }}
+                    <video src="{{=attachments.fileUri}}"></video>
+                    {{ } }}
+                    {{ } }}
                 </div>
                 <div class="pm_btm_bar a-button">
                     <a class="links" onclick="createMessageComment('{{=message.id}}')" title="评论"
@@ -311,7 +333,7 @@
         <div class="r-txt">
             <span class="head">拍卖</span>
             <span class="month">{{=getDateStr(it.auctionStartDatetime)}}</span>
-            <span class="alltime">08:50{{=getTimeStr(it.auctionStartDatetime)}}</span>
+            <span class="alltime">{{=getTimeStr(it.auctionStartDatetime)}}</span>
         </div>
     </div>
 </script>
@@ -326,7 +348,7 @@
     }}
     <li>
         <div class="pic"><a onclick="redirectUser('{{=comment.creator.id}}')"><img
-                src="{{=comment.creator.pictureUrl}}" alt=""></a></div>
+                src="{{=comment.creator.pictureUrl}}!app-user-head" alt=""></a></div>
         <div class="box">
             <div class="name"><span>{{=comment.creator.name}}</span><span class="time">{{=getTimeStr(comment.createDatetime)}}</span>
             </div>
@@ -334,7 +356,8 @@
             <div class="content">
                 <div class="reply">
                     <p>回复 <a onclick="redirectUser('{{=comment.fatherComment.creator.id}}')">{{=comment.fatherComment.creator.name}}</a>：<a
-                            onclick="submitComment('{{=comment.id}}')"><span>{{=comment.content}}</span></a>
+                            onclick="submitComment('{{=comment.id}}')"
+                            style="color: #000"><span>{{=comment.content}}</span></a>
                     </p>
                 </div>
             </div>
@@ -360,49 +383,51 @@
 <script type="text/x-dot-template" id="artWorkInvestRecordTop">
     {{
     var invest1 = it.topThreeList[1];
+    if (typeof invest1 != "undefined") {
     }}
     <li class="no2" id="N2">
-        <p class="img"><img src="{{=invest1.creator.pictureUrl}}" alt=""></p>
-        <p class="name">{{=invest1.creator.name}}</p>
-        <p class="time">{{=getTimeStr(invest1.createDatetime)}}</p>
+        <p class="img"><img src="{{=invest1.user.pictureUrl}}" alt=""></p>
+        <p class="name">{{=invest1.user.name}}</p>
+        <p class="time">{{=getDateFormatStr(invest1.createDatetime,"MM月dd日 hh:mm")}}</p>
         <p class="info">投资了</p>
-        <p class="price">¥ {{=parseInt(invest1.price)}}</p>
+        <p class="price">¥ {{=parseInt(invest1.money)}}</p>
     </li>
-
+    {{ } }}
     {{
     var invest0 = it.topThreeList[0];
+    if(typeof invest0 != "undefined"){
     }}
     <li class="no1" id="N1">
-        <p class="img"><img src="{{=invest0.creator.pictureUrl}}" alt=""></p>
-        <p class="name">{{=invest0.creator.name}}</p>
-        <p class="time">{{=getTimeStr(invest0.createDatetime)}}</p>
+        <p class="img"><img src="{{=invest0.user.pictureUrl}}" alt=""></p>
+        <p class="name">{{=invest0.user.name}}</p>
+        <p class="time">{{=getDateFormatStr(invest0.createDatetime,"MM月dd日 hh:mm")}}</p>
         <p class="info">投资了</p>
-        <p class="price">¥ {{=parseInt(invest0.price)}}</p>
+        <p class="price">¥ {{=parseInt(invest0.money)}}</p>
     </li>
+    {{  } }}
     {{
     var invest2 = it.topThreeList[2];
+    if(typeof invest2 != "undefined"){
     }}
     <li class="no3" id="N3">
-        <p class="img"><img src="{{=invest2.creator.pictureUrl}}" alt=""></p>
-        <p class="name">{{=invest2.creator.name}}</p>
-        <p class="time">{{=getTimeStr(invest2.createDatetime)}}</p>
+        <p class="img"><img src="{{=invest2.user.pictureUrl}}" alt=""></p>
+        <p class="name">{{=invest2.user.name}}</p>
+        <p class="time">{{=getDateFormatStr(invest2.createDatetime,"MM月dd日 hh:mm")}}</p>
         <p class="info">投资了</p>
-        <p class="price">¥ {{=parseInt(invest2.price)}}</p>
+        <p class="price">¥ {{=parseInt(invest2.money)}}</p>
     </li>
+    {{ } }}
 </script>
 <!--投资记录-->
 <script type="text/x-dot-template" id="artWorkInvestRecordList">
     {{
-    for (var i = 0 ; i< it.investList ; i++) {
-
+    for (var i = 0 ; i< it.investList.length ; i++) {
     var investTemp = it.investList[i];
-
     }}
-
     <li>
         <span><img src="{{=investTemp.creator.pictureUrl}}" alt=""><strong>{{=dealUsername(investTemp.creator.username,3,4)}}</strong></span>
         <span><strong>投资了</strong>&nbsp;<b>{{=parseInt(investTemp.price)}}元</b></span>
-        <span>{{=getTimeStr(investTemp.createDatetime)}}</span>
+        <span>{{=getDateFormatStr(investTemp.createDatetime,"MM月dd日 hh:mm")}}</span>
     </li>
     {{ } }}
 </script>
@@ -454,10 +479,6 @@
     }
 
     //从app中获取的服务端请求接口的必要参数  需要传递一个密钥参数
-    function getParamObject() {
-        return PageVariable.param;
-       // return {artWorkId: "qydeyugqqiugd2", currentUserId: "imhfp1yr4636pj49"}
-    }
     //从app中获取当前用户id
     function getCurrentUserId() {
         return getParamObject()["currentUserId"];

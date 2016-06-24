@@ -49,3 +49,6 @@ var PageVariable = {
     commentMap: {},
     messageMap: {}
 };    //页面中主要的全局变量
+
+
+
