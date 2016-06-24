@@ -137,7 +137,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
 
     @OnClick(R.id.rs_bt_commit)
     public void completeClick() {
-
         Map<String, File> fileMap = new HashMap<>();
         File file = new File(filePath);
         fileMap.put(file.getName(), file);
@@ -243,7 +242,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                             public void onClick(int which) {
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
-                                        getExternalStorageDirectory(), "temp.jpg")));
+                                        getExternalStorageDirectory(), "temp1.jpg")));
                                 startActivityForResult(intent, CAMERA_REQUEST_CODE);
                             }
                         })
@@ -344,11 +343,13 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                 break;
             case CAMERA_REQUEST_CODE:
                 File picture = new File(Environment.getExternalStorageDirectory()
-                        + "/temp.jpg");
+                        + "/temp1.jpg");
                 Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
-                Bitmap bitmap3 = Utils.rotaingImageView(picture.getPath(), bitmap1);
-                Bitmap bitmap4 = compressHeadPhoto(bitmap3);
-                circleImageView.setImageBitmap(bitmap4);
+                filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
+                /* Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
+                bitmap1.recycle();
+                circleImageView.setImageBitmap(bitmap2);*/
+                circleImageView.setImageBitmap(bitmap1);
 //                saveFile(bitmap1);
 //                startCrop(Uri.fromFile(picture));
                 flag = true;
@@ -379,31 +380,19 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         }
     }
 
-    private Bitmap compressHeadPhoto(Bitmap bitmap3) {
-        File rotateFile = new File(Environment.getExternalStorageDirectory(),
-                "rotate.jpg");
-        try {
-            bitmap3.compress(Bitmap.CompressFormat.JPEG, 70, new FileOutputStream(
-                    rotateFile));
-            return bitmap3;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public Bitmap getBitmap(Uri data) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inSampleSize = 4;
        /* if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){*/
-        String filePath1 = GetPathFromUri4kitkat.getPath(data);
+        filePath = GetPathFromUri4kitkat.getPath(data);
         /*}else{
             filePath= ImageUtils.getRealPathByUriOld(data);
         }*/
         Bitmap bm = BitmapFactory.decodeFile(filePath, options);
         options.inJustDecodeBounds = false;
-        bm = BitmapFactory.decodeFile(filePath1, options);
+        bm = BitmapFactory.decodeFile(filePath, options);
         return bm;
     }
 

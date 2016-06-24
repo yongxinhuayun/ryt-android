@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.AuctionSummaryActivity;
 import com.yxh.ryt.activity.ChuangZuoXQActivity;
 import com.yxh.ryt.activity.CreateSummaryActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
@@ -30,7 +32,7 @@ import okhttp3.Call;
 
 
 public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
-		AutoListView.OnLoadListener{
+		AutoListView.OnLoadListener, AdapterView.OnItemClickListener {
 	private AutoListView lstv;
 	private CommonAdapter<Create> chuangZuoCommonAdapter;
 	private List<Create> chuangZuoDatas;
@@ -113,7 +115,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 				helper.setText(R.id.cl_01_tv_name, item.getAuthor().getName());
 				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
 				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, item.getAuthor().getPictureUrl());
-				helper.getView(R.id.cl_01_tv_prc).setOnClickListener(new View.OnClickListener() {
+				/*helper.getView(R.id.cl_01_tv_prc).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);
@@ -121,7 +123,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 						intent.putExtra("name", item.getTitle());
 						startActivity(intent);
 					}
-				});
+				});*/
 				if ("暂无更新状态".equals(item.getNewCreationDate())){
 					helper.setText(R.id.cli_tv_update,"暂无更新状态");
 				}else {
@@ -135,6 +137,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 		lstv.setAdapter(chuangZuoCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
+		lstv.setOnItemClickListener(this);
 		return contextView;
 	}
 
@@ -159,5 +162,15 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 	public void onLoad() {
 		currentPage++;
 		LoadData(AutoListView.LOAD,currentPage);
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		if (position<=chuangZuoDatas.size()){
+			Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);
+			intent.putExtra("id", chuangZuoDatas.get(position-1).getId());
+			intent.putExtra("name", chuangZuoDatas.get(position-1).getTitle());
+			startActivity(intent);
+		}
 	}
 }

@@ -98,7 +98,7 @@ public class EditProject01Activity extends  BaseActivity {
     }
     private void loadData() {
         Map<String,String> paramsMap=new HashMap<>();
-       /* paramsMap.put("artWorkId", "imyt7yax314lpzzj");
+        /*paramsMap.put("artWorkId", "imyt7yax314lpzzj");
         paramsMap.put("currentUserId", "imhfp1yr4636pj49");*/
         paramsMap.put("artWorkId", artWorkId);
         paramsMap.put("currentUserId", currentUserId);
@@ -229,7 +229,7 @@ public class EditProject01Activity extends  BaseActivity {
                             public void onClick(int which) {
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
-                                        getExternalStorageDirectory(), "temp.jpg")));
+                                        getExternalStorageDirectory(), "temp3.jpg")));
                                 startActivityForResult(intent, CAMERA_REQUEST_CODE);
                             }
                         })
@@ -246,7 +246,7 @@ public class EditProject01Activity extends  BaseActivity {
     }
     //艺术家发布项目第一步接口一网络请求
     private void oneStepRequst() {
-        View view = LayoutInflater.from(this).inflate(
+        /*View view = LayoutInflater.from(this).inflate(
                 R.layout.dilog_withwait, null);
 
         dialog = new AlertDialog.Builder(this).create();
@@ -254,7 +254,7 @@ public class EditProject01Activity extends  BaseActivity {
         dialog.getWindow().setContentView(view);
         customDialogView = (CustomDialogView) view.findViewById(R.id.view_customdialog);
         redrawCdvRunnable = new RedrawCustomDialogViewThread();
-        new Thread(redrawCdvRunnable).start();
+        new Thread(redrawCdvRunnable).start();*/
         Map<String,File> fileMap=new HashMap<>();
         File file = new File(filePath);
         fileMap.put(file.getName(),file);
@@ -262,6 +262,7 @@ public class EditProject01Activity extends  BaseActivity {
         paramsMap.put("title",evTitle.getText().toString());
         paramsMap.put("duration",evDuration.getText().toString());
         paramsMap.put("userId",currentUserId);
+        //paramsMap.put("userId","imhfp1yr4636pj49");
         paramsMap.put("investGoalMoney",evMenoy.getText().toString());
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
         try {
@@ -286,7 +287,7 @@ public class EditProject01Activity extends  BaseActivity {
                 System.out.println("成功了");
                 if ("0".equals(response.get("resultCode"))){
                     if (size==ImageList.size()){
-                        redrawCdvRunnable.setRun(false);
+                        /*redrawCdvRunnable.setRun(false);*/
                         Intent intent=new Intent(EditProject01Activity.this,EditProject02Activity.class);
                         intent.putExtra("artworkId", (String)response.get("artworkId")+"");
                         intent.putExtra("description",description);
@@ -371,7 +372,7 @@ public class EditProject01Activity extends  BaseActivity {
                 params.setMargins(left,0,right,0);
                 ivImage.setLayoutParams(params);
                 File picture = new File(Environment.getExternalStorageDirectory()
-                        + "/temp.jpg");
+                        + "/temp3.jpg");
                 Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
                 filePath= Utils.getFilePathFromUri(Uri.fromFile(picture), this);
                 /*Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
