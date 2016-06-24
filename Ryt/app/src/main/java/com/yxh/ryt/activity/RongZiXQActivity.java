@@ -13,7 +13,6 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +51,7 @@ import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Artwork;
+import com.yxh.ryt.vo.Master;
 import com.yxh.ryt.vo.User;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 
@@ -119,6 +119,10 @@ public class RongZiXQActivity extends BaseActivity {
     private String share_Url;
     private boolean flag=true;
     protected static final int PRAISE_SUC = 100;
+    private String userId;
+    private Master master;
+    private HashMap<ImageView, String> userImageViewMap;
+    //private int zhenjie;
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, RongZiXQActivity.class));
     }
@@ -370,18 +374,20 @@ public class RongZiXQActivity extends BaseActivity {
     }
 
     private void isFirst(final List<User> users) {
+        if(userImageViewMap == null) {
+            userImageViewMap = new HashMap<ImageView, String>();
+        }
         if (users.size() > count) {
             final LinearLayout linearLayout = new LinearLayout(RongZiXQActivity.this);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
             for (int j = 0; j < count - 1; j++) {
                 final int  temp=j;
-                Log.d("xxxxxxxxxxxxxxxxxxxxxxxx",temp+"");
                 final CircleImageView imageView = new CircleImageView(RongZiXQActivity.this);
+                imageView.setTag(R.id.tag_first,users.get(j).getId());
+                imageView.setTag(R.id.tag_second,users.get(j).getMaster());
                 // 获取LayoutParams，给view对象设置宽度，高度
                 final LayoutParams params = new LayoutParams(width, height);
                 params.setMargins(0, 0, right, 0);
-                /*AppApplication.displayImage(users.get(j).getPictureUrl(), imageView);*/
-
                 NetRequestUtil.downloadImage(users.get(j).getPictureUrl(), new BitmapCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
@@ -393,7 +399,6 @@ public class RongZiXQActivity extends BaseActivity {
                         imageView.setImageBitmap(response);
                         imageView.setLayoutParams(params);
                         linearLayout.addView(imageView);
-                        Log.d("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",users.get(temp).getId());
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -421,23 +426,19 @@ public class RongZiXQActivity extends BaseActivity {
                             linearLayout.addView(imageView);
                             spread(imageView, users);
                         }
+
                         time++;
                     }
                 });
-               /* imageView.setOnClickListener(users.get(j).getId(),new View.OnClickListener() {
+
+                imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-
-                        Intent intent=new Intent(RongZiXQActivity.this, UserYsjIndexActivity.class);
-                        intent.putExtra("userId",users.get(j).getId());
-                        intent.putExtra("currentId",AppApplication.gUser.getId());
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getActivity().startActivity(intent);
-
-
+                        String userId = (String) v.getTag(R.id.tag_first);
+                        Master master = (Master) v.getTag(R.id.tag_second);
+                        clickHead(master,userId);
                     }
-                });*/
+                });
 
             }
             touziren_ll.addView(linearLayout);
@@ -446,12 +447,16 @@ public class RongZiXQActivity extends BaseActivity {
             final LinearLayout linearLayout = new LinearLayout(RongZiXQActivity.this);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
             for (int j = 0; j < users.size(); j++) {
+                User user = users.get(j);
+
                 final CircleImageView imageView = new CircleImageView(RongZiXQActivity.this);
+                imageView.setTag(R.id.tag_first,users.get(j).getId());
+                imageView.setTag(R.id.tag_second,users.get(j).getMaster());
+                userImageViewMap.put(imageView, user.getId());
                 // 获取LayoutParams，给view对象设置宽度，高度
                 final LayoutParams params = new LayoutParams(width, height);
                 params.setMargins(0, 0, right, 0);
                 final int  temp=j;
-                /*AppApplication.displayImage(users.get(j).getPictureUrl(), imageView);*/
                 NetRequestUtil.downloadImage(users.get(j).getPictureUrl(), new BitmapCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
@@ -463,7 +468,6 @@ public class RongZiXQActivity extends BaseActivity {
                         imageView.setImageBitmap(response);
                         imageView.setLayoutParams(params);
                         linearLayout.addView(imageView);
-                        Log.d("XSXXXXXXXXXXXXXXXXXXXXXXXXXXX",users.get(temp).getId());
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -483,11 +487,35 @@ public class RongZiXQActivity extends BaseActivity {
                             }});
                     }
                 });
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String userId = (String) v.getTag(R.id.tag_first);
+                        Master master = (Master) v.getTag(R.id.tag_second);
+                        clickHead(master,userId);
+                    }
+                });
+
             }
             touziren_ll.addView(linearLayout);
         }
     }
 
+    private void clickHead(Master master,String userId) {
+        if (master!=null){
+            Intent intent=new Intent(RongZiXQActivity.this, UserYsjIndexActivity.class);
+            intent.putExtra("userId",userId);
+            intent.putExtra("currentId",AppApplication.gUser.getId());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }else {
+            Intent intent=new Intent(RongZiXQActivity.this, UserPtIndexActivity.class);
+            intent.putExtra("userId",userId);
+            intent.putExtra("currentId",AppApplication.gUser.getId());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
     private void spread(final CircleImageView imageView, final List<User> users) {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -689,6 +717,7 @@ public class RongZiXQActivity extends BaseActivity {
 
 //    api.handleIntent(intent, this);
     }
+
 
 }
 
