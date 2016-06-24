@@ -127,7 +127,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 				if ("暂无更新状态".equals(item.getNewCreationDate())){
 					helper.setText(R.id.cli_tv_update,"暂无更新状态");
 				}else {
-					helper.setText(R.id.cli_tv_update,"最新一次更新:"+item.getNewCreationDate()+"前");
+					helper.setText(R.id.cli_tv_update,"最新更新:"+item.getNewCreationDate()+"前");
 				}
 				/*if (item.getCreationEndDatetime()>System.currentTimeMillis()){*/
 					helper.setText(R.id.cli_tv_predictComplete, "预计完工:" + Utils.timeTransMonth(item.getCreationEndDatetime()) + "月" + Utils.timeTransDate(item.getCreationEndDatetime())+"日");
