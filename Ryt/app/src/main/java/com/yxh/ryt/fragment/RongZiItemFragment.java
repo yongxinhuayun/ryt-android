@@ -131,14 +131,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 							getActivity().startActivity(intent);
 						}
 					});
-					/*helper.getView(R.id.cl_01_tv_prc).setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							Intent intent=new Intent(getActivity(), RongZiXQActivity.class);
-							intent.putExtra("id",item.getId());
-							startActivity(intent);
-						}
-					});*/
+
 				}
 			}
 		};
