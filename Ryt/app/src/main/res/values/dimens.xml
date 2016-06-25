@@ -20,5 +20,6 @@
     <dimen name="title">18sp</dimen>title
     //常规字体
     <dimen name="defult_font">14sp</dimen>title
-
+    //padding
+    <dimen name="defult_padding">14sp</dimen>title
 </resources>

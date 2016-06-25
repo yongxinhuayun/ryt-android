@@ -27,7 +27,7 @@
             android:layout_centerVertical="true"
             android:text="略带彷徨的青春"
             android:textColor="#333333"
-            android:textSize="20sp" />
+            android:textSize="@dimen/title" />
         <!--<TextView-->
         <!--android:visibility="gone"-->
         <!--android:layout_width="50dp"-->

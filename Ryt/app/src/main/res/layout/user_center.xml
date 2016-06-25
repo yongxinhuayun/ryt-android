@@ -19,7 +19,7 @@
             android:layout_centerVertical="true"
             android:textColor="@android:color/black"
             android:layout_marginLeft="10dp"
-            android:textSize="14sp"
+            android:textSize="@dimen/defult_font"
             android:gravity="center"
             android:text="申请为艺术家" />
 
@@ -31,7 +31,7 @@
             android:layout_centerVertical="true"
             android:text="我的"
             android:textColor="#333333"
-            android:textSize="18sp" />
+            android:textSize="@dimen/title" />
         <!--<TextView-->
         <!--android:visibility="gone"-->
         <!--android:layout_width="50dp"-->
@@ -74,7 +74,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/defult_font"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/icon_01"
                     android:layout_marginLeft="10dp"
@@ -118,7 +118,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/defult_font"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/icon_02"
                     android:layout_marginLeft="10dp"
@@ -153,7 +153,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/defult_font"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/icon_auction"
                     android:layout_marginLeft="10dp"
@@ -188,7 +188,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/defult_font"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/icon_03"
                     android:layout_marginLeft="10dp"
@@ -231,7 +231,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/defult_font"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/icon_04"
                     android:layout_marginLeft="10dp"

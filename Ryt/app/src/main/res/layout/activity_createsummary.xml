@@ -26,7 +26,7 @@
             android:layout_centerVertical="true"
             android:text="略带彷徨的青春"
             android:textColor="#333333"
-            android:textSize="20sp" />
+            android:textSize="@dimen/title" />
         <!--<TextView-->
         <!--android:visibility="gone"-->
         <!--android:layout_width="50dp"-->
@@ -93,7 +93,7 @@
                     android:layout_marginLeft="6dp"
                     android:gravity="center_vertical"
                     android:textColor="#999999"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
             </LinearLayout>
@@ -114,7 +114,7 @@
                     android:text="评论"
                     android:layout_marginLeft="6dp"
                     android:textColor="#999999"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/title"
                     android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />

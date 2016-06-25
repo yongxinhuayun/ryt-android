@@ -25,7 +25,7 @@
             android:layout_centerVertical="true"
             android:text="项目详情"
             android:textColor="#333333"
-            android:textSize="20sp" />
+            android:textSize="@dimen/title" />
         <TextView
             android:id="@+id/tv_done"
         android:layout_width="50dp"
@@ -33,7 +33,7 @@
         android:layout_centerVertical="true"
         android:gravity="center"
             android:textColor="@android:color/black"
-            android:textSize="14sp"
+            android:textSize="@dimen/defult_font"
         android:layout_alignParentRight="true"
         android:text="完成"/>
         <View
@@ -60,7 +60,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="项目说明："/>
+                    android:text="项目说明："
+                    android:textSize="@dimen/defult_font"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -79,6 +80,7 @@
                         android:layout_width="match_parent"
                         android:gravity="left"
                         android:hint="请输入项目说明"
+                        android:textSize="@dimen/title"
                         android:layout_height="100dp" />
                     <GridView
                         android:layout_marginTop="10dp"
@@ -100,7 +102,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="制作说明："/>
+                    android:text="制作说明："
+                    android:textSize="@dimen/defult_font"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -114,7 +117,8 @@
                         android:gravity="left"
                         android:inputType="textMultiLine"
                         android:hint="1、揉泥 耗时一天\n\n\n\n2、炼泥"
-                        android:layout_height="200dp" />
+                        android:layout_height="200dp"
+                        android:textSize="@dimen/title"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="10dp"
@@ -124,7 +128,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="融资解惑："/>
+                    android:text="融资解惑："
+                    android:textSize="@dimen/defult_font"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -138,7 +143,8 @@
                     android:background="@drawable/new_project_biankuang"
                     android:hint="1、本次产品是不是纯手工的\n答复：本人亲手制作\n\n1、本次产品是不是纯手工的\n
 答复：本人亲手制作"
-                    android:layout_height="200dp" />
+                    android:layout_height="200dp"
+                    android:textSize="@dimen/title"/>
             </LinearLayout>
 
         </LinearLayout>

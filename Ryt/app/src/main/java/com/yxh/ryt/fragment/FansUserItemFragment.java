@@ -128,7 +128,7 @@ public class FansUserItemFragment extends BaseFragment implements AutoListView.O
 				final String followId = item.getArtUserFollowed().getUser().getId();
 				helper.setText(R.id.fai_tv_name,item.getArtUserFollowed().getUser().getName());
 				if (item.getArtUserFollowed().getUser().getUserBrief()!=null){
-					helper.setText(R.id.fai_tv_brief,item.getArtUserFollowed().getUser().getUserBrief().getSigner());
+					helper.setText(R.id.fai_tv_brief,item.getArtUserFollowed().getUser().getUserBrief().getContent());
 				}else {
 					helper.setText(R.id.fai_tv_brief,"");
 				}

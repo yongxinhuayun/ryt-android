@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
@@ -19,7 +18,6 @@ import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.RongZi;
 
 import java.util.ArrayList;
@@ -119,8 +117,8 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 						helper.getView(R.id.cl_01_ll_zhicheng).setVisibility(View.GONE);
 					}
 					double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-					helper.setProgress(R.id.progressBar1, (int)(value*100));
-					helper.setText(R.id.tv_pb_value, (int) (value * 100) + "%");
+					/*helper.setProgress(R.id.progressBar1, (int)(value*100));
+					helper.setText(R.id.tv_pb_value, (int) (value * 100) + "%");*/
 					helper.getView(R.id.cl_01_civ_headPortrait).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {

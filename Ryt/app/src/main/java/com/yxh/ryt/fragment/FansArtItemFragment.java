@@ -127,8 +127,8 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 			public void convert(final ViewHolder helper, final FollowUserUtil item) {
 				final String followId = item.getArtUserFollowed().getUser().getId();
 				helper.setText(R.id.fai_tv_name, item.getArtUserFollowed().getUser().getName());
-				if (item.getArtUserFollowed().getUser().getMaster()!=null){
-					helper.setText(R.id.fai_tv_brief, item.getArtUserFollowed().getUser().getMaster().getBrief());
+				if (item.getArtUserFollowed().getUser().getUserBrief()!=null){
+					helper.setText(R.id.fai_tv_brief, item.getArtUserFollowed().getUser().getUserBrief().getContent());
 				}
 				helper.setImageByUrl(R.id.fai_iv_icon, item.getArtUserFollowed().getUser().getPictureUrl());
 				helper.getView(R.id.fai_iv_icon).setOnClickListener(new View.OnClickListener() {

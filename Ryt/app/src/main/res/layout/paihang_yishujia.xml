@@ -12,14 +12,14 @@
         android:orientation="horizontal">
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.7"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="14sp"
             android:text="排名"/>
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="1.3"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="14sp"

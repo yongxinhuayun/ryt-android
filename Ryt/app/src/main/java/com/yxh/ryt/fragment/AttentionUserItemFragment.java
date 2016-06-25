@@ -158,8 +158,8 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 					});
 				}
 				helper.setText(R.id.fai_tv_name,item.getArtUserFollowed().getFollower().getName());
-				if (item.getArtUserFollowed().getUser().getUserBrief()!=null){
-					helper.setText(R.id.fai_tv_brief,item.getArtUserFollowed().getUser().getUserBrief().getSigner());
+				if (item.getArtUserFollowed().getFollower().getUserBrief()!=null){
+					helper.setText(R.id.fai_tv_brief,item.getArtUserFollowed().getFollower().getUserBrief().getContent());
 				}else {
 					helper.setText(R.id.fai_tv_brief,"");
 				}

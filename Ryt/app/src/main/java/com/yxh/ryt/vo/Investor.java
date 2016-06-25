@@ -11,6 +11,15 @@ public class Investor {
     private String username;
     private BigDecimal price;
     private BigDecimal rois;
+    private String picture;
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 
     public BigDecimal getRois() {
         return rois;

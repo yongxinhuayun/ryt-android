@@ -17,6 +17,7 @@
             <TextView
                 android:textColor="#ef5b70"
                 android:text="查看全部明细"
+                android:textSize="@dimen/defult_font"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <ImageView

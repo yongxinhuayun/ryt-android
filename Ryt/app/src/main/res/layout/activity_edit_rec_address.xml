@@ -28,7 +28,7 @@
             android:layout_centerVertical="true"
             android:text="编辑收货地址"
             android:textColor="#000000"
-            android:textSize="17sp" />
+            android:textSize="@dimen/title" />
         <TextView
             android:id="@+id/tv_save"
             android:layout_width="wrap_content"
@@ -36,6 +36,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center_vertical"
             android:text="保存"
+            android:textSize="@dimen/defult_font"
             android:layout_marginRight="10dp"
             android:textColor="@android:color/black"
             android:clickable="true"/>
@@ -73,16 +74,16 @@
                 android:layout_centerVertical="true"
                 android:text="收货人："
                 android:textColor="#666666"
-                android:textSize="15sp" />
+                android:textSize="@dimen/defult_font" />
             <EditText
                 android:id="@+id/et_reciever"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_reciever"
-                android:background="@drawable/public_brief_et_bg"
+                android:background="@drawable/address_et_bg"
                 android:layout_marginRight="10dp"
                 android:text="aaaa"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/defult_font"/>
 
             <View
                 android:layout_width="match_parent"
@@ -105,16 +106,16 @@
                 android:layout_centerVertical="true"
                 android:text="手机号："
                 android:textColor="#666666"
-                android:textSize="15sp" />
+                android:textSize="@dimen/defult_font" />
             <EditText
                 android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_phone"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/public_brief_et_bg"
+                android:background="@drawable/address_et_bg"
                 android:text="aaaa"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/defult_font"/>
 
             <View
                 android:layout_width="match_parent"
@@ -137,16 +138,16 @@
                 android:layout_centerVertical="true"
                 android:text="所在地区："
                 android:textColor="#666666"
-                android:textSize="15sp" />
+                android:textSize="@dimen/defult_font" />
             <EditText
                 android:id="@+id/et_local"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_local"
-                android:background="@drawable/public_brief_et_bg"
+                android:background="@drawable/address_et_bg"
                 android:layout_marginRight="10dp"
                 android:text="aaaa"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/defult_font"/>
 
             <View
                 android:layout_width="match_parent"
@@ -170,7 +171,7 @@
                 android:layout_alignParentLeft="true"
                 android:text="详细地址："
                 android:textColor="#666666"
-                android:textSize="15sp" />
+                android:textSize="@dimen/defult_font" />
 
             <EditText
                 android:id="@+id/et_detail"
@@ -178,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_detail"
                 android:background="@drawable/new_address_et_bg"
-                android:textSize="15sp"
+                android:textSize="@dimen/defult_font"
                 />
 
 
@@ -209,7 +210,7 @@
                 android:layout_height="18dp"
                 android:text="设为默认地址"
                 android:textColor="#666666"
-                android:textSize="15sp" />
+                android:textSize="@dimen/defult_font" />
         </LinearLayout>
     </LinearLayout>
 
