@@ -28,6 +28,7 @@ import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
@@ -84,6 +85,8 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        api = WXAPIFactory.createWXAPI(this, Constants.APP_ID); //初始化api
+        api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
         setContentView(R.layout.activity_createsummary);
         back = (ImageButton) findViewById(R.id.ib_top_lf);
         share = (ImageButton) findViewById(R.id.ib_top_rt);
