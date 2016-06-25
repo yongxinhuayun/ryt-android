@@ -6,19 +6,31 @@ import java.math.BigDecimal;
  * Created by 吴洪杰 on 2016/4/7.
  */
 public class Artist {
-    private String user_id;
+    private String author_id;
     private String truename;
     private String username;
     private BigDecimal invest_goal_money;
     private BigDecimal turnover;
 
-    public String getUser_id() {
-        return user_id;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    private String picture;
+
+    public String getAuthor_id() {
+        return author_id;
     }
+
+    public void setAuthor_id(String author_id) {
+        this.author_id = author_id;
+    }
+
+    public String getPicture() {
+
+        return picture;
+    }
+
 
     public String getTruename() {
         return truename;

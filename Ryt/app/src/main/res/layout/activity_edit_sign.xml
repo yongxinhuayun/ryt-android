@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="17sp"
+            android:textSize="@dimen/title"
             android:text="编辑签名"/>
         <TextView
             android:id="@+id/tv_save"
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="11sp"
+            android:textSize="@dimen/defult_font"
             android:text="保存"
             android:layout_alignParentRight="true"
             android:layout_marginRight="14dp"
@@ -50,7 +50,7 @@
     android:id="@+id/et_nickName"
     android:layout_width="match_parent"
     android:layout_height="96dp"
-    android:textSize="12sp"
+    android:textSize="@dimen/defult_font"
     android:lineSpacingExtra="8dp"
     android:singleLine="false"
     android:gravity="top"

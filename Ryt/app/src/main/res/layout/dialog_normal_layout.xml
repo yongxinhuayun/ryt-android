@@ -13,7 +13,7 @@
         android:layout_marginBottom="48dp"
         android:layout_marginTop="48dp"
         android:text="确认要删除作品吗?"
-        android:textSize="12sp"
+        android:textSize="@dimen/defult_font"
         android:textColor="#000000"/>
     <LinearLayout
         android:layout_width="218dp"
@@ -31,6 +31,7 @@
             android:layout_height="35dp"
             android:background="@mipmap/anniu_kedianji"
             android:gravity="center"
+            android:textColor="@android:color/white"
             android:text="取消" />
 
         <TextView
@@ -42,6 +43,7 @@
             android:layout_marginLeft="10dp"
             android:background="@mipmap/anniu_kedianji"
             android:gravity="center"
+            android:textColor="@android:color/white"
             android:text="确认" />
     </LinearLayout>
 </FrameLayout>

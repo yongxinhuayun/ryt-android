@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="17sp"
+            android:textSize="@dimen/title"
             android:text="编辑昵称"/>
         <TextView
             android:id="@+id/tv_save"
@@ -33,10 +33,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="11sp"
+            android:textSize="@dimen/defult_font"
             android:text="保存"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="14dp"
+            android:layout_marginRight="@dimen/defult_padding"
             />
 
         <View
@@ -50,7 +50,7 @@
     android:id="@+id/et_nickName"
     android:layout_width="match_parent"
     android:layout_height="46dp"
-    android:textSize="12sp"
+    android:textSize="@dimen/title"
     android:padding="14dp"
     android:gravity="top"
     android:background="@drawable/public_brief_et_bg"

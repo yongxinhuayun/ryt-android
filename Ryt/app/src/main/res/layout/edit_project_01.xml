@@ -27,7 +27,7 @@
             android:layout_centerVertical="true"
             android:text="编辑项目"
             android:textColor="#333333"
-            android:textSize="20sp" />
+            android:textSize="@dimen/title" />
 
         <View
             android:layout_width="match_parent"
@@ -59,6 +59,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/defult_font"
                     android:text="项目标题：" />
 
                 <EditText
@@ -84,6 +85,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/defult_font"
                     android:text="项目简介：" />
 
                 <EditText
@@ -93,6 +95,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/new_project_biankuang"
                     android:gravity="left"
+                    android:textSize="@dimen/title"
                     android:hint="输入项目简介，100字以内" />
             </LinearLayout>
 
@@ -111,6 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/defult_font"
                     android:text="目标金额：" />
 
                 <EditText
@@ -120,6 +124,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/new_project_biankuang"
                     android:hint="输入融资金额，不低于100元"
+                    android:textSize="@dimen/title"
                     android:singleLine="true" />
             </LinearLayout>
 
@@ -138,6 +143,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/defult_font"
                     android:text="创作时长：" />
 
                 <EditText
@@ -146,6 +152,7 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/new_project_biankuang"
+                    android:textSize="@dimen/title"
                     android:text="30" />
             </LinearLayout>
 
@@ -164,7 +171,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="请上传项目的效果图或参考图：" />
+                    android:text="请上传项目的效果图或参考图："
+                    android:textSize="@dimen/defult_font"/>
 
                 <ImageView
                     android:id="@+id/iv_image"
@@ -185,7 +193,7 @@
                 android:text="下一步"
                 android:layout_marginBottom="20dp"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp" />
+                android:textSize="@dimen/defult_font" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

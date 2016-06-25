@@ -35,7 +35,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="融资"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/title" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
                     android:layout_marginLeft="30dp"
                     android:text="项目发起融资"
                     android:textColor="@android:color/black"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/defult_font" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,7 +102,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="创作"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/title" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -110,7 +110,7 @@
                     android:layout_marginLeft="30dp"
                     android:text="02月17日08点"
                     android:textColor="@android:color/black"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/defult_font" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -118,7 +118,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="开始创作"
                     android:textColor="@android:color/black"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/defult_font" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -186,7 +186,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="拍卖"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/title" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -194,7 +194,7 @@
                     android:layout_marginLeft="30dp"
                     android:text="敬请期待"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/defult_font" />
 
             </LinearLayout>
             <LinearLayout

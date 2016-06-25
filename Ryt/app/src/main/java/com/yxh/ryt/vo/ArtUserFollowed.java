@@ -1,7 +1,6 @@
 package com.yxh.ryt.vo;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by Administrator on 2016/2/18.
@@ -9,7 +8,7 @@ import java.util.Date;
  */
 public class ArtUserFollowed implements Serializable{
     private String id;
-    private User user;//关注着
+    private User user;//current user
     private User follower;//被关注者
     private String status;
     private String type;//1.关注艺术家 2.关注普通用户

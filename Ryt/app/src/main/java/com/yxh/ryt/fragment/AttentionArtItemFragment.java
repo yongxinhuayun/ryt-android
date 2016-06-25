@@ -155,8 +155,8 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 					});
 				}
 				helper.setText(R.id.fai_tv_name, item.getArtUserFollowed().getFollower().getName());
-				if (item.getArtUserFollowed().getUser().getMaster()!=null){
-					helper.setText(R.id.fai_tv_brief, item.getArtUserFollowed().getUser().getMaster().getBrief());
+				if (item.getArtUserFollowed().getFollower().getMaster()!=null){
+					helper.setText(R.id.fai_tv_brief, item.getArtUserFollowed().getFollower().getMaster().getBrief());
 				}
 				helper.setImageByUrl(R.id.fai_iv_icon, item.getArtUserFollowed().getFollower().getPictureUrl());
 				helper.getView(R.id.fai_iv_icon).setOnClickListener(new View.OnClickListener() {

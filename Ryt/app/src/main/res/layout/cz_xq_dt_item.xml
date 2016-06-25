@@ -19,8 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="动态"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="14sp" />
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/title" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
             android:layout_marginLeft="30dp"
             android:text="02月17日08点"
             android:textColor="@android:color/black"
-            android:textSize="14sp" />
+            android:textSize="@dimen/defult_font" />
 
     </LinearLayout>
 
@@ -69,6 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="我要开始熔铜了。"
+                android:textSize="@dimen/defult_font"
                 android:textColor="@android:color/darker_gray" />
 
             <LinearLayout
