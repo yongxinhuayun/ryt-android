@@ -59,18 +59,81 @@ var PageVariable = {
     artWorkInvestRecord: "", //当前项目投资记录对象
     artWorkAuctionStatus: "", //当前项目的拍卖状态
     artWorkAuction: "",
-    consumerAddress: {
-        id: "123123",
-        province: {name: "北京市"},
-        city: {name: "北京市"},
-        district: {name: "朝阳区"},
-        details: "酒仙桥东路1111",
-        post: "100000",
-        phone: "13699999999",
-        status: "2",
-        consignee: "王二小",
-        cityStr: ""
-    }, //默认地址
+    consumerAddress: null, //默认地址
     commentMap: {},
     messageMap: {}
 };    //页面中主要的全局变量
+
+//获得项目的基本信息
+function getArtWorkBaseInfoData(callback) {
+    var success = function (data) {
+        ajaxSuccessFunctionTemplage(function (dataTemp) {
+            var obj = dataTemp;
+            var msgList = obj["artWorkMessage"];
+            var artWork = obj["artwork"];
+            var auctionStartDatetime = new Date();
+            auctionStartDatetime.setTime(artWork.auctionStartDatetime);
+            PageVariable.artWorkInfo = new ArtWorkInfo(artWork.picture_url, artWork.author.name, artWork.brief, artWork.auctionStartDatetime, artWork.step, artWork.title, artWork.author.master.title, artWork.author.pictureUrl, artWork.author.id, artWork.startingPrice, artWork.winner, artWork.auctionEndDatetime, artWork.newBidingPrice, artWork.creationEndDatetime);
+            PageVariable.artWorkProject = new ArtWorkProject(artWork.investEndDatetime, artWork.step, artWork.investNum, artWork.investStartDatetime, msgList, artWork.auctionStartDatetime, artWork.creationEndDatetime);
+            PageVariable.viewNum = artWork.viewNum;
+            PageVariable.auctionNum = artWork.auctionNum;
+            PageVariable.startingPrice = artWork.startingPrice;
+            PageVariable.isSubmitDepositPrice = obj["isSubmitDepositPrice"];
+            // PageVariable.isSubmitDepositPrice = "1";
+        }, data, callback);
+    };
+    ajaxRequest(hostName + RequestUrl.initPage, dealRequestParam(getParamObject()), success, function () {
+    }, "post");
+}
+//获得项目详情信息数据
+function getArtWorkDetailData(callback) {
+    var success = function (data) {
+        ajaxSuccessFunctionTemplage(function (dataTemp) {
+            var obj = dataTemp["object"];
+            PageVariable.artWorkView = new ArtWorkView(obj.artworkAttachmentList, obj.artWork.description, obj.artworkdirection.make_instru, obj.artworkdirection.financing_aq);
+        }, data, callback);
+    }
+    ajaxRequest(hostName + RequestUrl.artWorkViewTab, dealRequestParam(getParamObject()), success, function () {
+    }, "post");
+}
+//获得项目评价信息数据
+function getArtWorkCommentData(callback) {
+    var success = function (data) {
+        ajaxSuccessFunctionTemplage(function (dataTemp) {
+            var obj = dataTemp["object"];
+            PageVariable.artWorkComment = new ArtWorkComment(obj.artworkCommentList);
+        }, data, callback)
+    };
+    var param = getParamObject();
+    param.pageIndex = pageEntity.pageIndex;
+    param.pageSize = pageEntity.pageSize;
+    ajaxRequest(hostName + RequestUrl.commentTab, dealRequestParam(param), success, function () {
+    }, "post");
+}
+//拍卖纪录
+function getArtWorkAuctionData(callback) {
+    var success = function (data) {
+        ajaxSuccessFunctionTemplage(function (dataTemp) {
+            var obj = dataTemp;
+            PageVariable.artWorkAuction = new ArtWorkAuction(obj.artworkBiddingList, obj.biddingTopThree);
+            PageVariable.auctionNum = obj.auctionNum;
+            PageVariable.biddingUsersNum = obj.biddingUsersNum;
+        }, data, callback)
+    };
+    var param = getParamObject();
+    param.pageIndex = pageEntity.pageIndex;
+    param.pageSize = pageEntity.pageSize;
+    ajaxRequest(hostName + RequestUrl.auctionTab, dealRequestParam(param), success, function () {
+    }, "post");
+}
+//当前用户的默认收货地址
+function getCurrentDefaultConsumerAddressData(callback) {
+    var success = function (data) {
+        ajaxSuccessFunctionTemplage(function (dataTemp) {
+            var obj = dataTemp;
+            PageVariable.consumerAddress = obj.defaultAddress;
+        }, data, callback)
+    };
+    ajaxRequest(hostName + RequestUrl.consumerAddress, dealRequestParam(getParamObject()), success, function () {
+    }, "post");
+}

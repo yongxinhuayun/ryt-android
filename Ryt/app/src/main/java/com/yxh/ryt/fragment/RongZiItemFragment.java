@@ -29,7 +29,7 @@ import okhttp3.Call;
 
 
 public class RongZiItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
-		AutoListView.OnLoadListener {
+		AutoListView.OnLoadListener, AdapterView.OnItemClickListener {
 	private AutoListView lstv;
 	private CommonAdapter<RongZi> rongZiCommonAdapter;
 	private List<RongZi> rongZiDatas;
@@ -129,17 +129,18 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 							getActivity().startActivity(intent);
 						}
 					});
-					helper.getView(R.id.cl_01_tv_prc).setOnClickListener(new View.OnClickListener() {
+					/*helper.getView(R.id.cl_01_tv_prc).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
 							Intent intent=new Intent(getActivity(), RongZiXQActivity.class);
 							intent.putExtra("id",item.getId());
 							startActivity(intent);
 						}
-					});
+					});*/
 				}
 			}
 		};
+		lstv.setOnItemClickListener(this);
 		lstv.setAdapter(rongZiCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
@@ -166,5 +167,14 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 	public void onLoad() {
 		currentPage++;
 		LoadData(AutoListView.LOAD, currentPage);
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		if (position<=rongZiDatas.size()){
+			Intent intent=new Intent(getActivity(), RongZiXQActivity.class);
+			intent.putExtra("id",rongZiDatas.get(position-1).getId());
+			startActivity(intent);
+		}
 	}
 }

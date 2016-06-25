@@ -26,6 +26,8 @@ $(function () {
         $(".tabs-nav .swiper-slide").click(function (e) {
             e.preventDefault();
         });
+
+
         //计算每个模块的高度
         tabsHeight();
         function tabsHeight() {
@@ -35,13 +37,20 @@ $(function () {
             $('.com-nav').css({'height': h + 49 + 'px'});
         }
 
+
+
+
         //固定nav
         //noinspection JSUnresolvedFunction
         $(window).scroll(function () {
             //noinspection JSValidateTypes
             var d = $(document).scrollTop(),
                 comNav = $('.com-nav'),
-                comNavTop = comNav.position().top + 35;
+                comNavTop = comNav.position().top;
+
+
+
+
             if (d >= comNavTop) {
                 comNav.find('.tabs-nav').css({'width': '100%', 'position': 'fixed', 'top': 0, 'left': 0})
             } else {

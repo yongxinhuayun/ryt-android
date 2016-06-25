@@ -131,6 +131,7 @@ var RequestUrl = {};//接口对象
 //跳转到协议
 function redirectProtocol() {
     console.log("协议跳转");
+    window.demo1.auctionProtocol();
 }
 
 function createSignmsg(requestParam) {
@@ -208,9 +209,9 @@ function countDown(timestamp) {
 
 function generateDOTTemplateResult(templateId, data) {
     var viewFunction = doT.template($("#" + templateId).text())
-    return viewFunction(data);
+    var text = viewFunction(data);
+    return text;
 }
-
 
 
 var Template = {
@@ -235,6 +236,52 @@ var Template = {
 }   //模板对应的模块
 
 
+/*function createMessageComment(messageId) {
+    var artWorkId = getParamObject()["artWorkId"];
+    var currentUserId = getCurrentUserId();
+    redirectComment(artWorkId, currentUserId, messageId);
+}
+
+
+function submitComment(commentid, messageid) {
+    var comment = {};
+    var message = {};
+    var artWorkId = getParamObject()["artWorkId"];
+    var currentUserId = getCurrentUserId();
+    if (commentid != null && typeof commentid != "undefined") {
+        if (typeof PageVariable.commentMap[commentid] != "undefined") {
+            comment = PageVariable.commentMap[commentid];
+        } else {
+            for (var i = 0; i < PageVariable.artWorkComment.commentList.length; i++) {
+                var commentTemp = PageVariable.artWorkComment.commentList[i];
+                PageVariable.commentMap[commentTemp.id] = commentTemp;
+            }
+            comment = PageVariable.commentMap[commentid];
+        }
+    } else {
+        commentid = "";
+    }
+    if (messageid != null && typeof messageid != "undefined") {
+
+        if (typeof PageVariable.messageMap[messageid] != "undefined") {
+            message = PageVariable.messageMap[messageid];
+        } else {
+            for (var i = 0; i < PageVariable.artWorkProject.messageList.length; i++) {
+                var messageTemp = PageVariable.artWorkProject.messageList[i];
+                PageVariable.messageMap[messageTemp.id] = messageTemp;
+            }
+            message = PageVariable.messageMap[messageid];
+        }
+    } else {
+        messageid = "";
+    }
+    var creatorName = "";
+    if (comment != null && typeof comment != "undefined" && typeof comment.creator != "undefined" && comment.creator != null) {
+        creatorName = comment.creator.name;
+    }
+    redirectComment(artWorkId, currentUserId, commentid, messageid, creatorName);
+
+}*/
 function createMessageComment(messageId) {
     var artWorkId = getParamObject()["artWorkId"];
     var currentUserId = getCurrentUserId();
@@ -248,30 +295,44 @@ function submitComment(commentid, messageid) {
     var message = {};
     var artWorkId = getParamObject()["artWorkId"];
     var currentUserId = getCurrentUserId();
-    if (typeof PageVariable.commentMap[commentid] != "undefined") {
-        comment = PageVariable.commentMap[commentid];
-    } else {
-        for (var i = 0; i < PageVariable.artWorkComment.commentList.length; i++) {
-            var commentTemp = PageVariable.artWorkComment.commentList[i];
-            PageVariable.commentMap[commentTemp.id] = commentTemp;
+    if (commentid != null && typeof commentid != "undefined") {
+        if (typeof PageVariable.commentMap[commentid] != "undefined") {
+            comment = PageVariable.commentMap[commentid];
+        } else {
+            for (var i = 0; i < PageVariable.artWorkComment.commentList.length; i++) {
+                var commentTemp = PageVariable.artWorkComment.commentList[i];
+                PageVariable.commentMap[commentTemp.id] = commentTemp;
+            }
+            comment = PageVariable.commentMap[commentid];
         }
-        comment = PageVariable.commentMap[commentid];
-    }
-    if (typeof PageVariable.messageMap[messageid] != "undefined") {
-        message = PageVariable.messageMap[messageid];
     } else {
-        for (var i = 0; i < PageVariable.artWorkProject.messageList.length; i++) {
-            var messageTemp = PageVariable.artWorkProject.messageList[i];
-            PageVariable.messageMap[messageTemp.id] = messageTemp;
-        }
-        message = PageVariable.messageMap[messageid];
+        commentid = "";
     }
-    var creatorName
-    if (comment != null && typeof comment != "undefined") {
+    if (messageid != null && typeof messageid != "undefined") {
+
+        if (typeof PageVariable.messageMap[messageid] != "undefined") {
+            message = PageVariable.messageMap[messageid];
+        } else {
+            for (var i = 0; i < PageVariable.artWorkProject.messageList.length; i++) {
+                var messageTemp = PageVariable.artWorkProject.messageList[i];
+                PageVariable.messageMap[messageTemp.id] = messageTemp;
+            }
+            message = PageVariable.messageMap[messageid];
+        }
+    } else {
+        messageid = "";
+    }
+    var creatorName = "";
+    if (comment != null && typeof comment != "undefined" && typeof comment.creator != "undefined" && comment.creator != null) {
         creatorName = comment.creator.name;
     }
-    redirectComment(artWorkId, currentUserId, messageid, commentid, creatorName);
+     redirectComment(artWorkId, currentUserId, messageid, commentid, creatorName);
 
+}
+function getParamObject() {
+    PageVariable.param.agent = "h5"
+        return PageVariable.param;
+    //return {artWorkId: "ipeulrut2z8gf2s0", currentUserId: "imhfp1yr4636pj49", agent: "h5",artWorkOrderId:"123"}
 }
 
 

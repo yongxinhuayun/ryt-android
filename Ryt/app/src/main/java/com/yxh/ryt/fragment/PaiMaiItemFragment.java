@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,7 +33,7 @@ import okhttp3.Call;
 
 
 public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
-		AutoListView.OnLoadListener {
+		AutoListView.OnLoadListener, AdapterView.OnItemClickListener {
 	private AutoListView lstv;
 	private CommonAdapter<RongZi> paiMaiCommonAdapter;
 	private List<RongZi> paiMaiDatas;
@@ -114,7 +115,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 				helper.setText(R.id.cl_01_tv_name, item.getAuthor().getName());
 				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
 				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, item.getAuthor().getPictureUrl());
-				helper.getView(R.id.cl_01_tv_prc).setOnClickListener(new View.OnClickListener() {
+				/*helper.getView(R.id.cl_01_tv_prc).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						Intent intent=new Intent(getActivity(), AuctionSummaryActivity.class);
@@ -123,7 +124,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 						intent.putExtra("name", item.getAuthor().getName());
 						startActivity(intent);
 					}
-				});
+				});*/
 				if(Integer.valueOf(item.getStep())==30){
 					helper.getView(R.id.cli_tv_time).setVisibility(View.VISIBLE);
 					helper.getView(R.id.cli_tv_chengjiao_price).setVisibility(View.GONE);
@@ -160,6 +161,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 		lstv.setAdapter(paiMaiCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
+		lstv.setOnItemClickListener(this);
 		return contextView;
 	}
 
@@ -186,4 +188,14 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 		LoadData(AutoListView.LOAD,currentPage);
 	}
 
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		if (position<=paiMaiDatas.size()){
+			Intent intent=new Intent(getActivity(), AuctionSummaryActivity.class);
+			intent.putExtra("id", paiMaiDatas.get(position-1).getId());
+			intent.putExtra("title", paiMaiDatas.get(position-1).getTitle());
+			intent.putExtra("name", paiMaiDatas.get(position-1).getAuthor().getName());
+			startActivity(intent);
+		}
+	}
 }

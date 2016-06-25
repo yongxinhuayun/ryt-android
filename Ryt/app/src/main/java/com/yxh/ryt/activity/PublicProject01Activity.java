@@ -92,7 +92,7 @@ public class PublicProject01Activity extends  BaseActivity {
                             public void onClick(int which) {
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
-                                        getExternalStorageDirectory(), "temp.jpg")));
+                                        getExternalStorageDirectory(), "temp2.jpg")));
                                 startActivityForResult(intent, CAMERA_REQUEST_CODE);
                             }
                         })
@@ -110,7 +110,7 @@ public class PublicProject01Activity extends  BaseActivity {
 
     //艺术家发布项目第一步接口一网络请求
     private void oneStepRequst() {
-        View view = LayoutInflater.from(this).inflate(
+        /*View view = LayoutInflater.from(this).inflate(
                 R.layout.dilog_withwait, null);
 
         dialog = new AlertDialog.Builder(this).create();
@@ -118,7 +118,7 @@ public class PublicProject01Activity extends  BaseActivity {
         dialog.getWindow().setContentView(view);
         customDialogView = (CustomDialogView) view.findViewById(R.id.view_customdialog);
         redrawCdvRunnable = new RedrawCustomDialogViewThread();
-        new Thread(redrawCdvRunnable).start();
+        new Thread(redrawCdvRunnable).start();*/
         Map<String,File> fileMap=new HashMap<>();
         File file = new File(filePath);
         fileMap.put(file.getName(),file);
@@ -147,7 +147,7 @@ public class PublicProject01Activity extends  BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                if ("0".equals(response.get("resultCode"))){
-                   redrawCdvRunnable.setRun(false);
+                   /*redrawCdvRunnable.setRun(false);*/
                    Intent intent=new Intent(PublicProject01Activity.this,PublicProject02Activity.class);
                    intent.putExtra("artworkId", (String)response.get("artworkId")+"");
                    startActivity(intent);
@@ -225,7 +225,7 @@ public class PublicProject01Activity extends  BaseActivity {
                 params.setMargins(left,top,right,bottom);
                 ivImage.setLayoutParams(params);
                 File picture = new File(Environment.getExternalStorageDirectory()
-                        + "/temp.jpg");
+                        + "/temp2.jpg");
                 Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
                 filePath= Utils.getFilePathFromUri(Uri.fromFile(picture), this);
                 /*Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
