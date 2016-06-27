@@ -86,6 +86,8 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        api = WXAPIFactory.createWXAPI(this, Constants.APP_ID); //初始化api
+        api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
         setContentView(R.layout.activity_createsummary);
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID); //初始化api
         api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
