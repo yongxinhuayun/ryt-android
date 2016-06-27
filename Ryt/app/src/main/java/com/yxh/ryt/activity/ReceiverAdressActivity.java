@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -45,6 +46,9 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
     private Intent delIntent;
     private int unDefult;
     private ImageView back;
+    private LinearLayout ll_new_add;
+    private LinearLayout ll_add;
+    private Button btn_new_add;
 
 
     @Override
@@ -52,6 +56,9 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receiver_adress);
         adListview = (AutoListView) findViewById(R.id.pl_message_listView);
+        ll_new_add = (LinearLayout) findViewById(R.id.ll_new_add);
+        ll_add = (LinearLayout) findViewById(R.id.ll_add);
+        btn_new_add = (Button) findViewById(R.id.btn_new_add);
         addAddress = (Button) findViewById(R.id.btn_add);
         addressDatas = new ArrayList<ConsumerAddress>();
 
@@ -67,28 +74,41 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
         cmAdapter = new CommonAdapter<ConsumerAddress>(AppApplication.getSingleContext(), addressDatas, R.layout.address_item) {
             @Override
             public void convert(ViewHolder helper, ConsumerAddress item) {
-                helper.getView(R.id.bt_edit).setOnClickListener(ReceiverAdressActivity.this);
-                helper.getView(R.id.bt_del).setOnClickListener(ReceiverAdressActivity.this);
-                edIntent = new Intent(ReceiverAdressActivity.this, EditRecAddressActivity.class);
-                edIntent.putExtra("addressId", item.getId());
-                edIntent.putExtra("status", item.getStatus());
-                edIntent.putExtra("consignee", item.getConsignee());
-                edIntent.putExtra("details", item.getDetails());
-                edIntent.putExtra("phone", item.getPhone());
-                edIntent.putExtra("provinceStr", item.getProvinceStr());
-                edIntent.putExtra("districtStr", item.getDistrictStr());
+                if (addressDatas == null) {
+                    ll_add.setVisibility(View.GONE);
+                    ll_new_add.setVisibility(View.VISIBLE);
+                    btn_new_add.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(ReceiverAdressActivity.this, NewAddressActivity.class));
+                        }
+                    });
+                } else if (addressDatas != null) {
+                    ll_add.setVisibility(View.VISIBLE);
+                    ll_new_add.setVisibility(View.GONE);
+                    helper.getView(R.id.bt_edit).setOnClickListener(ReceiverAdressActivity.this);
+                    helper.getView(R.id.bt_del).setOnClickListener(ReceiverAdressActivity.this);
+                    edIntent = new Intent(ReceiverAdressActivity.this, EditRecAddressActivity.class);
+                    edIntent.putExtra("addressId", item.getId());
+                    edIntent.putExtra("status", item.getStatus());
+                    edIntent.putExtra("consignee", item.getConsignee());
+                    edIntent.putExtra("details", item.getDetails());
+                    edIntent.putExtra("phone", item.getPhone());
+                    edIntent.putExtra("provinceStr", item.getProvinceStr());
+                    edIntent.putExtra("districtStr", item.getDistrictStr());
 
-               // delIntent.putExtra("status", item.getStatus());
-                helper.setText(R.id.tv_name, item.getConsignee());
-                helper.setText(R.id.tv_phone, item.getPhone());
-                helper.setText(R.id.tv_adress, item.getDetails());
+                    // delIntent.putExtra("status", item.getStatus());
+                    helper.setText(R.id.tv_name, item.getConsignee());
+                    helper.setText(R.id.tv_phone, item.getPhone());
+                    helper.setText(R.id.tv_adress, item.getDetails());
 
-                unDefult = Integer.parseInt(item.getStatus());
-                if (unDefult == 2) {
-                    helper.setImageResource(R.id.iv_selected, R.mipmap.yixuanze);
+                    unDefult = Integer.parseInt(item.getStatus());
+                    if (unDefult == 2) {
+                        helper.setImageResource(R.id.iv_selected, R.mipmap.yixuanze);
 
-                } else {
-                    helper.setImageResource(R.id.iv_selected, R.mipmap.weixuanze);
+                    } else {
+                        helper.setImageResource(R.id.iv_selected, R.mipmap.weixuanze);
+                    }
                 }
             }
         };
@@ -115,6 +135,16 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
             @Override
             public void onResponse(Map<String, Object> response) {
                 Log.w("response", response.toString());
+                /*if (response == null) {
+                    ll_add.setVisibility(View.GONE);
+                    ll_new_add.setVisibility(View.VISIBLE);
+                    btn_new_add.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(ReceiverAdressActivity.this, NewAddressActivity.class));
+                        }
+                    });
+                }*/
                 if (state == AutoListView.REFRESH) {
                     adListview.onRefreshComplete();
                     addressDatas.clear();

@@ -662,14 +662,14 @@ public class RongZiXQActivity extends BaseActivity {
 
     }
 
-    private void shareWx(int flag) {
+    private void shareWx(final int flag) {
     /*if(!api.isWXAppInstalled()) {
         Toast.makeText(WXEntryActivity.this, "您还未安装微信客户端",
                 Toast.LENGTH_SHORT).show();
         return;
     }*/
 
-        WXWebpageObject webpage = new WXWebpageObject();
+        //WXWebpageObject webpage = new WXWebpageObject();
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -688,10 +688,27 @@ public class RongZiXQActivity extends BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                  share_Url = (String) response.get("url");
+                WXWebpageObject webpage = new WXWebpageObject();
+
+                webpage.webpageUrl = share_Url;
+                WXMediaMessage msg = new WXMediaMessage(webpage);
+
+                msg.title = "title";
+                msg.description = getResources().getString(
+                        R.string.app_name);
+                Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+                        R.mipmap.ryt_logo);
+                msg.setThumbImage(thumb);
+                SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
+                reqShare.transaction = String.valueOf(System.currentTimeMillis());
+                reqShare.message = msg;
+                reqShare.scene = flag == 0 ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
+
+                api.sendReq(reqShare);
             }
         });
 
-        webpage.webpageUrl = share_Url;
+        /*webpage.webpageUrl = share_Url;
         WXMediaMessage msg = new WXMediaMessage(webpage);
 
         msg.title = "title";
@@ -705,7 +722,7 @@ public class RongZiXQActivity extends BaseActivity {
         reqShare.message = msg;
         reqShare.scene = flag == 0 ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
 
-        api.sendReq(reqShare);
+        api.sendReq(reqShare);*/
     /*//创建一个用于封装待分享文本的WXTextObject对象
 
     WXTextObject textObject =new WXTextObject();

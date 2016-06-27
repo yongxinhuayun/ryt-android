@@ -170,6 +170,8 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                     if (response.get("resultCode").equals("0")) {
                         Map<String, Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
                         final User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")), User.class);
+                        tvUserHeaderFsNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("num")));
+                        tvUserHeaderGzNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("followNum")));
                         boolean followed = (boolean) pageInfo.get("followed");
                         if (followed){
                             attention.setImageResource(R.mipmap.guanzhuhou);
@@ -212,8 +214,8 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
         top.setText(user.getName());
         AppApplication.displayImage(user.getPictureUrl(), rsIvHeadPortrait);
         tvUserHeaderName.setText(user.getName());
-        tvUserHeaderFsNum.setText(user.getCount1()+"");
-        tvUserHeaderGzNum.setText(user.getCount()+"");
+       /* tvUserHeaderFsNum.setText(user.getCount1()+"");
+        tvUserHeaderGzNum.setText(user.getCount()+"");*/
         tvUserHeaderTxt.setText(user.getUserBrief()==null?"一句话20字以内":user.getUserBrief().getSigner()+"");
         tvUserHeaderJeValue01.setText("￥"+user.getInvestsMoney());
         tvUserHeaderJeValue02.setText("￥" + user.getRoiMoney());

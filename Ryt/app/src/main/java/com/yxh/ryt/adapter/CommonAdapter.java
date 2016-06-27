@@ -1,10 +1,5 @@
 package com.yxh.ryt.adapter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -17,21 +12,25 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 
 public abstract class CommonAdapter<T> extends BaseAdapter  
 {  
     protected LayoutInflater mInflater;  
     protected Context mContext;  
-    protected List<T> mDatas=new ArrayList<T>(); 
-   
-    protected final int mItemLayoutId;  
+    protected List<T> mDatas=new ArrayList<T>();
+    protected final int mItemLayoutId;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
-    public CommonAdapter(Context context, List<T> mDatas, int itemLayoutId)  
+    public CommonAdapter(Context context, List<T> mDatas ,int itemLayoutId)
     {  
         this.mContext = context;  
         this.mInflater = LayoutInflater.from(mContext);  
-        this.mDatas = mDatas;  
-        this.mItemLayoutId = itemLayoutId;  
+        this.mDatas = mDatas;
+        this.mItemLayoutId = itemLayoutId;
         
     }  
    
@@ -52,7 +51,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter
     {  
         return mDatas.size();  
     }  
-  
+
     @Override  
     public T getItem(int position)  
     {  
@@ -71,7 +70,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter
         final ViewHolder viewHolder = getViewHolder(position, convertView,  
                 parent);  
         convert(viewHolder, getItem(position));
-        return viewHolder.getConvertView();  
+        return viewHolder.getConvertView();
   
     }  
   
