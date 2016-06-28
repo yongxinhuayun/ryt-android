@@ -64,6 +64,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
 
         back = (ImageView) findViewById(R.id.iv_back);
         addAddress.setOnClickListener(this);
+        btn_new_add.setOnClickListener(this);
         initView();
         adListview.setPageSize(Constants.pageSize);
         back.setOnClickListener(this);
@@ -239,6 +240,9 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                 });
                 break;
             case R.id.btn_add:
+                startActivity(new Intent(ReceiverAdressActivity.this, NewAddressActivity.class));
+                break;
+            case R.id.btn_new_add:
                 startActivity(new Intent(ReceiverAdressActivity.this, NewAddressActivity.class));
                 break;
             case R.id.iv_back:
