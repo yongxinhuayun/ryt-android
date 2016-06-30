@@ -234,8 +234,8 @@ public class TabFragment04 extends BaseFragment {
                     if (response.get("resultCode").equals("0")) {
                         Map<String, Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
                         User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")), User.class);
-                       tvUserHeaderFsNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("num")));
-                        tvUserHeaderGzNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("followNum")));
+                       tvUserHeaderFsNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("followNum")));
+                        tvUserHeaderGzNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("num")));
                        /* Double sa = (Double) pageInfo.get("followNum");
                         int a =(int)sa;
                         tvUserHeaderGzNum.setText(a+"");*/

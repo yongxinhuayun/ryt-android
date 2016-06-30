@@ -45,6 +45,7 @@
                 style="@style/chat_text_name_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:text=""/>
             <TextView
                 android:id="@+id/tv_chatcontent"
