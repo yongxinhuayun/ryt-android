@@ -122,7 +122,7 @@ public class TabFragment04 extends BaseFragment {
     //关注点击事件
     @OnClick(R.id.ll_header_gz)
     public void fans(){
-        if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
+        if (!"".equals(AppApplication.gUser.getId())){
             Intent intent=new Intent(getActivity(), AttentionActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("userId", AppApplication.gUser.getId() + "");
@@ -138,7 +138,7 @@ public class TabFragment04 extends BaseFragment {
     //粉丝点击事件
     @OnClick(R.id.ll_header_fs)
     public void attention(){
-        if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
+        if (!"".equals(AppApplication.gUser.getId())){
             Intent intent=new Intent(getActivity(), FansActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("userId", AppApplication.gUser.getId() + "");
@@ -154,7 +154,7 @@ public class TabFragment04 extends BaseFragment {
     //拍卖订单
     @OnClick(R.id.rl_auction)
     public void order(){
-        if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
+        if (!"".equals(AppApplication.gUser.getId())){
             Intent intent=new Intent(getActivity(), AuctionOrderActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("userId", AppApplication.gUser.getId() + "");
@@ -169,17 +169,35 @@ public class TabFragment04 extends BaseFragment {
     //设置点击事件
     @OnClick(R.id.user_setting)
     void userSettingClick() {
-        UserSettingActivity.openActivity(getActivity());
+        if ("".equals(AppApplication.gUser.getId())){
+            Intent intent=new Intent(getActivity(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(intent);
+        }else {
+            UserSettingActivity.openActivity(getActivity());
+        }
     }
     //钱包点击事件
     @OnClick(R.id.rl_02)
     void userQbClick() {
-        UserQianBaoActivity.openActivity(getActivity());
+        if ("".equals(AppApplication.gUser.getId())){
+            Intent intent=new Intent(getActivity(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(intent);
+        }else {
+            UserQianBaoActivity.openActivity(getActivity());
+        }
     }
     //意见点击事件
     @OnClick(R.id.rl_yijian)
     void userYiJianClick() {
-        UserYiJianActivity.openActivity(getActivity());
+        if ("".equals(AppApplication.gUser.getId())){
+            Intent intent=new Intent(getActivity(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(intent);
+        }else {
+            UserYiJianActivity.openActivity(getActivity());
+        }
     }
     //我的主页点击事件
     @OnClick(R.id.rl_user_index)
