@@ -13,7 +13,6 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -670,6 +669,7 @@ public class RongZiXQActivity extends BaseActivity {
         return;
     }*/
 
+        //WXWebpageObject webpage = new WXWebpageObject();
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -687,9 +687,9 @@ public class RongZiXQActivity extends BaseActivity {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                Log.d("xxxxxxxxxxxxxxxxxxxxxxxxx","1");
                  share_Url = (String) response.get("url");
-                 WXWebpageObject webpage = new WXWebpageObject();
+                WXWebpageObject webpage = new WXWebpageObject();
+
                 webpage.webpageUrl = share_Url;
                 WXMediaMessage msg = new WXMediaMessage(webpage);
 
@@ -709,7 +709,6 @@ public class RongZiXQActivity extends BaseActivity {
         });
 
         /*webpage.webpageUrl = share_Url;
-        Log.d("xxxxxxxxxxxxxxxxxxxxxxxxx","0");
         WXMediaMessage msg = new WXMediaMessage(webpage);
 
         msg.title = "title";
