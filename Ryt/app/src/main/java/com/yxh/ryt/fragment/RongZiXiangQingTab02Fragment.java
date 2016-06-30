@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -42,18 +43,10 @@ public class RongZiXiangQingTab02Fragment extends StickHeaderBaseFragment{
     }
     @Override
     public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, null);
-        ListView mListview = (ListView)view.findViewById(R.id.v_scroll);
+        View view = inflater.inflate(R.layout.touziliucheng, null);
+        WebView webView = (WebView)view.findViewById(R.id.fl_wb_all);
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
-
-        int size = 100;
-        String[] stringArray = new String[size];
-        for (int i = 0; i < size; ++i) {
-            stringArray[i] = ""+i;
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, stringArray);
-        mListview.setAdapter(adapter);
+        webView.loadUrl("file:///android_asset/InvestFlowControlller.html");
         return view;
     }
 
