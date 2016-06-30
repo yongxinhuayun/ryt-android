@@ -2,23 +2,37 @@ package com.yxh.ryt.activity;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
@@ -53,6 +67,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
     private String userId;
     private String currentId;
     private boolean homeFlag;
+    private IWXAPI api;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserYsjIndexActivity.class));
@@ -107,6 +122,8 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        api = WXAPIFactory.createWXAPI(this, Constants.APP_ID); //初始化api
+        api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
         setContentView(R.layout.user_ysj_index);
         ButterKnife.bind(this);
         attention=(ImageView) findViewById(R.id.uh1_iv_attention);
@@ -344,11 +361,177 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                 break;
         }
     }
-    @OnClick({R.id.ib_top_lf,R.id.ll_header_gz,R.id.ll_header_fs})
+    private void showShareDialog() {
+        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_share_weixin_view, null);
+        // 设置style 控制默认dialog带来的边距问题
+        final Dialog dialog = new Dialog(this, R.style.common_dialog);
+        dialog.setContentView(view);
+        dialog.show();
+
+        // 监听
+        View.OnClickListener listener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                switch (v.getId()) {
+
+                    case R.id.view_share_weixin:
+                        // 分享到微信
+                        shareWx(0);
+                        break;
+
+                    case R.id.view_share_pengyou:
+                        // 分享到朋友圈
+                        shareWx(1);
+                        break;
+
+                    case R.id.share_cancel_btn:
+                        // 取消
+                        break;
+
+                }
+
+                dialog.dismiss();
+            }
+
+        };
+        ViewGroup mViewWeixin = (ViewGroup) view.findViewById(R.id.view_share_weixin);
+        ViewGroup mViewPengyou = (ViewGroup) view.findViewById(R.id.view_share_pengyou);
+        Button mBtnCancel = (Button) view.findViewById(R.id.share_cancel_btn);
+        //mBtnCancel.setTextColor(R.none_color);
+        mViewWeixin.setOnClickListener(listener);
+        mViewPengyou.setOnClickListener(listener);
+        mBtnCancel.setOnClickListener(listener);
+
+        Window window = dialog.getWindow();
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.width = LinearLayout.LayoutParams.MATCH_PARENT;
+        params.gravity = Gravity.BOTTOM;
+        window.setAttributes(params);
+
+    }
+
+    private void shareWx(final int flag) {
+       /* WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = "http://baidu.com";
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+
+        msg.title = "title";
+        msg.description = getResources().getString(
+                R.string.app_name);
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+                R.mipmap.logo_qq);
+        msg.setThumbImage(thumb);
+        SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
+        reqShare.transaction = String.valueOf(System.currentTimeMillis());
+        reqShare.message = msg;
+        reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
+
+        api.sendReq(reqShare);*/
+    /*if(!api.isWXAppInstalled()) {
+        Toast.makeText(WXEntryActivity.this, "您还未安装微信客户端",
+                Toast.LENGTH_SHORT).show();
+        return;
+    }*/
+
+        /*Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("userId", AppApplication.gUser.getId());
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "toShareView.do", paramsMap, new RongZiListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                Log.d("xxxxxxxxxxxxxxxxxxx","1");
+                 String share_Url = (String) response.get("url");*/
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = "http://ryt.efeiyi.com/app/shareView.do";
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+
+        msg.title = "融艺投App";
+        msg.description = "面向艺术家与大众进行艺术交流与投资的应用";
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+                R.mipmap.logo108);
+        msg.setThumbImage(thumb);
+        SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
+        reqShare.transaction = String.valueOf(System.currentTimeMillis());
+        reqShare.message = msg;
+        reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
+
+        api.sendReq(reqShare);
+
+
+                /*WXWebpageObject webpage = new WXWebpageObject();
+                webpage.webpageUrl = "http://baidu.com";
+                WXMediaMessage msg = new WXMediaMessage(webpage);
+
+                msg.title = "title";
+                msg.description = getResources().getString(
+                        R.string.app_name);
+                Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+                        R.mipmap.logo_qq);
+                msg.setThumbImage(thumb);
+                SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
+                reqShare.transaction = String.valueOf(System.currentTimeMillis());
+                reqShare.message = msg;
+                reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
+
+                api.sendReq(reqShare);*/
+        /*    }
+        });*/
+
+        /*webpage.webpageUrl = share_Url;
+        Log.d("xxxxxxxxxxxxxxxxxxxxxxxxx","0");
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+
+        msg.title = "title";
+        msg.description = getResources().getString(
+                R.string.app_name);
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+                R.mipmap.ryt_logo);
+        msg.setThumbImage(thumb);
+        SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
+        reqShare.transaction = String.valueOf(System.currentTimeMillis());
+        reqShare.message = msg;
+        reqShare.scene = flag == 0 ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
+
+        api.sendReq(reqShare);*/
+    /*//创建一个用于封装待分享文本的WXTextObject对象
+
+    WXTextObject textObject =new WXTextObject();
+
+    textObject.text= text; //text为String类型
+
+//创建WXMediaMessage对象，该对象用于Android客户端向微信发送数据
+
+    WXMediaMessage msg =new WXMediaMessage();
+
+    msg.mediaObject= textObject;
+
+    msg.description= text;//text为String类型，设置描述，可省略*/
+
+
+//    api.handleIntent(intent, this);
+    }
+    @OnClick({R.id.ib_top_lf,R.id.ll_header_gz,R.id.ll_header_fs,R.id.ib_top_rt})
     public void dianji(View view){
         switch (view.getId()){
             case R.id.ib_top_lf:
                 finish();
+                break;
+            case R.id.ib_top_rt:
+                showShareDialog();
                 break;
             case R.id.ll_header_gz:
                 if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
