@@ -341,7 +341,6 @@ public class TabFragment04 extends BaseFragment {
     protected void lazyLoad() {
 
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
