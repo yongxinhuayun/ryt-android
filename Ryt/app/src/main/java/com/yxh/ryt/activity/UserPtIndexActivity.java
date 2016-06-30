@@ -114,7 +114,7 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
     @Override
     public void onResume() {
         super.onResume();
-        if (AppApplication.gUser!=null && AppApplication.gUser.getId()!=null && !"".equals(AppApplication.gUser.getId())){
+        /*if (AppApplication.gUser!=null && AppApplication.gUser.getId()!=null && !"".equals(AppApplication.gUser.getId())){*/
             Map<String,String> paramsMap=new HashMap<>();
             paramsMap.put("userId", userId);
             paramsMap.put("currentId", currentId);
@@ -164,11 +164,11 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
 
                 }
             });
-        }else {
+        /*}else {
 //            ButterKnife.apply(linearLayouts, ISVISIBLE, 1);
             setLoginViewValues();
             return;
-        }
+        }*/
     }
     private void letterTrans(User user) {
         Intent intent=new Intent(this,MsgActivity.class);

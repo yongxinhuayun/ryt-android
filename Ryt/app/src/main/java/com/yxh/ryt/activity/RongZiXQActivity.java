@@ -13,6 +13,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -663,14 +664,29 @@ public class RongZiXQActivity extends BaseActivity {
     }
 
     private void shareWx(final int flag) {
+       /* WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = "http://baidu.com";
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+
+        msg.title = "title";
+        msg.description = getResources().getString(
+                R.string.app_name);
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+                R.mipmap.logo_qq);
+        msg.setThumbImage(thumb);
+        SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
+        reqShare.transaction = String.valueOf(System.currentTimeMillis());
+        reqShare.message = msg;
+        reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
+
+        api.sendReq(reqShare);*/
     /*if(!api.isWXAppInstalled()) {
         Toast.makeText(WXEntryActivity.this, "您还未安装微信客户端",
                 Toast.LENGTH_SHORT).show();
         return;
     }*/
 
-        //WXWebpageObject webpage = new WXWebpageObject();
-        Map<String, String> paramsMap = new HashMap<>();
+        /*Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -687,28 +703,46 @@ public class RongZiXQActivity extends BaseActivity {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                 share_Url = (String) response.get("url");
+                Log.d("xxxxxxxxxxxxxxxxxxx","1");
+                 String share_Url = (String) response.get("url");*/
                 WXWebpageObject webpage = new WXWebpageObject();
+                webpage.webpageUrl = "http://ryt.efeiyi.com/app/shareView.do";
+                WXMediaMessage msg = new WXMediaMessage(webpage);
 
-                webpage.webpageUrl = share_Url;
+                msg.title = "融艺投App";
+                msg.description = "面向艺术家与大众进行艺术交流与投资的应用";
+                Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+                        R.mipmap.logo108);
+                msg.setThumbImage(thumb);
+                SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
+                reqShare.transaction = String.valueOf(System.currentTimeMillis());
+                reqShare.message = msg;
+                reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
+
+                api.sendReq(reqShare);
+
+
+                /*WXWebpageObject webpage = new WXWebpageObject();
+                webpage.webpageUrl = "http://baidu.com";
                 WXMediaMessage msg = new WXMediaMessage(webpage);
 
                 msg.title = "title";
                 msg.description = getResources().getString(
                         R.string.app_name);
                 Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-                        R.mipmap.ryt_logo);
+                        R.mipmap.logo_qq);
                 msg.setThumbImage(thumb);
                 SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
                 reqShare.transaction = String.valueOf(System.currentTimeMillis());
                 reqShare.message = msg;
-                reqShare.scene = flag == 0 ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
+                reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
 
-                api.sendReq(reqShare);
-            }
-        });
+                api.sendReq(reqShare);*/
+        /*    }
+        });*/
 
         /*webpage.webpageUrl = share_Url;
+        Log.d("xxxxxxxxxxxxxxxxxxxxxxxxx","0");
         WXMediaMessage msg = new WXMediaMessage(webpage);
 
         msg.title = "title";

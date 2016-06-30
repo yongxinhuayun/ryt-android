@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +57,6 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     private ImageButton back;
     private ImageButton share;
     IWXAPI api;
-    private String share_Url;
     private LinearLayout tab1;
     private LinearLayout tab2;
     private TextView top;
@@ -89,8 +89,6 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID); //初始化api
         api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
         setContentView(R.layout.activity_createsummary);
-        api = WXAPIFactory.createWXAPI(this, Constants.APP_ID); //初始化api
-        api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
         back = (ImageButton) findViewById(R.id.ib_top_lf);
         share = (ImageButton) findViewById(R.id.ib_top_rt);
         dianzan = (ImageView) findViewById(R.id.iv_tab_01);
@@ -359,9 +357,24 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
         window.setAttributes(params);
 
     }
-    private void shareWx(int flag) {
-        WXWebpageObject webpage = new WXWebpageObject();
-        Map<String, String> paramsMap = new HashMap<>();
+    private void shareWx(final int flag) {
+        /*WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = "http://baidu.com";
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+
+        msg.title = "title";
+        msg.description = getResources().getString(
+                R.string.app_name);
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+                R.mipmap.logo_qq);
+        msg.setThumbImage(thumb);
+        SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
+        reqShare.transaction = String.valueOf(System.currentTimeMillis());
+        reqShare.message = msg;
+        reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
+
+        api.sendReq(reqShare);*/
+       /* Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -378,24 +391,43 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                share_Url = (String) response.get("url");
-            }
-        });
-        webpage.webpageUrl = share_Url;
-        WXMediaMessage msg = new WXMediaMessage(webpage);
+                Log.d("xxxxxxxxxxxxxxxx","1");
+                String share_Url = (String) response.get("url");*/
+                /*WXWebpageObject webpage = new WXWebpageObject();
+                webpage.webpageUrl = share_Url;
+                WXMediaMessage msg = new WXMediaMessage(webpage);
 
-        msg.title = "title";
-        msg.description = getResources().getString(
-                R.string.app_name);
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-                R.mipmap.ryt_logo);
-        msg.setThumbImage(thumb);
-        SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
-        reqShare.transaction = String.valueOf(System.currentTimeMillis());
-        reqShare.message = msg;
-        reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
+                msg.title = "title";
+                msg.description = getResources().getString(
+                        R.string.app_name);
+                Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+                        R.mipmap.ryt_logo);
+                msg.setThumbImage(thumb);
+                SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
+                reqShare.transaction = String.valueOf(System.currentTimeMillis());
+                reqShare.message = msg;
+                reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
 
-        api.sendReq(reqShare);
+                api.sendReq(reqShare);*/
+
+
+                WXWebpageObject webpage = new WXWebpageObject();
+                webpage.webpageUrl = "http://ryt.efeiyi.com/app/shareView.do";
+                WXMediaMessage msg = new WXMediaMessage(webpage);
+
+                msg.title = "融艺投App";
+                msg.description = "面向艺术家与大众进行艺术交流与投资的应用";
+                Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+                        R.mipmap.logo108);
+                msg.setThumbImage(thumb);
+                SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
+                reqShare.transaction = String.valueOf(System.currentTimeMillis());
+                reqShare.message = msg;
+                reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
+
+                api.sendReq(reqShare);
+        /*    }
+        });*/
 
     }
 

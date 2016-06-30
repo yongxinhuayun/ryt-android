@@ -26,6 +26,9 @@ public class NetRequestUtil<T> {
                         .url(url)
                         .content(AppApplication.getSingleGson().toJson(t))
                         .build()
+                        .connTimeOut(50000)
+                        .readTimeOut(50000)
+                        .writeTimeOut(50000)
                         .execute(callback);
             }
         }.start();

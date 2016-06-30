@@ -457,4 +457,18 @@ public class Utils {
 		params.height += 5;//if without this statement,the listview will be a little short
 		listView.setLayoutParams(params);*/
 	}
+
+	//按天，时，分来分
+	public static String getJudgeDate(long millions){
+		if (millions>=1000*60*60*24){
+			String s=millions/1000/60/60/24+"天";
+			return s;
+		}else if (millions>=1000*60*60){
+			String s=millions/1000/60/60+"时";
+			return s;
+		}else {
+			String s=millions/1000/60+"分";
+			return s;
+		}
+	}
 }

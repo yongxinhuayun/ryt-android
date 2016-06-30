@@ -35,7 +35,9 @@ import com.yxh.ryt.custemview.WheelSheetDialog;
 import com.yxh.ryt.util.DisplayUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
+import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.util.phote.util.Bimp;
 import com.yxh.ryt.util.phote.util.Bimp02;
 import com.yxh.ryt.util.phote.util.Bimp03;
@@ -46,6 +48,8 @@ import com.yxh.ryt.util.phote.util.PublicWay02;
 import com.yxh.ryt.util.phote.util.PublicWay03;
 import com.yxh.ryt.util.phote.util.PublicWay04;
 import com.yxh.ryt.util.phote.util.Res;
+import com.yxh.ryt.validations.PasswordValidation;
+import com.yxh.ryt.validations.UserNameValidation;
 import com.yxh.ryt.vo.CityModel;
 import com.yxh.ryt.vo.DistrictModel;
 import com.yxh.ryt.vo.ProvinceModel;
@@ -116,6 +120,25 @@ public class YsjRzActivity extends BaseActivity {
         renZhengRequst();
     }
     void renZhengRequst(){
+        if ("".equals(evName.getText().toString())){
+            ToastUtil.showLong(YsjRzActivity.this,"姓名不能为空");
+            return;
+        }
+        AppApplication.getSingleEditTextValidator()
+                .add(new ValidationModel(evPhone, new UserNameValidation()))
+                .execute();
+        //表单没有检验通过直接退出方法
+        if(!AppApplication.getSingleEditTextValidator().validate()){
+            return;
+        }
+        if (fileMap1.size()!=1 || fileMap2.size()!=1){
+            ToastUtil.showLong(YsjRzActivity.this,"身份证正反面必须都有");
+            return;
+        }
+        if(fileMap3.size()==0){
+            ToastUtil.showLong(YsjRzActivity.this,"最满意的作品至少有一张");
+            return;
+        }
         Map<String,Map<String,File>> fileMap=new HashMap<>();
         fileMap.put("one",fileMap3);
         fileMap.put("two",fileMap4);
@@ -123,6 +146,8 @@ public class YsjRzActivity extends BaseActivity {
         fileMap.put("identityFront",fileMap1);
         fileMap.put("identityBack",fileMap2);
         Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("phone",evPhone.getText().toString());
+        paramsMap.put("name",evName.getText().toString());
         paramsMap.put("provinceName",evAddress.getText().toString());
         paramsMap.put("province",evDiqu.getText().toString());
         paramsMap.put("artCategory",evType.getText().toString());
@@ -836,19 +861,28 @@ public class YsjRzActivity extends BaseActivity {
         adapter_04.update();
         super.onRestart();
     }
-    @OnClick(R.id.ev_diqu)
-    void diquClick(){
-        WheelSheetDialog wheelSheetDialog = new WheelSheetDialog(this);
-        wheelSheetDialog
-                .builder()
-                .setCancelable(false)
-                .setCanceledOnTouchOutside(true)
-                .show();
-        wheelSheetDialog.setOkClickLinster(new WheelSheetDialog.OkClickLinster() {
-            @Override
-            public void click(ProvinceModel p, CityModel c, DistrictModel d) {
-                evDiqu.setText(p.getName() + "-" + c.getName() + "-" + d.getName());
-            }
-        });
+    @OnClick({R.id.yq_protocol,R.id.ev_diqu})
+    void diquClick(View view){
+        switch (view.getId()){
+            case R.id.yq_protocol:
+                Intent intent=new Intent(YsjRzActivity.this,ArtistCooperateProtocolActivity.class);
+                YsjRzActivity.this.startActivity(intent);
+                break;
+            case R.id.ev_diqu:
+                WheelSheetDialog wheelSheetDialog = new WheelSheetDialog(this);
+                wheelSheetDialog
+                        .builder()
+                        .setCancelable(false)
+                        .setCanceledOnTouchOutside(true)
+                        .show();
+                wheelSheetDialog.setOkClickLinster(new WheelSheetDialog.OkClickLinster() {
+                    @Override
+                    public void click(ProvinceModel p, CityModel c, DistrictModel d) {
+                        evDiqu.setText(p.getName() + "-" + c.getName() + "-" + d.getName());
+                    }
+                });
+                break;
+        }
+
     }
 }

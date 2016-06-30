@@ -115,7 +115,7 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 				helper.setText(R.id.cl_01_tv_name, item.getAuthor().getName());
 				helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
 				helper.setImageByUrl(R.id.cl_01_civ_headPortrait, item.getAuthor().getPictureUrl());
-				/*helper.getView(R.id.cl_01_tv_prc).setOnClickListener(new View.OnClickListener() {
+				helper.getView(R.id.cl_01_tv_prc).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);
@@ -123,15 +123,15 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 						intent.putExtra("name", item.getTitle());
 						startActivity(intent);
 					}
-				});*/
+				});
 				if ("暂无更新状态".equals(item.getNewCreationDate())){
 					helper.setText(R.id.cli_tv_update,"暂无更新状态");
 				}else {
 					helper.setText(R.id.cli_tv_update,"最新更新:"+item.getNewCreationDate()+"前");
 				}
-				/*if (item.getCreationEndDatetime()>System.currentTimeMillis()){*/
+				if (item.getCreationEndDatetime()>System.currentTimeMillis()){
 					helper.setText(R.id.cli_tv_predictComplete, "预计完工:" + Utils.timeTransMonth(item.getCreationEndDatetime()) + "月" + Utils.timeTransDate(item.getCreationEndDatetime())+"日");
-				/*}*/
+				}
 			}
 		};
 		lstv.setAdapter(chuangZuoCommonAdapter);

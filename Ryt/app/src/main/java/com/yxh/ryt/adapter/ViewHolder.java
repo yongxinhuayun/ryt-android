@@ -2,6 +2,7 @@ package com.yxh.ryt.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.util.SparseArray;
@@ -86,7 +87,7 @@ public class ViewHolder
 	    public ViewHolder setText(int viewId, String text)
 	    {  
 	        TextView view = getView(viewId);  
-	        view.setText(text);  
+	        view.setText(text);
 	        return this;
 	    }
 		public ViewHolder setColor(int viewId, int color)
@@ -106,7 +107,19 @@ public class ViewHolder
 	    	TextView view = getView(viewId);  
 	    	view.setText(text);  
 	    	return this;  
-	    }  
+	    }
+	public ViewHolder setText(int viewId, SpannableString text)
+	{
+		TextView view = getView(viewId);
+		view.setText(text);
+		return this;
+	}
+	public ViewHolder setText(int viewId, StringBuilder text)
+	{
+		TextView view = getView(viewId);
+		view.setText(text);
+		return this;
+	}
 	  	public ViewHolder setVisible(int viewId){
 			View view=getView(viewId);
 			view.setVisibility(View.VISIBLE);

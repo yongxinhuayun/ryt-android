@@ -11,6 +11,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.CommentActivity;
+import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.NotificationActivity;
 import com.yxh.ryt.activity.PrivateLetterActivity;
 import com.yxh.ryt.callback.LoginCallBack;
@@ -89,7 +90,7 @@ public class TabFragment03 extends  BaseFragment {
     }*/
     private void loadData() {
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId", "ieatht97wfw30hfd");
+        paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -105,7 +106,6 @@ public class TabFragment03 extends  BaseFragment {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-
                 if (response.get("resultCode").equals("0")){
                     String noticeNum = AppApplication.getSingleGson().toJson(response.get("noticeNum"));
                     String commentNum = AppApplication.getSingleGson().toJson(response.get("commentNum"));
@@ -147,19 +147,34 @@ public class TabFragment03 extends  BaseFragment {
         Intent intent=null;
         switch (view.getId()){
             case R.id.ft3_ll_notification:
-                intent=new Intent(getActivity(), NotificationActivity.class);
-                getActivity().startActivity(intent);
-                bvNotification.setVisibility(View.GONE);
+                if ("".equals(AppApplication.gUser.getId())){
+                    intent=new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                }else {
+                    intent=new Intent(getActivity(), NotificationActivity.class);
+                    getActivity().startActivity(intent);
+                    bvNotification.setVisibility(View.GONE);
+                }
                 break;
             case R.id.ft3_ll_comment:
-                intent=new Intent(getActivity(), CommentActivity.class);
-                getActivity().startActivity(intent);
-                bvComment.setVisibility(View.GONE);
+                if ("".equals(AppApplication.gUser.getId())){
+                    intent=new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                }else {
+                    intent = new Intent(getActivity(), CommentActivity.class);
+                    getActivity().startActivity(intent);
+                    bvComment.setVisibility(View.GONE);
+                }
                 break;
             case R.id.ft3_ll_privateLetter:
-                intent=new Intent(getActivity(), PrivateLetterActivity.class);
-                getActivity().startActivity(intent);
-                bvPrivateLetter.setVisibility(View.GONE);
+                if ("".equals(AppApplication.gUser.getId())){
+                    intent=new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
+                }else {
+                    intent = new Intent(getActivity(), PrivateLetterActivity.class);
+                    getActivity().startActivity(intent);
+                    bvPrivateLetter.setVisibility(View.GONE);
+                }
                 break;
         }
     }

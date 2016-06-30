@@ -143,7 +143,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
     @Override
     public void onResume() {
         super.onResume();
-        if (AppApplication.gUser!=null && AppApplication.gUser.getId()!=null && !"".equals(AppApplication.gUser.getId())){
+        /*if (AppApplication.gUser!=null && AppApplication.gUser.getId()!=null && !"".equals(AppApplication.gUser.getId())){*/
             Map<String,String> paramsMap=new HashMap<>();
             paramsMap.put("userId", userId);
             paramsMap.put("currentId", currentId);
@@ -193,11 +193,11 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
 
                 }
             });
-        }else {
+        /*}*//*else {
 //            ButterKnife.apply(linearLayouts, ISVISIBLE, 1);
             setLoginViewValues();
             return;
-        }
+        }*/
     }
 
     private void letterTrans(User user) {
