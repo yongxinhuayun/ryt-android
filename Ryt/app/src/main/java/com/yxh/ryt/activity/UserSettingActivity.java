@@ -47,7 +47,7 @@ public class UserSettingActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what){
                 case 1:
-                    huanCun.setText("0b");
+                    huanCun.setText("0B");
                     ToastUtil.showLong(UserSettingActivity.this, "清除缓存成功");
             }
         }
@@ -106,6 +106,10 @@ public class UserSettingActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.rl_hc:
+                if ("0B".equals(huanCun.getText().toString())){
+                    ToastUtil.showLong(UserSettingActivity.this,"不需要清除缓存");
+                    break;
+                }
                 Thread thread=new Thread(new Runnable() {
                     @Override
                     public void run() {
