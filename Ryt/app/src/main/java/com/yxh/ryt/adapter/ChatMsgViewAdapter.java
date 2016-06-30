@@ -124,8 +124,8 @@ public class ChatMsgViewAdapter extends BaseAdapter {
 		viewHolder.tvTime.setText("");
 //		}
 		viewHolder.tvUserName.setText(entity.getName());
-		inflatImage(userId, entity.getUserId(), viewHolder.userHead);
 
+		inflatImage(userId, entity.getUserId(), viewHolder.userHead);
 		return convertView;
 	}
 

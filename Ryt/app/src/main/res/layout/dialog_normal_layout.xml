@@ -4,7 +4,7 @@
     android:clickable="true"
     android:orientation="vertical"
     android:layout_gravity="center_horizontal"
-    android:background="@android:color/white">
+    android:background="@drawable/shape_dialog_bg">
     <TextView
         android:id="@+id/dnl_tv_title"
         android:layout_width="218dp"
@@ -31,6 +31,7 @@
             android:layout_height="35dp"
             android:background="@mipmap/anniu_kedianji"
             android:gravity="center"
+            android:textSize="@dimen/defult_font"
             android:textColor="@android:color/white"
             android:text="取消" />
 
@@ -40,6 +41,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="35dp"
+            android:textSize="@dimen/defult_font"
             android:layout_marginLeft="10dp"
             android:background="@mipmap/anniu_kedianji"
             android:gravity="center"

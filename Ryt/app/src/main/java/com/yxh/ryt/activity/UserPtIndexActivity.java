@@ -141,8 +141,8 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
                     if (response.get("resultCode").equals("0")) {
                         Map<String, Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
                         final User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")), User.class);
-                        tvUserHeaderFsNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("num")));
-                        tvUserHeaderGzNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("followNum")));
+                        tvUserHeaderFsNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("followNum")));
+                        tvUserHeaderGzNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("num")));
                         boolean followed = (boolean) pageInfo.get("followed");
                         if (followed){
                             attention.setImageResource(R.mipmap.guanzhuhou);

@@ -1,5 +1,6 @@
 package com.yxh.ryt.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.custemview.AutoListView;
+import com.yxh.ryt.custemview.CustomDialog;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.ToastUtil;
@@ -219,25 +221,27 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                 startActivity(edIntent);
                 break;
             case R.id.bt_del:
-                Map<String, String> paramsMap = new HashMap<>();
-                paramsMap.put("addressId", getIntent().getStringExtra("addressId"));
-                paramsMap.put("timestamp", System.currentTimeMillis() + "");
-                try {
-                    paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                NetRequestUtil.post(Constants.BASE_PATH + "removeAddress.do", paramsMap, new RegisterCallBack() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        ToastUtil.showShort(getApplicationContext(), "删除失败");
-                    }
+                CustomDialog.Builder builder = new CustomDialog.Builder(this);
+                builder.setTitle("确认要删除该收货地址吗？");
+                builder.setPositiveButton("确定",new DialogInterface.OnClickListener(){
 
                     @Override
-                    public void onResponse(Map<String, Object> response) {
-                        ToastUtil.showShort(getApplicationContext(), "删除成功");
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        delAddress();
                     }
                 });
+
+
+                builder.setNegativeButton("取消",
+                        new android.content.DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                builder.create().show();
+
                 break;
             case R.id.btn_add:
                 startActivity(new Intent(ReceiverAdressActivity.this, NewAddressActivity.class));
@@ -251,5 +255,26 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
             default:
                 break;
         }
+    }
+    private void delAddress() {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("addressId", getIntent().getStringExtra("addressId"));
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "removeAddress.do", paramsMap, new RegisterCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                ToastUtil.showShort(getApplicationContext(), "删除失败");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                ToastUtil.showShort(getApplicationContext(), "删除成功");
+            }
+        });
     }
 }
