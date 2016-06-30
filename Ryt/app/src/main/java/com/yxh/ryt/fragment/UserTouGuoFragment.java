@@ -182,12 +182,18 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 					if (flag) {
 						List<ConvertWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworks")), new TypeToken<List<ConvertWork>>() {
 						}.getType());
+
 						if (commentList == null) {
 							more.setVisibility(View.GONE);
 							loading.setVisibility(View.GONE);
 							loadFull.setVisibility(View.GONE);
 							noData.setVisibility(View.VISIBLE);
 							header.setVisibility(View.GONE);
+						} else if (commentList.size()==0){
+							header.setVisibility(View.GONE);
+							footer.setVisibility(View.GONE);
+							tvNoData.setVisibility(View.VISIBLE);
+							return;
 						} else if (commentList.size() < Constants.pageSize){
 							more.setVisibility(View.GONE);
 							loading.setVisibility(View.GONE);
