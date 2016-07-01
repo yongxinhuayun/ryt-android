@@ -226,7 +226,7 @@ public class LoginActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        NetRequestUtil.post(Constants.BASE_PATH + "login.do", paramsMap, new LoginCallBack() {
+        NetRequestUtil.post(Constants.BASE_PATH + "j_spring_security_check.do", paramsMap, new LoginCallBack() {
             @Override
             public void onError(Call call, Exception e) {
                 System.out.println("失败了");

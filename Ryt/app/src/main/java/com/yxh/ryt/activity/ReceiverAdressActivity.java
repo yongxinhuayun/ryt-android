@@ -44,8 +44,6 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
     private Button addAddress;
     private Button edit;
     private Button del;
-    private Intent edIntent;
-    private Intent delIntent;
     private int unDefult;
     private ImageView back;
     private LinearLayout ll_new_add;
@@ -76,7 +74,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
 
         cmAdapter = new CommonAdapter<ConsumerAddress>(AppApplication.getSingleContext(), addressDatas, R.layout.address_item) {
             @Override
-            public void convert(ViewHolder helper, ConsumerAddress item) {
+            public void convert(ViewHolder helper, final ConsumerAddress item) {
                 if (addressDatas == null) {
                     ll_add.setVisibility(View.GONE);
                     ll_new_add.setVisibility(View.VISIBLE);
@@ -89,16 +87,49 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                 } else if (addressDatas != null) {
                     ll_add.setVisibility(View.VISIBLE);
                     ll_new_add.setVisibility(View.GONE);
-                    helper.getView(R.id.bt_edit).setOnClickListener(ReceiverAdressActivity.this);
-                    helper.getView(R.id.bt_del).setOnClickListener(ReceiverAdressActivity.this);
-                    edIntent = new Intent(ReceiverAdressActivity.this, EditRecAddressActivity.class);
-                    edIntent.putExtra("addressId", item.getId());
-                    edIntent.putExtra("status", item.getStatus());
-                    edIntent.putExtra("consignee", item.getConsignee());
-                    edIntent.putExtra("details", item.getDetails());
-                    edIntent.putExtra("phone", item.getPhone());
-                    edIntent.putExtra("provinceStr", item.getProvinceStr());
-                    edIntent.putExtra("districtStr", item.getDistrictStr());
+                    helper.getView(R.id.bt_edit).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent edIntent = new Intent(ReceiverAdressActivity.this, EditRecAddressActivity.class);
+                            edIntent.putExtra("addressId", item.getId());
+                            edIntent.putExtra("status", item.getStatus());
+                            edIntent.putExtra("consignee", item.getConsignee());
+                            edIntent.putExtra("details", item.getDetails());
+                            edIntent.putExtra("phone", item.getPhone());
+                            edIntent.putExtra("provinceStr", item.getProvinceStr());
+                            edIntent.putExtra("districtStr", item.getDistrictStr());
+                            startActivity(edIntent);
+                        }
+                    });
+                    helper.getView(R.id.bt_del).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final Intent delIntent = new Intent();
+                           delIntent.putExtra("addressId", item.getId());
+                            CustomDialog.Builder builder = new CustomDialog.Builder(ReceiverAdressActivity.this);
+                            builder.setMessage("确认要删除该收货地址吗？");
+                            builder.setPositiveButton("确定",new DialogInterface.OnClickListener(){
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    delAddress(delIntent);
+                                }
+                            });
+
+
+                            builder.setNegativeButton("取消",
+                                    new android.content.DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                            builder.create().show();
+                        }
+                    });
+
+
 
                     // delIntent.putExtra("status", item.getStatus());
                     helper.setText(R.id.tv_name, item.getConsignee());
@@ -216,33 +247,6 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bt_edit:
-
-                startActivity(edIntent);
-                break;
-            case R.id.bt_del:
-                CustomDialog.Builder builder = new CustomDialog.Builder(this);
-                builder.setTitle("确认要删除该收货地址吗？");
-                builder.setPositiveButton("确定",new DialogInterface.OnClickListener(){
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        delAddress();
-                    }
-                });
-
-
-                builder.setNegativeButton("取消",
-                        new android.content.DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-
-                builder.create().show();
-
-                break;
             case R.id.btn_add:
                 startActivity(new Intent(ReceiverAdressActivity.this, NewAddressActivity.class));
                 break;
@@ -256,9 +260,9 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                 break;
         }
     }
-    private void delAddress() {
+    private void delAddress(Intent intent) {
         Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("addressId", getIntent().getStringExtra("addressId"));
+        paramsMap.put("addressId", intent.getStringExtra("addressId"));
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));

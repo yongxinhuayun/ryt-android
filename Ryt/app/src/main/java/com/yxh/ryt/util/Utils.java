@@ -12,14 +12,11 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-
-import com.yxh.ryt.custemview.refreash.PullToRefreshListView;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -65,6 +62,7 @@ public class Utils {
 	public static String getCurrentTime() {
 		return getCurrentTime("yyyy-MM-dd  HH:mm:ss");
 	}
+	//格式化时间
 	public static String timeTrans(long time){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
 		return sdf.format(new Date(time));
