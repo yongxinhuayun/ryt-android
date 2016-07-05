@@ -386,7 +386,7 @@ public class RegisterActivity extends BaseActivity {
                             ToastUtil.showShort(AppApplication.getSingleContext(), "注册成功!");
                             Intent intent = new Intent(RegisterActivity.this, RegisterScActivity.class);
                             intent.putExtra("username", eTPhone.getText().toString());
-                            intent.putExtra("password", Sha1.encodePassword(eTPassword.getText().toString(), "SHA"));
+                            intent.putExtra("password", eTPassword.getText().toString());
                             RegisterActivity.this.startActivity(intent);
                             RegisterActivity.this.finish();
                         }
