@@ -161,7 +161,7 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 
     private void LoadData() {
         Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("userId", userId);
+        //paramsMap.put("userId", userId);
         paramsMap.put("fromUserId", fromId);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {

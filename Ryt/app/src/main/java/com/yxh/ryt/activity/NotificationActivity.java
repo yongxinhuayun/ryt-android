@@ -85,7 +85,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
 
     private void LoadData(final int state, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("userId", AppApplication.gUser.getId());
+        //paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("type", "0");
         paramsMap.put("pageSize", Constants.pageSize + "");
         paramsMap.put("pageNum", pageNum + "");
@@ -157,7 +157,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
         Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("userId", "ieatht97wfw30hfd");
+        //paramsMap.put("userId", "ieatht97wfw30hfd");
         paramsMap.put("group", "notification");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {

@@ -119,7 +119,7 @@ public class ChuangZuoXQActivity extends BaseActivity implements View.OnClickLis
     private void LoadData(int tabtype, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artworkId+"");
-        paramsMap.put("currentUserId", AppApplication.gUser.getId());
+        //paramsMap.put("currentUserId", AppApplication.gUser.getId());
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);

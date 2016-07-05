@@ -101,7 +101,7 @@ public class EditProject01Activity extends  BaseActivity {
         /*paramsMap.put("artWorkId", "imyt7yax314lpzzj");
         paramsMap.put("currentUserId", "imhfp1yr4636pj49");*/
         paramsMap.put("artWorkId", artWorkId);
-        paramsMap.put("currentUserId", currentUserId);
+        //paramsMap.put("currentUserId", currentUserId);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg=EncryptUtil.encrypt(paramsMap);

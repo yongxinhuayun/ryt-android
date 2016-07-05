@@ -170,7 +170,7 @@ public class PushWoraActivity extends BaseActivity {
                 }
                 paramsMap.put("type", type);
                 paramsMap.put("createYear",year.getText().toString());
-                paramsMap.put("currentUserId", AppApplication.gUser.getId());
+                //paramsMap.put("currentUserId", AppApplication.gUser.getId());
                 paramsMap.put("timestamp",System.currentTimeMillis()+"");
                 try {
                     paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));

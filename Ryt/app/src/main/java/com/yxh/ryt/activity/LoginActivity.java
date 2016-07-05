@@ -183,7 +183,7 @@ public class LoginActivity extends BaseActivity {
                                 user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
                                 getUser(user);
                                 Map<String, String> paramsMap = new HashMap<>();
-                                paramsMap.put("id", user.getId());
+                                //paramsMap.put("id", user.getId());
                                 paramsMap.put("cid", JPushInterface.getRegistrationID(LoginActivity.this));
                                 paramsMap.put("timestamp", System.currentTimeMillis() + "");
                                 try {
