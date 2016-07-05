@@ -51,26 +51,23 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                     String wxCode = ((SendAuth.Resp) AppApplication.resp).code;
                     getAccessTokenByCode(wxCode);
                 }
-                    /*public interface CallBackInterface {
-						public void callBackFunction(int i);
-					}*/
                 finish();
                 Intent intent = new Intent("android.intent.action.WX_Login_BROADCAST");
                 AppApplication.getSingleContext().sendBroadcast(intent);
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
-                result = "取消登陆";
-                Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+                //result = "取消登陆";
+               // Toast.makeText(this, result, Toast.LENGTH_LONG).show();
                 finish();
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
-                result = "登陆被拒绝";
-                Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+                //result = "登陆被拒绝";
+               // Toast.makeText(this, result, Toast.LENGTH_LONG).show();
                 finish();
                 break;
             default:
-                result = "登陆返回";
-                Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+                //result = "登陆返回";
+               // Toast.makeText(this, result, Toast.LENGTH_LONG).show();
                 finish();
                 break;
         }
