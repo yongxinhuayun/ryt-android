@@ -7,6 +7,8 @@ hostName = "http://ryt.efeiyi.com";//服务器域名
 
 function redirectUser(userid) {
     //window.location.href = "rongyitou://jumpToUserHome_?" + userid;
+    console.log("XXXXXXXXXXXXXXXXXXXXXXXX"+userid);
+            window.demo1.clickOnAndroid1(userid);
 }          // 跳转到用户的个人主页
 
 

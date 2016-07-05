@@ -176,8 +176,62 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                getUser(response);
-                Map<String, String> paramsMap = new HashMap<>();
+                User user = new User();
+                user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+                getUser(user);
+                Map<String,String> paramsMap=new HashMap<>();
+                paramsMap.put("username",username+"");
+                paramsMap.put("password", password+"");
+                paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                try {
+                    AppApplication.signmsg=EncryptUtil.encrypt(paramsMap);
+                    paramsMap.put("signmsg", AppApplication.signmsg);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                NetRequestUtil.post(Constants.BASE_PATH + "j_spring_security_check", paramsMap, new LoginCallBack() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        System.out.println("失败了");
+                    }
+
+                    @Override
+                    public void onResponse(Map<String, Object> response) {
+                        if (Integer.valueOf((String) response.get("resultCode")) > 0) {
+                            ToastUtil.showShort(RegisterScActivity.this, "登录失败");
+                            return;
+                        }
+                        User user = new User();
+                        user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+                        getUser(user);
+                        Map<String, String> paramsMap = new HashMap<>();
+                        paramsMap.put("username", username+"");
+                        paramsMap.put("password", password+"");
+                        paramsMap.put("cid", JPushInterface.getRegistrationID(RegisterScActivity.this));
+                        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                        try {
+                            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+                            paramsMap.put("signmsg", AppApplication.signmsg);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        NetRequestUtil.post(Constants.BASE_PATH + "userBinding.do", paramsMap, new LoginCallBack() {
+                            @Override
+                            public void onError(Call call, Exception e) {
+                                System.out.println("失败了");
+                            }
+
+                            @Override
+                            public void onResponse(Map<String, Object> response) {
+
+                                    Intent intent=new Intent(RegisterScActivity.this,IndexActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                            }
+                        });
+                    }
+                });
+                /*Map<String, String> paramsMap = new HashMap<>();
                 paramsMap.put("username", username + "");
                 paramsMap.put("password", password + "");
                 paramsMap.put("cid", JPushInterface.getRegistrationID(RegisterScActivity.this));
@@ -199,13 +253,11 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                         ToastUtil.showLong(RegisterScActivity.this, "绑定成功");
                         finish();
                     }
-                });
+                });*/
             }
         });
     }
-    private void getUser(Map<String, Object> response) {
-        User user = new User();
-        user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+    private void getUser(User user) {
         SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
         SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");

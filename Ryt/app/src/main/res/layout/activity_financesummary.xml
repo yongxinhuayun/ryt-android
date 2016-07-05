@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+    <!--头部标题栏-->
+    <RelativeLayout
+        android:id="@+id/afs_rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/afs_top_lf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/back" />
+
+        <com.viewpagerindicator.TabPageIndicator
+            android:id="@+id/afs_indicator"
+            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"/>
+        <!--<TextView-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:text="注册"/>-->
+        <ImageView
+            android:id="@+id/ib_top_rt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:scaleType="center"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/share01" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#E9E9E9"/>
+    </RelativeLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/afs_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+</LinearLayout>

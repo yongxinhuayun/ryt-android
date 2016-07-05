@@ -3,7 +3,7 @@ package com.yxh.ryt.util;
 import com.yxh.ryt.AppApplication;
 
 /**
- * Created by 吴洪杰 on 2016/4/12.
+ * Created by
  */
 public class DisplayUtil {
     /**

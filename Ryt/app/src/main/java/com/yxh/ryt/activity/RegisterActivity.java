@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.obsever.Smsobserver;
@@ -41,6 +42,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.Call;
 
 
@@ -91,6 +93,7 @@ public class RegisterActivity extends BaseActivity {
     private Smsobserver smsObserver;
     private Uri SMS_INBOX = Uri.parse("content://sms/");
     private TextView protocol;
+    private String guide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +115,7 @@ public class RegisterActivity extends BaseActivity {
         });
         ButterKnife.bind(this);/*启用注解绑定*/
         smsBackfill();
+        guide = getIntent().getStringExtra("guide");
         event();
         commit.setEnabled(false);
         clickable();
@@ -216,7 +220,7 @@ public class RegisterActivity extends BaseActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        NetRequestUtil.post(Constants.BASE_PATH + "WxLogin.do", paramsMap, new RZCommentCallBack() {
+                        NetRequestUtil.post(Constants.BASE_PATH + "j_spring_security_check", paramsMap, new RZCommentCallBack() {
                             @Override
                             public void onError(Call call, Exception e) {
                                 e.printStackTrace();
@@ -225,10 +229,38 @@ public class RegisterActivity extends BaseActivity {
                             @Override
                             public void onResponse(Map<String, Object> response) {
                                 if ("0".equals(response.get("resultCode"))) {
-                                    getUser(response);
-                                    Intent intent=new Intent(RegisterActivity.this,IndexActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    User user = new User();
+                                    user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+                                    getUser(user);
+                                    Map<String, String> paramsMap = new HashMap<>();
+                                    paramsMap.put("id", user.getId());
+                                    paramsMap.put("cid", JPushInterface.getRegistrationID(RegisterActivity.this));
+                                    paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                                    try {
+                                        AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+                                        paramsMap.put("signmsg", AppApplication.signmsg);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    NetRequestUtil.post(Constants.BASE_PATH + "wxBinding.do", paramsMap, new LoginCallBack() {
+                                        @Override
+                                        public void onError(Call call, Exception e) {
+                                            System.out.println("失败了");
+                                        }
+
+                                        @Override
+                                        public void onResponse(Map<String, Object> response) {
+                                            if ("guide".equals(guide)){
+                                                Intent intent=new Intent(RegisterActivity.this,IndexActivity.class);
+                                                startActivity(intent);
+                                                //ToastUtil.showLong(LoginActivity.this,"成功");
+                                                finish();
+                                            }else {
+                                                //ToastUtil.showLong(LoginActivity.this,"登录失败");
+                                                finish();
+                                            }
+                                        }
+                                    });
 
                                 }
                             }
@@ -241,9 +273,7 @@ public class RegisterActivity extends BaseActivity {
             WxUtil.wxlogin();
         }
     }
-    private void getUser(Map<String, Object> response) {
-        User user = new User();
-        user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+    private void getUser(User user) {
         if (user.getMaster()!=null){
             user.setMaster1("master");
         }else {

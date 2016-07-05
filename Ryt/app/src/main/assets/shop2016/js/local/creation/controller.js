@@ -102,6 +102,7 @@ function getArtWorkBaseInfoData(callback) {
                     break;
             }
             PageVariable.artWorkInfo = new ArtWorkInfo(artWork.picture_url, artWork.author.name, artWork.brief, auctionStartDatetimeStr, artWork.step, artWork.title, artWork.author.master.title, artWork.author.pictureUrl, artWork.author.id);
+            console.log(JSON.stringify(PageVariable.artWorkInfo));
             PageVariable.artWorkProject = new ArtWorkProject(artWork.investEndDatetime, artWork.step, artWork.investNum, artWork.investStartDatetime, msgList, artWork.auctionStartDatetime);
 
         }, data, callback);

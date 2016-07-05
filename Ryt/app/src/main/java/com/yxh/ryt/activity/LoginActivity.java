@@ -140,6 +140,7 @@ public class LoginActivity extends BaseActivity {
     public void regClick(){
         finish();
         Intent intent=new Intent(this,RegisterActivity.class);
+        intent.putExtra("guide",guide);
         startActivity(intent);
     }
     /*忘记密码按钮事件触发*/
@@ -157,7 +158,7 @@ public class LoginActivity extends BaseActivity {
             mReciver = new WxLoginBroadcastReciver(new WxLoginBroadcastReciver.WxLoginCallBack() {
                 @Override
                 public void response(String wxUser) {
-                    WxUser user=AppApplication.getSingleGson().fromJson(wxUser, WxUser.class);
+                    final WxUser user=AppApplication.getSingleGson().fromJson(wxUser, WxUser.class);
                     Map<String,String> paramsMap=new HashMap<>();
                     paramsMap.put("nickname",user.getNickname());
                     paramsMap.put("headimgurl",user.getHeadimgurl());
@@ -169,7 +170,7 @@ public class LoginActivity extends BaseActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    NetRequestUtil.post(Constants.BASE_PATH + "WxLogin.do", paramsMap, new RZCommentCallBack() {
+                    NetRequestUtil.post(Constants.BASE_PATH + "j_spring_security_check", paramsMap, new RZCommentCallBack() {
                         @Override
                         public void onError(Call call, Exception e) {
                             e.printStackTrace();
@@ -178,16 +179,39 @@ public class LoginActivity extends BaseActivity {
                         @Override
                         public void onResponse(Map<String, Object> response) {
                             if ("0".equals(response.get("resultCode"))) {
-                                getUser(response);
-                                if ("guide".equals(guide)){
-                                    Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
-                                    startActivity(intent);
-                                    ToastUtil.showLong(LoginActivity.this,"登录成功");
-                                    finish();
-                                }else {
-                                    ToastUtil.showLong(LoginActivity.this,"登录失败");
-                                    finish();
+                                User user = new User();
+                                user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+                                getUser(user);
+                                Map<String, String> paramsMap = new HashMap<>();
+                                paramsMap.put("id", user.getId());
+                                paramsMap.put("cid", JPushInterface.getRegistrationID(LoginActivity.this));
+                                paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                                try {
+                                    AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+                                    paramsMap.put("signmsg", AppApplication.signmsg);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
+                                NetRequestUtil.post(Constants.BASE_PATH + "wxBinding.do", paramsMap, new LoginCallBack() {
+                                    @Override
+                                    public void onError(Call call, Exception e) {
+                                        System.out.println("失败了");
+                                    }
+
+                                    @Override
+                                    public void onResponse(Map<String, Object> response) {
+                                        if ("guide".equals(guide)){
+                                            Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
+                                            startActivity(intent);
+                                            //ToastUtil.showLong(LoginActivity.this,"成功");
+                                            finish();
+                                        }else {
+                                            //ToastUtil.showLong(LoginActivity.this,"登录失败");
+                                            finish();
+                                        }
+                                    }
+                                });
+
                             }
                         }
                     });
@@ -226,7 +250,7 @@ public class LoginActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        NetRequestUtil.post(Constants.BASE_PATH + "login.do", paramsMap, new LoginCallBack() {
+        NetRequestUtil.post(Constants.BASE_PATH + "j_spring_security_check", paramsMap, new LoginCallBack() {
             @Override
             public void onError(Call call, Exception e) {
                 System.out.println("失败了");
@@ -238,10 +262,12 @@ public class LoginActivity extends BaseActivity {
                     ToastUtil.showShort(LoginActivity.this, "登录失败");
                     return;
                 }
-                getUser(response);
+                User user = new User();
+                user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+                getUser(user);
                 Map<String, String> paramsMap = new HashMap<>();
                 paramsMap.put("username", etUsername.getText().toString());
-                paramsMap.put("password", Sha1.encodePassword(etPassword.getText().toString(), "SHA"));
+                paramsMap.put("password", etPassword.getText().toString());
                 paramsMap.put("cid", JPushInterface.getRegistrationID(LoginActivity.this));
                 paramsMap.put("timestamp", System.currentTimeMillis() + "");
                 try {
@@ -274,9 +300,7 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    private void getUser(Map<String, Object> response) {
-        User user = new User();
-        user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
+    private void getUser(User user) {
         if (user.getMaster()!=null){
             user.setMaster1("master");
         }else {
@@ -289,7 +313,7 @@ public class LoginActivity extends BaseActivity {
         SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster1()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");
         AppApplication.gUser = user;
-        System.out.print(AppApplication.gUser.toString());
+
     }
 
     @Override
