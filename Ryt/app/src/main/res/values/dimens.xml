@@ -22,4 +22,7 @@
     <dimen name="defult_font">14sp</dimen>title
     //padding
     <dimen name="defult_padding">14sp</dimen>title
+    //注释字体
+    <dimen name="little_font">12sp</dimen>title
+
 </resources>

@@ -15,7 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
-import com.yxh.ryt.activity.FinanceSummaryActivity;
+import com.yxh.ryt.activity.RongZiXQActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
@@ -33,7 +33,7 @@ import java.util.Map;
 import okhttp3.Call;
 
 
-public class RongZiItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
+public class RZInvestFragment extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener, AdapterView.OnItemClickListener {
 	private AutoListView lstv;
 	private CommonAdapter<RongZi> rongZiCommonAdapter;
@@ -250,7 +250,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 			view2.getLocationInWindow(location1); //获取在当前窗口内的绝对坐标
 			view2.getLocationOnScreen(location1);//获取在整个屏幕内的绝对坐标
 			System.out.println("view--->x坐标:"+location1 [0]+"view--->y坐标:"+location1 [1]);*/
-			Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
+			Intent intent=new Intent(getActivity(), RongZiXQActivity.class);
 			intent.putExtra("id",rongZiDatas.get(position-1).getId());
 			startActivity(intent);
 		}

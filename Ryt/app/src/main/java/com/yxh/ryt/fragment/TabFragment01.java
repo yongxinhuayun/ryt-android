@@ -1,6 +1,5 @@
 package com.yxh.ryt.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -8,24 +7,13 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
-import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.IndexTabPageIndicatorAdapter;
-import com.yxh.ryt.adapter.TabPageAdapter;
-import com.yxh.ryt.custemview.CustomViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016-4-4.
@@ -105,8 +93,9 @@ public class TabFragment01 extends  BaseFragment {
         pager.setOffscreenPageLimit(3);
         pager.setAdapter(indexChildAdapter);
         //实例化TabPageIndicator然后设置ViewPager与之关联
-        TabPageIndicator indicator = (TabPageIndicator)view.findViewById(R.id.indicator);
+        final TabPageIndicator indicator = (TabPageIndicator)view.findViewById(R.id.indicator);
         indicator.setViewPager(pager);
+
         /*ButterKnife.bind(this, view);
         indexChildAdapter = new TabPageAdapter(getActivity().getSupportFragmentManager(),indexChildFragments);
         pager = (CustomViewPager)view.findViewById(R.id.pager);

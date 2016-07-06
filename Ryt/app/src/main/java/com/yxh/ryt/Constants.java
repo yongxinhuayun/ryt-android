@@ -3,8 +3,8 @@ package com.yxh.ryt;
 public class Constants {
 
     //网络请求基地址
-    public static final String BASE_PATH="http://192.168.1.75:8080/app/";
-    //public static final String BASE_PATH="http://craft.efeiyi.com/app-wikiServer/app/";
+    //public static final String BASE_PATH="http://192.168.1.75:8080/app/";
+    public static final String BASE_PATH="http://craft.efeiyi.com/app-wikiServer/app/";
     //融艺投APP_KEY
     public static final String APP_KEY="BL2QEuXUXNoGbNeHObD4EzlX+KuGc70U";
     //微信APP_ID
@@ -23,6 +23,7 @@ public class Constants {
     public static final String WX_INSTALL_ACTION = "wx_install_action";
     public static final String WX_NOTINSTALL_ACTION = "wx_notinstall_action";
     public static final String[] INDEX_TITLE = new String[] { "融资", "创作", "拍卖" };
+    public static final String[] RZ_TITLE = new String[] { "项目", "详情", "投资" };
     public static  String[] ATTENTION_TITLE = new String[] { "艺术家(0)", "用户(0)" };
 
     public static final String[] PAIHANG_TITLE = new String[] { "投资者排行", "艺术家排行" };

@@ -13,10 +13,10 @@ import java.util.List;
 /**
  * Created by 吴洪杰 on 2016/4/5.
  */
-public class IndexTabPageIndicatorAdapter extends FragmentPagerAdapter {
+public class RZTitlePageIndicatorAdapter extends FragmentPagerAdapter {
 
     List<BaseFragment> fragments;
-    public IndexTabPageIndicatorAdapter(FragmentManager fm, List<BaseFragment> fragments) {
+    public RZTitlePageIndicatorAdapter(FragmentManager fm, List<BaseFragment> fragments) {
         super(fm);
         this.fragments=fragments;
     }
@@ -33,7 +33,7 @@ public class IndexTabPageIndicatorAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return Constants.INDEX_TITLE[position % Constants.INDEX_TITLE.length];
+        return Constants.RZ_TITLE[position % Constants.INDEX_TITLE.length];
     }
 
     @Override
