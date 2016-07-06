@@ -279,7 +279,7 @@ public class RongZiXQActivity extends BaseActivity {
     private void praise(String artworkId, String s) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artworkId", artworkId + "");
-        paramsMap.put("currentUserId", s);
+        //paramsMap.put("currentUserId", s);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
@@ -309,9 +309,9 @@ public class RongZiXQActivity extends BaseActivity {
     private void LoadData(int tabtype, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artworkId + "");
-        if (!"".equals(AppApplication.gUser.getId())) {
+        /*if (!"".equals(AppApplication.gUser.getId())) {
             paramsMap.put("currentUserId", AppApplication.gUser.getId());
-        } /*else {
+        }*/ /*else {
             paramsMap.put("currentUserId", AppApplication.gUser.getId());
         }*/
         paramsMap.put("timestamp", System.currentTimeMillis() + "");

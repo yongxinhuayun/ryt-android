@@ -272,7 +272,7 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         @JavascriptInterface
         public void  finalPayment(final String price,final String action,final String artWorkId) {
             Map<String,String> paramsMap=new HashMap<>();
-            paramsMap.put("userId", AppApplication.gUser.getId());
+            //paramsMap.put("userId", AppApplication.gUser.getId());
             //paramsMap.put("userId", "imhfp1yr4636pj49");
             paramsMap.put("money", price);
             paramsMap.put("action", action);

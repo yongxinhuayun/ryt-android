@@ -164,7 +164,7 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                 break;
             case R.id.imp_tv_invest:
                 Map<String,String> paramsMap=new HashMap<>();
-                paramsMap.put("userId", AppApplication.gUser.getId());
+                //paramsMap.put("userId", AppApplication.gUser.getId());
                 paramsMap.put("money", money);
                 paramsMap.put("action", "invest");
                 paramsMap.put("type", "1");

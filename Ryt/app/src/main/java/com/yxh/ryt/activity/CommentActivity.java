@@ -195,7 +195,7 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
 
     private void LoadData(final int state,int pageNum) {
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId",AppApplication.gUser.getId());
+        //paramsMap.put("userId",AppApplication.gUser.getId());
         paramsMap.put("type","1");
         paramsMap.put("pageSize",Constants.pageSize+"");
         paramsMap.put("pageNum", pageNum+"");

@@ -107,7 +107,7 @@ public class UserQianBaoActivity extends BaseActivity {
 
     private void loadData() {
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId",AppApplication.gUser.getId());
+        //paramsMap.put("userId",AppApplication.gUser.getId());
         paramsMap.put("pageSize",Constants.pageSize+"");
         paramsMap.put("pageIndex", "1");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");

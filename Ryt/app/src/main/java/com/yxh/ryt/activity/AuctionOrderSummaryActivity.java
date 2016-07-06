@@ -94,7 +94,7 @@ public class AuctionOrderSummaryActivity extends BaseActivity implements View.On
         @JavascriptInterface
         public void payMoney(final String price,final String type) {
             Map<String,String> paramsMap=new HashMap<>();
-            paramsMap.put("userId", AppApplication.gUser.getId());
+            //paramsMap.put("userId", AppApplication.gUser.getId());
             paramsMap.put("money", price);
             paramsMap.put("action", type);
             paramsMap.put("type", "1");

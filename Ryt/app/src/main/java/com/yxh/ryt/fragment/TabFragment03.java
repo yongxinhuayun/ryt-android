@@ -90,7 +90,7 @@ public class TabFragment03 extends  BaseFragment {
     }*/
     private void loadData() {
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId", AppApplication.gUser.getId());
+        //paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);

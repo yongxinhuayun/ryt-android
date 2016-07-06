@@ -46,7 +46,7 @@ import okhttp3.Call;
 public class TabFragment04 extends BaseFragment {
     @Bind(R.id.rl_user_index)
     RelativeLayout rlUserIndex;
-    @Bind(R.id.tv_user_header_gz_num)
+    /*@Bind(R.id.tv_user_header_gz_num)*/
     TextView tvUserHeaderGzNum;
     @Bind(R.id.tv_user_header_gz)
     TextView tvUserHeaderGz;
@@ -56,7 +56,7 @@ public class TabFragment04 extends BaseFragment {
     TextView tvUserHeaderName;
     @Bind(R.id.ll_user_header)
     LinearLayout llUserHeader;
-    @Bind(R.id.tv_user_header_fs_num)
+    /*@Bind(R.id.tv_user_header_fs_num)*/
     TextView tvUserHeaderFsNum;
     @Bind(R.id.tv_user_header_fs)
     TextView tvUserHeaderFs;
@@ -100,6 +100,8 @@ public class TabFragment04 extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_center, null);
         ButterKnife.bind(this, view);
+        tvUserHeaderFsNum= (TextView) view.findViewById(R.id.tv_user_header_fs_num);
+        tvUserHeaderGzNum= (TextView) view.findViewById(R.id.tv_user_header_gz_num);
         return view;
     }
 

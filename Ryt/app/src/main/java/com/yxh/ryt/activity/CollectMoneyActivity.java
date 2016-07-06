@@ -140,7 +140,7 @@ public class CollectMoneyActivity extends BaseActivity {
     @OnClick(R.id.cm_tv_commit)
     public void commit(){
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId", AppApplication.gUser.getId());
+        //paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("money", amount.getText().toString());
         paramsMap.put("name", name.getText().toString());
         paramsMap.put("number", account.getText().toString());
