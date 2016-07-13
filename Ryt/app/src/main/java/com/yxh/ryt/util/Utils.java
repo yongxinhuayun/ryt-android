@@ -437,6 +437,10 @@ public class Utils {
 		}
 		return Bitmap.CompressFormat.JPEG;
 	}
+
+	/**
+	 * 动态测量list view 总高度
+	 */
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
 		ListAdapter listAdapter = listView.getAdapter();
 		if (listAdapter == null) {
@@ -469,4 +473,28 @@ public class Utils {
 			return s;
 		}
 	}
+
+	/**
+	 * 动态测量listview 指定item个数高度
+	 */
+	public static void setListViewNumHeight(ListView listView,int num) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			return;
+		}
+
+		int totalHeight = 0;
+		for (int i = 0; i < num; i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight + (listView.getDividerHeight() * (num - 1));
+		params.height += 5;//if without this statement,the listview will be a little short
+		listView.setLayoutParams(params);
+	}
+
+
 }

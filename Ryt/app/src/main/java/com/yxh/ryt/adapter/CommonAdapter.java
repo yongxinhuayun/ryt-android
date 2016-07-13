@@ -49,7 +49,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter
 	@Override  
     public int getCount()  
     {  
-        return mDatas.size();  
+        return mDatas.size();
     }  
 
     @Override  

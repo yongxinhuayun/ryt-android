@@ -135,7 +135,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                 Message msg = Message.obtain();
-                Log.w("YZJ",response.get("resultCode").toString());
+                //Log.w("YZJ",response.get("resultCode").toString());
                 if ("100013".equals(response.get("resultCode"))) {
                     Map<String, String> map = (Map<String, String>) response.get("version_info");
 

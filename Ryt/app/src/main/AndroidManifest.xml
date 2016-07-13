@@ -289,7 +289,11 @@
         <activity android:name=".activity.AuctionSummaryActivity" />
         <activity android:name=".activity.UserProtocolActivity" />
         <activity android:name=".activity.AuctionOrderActivity" />
+        <activity android:name=".activity.WalletDetailsActivity" />
+        <activity android:name=".activity.CollectMoneyActivity" />
+        <activity android:name=".activity.FinanceSummaryActivity" />
         <activity android:name=".activity.EditRecAddressActivity"></activity>
+
     </application>
 
 </manifest>

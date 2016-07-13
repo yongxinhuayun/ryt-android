@@ -24,4 +24,12 @@
     <color name="province_line_border1">#cdcdcd</color>
     <color name="province_line_border">#C7C7C7</color>
     <color name="textview_line_border">#ef5b70</color>
+    <color name="color_progressbar">#E5E5E5</color>
+    <color name="color_progress">#E64056</color>
+    //加载更多
+    <color name="footerview">#4D4D4D</color>
+    //评论hint
+    <color name="comment_hint">#666666</color>
+    //invest hint
+    <color name="invest_hint">#999999</color>
 </resources>

@@ -42,6 +42,7 @@
             android:divider="@null"
             android:scrollbars="none"
             android:listSelector="@null"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            />
 
 </LinearLayout>

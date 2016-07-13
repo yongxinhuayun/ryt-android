@@ -1,8 +1,11 @@
 package com.yxh.ryt.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.R;
@@ -18,15 +21,22 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/5.
  */
-public class FinanceSummaryActivity extends BaseActivity {
+public class FinanceSummaryActivity extends BaseActivity implements View.OnClickListener {
     List<BaseFragment> rZFragments=new ArrayList<>();
     FragmentPagerAdapter rZAdapter;
+    private ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_financesummary);
-        rZFragments.add(new RZProjectFragment());
+        back = (ImageView) findViewById(R.id.ib_top_lf);
+        back.setOnClickListener(this);
+        Intent intent = this.getIntent();
+        String artWorkId = intent.getStringExtra("id");
+       // EventBus.getDefault().register(this);
+       // EventBus.getDefault().post(new Message(artWorkId));
+        rZFragments.add(new RZProjectFragment(artWorkId));
         rZFragments.add(new RZDetailFragment());
         rZFragments.add(new RZInvestFragment());
 
@@ -43,5 +53,14 @@ public class FinanceSummaryActivity extends BaseActivity {
     }
 
 
-
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ib_top_lf:
+                finish();
+                break;
+            default:
+                break;
+        }
+    }
 }

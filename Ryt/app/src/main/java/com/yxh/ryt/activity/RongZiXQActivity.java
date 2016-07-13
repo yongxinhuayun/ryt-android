@@ -13,7 +13,6 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -123,7 +122,6 @@ public class RongZiXQActivity extends BaseActivity {
     private String userId;
     private Master master;
     private HashMap<ImageView, String> userImageViewMap;
-    //private int zhenjie;
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, RongZiXQActivity.class));
     }
