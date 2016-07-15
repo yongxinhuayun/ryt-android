@@ -248,10 +248,10 @@ public class TabFragment04 extends BaseFragment {
 
                 @Override
                 public void onResponse(Map<String, Object> response) {
-                    if (!response.get("resultCode").equals("0")) {
+                    /*if (!response.get("resultCode").equals("0")) {
                         ToastUtil.showShort(AppApplication.getSingleContext(), "失败!");
                         return;
-                    }
+                    }*/
                     if (response.get("resultCode").equals("0")) {
                         Map<String, Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
                         User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")), User.class);
