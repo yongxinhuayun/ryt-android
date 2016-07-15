@@ -47,10 +47,9 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
     private String userId;
     private View header;
 
-    public ArtistHomeFragment( String userId, String flag) {
+    public ArtistHomeFragment( String userId) {
         super();
         this.userId=userId;
-        this.flag=flag;
     }
 
     @Override
@@ -116,17 +115,6 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                         }
                         return;
                     }
-                }else if ("000000".equals(response.get("resultCode"))){
-                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
-                        @Override
-                        public void getCode(String code) {
-                            if ("0".equals(code)){
-                                currentPage=1;
-                                LoadData(AutoListView.REFRESH, currentPage);
-                            }
-                        }
-                    });
-                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
 
             }

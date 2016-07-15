@@ -59,7 +59,7 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 
 	private void LoadData(final int state, final int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId",userId);
+		//paramsMap.put("userId",userId);
 		paramsMap.put("type","1");
 		paramsMap.put("pageSize", Constants.pageSize + "");
 		paramsMap.put("pageIndex", pageNum + "");
