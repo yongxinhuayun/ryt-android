@@ -16,6 +16,7 @@ import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.DateUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.ArtworkInvest;
 
 import java.util.ArrayList;
@@ -84,14 +85,15 @@ public class RZInvestFragment extends BaseFragment{
 
 					List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
 					}.getType());
-					if (investList.size() < Constants.pageSize) {
 
-						investorDatas.addAll(investList);
-						investList.clear();
-					}
 					if (investList != null) {
 						investorDatas.addAll(investList);
 						investList.clear();
+						if (investList.size() < Constants.pageSize) {
+
+							investorDatas.addAll(investList);
+							investList.clear();
+						}
 					}
 				}
 				setInvesterAdapter();

@@ -3,7 +3,6 @@ package com.yxh.ryt.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -77,7 +76,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
             @Override
             public void convert(ViewHolder helper, final ConsumerAddress item) {
                 if (addressDatas == null) {
-                    ll_add.setVisibility(View.GONE);
+                    ll_add.setVisibility(View.INVISIBLE);
                     ll_new_add.setVisibility(View.VISIBLE);
                     btn_new_add.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -87,7 +86,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                     });
                 } else if (addressDatas != null) {
                     ll_add.setVisibility(View.VISIBLE);
-                    ll_new_add.setVisibility(View.GONE);
+                    ll_new_add.setVisibility(View.INVISIBLE);
                     helper.getView(R.id.bt_edit).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -114,7 +113,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    delAddress(delIntent);
+                                    delAddress(delIntent,addressDatas);
                                 }
                             });
 
@@ -129,8 +128,6 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                             builder.create().show();
                         }
                     });
-
-
 
                     // delIntent.putExtra("status", item.getStatus());
                     helper.setText(R.id.tv_name, item.getConsignee());
@@ -186,8 +183,8 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                         if (null != addressComment && addressComment.size() > 0) {
                             adListview.setResultSize(addressComment.size());
                             addressDatas.addAll(addressComment);
-                            cmAdapter.notifyDataSetChanged();
                         }
+                        cmAdapter.notifyDataSetChanged();
                         return;
                     }
                     if (state == AutoListView.LOAD) {
@@ -200,8 +197,8 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                         if (null != addressComment && addressComment.size() > 0) {
                             adListview.setResultSize(addressComment.size());
                             addressDatas.addAll(addressComment);
-                            cmAdapter.notifyDataSetChanged();
                         }
+                        cmAdapter.notifyDataSetChanged();
                         return;
                     }else if ("000000".equals(response.get("resultCode"))){
                         SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
@@ -215,6 +212,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                         sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                     }
                 }
+
             }
         });
     }
@@ -228,8 +226,6 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
     @Override
     protected void onResume() {
         super.onResume();
-        // currentPage = 1;
-        // addressDatas.clear();
         LoadData(AutoListView.REFRESH);
     }
 
@@ -262,7 +258,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                 break;
         }
     }
-    private void delAddress(Intent intent) {
+    private void delAddress(Intent intent, final List list) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("addressId", intent.getStringExtra("addressId"));
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -279,6 +275,15 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
 
             @Override
             public void onResponse(Map<String, Object> response) {
+                LoadData(AutoListView.REFRESH);
+                if (list.size() == 1) {
+                    ll_add.setVisibility(View.INVISIBLE);
+                    ll_new_add.setVisibility(View.VISIBLE);
+
+                } else if (addressDatas != null) {
+                    ll_add.setVisibility(View.VISIBLE);
+                    ll_new_add.setVisibility(View.INVISIBLE);
+                }
                 ToastUtil.showShort(getApplicationContext(), "删除成功");
             }
         });

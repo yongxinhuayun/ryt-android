@@ -410,7 +410,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     tvProgress.setText(artwork.getInvestNum() + "人投资 " + "￥" +artwork.getInvestsMoney() + "/" + artwork.getInvestGoalMoney());
                     deadline.setText(artwork.getInvestRestTime().split("日")[0] + "天后截止");
                     //进度显示
-                    progressCurrent = artwork.getInvestsMoney().doubleValue() / artwork.getInvestGoalMoney().doubleValue();
+                        progressCurrent = artwork.getInvestsMoney().doubleValue() / artwork.getInvestGoalMoney().doubleValue();
                     max = artwork.getInvestGoalMoney().intValue();
                     isVisibleBar();
 
@@ -451,7 +451,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 if(event.getAction()==MotionEvent.ACTION_MOVE){
 
                     if (mRoundProgressBar.getLocalVisibleRect(rect)) {/*rect.contains(ivRect)*/
-                        if (progress == 0) {
+                        if (progress == 0 && progressCurrent != 0) {
                             initProgressBar((int) (progressCurrent * 100));
                         }
                     } else {
@@ -670,14 +670,15 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
                         List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
                         }.getType());
-                        if (investList.size() < Constants.pageSize) {
 
-                            loadNum5(iListview, investorDatas, investList);
-                            investList.clear();
-                        }
                         if (investList != null) {
                             loadNum5(iListview, investorDatas, investList);
                             investList.clear();
+                            if (investList.size() < Constants.pageSize) {
+
+                                loadNum5(iListview, investorDatas, investList);
+                                investList.clear();
+                            }
                         }
                     } else {
                         List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {

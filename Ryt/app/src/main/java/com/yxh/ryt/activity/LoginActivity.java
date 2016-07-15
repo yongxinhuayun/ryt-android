@@ -21,7 +21,6 @@ import com.yxh.ryt.receiver.WxLoginBroadcastReciver;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
-import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.EditTextValidator;
 import com.yxh.ryt.util.avalidations.ValidationModel;
@@ -259,7 +258,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if (Integer.valueOf((String) response.get("resultCode")) > 0) {
+                if (response == null || Integer.valueOf((String) response.get("resultCode")) > 0) {
                     ToastUtil.showShort(LoginActivity.this, "登录失败");
                     return;
                 }

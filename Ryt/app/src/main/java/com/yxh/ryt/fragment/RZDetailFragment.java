@@ -75,6 +75,7 @@ public class RZDetailFragment extends BaseFragment {
 			@Override
 			public void onResponse(Map<String, Object> response) {
 				Map<String, Object> object = (Map<String, Object>) response.get("object");
+				if (object == null){return;}
 				Artworkdirection artworkdirection = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkdirection")), Artworkdirection.class);
 				List<ArtworkAttachment> artworkAttachments = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkAttachmentList")), new TypeToken<List<ArtworkAttachment>>() {
 				}.getType());
