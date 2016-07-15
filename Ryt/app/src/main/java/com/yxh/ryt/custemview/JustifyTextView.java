@@ -3,9 +3,6 @@ package com.yxh.ryt.custemview;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.text.Layout;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -35,60 +32,20 @@ public class JustifyTextView extends TextView {
 		paint.setColor(getCurrentTextColor());
 		paint.drawableState = getDrawableState();
 		mViewWidth = getMeasuredWidth();
-		Spannable sp=null;
-		String text=null;
-		if (getText() instanceof Spanned){
-			sp = new SpannableStringBuilder(getText());
-		}else {
-			text = (String) getText();
-		}
+		String text = (String) getText();
 		mLineY = 0;
 		mLineY += getTextSize();
 		Layout layout = getLayout();
-		if (getText() instanceof Spanned){
-			for (int i = 0; i < layout.getLineCount(); i++) {
-				// 每一行的开头
-				int lineStart = layout.getLineStart(i);
-				// 每一行的结尾
-				int lineEnd = layout.getLineEnd(i);
-				// 截取每行的字符串
-				String line = getText().toString().substring(lineStart, lineEnd);
+		for (int i = 0; i < layout.getLineCount(); i++) {
+			// 每一行的开头
+			int lineStart = layout.getLineStart(i);
+			// 每一行的结尾
+			int lineEnd = layout.getLineEnd(i);
+			// 截取每行的字符串
+			String line = text.substring(lineStart, lineEnd);
 
-				float width = StaticLayout.getDesiredWidth(sp, lineStart,
-						lineEnd, getPaint());
-
-			/*
-			 * 自己修改
-			 * *********************************************************************
-			 * 判断是否是最后一行 最后一行就不用加空格了 直接画出上面的字 就可以了
-			 */
-
-				if (i == layout.getLineCount() - 1) {
-					canvas.drawText(line, 0, mLineY, paint);
-				} else {
-					if (needScale(line)) {
-						drawScaledText(canvas, lineStart, line, width);
-					} else {
-						canvas.drawText(line, 0, mLineY, paint);
-					}
-				}
-			/*
-			 * *********************************************************************
-			 */
-
-				mLineY += getLineHeight();
-			}
-		}else {
-			for (int i = 0; i < layout.getLineCount(); i++) {
-				// 每一行的开头
-				int lineStart = layout.getLineStart(i);
-				// 每一行的结尾
-				int lineEnd = layout.getLineEnd(i);
-				// 截取每行的字符串
-				String line = text.substring(lineStart, lineEnd);
-
-				float width = StaticLayout.getDesiredWidth(text, lineStart,
-						lineEnd, getPaint());
+			float width = StaticLayout.getDesiredWidth(text, lineStart,
+					lineEnd, getPaint());
 
 			/*
 			 * 自己修改
@@ -96,21 +53,20 @@ public class JustifyTextView extends TextView {
 			 * 判断是否是最后一行 最后一行就不用加空格了 直接画出上面的字 就可以了
 			 */
 
-				if (i == layout.getLineCount() - 1) {
-					canvas.drawText(line, 0, mLineY, paint);
+			if (i == layout.getLineCount() - 1) {
+				canvas.drawText(line, 0, mLineY, paint);
+			} else {
+				if (needScale(line)) {
+					drawScaledText(canvas, lineStart, line, width);
 				} else {
-					if (needScale(line)) {
-						drawScaledText(canvas, lineStart, line, width);
-					} else {
-						canvas.drawText(line, 0, mLineY, paint);
-					}
+					canvas.drawText(line, 0, mLineY, paint);
 				}
+			}
 			/*
 			 * *********************************************************************
 			 */
 
-				mLineY += getLineHeight();
-			}
+			mLineY += getLineHeight();
 		}
 	}
 

@@ -60,7 +60,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		Map<String,String> paramsMap=new HashMap<>();
 
 		/*paramsMap.put("userId",userId);*/
-		paramsMap.put("userId",userId);
+		//paramsMap.put("userId",userId);
 		paramsMap.put("type", "2");
 		paramsMap.put("pageSize", Constants.pageSize + "");
 		paramsMap.put("pageIndex", pageNum + "");

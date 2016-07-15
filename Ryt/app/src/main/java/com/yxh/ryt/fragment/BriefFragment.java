@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
@@ -15,18 +16,25 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
+import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
+import com.yxh.ryt.custemview.JustifyTextView;
+import com.yxh.ryt.custemview.ScaleScreenImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
+import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.HomeYSJArtWork;
+import com.yxh.ryt.vo.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import okhttp3.Call;
 
 /**
@@ -35,7 +43,13 @@ import okhttp3.Call;
 @SuppressLint("ValidFragment")
 public class BriefFragment extends BaseFragment {
     private String userId;
-    public BriefFragment( String userId, String flag) {
+    @Bind(R.id.fb_siv_picture)
+    public ScaleScreenImageView imageView;
+    @Bind(R.id.fb_tv_name)
+    public TextView name;
+    @Bind(R.id.fb_jtv_content)
+    public JustifyTextView content;
+    public BriefFragment( String userId) {
         super();
         this.userId=userId;
     }
@@ -46,12 +60,9 @@ public class BriefFragment extends BaseFragment {
 
     }
 
-    private void LoadData(final int state,int pageNum) {
+    private void LoadData() {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("userId",userId);
-        //paramsMap.put("currentId", AppApplication.gUser.getId());
-        paramsMap.put("pageSize", Constants.pageSize+"");
-        paramsMap.put("pageIndex", pageNum + "");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -59,7 +70,7 @@ public class BriefFragment extends BaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        NetRequestUtil.post(Constants.BASE_PATH + "userMain.do", paramsMap, new AttentionListCallBack() {
+        NetRequestUtil.post(Constants.BASE_PATH + "intro.do", paramsMap, new RongZiListCallBack() {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
@@ -69,18 +80,15 @@ public class BriefFragment extends BaseFragment {
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))){
-
-
-                }else if ("000000".equals(response.get("resultCode"))){
-                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
-                        @Override
-                        public void getCode(String code) {
-                            if ("0".equals(code)){
-
-                            }
-                        }
-                    });
-                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                    Map<String,Object> userBrief = (Map<String, Object>) response.get("userBrief");
+                    if (userBrief!=null && userBrief.get("content")!=null){
+                        content.setText(userBrief.get("content").toString());
+                    }
+                    User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("user")), User.class);
+                    if (user!=null && user.getPictureUrl()!=null){
+                        AppApplication.displayImage(user.getPictureUrl(),imageView);
+                    }
+                    name.setText(user.getName());
                 }
 
             }
@@ -90,20 +98,16 @@ public class BriefFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View contextView = inflater.inflate(R.layout.fragment_item, container, false);
-
+        View contextView = inflater.inflate(R.layout.fragment_brief, container, false);
+        ButterKnife.bind(this, contextView);
+        LoadData();
         return contextView;
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-		/*AttentionActivity activity = (AttentionActivity) getActivity();
-		activity.pager.setCurrentItem(2);*/
     }
     @Override
     protected void lazyLoad() {
-
     }
-
-
 }
