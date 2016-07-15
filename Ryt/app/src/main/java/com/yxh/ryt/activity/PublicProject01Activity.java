@@ -27,6 +27,8 @@ import com.yxh.ryt.custemview.CustomDialogView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 
 import java.io.File;
@@ -110,22 +112,13 @@ public class PublicProject01Activity extends  BaseActivity {
 
     //艺术家发布项目第一步接口一网络请求
     private void oneStepRequst() {
-        /*View view = LayoutInflater.from(this).inflate(
-                R.layout.dilog_withwait, null);
-
-        dialog = new AlertDialog.Builder(this).create();
-        dialog.show();
-        dialog.getWindow().setContentView(view);
-        customDialogView = (CustomDialogView) view.findViewById(R.id.view_customdialog);
-        redrawCdvRunnable = new RedrawCustomDialogViewThread();
-        new Thread(redrawCdvRunnable).start();*/
         Map<String,File> fileMap=new HashMap<>();
         File file = new File(filePath);
         fileMap.put(file.getName(),file);
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("title",evTitle.getText().toString());
         paramsMap.put("duration",evDuration.getText().toString());
-        paramsMap.put("userId",AppApplication.gUser.getId());
+        //paramsMap.put("userId",AppApplication.gUser.getId());
         paramsMap.put("investGoalMoney",evMenoy.getText().toString());
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
         try {
@@ -142,16 +135,26 @@ public class PublicProject01Activity extends  BaseActivity {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
+                ToastUtil.showLong(PublicProject01Activity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
                if ("0".equals(response.get("resultCode"))){
-                   /*redrawCdvRunnable.setRun(false);*/
                    Intent intent=new Intent(PublicProject01Activity.this,PublicProject02Activity.class);
                    intent.putExtra("artworkId", (String)response.get("artworkId")+"");
                    startActivity(intent);
                    finish();
+               }else if ("000000".equals(response.get("resultCode"))){
+                   SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                       @Override
+                       public void getCode(String code) {
+                           if ("0".equals(code)){
+                               oneStepRequst();
+                           }
+                       }
+                   });
+                   sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                }
             }
         });

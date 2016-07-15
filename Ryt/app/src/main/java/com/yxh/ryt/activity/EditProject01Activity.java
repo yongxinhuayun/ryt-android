@@ -30,6 +30,8 @@ import com.yxh.ryt.custemview.CustomDialogView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.util.phote.util.Bimp;
 import com.yxh.ryt.util.phote.util.ImageItem;
@@ -113,6 +115,7 @@ public class EditProject01Activity extends  BaseActivity {
             @Override
             public void onError(Call call, Exception e) {
                 System.out.println("失败了");
+                ToastUtil.showLong(EditProject01Activity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
@@ -209,6 +212,16 @@ public class EditProject01Activity extends  BaseActivity {
                             }
                         });
                     }
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                loadData();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
             }
         });
@@ -280,11 +293,11 @@ public class EditProject01Activity extends  BaseActivity {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
+                ToastUtil.showLong(EditProject01Activity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                System.out.println("成功了");
                 if ("0".equals(response.get("resultCode"))){
                     if (size==ImageList.size()){
                         /*redrawCdvRunnable.setRun(false);*/
@@ -298,6 +311,16 @@ public class EditProject01Activity extends  BaseActivity {
                         startActivity(intent);
                         finish();
                     }
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                oneStepRequst();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
             }
         });

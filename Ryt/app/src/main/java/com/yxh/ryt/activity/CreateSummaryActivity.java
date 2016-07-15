@@ -38,6 +38,7 @@ import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.JsInterface;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.User;
@@ -114,11 +115,11 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
-        LoadData(0, 1);
+        LoadData();
         webView.loadUrl("file:///android_asset/A2.html");
         webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo");
     }
-    private void LoadData(int tabtype, int pageNum) {
+    private void LoadData() {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artworkId + "");
         /*if (!"".equals(AppApplication.gUser.getId())) {
@@ -138,24 +139,36 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
                 System.out.println("失败了");
+                ToastUtil.showLong(CreateSummaryActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                Map<String, Object> object = (Map<String, Object>) response.get("object");
-                if (object != null) {
+                if ("0".equals(response.get("resultCode"))){
+                    Map<String, Object> object = (Map<String, Object>) response.get("object");
+                    if (object != null) {
 
-                    isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
-                    Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artwork")), Artwork.class);
+                        isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
+                        Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artwork")), Artwork.class);
 
-                    if (isPraise1) {
-                        dianzan.setImageResource(R.mipmap.dianzanhou);
-                        dianzan.setEnabled(false);
+                        if (isPraise1) {
+                            dianzan.setImageResource(R.mipmap.dianzanhou);
+                            dianzan.setEnabled(false);
+                        }
+                        if (artwork!=null){
+                            zan.setText(artwork.getPraiseNUm() + "");
+                        }
                     }
-                    if (artwork!=null){
-                        zan.setText(artwork.getPraiseNUm() + "");
-                    }
-
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                LoadData();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
 
             }
@@ -196,7 +209,7 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
                                 animationSet.setFillAfter(true);
                                 dianzan.startAnimation(animationSet);
                                 dianzan.setEnabled(false);
-                                praise(artworkId,AppApplication.gUser.getId()+"");
+                                praise(artworkId);
                             }
                             @Override
                             public void onAnimationRepeat(Animation animation) {
@@ -231,43 +244,7 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     class JavaInterfaceDemo {
         @JavascriptInterface
         public void clickOnAndroid(final  String id) {
-            Map<String,String> paramsMap=new HashMap<>();
-            paramsMap.put("userId", id);
-            paramsMap.put("timestamp", System.currentTimeMillis() + "");
-            try {
-                AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
-                paramsMap.put("signmsg", AppApplication.signmsg);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            NetRequestUtil.post(Constants.BASE_PATH + "user.do", paramsMap, new AttentionListCallBack() {
-                @Override
-                public void onError(Call call, Exception e) {
-                    e.printStackTrace();
-                    System.out.println("失败了");
-                }
-
-                @Override
-                public void onResponse(Map<String, Object> response) {
-                    if ("0".equals(response.get("resultCode"))){
-                       Map<Object,Object> data= (Map<Object, Object>) response.get("data");
-                        User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(data.get("user")), User.class);
-                        if (user!=null){
-                            if (user.getMaster()!=null){
-                                Intent intent =new Intent(CreateSummaryActivity.this,UserYsjIndexActivity.class);
-                                intent.putExtra("userId", id);
-                                intent.putExtra("currentId", AppApplication.gUser.getId());
-                                CreateSummaryActivity.this.startActivity(intent);
-                            }else {
-                                Intent intent =new Intent(CreateSummaryActivity.this,UserPtIndexActivity.class);
-                                intent.putExtra("userId", id);
-                                intent.putExtra("currentId", AppApplication.gUser.getId());
-                                CreateSummaryActivity.this.startActivity(intent);
-                            }
-                        }
-                    }
-                }
-            });
+            loadData(id);
         }
         @JavascriptInterface
         public String fetchParamObject() {
@@ -305,7 +282,54 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
             }
         }
     }
+    private void loadData(final String id) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("userId", id);
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "user.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+                ToastUtil.showLong(CreateSummaryActivity.this,"网络连接超时,稍后重试!");
+            }
 
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    Map<Object,Object> data= (Map<Object, Object>) response.get("data");
+                    User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(data.get("user")), User.class);
+                    if (user.getMaster()!=null){
+                        Intent intent =new Intent(CreateSummaryActivity.this,UserYsjIndexActivity.class);
+                        intent.putExtra("userId", id);
+                        intent.putExtra("currentId", AppApplication.gUser.getId());
+                        CreateSummaryActivity.this.startActivity(intent);
+                    }else {
+                        Intent intent =new Intent(CreateSummaryActivity.this,UserPtIndexActivity.class);
+                        intent.putExtra("userId", id);
+                        intent.putExtra("currentId", AppApplication.gUser.getId());
+                        CreateSummaryActivity.this.startActivity(intent);
+                    }
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                loadData(id);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
+    }
     private void showShareDialog() {
         View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_share_weixin_view, null);
         // 设置style 控制默认dialog带来的边距问题
@@ -431,7 +455,7 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
 
     }
 
-    private void praise(String artworkId, String s) {
+    private void praise(final String artworkId) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artworkId", artworkId+"");
         //paramsMap.put("currentUserId", s);
@@ -447,6 +471,7 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
                 System.out.println("失败了");
+                ToastUtil.showLong(CreateSummaryActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
@@ -456,6 +481,16 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
                     Message msg = Message.obtain();
                     msg.what = PRAISE_SUC;
                     handler.sendMessage(msg);
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                praise(artworkId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
             }
         });

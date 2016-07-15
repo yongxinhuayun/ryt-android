@@ -19,6 +19,8 @@ import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.callback.NotifaicationCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.ChatMsgEntity;
 import com.yxh.ryt.vo.PrivateLetter;
@@ -128,11 +130,24 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
                 System.out.println("失败了");
+                ToastUtil.showLong(MsgActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                System.out.println("成功了");
+                if ("0".equals(response.get("resultCode"))){
+                    System.out.println("成功了");
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                pushMessageRequst();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
             }
         });
     }
@@ -173,32 +188,45 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
             @Override
             public void onError(Call call, Exception e) {
                 System.out.println("失败了");
+                ToastUtil.showLong(MsgActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                List<PrivateLetter> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<PrivateLetter>>() {
-                }.getType());
-                if (notificationList != null) {
-                    Iterator<PrivateLetter> iterator = notificationList.iterator();
-                    while (iterator.hasNext()) {
-                        ChatMsgEntity entity = new ChatMsgEntity();
-                        PrivateLetter next = iterator.next();
-                        entity.setDate(Utils.timeToFormatTemp("yyyy-MM-dd hh:mm:ss", next.getCreateDatetime()));
-                        entity.setName(next.getFromUser().getName());
-                        entity.setText(next.getContent());
+                if ("0".equals(response.get("resultCode"))){
+                    List<PrivateLetter> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<PrivateLetter>>() {
+                    }.getType());
+                    if (notificationList != null) {
+                        Iterator<PrivateLetter> iterator = notificationList.iterator();
+                        while (iterator.hasNext()) {
+                            ChatMsgEntity entity = new ChatMsgEntity();
+                            PrivateLetter next = iterator.next();
+                            entity.setDate(Utils.timeToFormatTemp("yyyy-MM-dd hh:mm:ss", next.getCreateDatetime()));
+                            entity.setName(next.getFromUser().getName());
+                            entity.setText(next.getContent());
                         /*if(AppApplication.gUser.getId().equals(next.getFromUser().getId())) {
 							entity.setMsgType(false);
 						}*/
-                        entity.setUserId(next.getFromUser().getId());
-                        if (userId.equals(next.getFromUser().getId())) {
-                            entity.setMsgType(false);
+                            entity.setUserId(next.getFromUser().getId());
+                            if (userId.equals(next.getFromUser().getId())) {
+                                entity.setMsgType(false);
 
+                            }
+                            mDataArrays.add(entity);
                         }
-                        mDataArrays.add(entity);
+                        mAdapter.notifyDataSetChanged();
+                        mListView.setSelection(mListView.getCount() - 1);
+                    }else if ("000000".equals(response.get("resultCode"))){
+                        SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                            @Override
+                            public void getCode(String code) {
+                                if ("0".equals(code)){
+                                    LoadData();
+                                }
+                            }
+                        });
+                        sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                     }
-                    mAdapter.notifyDataSetChanged();
-                    mListView.setSelection(mListView.getCount() - 1);
                 }
             }
         });

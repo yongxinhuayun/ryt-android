@@ -3,6 +3,7 @@ package com.yxh.ryt.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.AttentionActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
@@ -20,6 +22,8 @@ import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.FollowUserUtil;
 
 import java.util.ArrayList;
@@ -53,7 +57,7 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 		attentionDatas=new ArrayList<FollowUserUtil>();
 	}
 
-	private void LoadData(final int state,int pageNum) {
+	private void LoadData(final int state, final int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("userId",userId);
 		paramsMap.put("type","1");
@@ -72,45 +76,58 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
-				System.out.println("失败了");
+				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
 			}
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
-				Constants.ATTENTION_TITLE[0]="艺术家("+AppApplication.getSingleGson().toJson(response.get("followsNum"))+")";
-				Intent intent = new Intent("android.intent.action.MY_BROADCAST");
-				AppApplication.getSingleContext().sendBroadcast(intent);
-				if (state == AutoListView.REFRESH) {
-					lstv.onRefreshComplete();
-					attentionDatas.clear();
-					List<FollowUserUtil> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<FollowUserUtil>>() {
-					}.getType());
-					if (null == objectList || objectList.size() == 0) {
-						lstv.setResultSize(0);
-						attentionCommonAdapter.notifyDataSetChanged();
+				if ("0".equals(response.get("resultCode"))){
+					Constants.ATTENTION_TITLE[0]="艺术家("+AppApplication.getSingleGson().toJson(response.get("followsNum"))+")";
+					Intent intent = new Intent("android.intent.action.MY_BROADCAST");
+					AppApplication.getSingleContext().sendBroadcast(intent);
+					if (state == AutoListView.REFRESH) {
+						lstv.onRefreshComplete();
+						attentionDatas.clear();
+						List<FollowUserUtil> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<FollowUserUtil>>() {
+						}.getType());
+						if (null == objectList || objectList.size() == 0) {
+							lstv.setResultSize(0);
+							attentionCommonAdapter.notifyDataSetChanged();
+						}
+						if (null != objectList && objectList.size() > 0) {
+							lstv.setResultSize(objectList.size());
+							attentionDatas.addAll(objectList);
+							attentionCommonAdapter.notifyDataSetChanged();
+						}
+						return;
 					}
-					if (null != objectList && objectList.size() > 0) {
-						lstv.setResultSize(objectList.size());
-						attentionDatas.addAll(objectList);
-						attentionCommonAdapter.notifyDataSetChanged();
+					if (state == AutoListView.LOAD) {
+						lstv.onLoadComplete();
+						List<FollowUserUtil> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<FollowUserUtil>>() {
+						}.getType());
+						if (null == objectList || objectList.size() == 0) {
+							lstv.setResultSize(1);
+							attentionCommonAdapter.notifyDataSetChanged();
+						}
+						if (null != objectList && objectList.size() > 0) {
+							lstv.setResultSize(objectList.size());
+							attentionDatas.addAll(objectList);
+							attentionCommonAdapter.notifyDataSetChanged();
+						}
+						return;
 					}
-					return;
+				}else if ("000000".equals(response.get("resultCode"))){
+					SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+						@Override
+						public void getCode(String code) {
+							if ("0".equals(code)){
+								LoadData(state,pageNum);
+							}
+						}
+					});
+					sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
 				}
-				if (state == AutoListView.LOAD) {
-					lstv.onLoadComplete();
-					List<FollowUserUtil> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<FollowUserUtil>>() {
-					}.getType());
-					if (null == objectList || objectList.size() == 0) {
-						lstv.setResultSize(1);
-						attentionCommonAdapter.notifyDataSetChanged();
-					}
-					if (null != objectList && objectList.size() > 0) {
-						lstv.setResultSize(objectList.size());
-						attentionDatas.addAll(objectList);
-						attentionCommonAdapter.notifyDataSetChanged();
-					}
-					return;
-				}
+
 			}
 		});
 	}
@@ -173,7 +190,6 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 			}
 		};
 		lstv.setAdapter(attentionCommonAdapter);
-
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
 		return contextView;
@@ -181,7 +197,8 @@ public class AttentionArtItemFragment extends BaseFragment implements AutoListVi
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
+		/*AttentionActivity activity = (AttentionActivity) getActivity();
+		activity.pager.setCurrentItem(2);*/
 	}
 	@Override
 	protected void lazyLoad() {

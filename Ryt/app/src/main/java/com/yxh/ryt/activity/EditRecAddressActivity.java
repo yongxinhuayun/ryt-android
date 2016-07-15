@@ -7,11 +7,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 
 import java.util.HashMap;
@@ -77,35 +79,51 @@ public class EditRecAddressActivity extends BaseActivity implements View.OnClick
                 }
                 break;
             case R.id.tv_save:
-                Map<String, String> paramsMap = new HashMap<>();
-                paramsMap.put("addressId", getIntent().getStringExtra("addressId"));
-                paramsMap.put("status", unDefult + "");
-                paramsMap.put("consignee", reciever.getText().toString());
-                paramsMap.put("details", detail.getText().toString());
-                paramsMap.put("phone", phone.getText().toString());
-                paramsMap.put("provinceStr", local.getText().toString());
-                paramsMap.put("timestamp", System.currentTimeMillis() + "");
-                try {
-                    paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                NetRequestUtil.post(Constants.BASE_PATH + "saveAddress.do", paramsMap, new RegisterCallBack() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        ToastUtil.showShort(getApplicationContext(), "保存失败");
-                    }
-
-                    @Override
-                    public void onResponse(Map<String, Object> response) {
-                        ToastUtil.showShort(getApplicationContext(), "保存成功");
-                        finish();
-                    }
-                });
+                saveRecAddress();
                 break;
             default:
                 break;
 
         }
+    }
+
+    private void saveRecAddress() {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("addressId", getIntent().getStringExtra("addressId"));
+        paramsMap.put("status", unDefult + "");
+        paramsMap.put("consignee", reciever.getText().toString());
+        paramsMap.put("details", detail.getText().toString());
+        paramsMap.put("phone", phone.getText().toString());
+        paramsMap.put("provinceStr", local.getText().toString());
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "saveAddress.do", paramsMap, new RegisterCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                ToastUtil.showShort(getApplicationContext(), "保存失败");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showShort(getApplicationContext(), "保存成功");
+                    finish();
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                saveRecAddress();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
     }
 }

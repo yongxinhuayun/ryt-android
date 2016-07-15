@@ -17,6 +17,7 @@ import com.yxh.ryt.activity.EditBriefActivity;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.ToastUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,6 +79,7 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
 				System.out.println("失败了");
+				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
 			}
 
 			@Override

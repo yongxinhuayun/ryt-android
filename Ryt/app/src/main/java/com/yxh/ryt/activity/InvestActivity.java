@@ -16,6 +16,8 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -163,35 +165,52 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                 finish();
                 break;
             case R.id.imp_tv_invest:
-                Map<String,String> paramsMap=new HashMap<>();
-                //paramsMap.put("userId", AppApplication.gUser.getId());
-                paramsMap.put("money", money);
-                paramsMap.put("action", "invest");
-                paramsMap.put("type", "1");
-                paramsMap.put("artWorkId", artworkId);
-                paramsMap.put("timestamp", System.currentTimeMillis() + "");
-                try {
-                    AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
-                    paramsMap.put("signmsg", AppApplication.signmsg);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                NetRequestUtil.post(Constants.BASE_PATH + "pay/main.do", paramsMap, new AttentionListCallBack() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        e.printStackTrace();
-                        System.out.println("失败了");
-                    }
-
-                    @Override
-                    public void onResponse(Map<String, Object> response) {
-                        String url = response.get("url").toString();
-                        Intent intent=new Intent(InvestActivity.this,PayPageActivity.class);
-                        intent.putExtra("url",url);
-                        InvestActivity.this.startActivity(intent);
-                    }
-                });
+                investMoney();
                 break;
         }
+    }
+
+    private void investMoney() {
+        Map<String,String> paramsMap=new HashMap<>();
+        //paramsMap.put("userId", AppApplication.gUser.getId());
+        paramsMap.put("money", money);
+        paramsMap.put("action", "invest");
+        paramsMap.put("type", "1");
+        paramsMap.put("artWorkId", artworkId);
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "pay/main.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+                ToastUtil.showLong(InvestActivity.this,"网络连接超时,稍后重试!");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                investMoney();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }else {
+                    String url = response.get("url").toString();
+                    Intent intent=new Intent(InvestActivity.this,PayPageActivity.class);
+                    intent.putExtra("url",url);
+                    InvestActivity.this.startActivity(intent);
+                }
+            }
+        });
     }
 }

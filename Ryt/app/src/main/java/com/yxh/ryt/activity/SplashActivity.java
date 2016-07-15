@@ -109,6 +109,8 @@ public class SplashActivity extends BaseActivity {
         AppApplication.gUser.setUsername((String) SPUtil.get(AppApplication.getSingleContext(), "current_username", ""));
         AppApplication.gUser.setSex((String) SPUtil.get(AppApplication.getSingleContext(), "current_sex", ""));
         AppApplication.gUser.setPictureUrl((String) SPUtil.get(AppApplication.getSingleContext(), "current_pictureUrl", ""));
+        AppApplication.gUser.setLoginState((String) SPUtil.get(AppApplication.getSingleContext(), "current_loginState", ""));
+        AppApplication.gUser.setPassword((String) SPUtil.get(AppApplication.getSingleContext(), "current_password", ""));
     }
 
     private void checkVersion() {

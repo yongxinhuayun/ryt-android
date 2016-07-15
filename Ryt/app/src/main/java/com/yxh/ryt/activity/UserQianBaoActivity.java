@@ -19,6 +19,8 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Bill;
 import com.yxh.ryt.vo.UserMoney;
@@ -123,27 +125,41 @@ public class UserQianBaoActivity extends BaseActivity {
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
                 System.out.println("失败了");
+                ToastUtil.showLong(UserQianBaoActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                UserMoney userMoney = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("object")), UserMoney.class);
-                if (userMoney!=null){
-                    invest.setText("¥ "+userMoney.getInvestMoney());
-                    rest.setText(userMoney.getRestMoney()+"元");
-                    restMoney = userMoney.getRestMoney();
-                    reward.setText(userMoney.getRewardMoney()+"元");
-                    if (userMoney.getBillList() != null) {
-                        if (userMoney.getBillList().size() <= 5) {
-                            bills.addAll(userMoney.getBillList());
-                        } else {
-                            for (int i = 0; i < 5; i++) {
-                                bills.add(userMoney.getBillList().get(i));
+                if ("0".equals(response.get("resultCode"))){
+                    UserMoney userMoney = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("object")), UserMoney.class);
+                    if (userMoney!=null){
+                        invest.setText("¥ "+userMoney.getInvestMoney());
+                        rest.setText(userMoney.getRestMoney()+"元");
+                        restMoney = userMoney.getRestMoney();
+                        reward.setText(userMoney.getRewardMoney()+"元");
+                        if (userMoney.getBillList() != null) {
+                            if (userMoney.getBillList().size() <= 5) {
+                                bills.addAll(userMoney.getBillList());
+                            } else {
+                                for (int i = 0; i < 5; i++) {
+                                    bills.add(userMoney.getBillList().get(i));
+                                }
                             }
                         }
+                        billCommonAdapter.notifyDataSetChanged();
                     }
-                    billCommonAdapter.notifyDataSetChanged();
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                loadData();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
+
             }
         });
     }

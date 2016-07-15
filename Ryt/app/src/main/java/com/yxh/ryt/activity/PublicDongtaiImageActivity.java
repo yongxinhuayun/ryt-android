@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
@@ -28,6 +29,8 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.util.phote.util.Bimp;
 import com.yxh.ryt.util.phote.util.ImageItem;
@@ -80,13 +83,25 @@ public class PublicDongtaiImageActivity extends  BaseActivity {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
+                ToastUtil.showLong(PublicDongtaiImageActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                System.out.println("成功了");
-                Log.d("XXXXXXXXXXXXXXXXXXXXX", "YYYYYYYYYYY");
-                Log.d("tagonResponse", response.toString());
+                if (response.get("resultCode").equals("0")) {
+                    ToastUtil.show(PublicDongtaiImageActivity.this, "图片发布成功", Toast.LENGTH_SHORT);
+                    PublicDongtaiImageActivity.this.finish();
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                publicImageRequst();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
             }
         });
     }

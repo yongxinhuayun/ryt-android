@@ -15,6 +15,8 @@ import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.User;
 
 import java.util.HashMap;
@@ -46,36 +48,53 @@ public class EditNicknameActivity extends Activity implements View.OnClickListen
                 finish();
                 break;
             case R.id.tv_save:
-                Map<String, String> paramsMap = new HashMap<>();
-                paramsMap.put("userId", AppApplication.gUser.getId());
-                paramsMap.put("type", "11");
-                paramsMap.put("content", nickName.getText().toString());
-                paramsMap.put("timestamp", System.currentTimeMillis() + "");
-                try {
-                    paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                NetRequestUtil.post(Constants.BASE_PATH + " editProfile.do", paramsMap, new RegisterCallBack() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-
-                    }
-
-                    @Override
-                    public void onResponse(Map<String, Object> response) {
-                        Intent intent = new Intent();
-                        intent.setAction("android.intent.action.EDIT_NICK_BROADCAST");
-                        intent.putExtra("nick", nickName.getText().toString());
-                        EditNicknameActivity.this.sendBroadcast(intent);
-                    }
-                });
-                finish();
+                saveEditNickname();
                 break;
             default:
                 break;
         }
     }
+
+    private void saveEditNickname() {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("userId", AppApplication.gUser.getId());
+        paramsMap.put("type", "11");
+        paramsMap.put("content", nickName.getText().toString());
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "editProfile.do", paramsMap, new RegisterCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                ToastUtil.showLong(EditNicknameActivity.this,"网络连接超时,稍后重试!");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    Intent intent = new Intent();
+                    intent.setAction("android.intent.action.EDIT_NICK_BROADCAST");
+                    intent.putExtra("nick", nickName.getText().toString());
+                    EditNicknameActivity.this.sendBroadcast(intent);
+                    finish();
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                saveEditNickname();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
+    }
+
     private void getUser(Map<String, Object> response) {
         User user = new User();
         user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);

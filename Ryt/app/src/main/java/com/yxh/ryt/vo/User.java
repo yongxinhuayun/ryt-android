@@ -51,7 +51,6 @@ public class User {
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
-
     private String flag;
     private int rate;
     private int investsMoney;
@@ -60,7 +59,7 @@ public class User {
     private int roiMoney;
     private int count1;
     private String pictureUrl;
-
+    private String loginState;
     public String getMaster1() {
         return master1;
     }
@@ -76,6 +75,14 @@ public class User {
     public void setsignMessage(String signMessage) {
         this.signMessage = signMessage;
     }*/
+
+    public String getLoginState() {
+        return loginState;
+    }
+
+    public void setLoginState(String loginState) {
+        this.loginState = loginState;
+    }
 
     public String getSex() {
         return sex;

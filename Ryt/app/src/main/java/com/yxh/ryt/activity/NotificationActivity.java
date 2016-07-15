@@ -17,6 +17,7 @@ import com.yxh.ryt.callback.NotifaicationCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.Notification;
@@ -83,7 +84,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
         ntflistview.setOnItemClickListener(this);
     }
 
-    private void LoadData(final int state, int pageNum) {
+    private void LoadData(final int state, final int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         //paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("type", "0");
@@ -100,43 +101,56 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
                 System.out.println("失败了");
+                ToastUtil.showLong(NotificationActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if (state == AutoListView.REFRESH) {
-                    ntflistview.onRefreshComplete();
-                    notificationDatas.clear();
-                    List<Notification> notificationList = null;
-                    try {
-                        notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<Notification>>() {
+                if ("0".equals(response.get("resultCode"))){
+                    if (state == AutoListView.REFRESH) {
+                        ntflistview.onRefreshComplete();
+                        notificationDatas.clear();
+                        List<Notification> notificationList = null;
+                        try {
+                            notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<Notification>>() {
+                            }.getType());
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
+                        }
+                        if (null == notificationList || notificationList.size() == 0) {
+                            ntflistview.setResultSize(0);
+                        }
+                        if (null != notificationList && notificationList.size() > 0) {
+                            ntflistview.setResultSize(notificationList.size());
+                            notificationDatas.addAll(notificationList);
+                            ntfAdapter.notifyDataSetChanged();
+                        }
+                        return;
+                    }
+                    if (state == AutoListView.LOAD) {
+                        ntflistview.onLoadComplete();
+                        List<Notification> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<Notification>>() {
                         }.getType());
-                    } catch (JsonSyntaxException e) {
-                        e.printStackTrace();
+                        if (null == notificationList || notificationList.size() == 0) {
+                            ntflistview.setResultSize(1);
+                        }
+                        if (null != notificationList && notificationList.size() > 0) {
+                            ntflistview.setResultSize(notificationList.size());
+                            notificationDatas.addAll(notificationList);
+                            ntfAdapter.notifyDataSetChanged();
+                        }
+                        return;
                     }
-                    if (null == notificationList || notificationList.size() == 0) {
-                        ntflistview.setResultSize(0);
-                    }
-                    if (null != notificationList && notificationList.size() > 0) {
-                        ntflistview.setResultSize(notificationList.size());
-                        notificationDatas.addAll(notificationList);
-                        ntfAdapter.notifyDataSetChanged();
-                    }
-                    return;
-                }
-                if (state == AutoListView.LOAD) {
-                    ntflistview.onLoadComplete();
-                    List<Notification> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<Notification>>() {
-                    }.getType());
-                    if (null == notificationList || notificationList.size() == 0) {
-                        ntflistview.setResultSize(1);
-                    }
-                    if (null != notificationList && notificationList.size() > 0) {
-                        ntflistview.setResultSize(notificationList.size());
-                        notificationDatas.addAll(notificationList);
-                        ntfAdapter.notifyDataSetChanged();
-                    }
-                    return;
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                LoadData(state,pageNum);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
             }
         });
@@ -155,7 +169,11 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        updateStatus(view);
+    }
+
+    private void updateStatus(final View view) {
         Map<String, String> paramsMap = new HashMap<>();
         //paramsMap.put("userId", "ieatht97wfw30hfd");
         paramsMap.put("group", "notification");
@@ -170,12 +188,25 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
                 System.out.println("失败了");
+                ToastUtil.showLong(NotificationActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                view.setBackgroundColor(Color.WHITE);
-                ToastUtil.showLong(NotificationActivity.this, "你已经读了这条信息了");
+                if ("0".equals(response.get("resultCode"))){
+                    view.setBackgroundColor(Color.WHITE);
+                    ToastUtil.showLong(NotificationActivity.this, "你已经读了这条信息了");
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                updateStatus(view);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
             }
         });
     }

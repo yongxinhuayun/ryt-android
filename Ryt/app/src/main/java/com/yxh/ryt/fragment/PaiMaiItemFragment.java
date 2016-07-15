@@ -21,6 +21,7 @@ import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.RongZi;
 
@@ -64,6 +65,7 @@ public class PaiMaiItemFragment extends BaseFragment implements AutoListView.OnR
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
 				System.out.println("失败了");
+				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
 			}
 
 			@Override

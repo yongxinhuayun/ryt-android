@@ -24,6 +24,8 @@ import com.yxh.ryt.fragment.ChuangZuoXiangQingTab03Fragment;
 import com.yxh.ryt.fragment.ChuangZuoXiangQingTab04Fragment;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.Artwork;
 
 import org.greenrobot.eventbus.EventBus;
@@ -133,26 +135,40 @@ public class ChuangZuoXQActivity extends BaseActivity implements View.OnClickLis
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
                 System.out.println("失败了");
+                ToastUtil.showLong(ChuangZuoXQActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                Map<String, Object> object = (Map<String, Object>) response.get("object");
-                Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
-                cl01TvTitle.setText(artwork.getTitle());
-                cl01TvBrief.setText(artwork.getBrief());
-                cl01TvName.setText(artwork.getAuthor().getName());
-                cl01LlZhicheng.setVisibility(View.GONE);
-                if (artwork.getAuthor() != null) {
-                    if (artwork.getAuthor().getMaster() != null) {
-                        if (artwork.getAuthor().getMaster().getTitle() != null && !"".equals(artwork.getAuthor().getMaster().getTitle())) {
-                            cl01LlZhicheng.setVisibility(View.VISIBLE);
-                            cl01TvZhicheng.setText(artwork.getAuthor().getMaster().getTitle());
+                if ("0".equals(response.get("resultCode"))){
+                    Map<String, Object> object = (Map<String, Object>) response.get("object");
+                    Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
+                    cl01TvTitle.setText(artwork.getTitle());
+                    cl01TvBrief.setText(artwork.getBrief());
+                    cl01TvName.setText(artwork.getAuthor().getName());
+                    cl01LlZhicheng.setVisibility(View.GONE);
+                    if (artwork.getAuthor() != null) {
+                        if (artwork.getAuthor().getMaster() != null) {
+                            if (artwork.getAuthor().getMaster().getTitle() != null && !"".equals(artwork.getAuthor().getMaster().getTitle())) {
+                                cl01LlZhicheng.setVisibility(View.VISIBLE);
+                                cl01TvZhicheng.setText(artwork.getAuthor().getMaster().getTitle());
+                            }
                         }
                     }
+                    AppApplication.displayImage(artwork.getPicture_url(), cl01TvPrc);
+                    EventBus.getDefault().post(object);
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                LoadData(0, 1);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
-                AppApplication.displayImage(artwork.getPicture_url(), cl01TvPrc);
-                EventBus.getDefault().post(object);
+
             }
         });
     }

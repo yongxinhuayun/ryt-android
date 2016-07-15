@@ -73,6 +73,8 @@ public class RZInvestFragment extends BaseFragment{
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
+				System.out.println("失败了");
+				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
 			}
 
 			@Override
