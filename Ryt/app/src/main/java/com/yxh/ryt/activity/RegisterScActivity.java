@@ -259,6 +259,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex() + "");
         SPUtil.put(AppApplication.getSingleContext(), "current_loginState", i+"");
+        SPUtil.put(AppApplication.getSingleContext(), "current_password",password);
         if (user.getMaster()!=null){
             SPUtil.put(AppApplication.getSingleContext(), "current_master","master");
         }else {
@@ -272,7 +273,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
             AppApplication.gUser.setMaster1("");
         }
         AppApplication.gUser.setLoginState(i+"");
-        System.out.print(AppApplication.gUser.toString());
+        AppApplication.gUser.setPassword(password);
     }
 
     @OnClick(R.id.rs_ib_back)

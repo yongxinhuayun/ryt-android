@@ -140,17 +140,17 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
                             ntfAdapter.notifyDataSetChanged();
                         }
                         return;
-                    }else if ("000000".equals(response.get("resultCode"))){
-                        SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
-                            @Override
-                            public void getCode(String code) {
-                                if ("0".equals(code)){
-                                    LoadData(state,pageNum);
-                                }
-                            }
-                        });
-                        sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                     }
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                LoadData(state,pageNum);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
             }
         });

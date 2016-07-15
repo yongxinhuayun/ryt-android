@@ -29,7 +29,7 @@ public class SessionLogin {
         Map<String,String> paramsMap=new HashMap<>();
         if ("1".equals(loginState)){
             paramsMap.put("username",AppApplication.gUser.getUsername());
-            paramsMap.put("password", AppApplication.gUser.getUsername());
+            paramsMap.put("password", AppApplication.gUser.getPassword());
         }else if ("2".equals(loginState)){
             paramsMap.put("unionid", (String) SPUtil.get(AppApplication.getSingleContext(), "current_unionid", ""));
         }
@@ -48,7 +48,9 @@ public class SessionLogin {
             }
             @Override
             public void onResponse(Map<String, Object> response) {
-                codeCallBack.getCode(response.get("resultCode")+"");
+                if (response!=null){
+                    codeCallBack.getCode(response.get("resultCode")+"");
+                }
             }
         });
     }

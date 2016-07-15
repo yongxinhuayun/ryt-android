@@ -310,7 +310,7 @@ public class LoginActivity extends BaseActivity {
         if (i==1){
             SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
             SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
-            SPUtil.put(AppApplication.getSingleContext(), "current_password", user.getPassword()+"");
+            SPUtil.put(AppApplication.getSingleContext(), "current_password", etPassword.getText().toString()+"");
             SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
             SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex()+"");
             SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster1()+"");
