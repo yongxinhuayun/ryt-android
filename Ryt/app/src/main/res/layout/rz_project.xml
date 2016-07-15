@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_project"
     android:background="@android:color/white"
     android:orientation="vertical">
 <ScrollView
@@ -128,6 +129,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -179,7 +181,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginTop="20dp"
             android:textColor="#EBEBEB"></TextView>
         <TextView
             android:layout_width="match_parent"
@@ -351,11 +352,12 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp">
+            android:layout_marginRight="14dp"
+           >
             <EditText
                 android:id="@+id/et_comment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="150dp"
                 android:textSize="@dimen/defult_font"
                 android:gravity="top"
                 android:background="#FAFAFA"/>
@@ -390,6 +392,7 @@
             android:layout_marginTop="20dp"
             android:background="#FAFAFA"></TextView>
         <RelativeLayout
+            android:id="@+id/rl_progress"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_marginTop="15dp"
@@ -416,12 +419,27 @@
     android:layout_height="1dp"
     android:background="#FAFAFA"
     />
-        <WebView
-            android:id="@+id/wv_invest_process"
+       <!-- <LinearLayout
+            android:id="@+id/ll_progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
-            tools:ignore="WebViewLayout"></WebView>
+            android:orientation="vertical">
+            <WebView
+                android:id="@+id/wv_invest_process"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                tools:ignore="WebViewLayout"></WebView>
+        </LinearLayout>-->
+
+        <com.yxh.ryt.custemview.ExpandView
+            android:id="@+id/expandView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:visibility="invisible"
+
+            android:clickable="true"/>
     </LinearLayout>
 </ScrollView>
 
@@ -429,7 +447,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
         android:background="#EF5B71"
         android:gravity="center">
         <ImageView

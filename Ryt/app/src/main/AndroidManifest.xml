@@ -291,7 +291,9 @@
         <activity android:name=".activity.AuctionOrderActivity" />
         <activity android:name=".activity.WalletDetailsActivity" />
         <activity android:name=".activity.CollectMoneyActivity" />
-        <activity android:name=".activity.FinanceSummaryActivity" />
+        <activity android:name=".activity.FinanceSummaryActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|navigation"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name=".activity.EditRecAddressActivity"></activity>
 
     </application>

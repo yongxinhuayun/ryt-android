@@ -34,11 +34,10 @@ public class FinanceSummaryActivity extends BaseActivity implements View.OnClick
         back.setOnClickListener(this);
         Intent intent = this.getIntent();
         String artWorkId = intent.getStringExtra("id");
-       // EventBus.getDefault().register(this);
-       // EventBus.getDefault().post(new Message(artWorkId));
+
         rZFragments.add(new RZProjectFragment(artWorkId));
-        rZFragments.add(new RZDetailFragment());
-        rZFragments.add(new RZInvestFragment());
+        rZFragments.add(new RZDetailFragment(artWorkId));
+        rZFragments.add(new RZInvestFragment(artWorkId));
 
 
         rZAdapter = new RZTitlePageIndicatorAdapter(this.getSupportFragmentManager(),rZFragments);

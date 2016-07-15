@@ -12,7 +12,7 @@
         <ImageView
             android:id="@+id/ib_top_lf"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:background="@null"
             android:layout_marginLeft="10dp"
@@ -22,8 +22,8 @@
             android:id="@+id/indicator"
             android:layout_height="50dp"
             android:layout_width="match_parent"
-            android:layout_marginLeft="82dp"
-            android:layout_marginRight="82dp"
+            android:layout_marginLeft="72dp"
+            android:layout_marginRight="72dp"
             />
 
         <ImageView

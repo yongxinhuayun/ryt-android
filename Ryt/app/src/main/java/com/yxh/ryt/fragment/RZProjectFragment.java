@@ -18,15 +18,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
-import android.view.animation.Transformation;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +43,7 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
+import com.yxh.ryt.custemview.ExpandView;
 import com.yxh.ryt.custemview.ListViewForScrollView;
 import com.yxh.ryt.custemview.RoundProgressBar;
 import com.yxh.ryt.util.DateUtil;
@@ -122,12 +122,16 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private Button comment;
     private EditText etComment;
     private ImageButton attention;
+    private LinearLayout llprogress;
+    private ExpandView mExpandView;
+    private LinearLayout ll_project;
+    private RelativeLayout rl_progress;
 
     public RZProjectFragment(String artWorkId) {
         super();
         this.artWorkId = artWorkId;
     }
-
+    private final Handler mHandler = new Handler();
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -157,6 +161,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         dianzan = (ImageView) view.findViewById(R.id.iv_praise);
         headV = (ImageView) view.findViewById(R.id.iv_master);
         ll_invester = (LinearLayout) view.findViewById(R.id.ll_invester);
+        ll_project = (LinearLayout) view.findViewById(R.id.ll_project);
+        rl_progress = (RelativeLayout) view.findViewById(R.id.rl_progress);
         tv_project_name = (TextView) view.findViewById(R.id.tv_project_name);
         deadline = (TextView) view.findViewById(R.id.tv_deadline);
         tvProgress = (TextView) view.findViewById(R.id.tv_progress);
@@ -172,15 +178,21 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         attention.setOnClickListener(this);
         comment.setOnClickListener(this);
         llpraise = (LinearLayout) view.findViewById(R.id.ll_prise);
+        //llprogress = (LinearLayout) view.findViewById(R.id.ll_progress);
         llinvester = (LinearLayout) view.findViewById(R.id.ll_invester);
+        mExpandView = (ExpandView) view.findViewById(R.id.expandView);
         sv = (ScrollView) view.findViewById(R.id.sv_sv);
         mRoundProgressBar = (RoundProgressBar) view.findViewById(R.id.rpb_progress);
         iv_show = (ImageView) view.findViewById(R.id.iv_is_show);
         iv_show.setOnClickListener(this);
         mRoundProgressBar.setTextSize(28);
         cl_headPortrait = (CircleImageView) view.findViewById(R.id.cl_headPortrait);
-        webView = (WebView) view.findViewById(R.id.wv_invest_process);
-        webView.loadUrl("file:///android_asset/InvestFlowControlller.html");
+        //webView = (WebView) view.findViewById(R.id.wv_invest_process);
+        //webView.loadUrl("file:///android_asset/InvestFlowControlller.html");
+        mExpandView.collapse();
+        for ( int i=0 ; i<mExpandView.getChildCount() ; i++ ) {
+            mExpandView.getChildAt(i).setVisibility(View.GONE);
+        }
 
         imageTitle.setFocusable(true);
         imageTitle.setFocusableInTouchMode(true);
@@ -304,6 +316,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             }
         };
         mListview.setAdapter(artCommentAdapter);
+
     }
 
     private void loadCommentData(final boolean flag, int pageNum) {
@@ -443,7 +456,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         }
                     } else {
                         progress = 0;
-                       // initProgressBar(0);
                     }
 
                 } else if (event.getAction() == MotionEvent.ACTION_POINTER_UP){
@@ -454,7 +466,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         }
                     } else {
                         progress = 0;
-                       // initProgressBar(0);
                     }
 
                 }
@@ -593,8 +604,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 if (item.getCreator() != null) {
                     helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
                     if (item.getCreator().getName() != null) {
-                        if (item.getCreator().getName().length() > 3) {
-                            helper.setText(R.id.iri_tv_nickname, item.getCreator().getName().substring(0, 3) + "...");
+                        if (item.getCreator().getName().length() > 5) {
+                            helper.setText(R.id.iri_tv_nickname, item.getCreator().getName().substring(0, 5) + "...");
                         } else {
                             helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
                         }
@@ -747,44 +758,44 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     webView.setVisibility(View.VISIBLE);
                     isShow = true;
                 }*/
-                isShow=!isShow;
+                /*isShow=!isShow;
                 webView.clearAnimation();  //清除动画
                 final int tempHight;
-                final int startHight=webView.getHeight();  //起始高度
+                final int startHight = 0;  //起始高度
                 int durationMillis = 200;
 
                 if(isShow){
-                    /**
-                     * 折叠效果，从长文折叠成短文
-                     */
+                    */
+                if(mExpandView.isExpand()){
+                    mExpandView.collapse();
+                  //  sv.removeView(mExpandView);
 
-                    //tempHight = mTextView.getLineHeight() * mTextView.getLineCount() - startHight;  //为正值，长文减去短文的高度差
-                    //翻转icon的180度旋转动画
-                    RotateAnimation animation = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                    animation.setDuration(durationMillis);
-                    animation.setFillAfter(true);
-                    iv_show.startAnimation(animation);
-                }else {
-                    /**
-                     * 展开效果，从短文展开成长文
-                     */
-                    //tempHight = mTextView.getLineHeight() * maxLine - startHight;//为负值，即短文减去长文的高度差
-                    //翻转icon的180度旋转动画
-                    RotateAnimation animation = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                    animation.setDuration(durationMillis);
-                    animation.setFillAfter(true);
-                    iv_show.startAnimation(animation);
-                }
-                Animation animation = new Animation() {
-                    //interpolatedTime 为当前动画帧对应的相对时间，值总在0-1之间
-                    protected void applyTransformation(float interpolatedTime, Transformation t) { //根据ImageView旋转动画的百分比来显示textview高度，达到动画效果
-                        webView.setMinimumHeight((int) (startHight * interpolatedTime));//原始长度+高度差*（从0到1的渐变）即表现为动画效果
+                    // mHandler.post(ScrollRunnable2);
+                    for ( int i=0 ; i<mExpandView.getChildCount() ; i++ ) {
+                        mExpandView.getChildAt(i).setVisibility(View.GONE);
                     }
-                };
-                animation.setDuration(durationMillis);
-                webView.startAnimation(animation);
+                    /*View inflate = LayoutInflater.from(getActivity()).inflate(R.layout.rz_project, null);
+                    showHeadNum();
+                    loadInvesterData(true, currentPage);
+                    loadCommentData(true, currentPage);
+                    showOther();
+                    getActivity().setContentView(inflate);*/
+                   /*EmptyFragment ef = new EmptyFragment();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.add(R.id.expandView, ef);
+                    //ft.setTransition(FragmentTransaction.TRANSIT_NONE);
+                    ft.commit();*/
+                    iv_show.setImageResource(R.mipmap.show_progress);
+                    mExpandView.setVisibility(View.VISIBLE);
+                }else{
+                    mExpandView.expand();
 
-
+                    for ( int i=0 ; i<mExpandView.getChildCount() ; i++ ) {
+                        mExpandView.getChildAt(i).setVisibility(View.VISIBLE);
+                    }
+                    mHandler.post(ScrollRunnable);
+                    iv_show.setImageResource(R.mipmap.no_show_progress);
+                }
                 break;
             case R.id.bt_comment:
 
@@ -853,6 +864,39 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
     }
 
+    private Runnable ScrollRunnable= new Runnable() {
+        @Override
+        public void run() {
+            int scrollDifference = Utils.dip2px(getActivity(),160);
+            int off = screenHeight;//判断高度
+            /*if (off > 0) {
+                sv.scrollBy(0, 30);
+                if (sv.getScrollY() == off) {
+                    Thread.currentThread().interrupt();
+                } else {
+                    mHandler.postDelayed(this, 1000);
+                }
+            }*/
+            sv.smoothScrollBy(0,screenHeight - scrollDifference);
+        }
+    };
+    private Runnable ScrollRunnable2= new Runnable() {
+        @Override
+        public void run() {
+            int scrollDifference = Utils.dip2px(getActivity(),160);
+            int svHeight = sv.getHeight();
+            int off = screenHeight;//判断高度
+            /*if (off > 0) {
+                sv.scrollBy(0, 30);
+                if (sv.getScrollY() == off) {
+                    Thread.currentThread().interrupt();
+                } else {
+                    mHandler.postDelayed(this, 1000);
+                }
+            }*/
+            sv.smoothScrollTo(0,mExpandView.getHeight() - svHeight );
+        }
+    };
     private void praise(String artworkId, String s) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artworkId", artworkId + "");
