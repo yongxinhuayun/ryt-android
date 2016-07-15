@@ -32,6 +32,8 @@ import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.JsInterface;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.User;
 
 import java.util.HashMap;
@@ -223,42 +225,8 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
 
     class JavaInterfaceDemo {
         @JavascriptInterface
-        public void clickOnAndroid1(final  String id) {
-            Map<String,String> paramsMap=new HashMap<>();
-            paramsMap.put("userId", id);
-            paramsMap.put("timestamp", System.currentTimeMillis() + "");
-            try {
-                AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
-                paramsMap.put("signmsg", AppApplication.signmsg);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            NetRequestUtil.post(Constants.BASE_PATH + "user.do", paramsMap, new AttentionListCallBack() {
-                @Override
-                public void onError(Call call, Exception e) {
-                    e.printStackTrace();
-                    System.out.println("失败了");
-                }
-
-                @Override
-                public void onResponse(Map<String, Object> response) {
-                    if ("0".equals(response.get("resultCode"))){
-                       Map<Object,Object> data= (Map<Object, Object>) response.get("data");
-                        User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(data.get("user")), User.class);
-                        if (user.getMaster()!=null){
-                            Intent intent =new Intent(AuctionSummaryActivity.this,UserYsjIndexActivity.class);
-                            intent.putExtra("userId", id);
-                            intent.putExtra("currentId", AppApplication.gUser.getId());
-                            AuctionSummaryActivity.this.startActivity(intent);
-                        }else {
-                            Intent intent =new Intent(AuctionSummaryActivity.this,UserPtIndexActivity.class);
-                            intent.putExtra("userId", id);
-                            intent.putExtra("currentId", AppApplication.gUser.getId());
-                            AuctionSummaryActivity.this.startActivity(intent);
-                        }
-                    }
-                }
-            });
+        public void clickOnAndroid1(String id) {
+            loadData(id);
         }
         @JavascriptInterface
         public String fetchParamObject1() {
@@ -270,8 +238,9 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
             AuctionSummaryActivity.this.startActivity(intent);
         }
         @JavascriptInterface
-        public void  finalPayment(final String price,final String action,final String artWorkId) {
-            Map<String,String> paramsMap=new HashMap<>();
+        public void  finalPayment( String price, String action, String artWorkId) {
+            loadData1(price,action,artWorkId);
+            /*Map<String,String> paramsMap=new HashMap<>();
             //paramsMap.put("userId", AppApplication.gUser.getId());
             //paramsMap.put("userId", "imhfp1yr4636pj49");
             paramsMap.put("money", price);
@@ -299,7 +268,7 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
                     intent.putExtra("url",url);
                     AuctionSummaryActivity.this.startActivity(intent);
                 }
-            });
+            });*/
         }
         @JavascriptInterface
         public void comment(String artworkId,String currentUserId,String messageId,String fatherCommentId,String name) {
@@ -317,5 +286,96 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
                 AuctionSummaryActivity.this.startActivity(intent);
             }
         }
+    }
+    private void loadData(final String id) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("userId", id);
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "user.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+                ToastUtil.showLong(AuctionSummaryActivity.this,"网络连接超时,稍后重试!");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    Map<Object,Object> data= (Map<Object, Object>) response.get("data");
+                    User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(data.get("user")), User.class);
+                    if (user.getMaster()!=null){
+                        Intent intent =new Intent(AuctionSummaryActivity.this,UserYsjIndexActivity.class);
+                        intent.putExtra("userId", id);
+                        intent.putExtra("currentId", AppApplication.gUser.getId());
+                        AuctionSummaryActivity.this.startActivity(intent);
+                    }else {
+                        Intent intent =new Intent(AuctionSummaryActivity.this,UserPtIndexActivity.class);
+                        intent.putExtra("userId", id);
+                        intent.putExtra("currentId", AppApplication.gUser.getId());
+                        AuctionSummaryActivity.this.startActivity(intent);
+                    }
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                loadData(id);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
+    }
+    private void loadData1(final String price,final String action,final String artWorkId) {
+        Map<String,String> paramsMap=new HashMap<>();
+        //paramsMap.put("userId", AppApplication.gUser.getId());
+        paramsMap.put("money", price);
+        paramsMap.put("action", action);
+        paramsMap.put("type", "1");
+        paramsMap.put("artWorkId", artWorkId);
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "pay/main.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+                ToastUtil.showLong(AuctionSummaryActivity.this,"网络连接超时,稍后重试!");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                loadData1(price,action,artWorkId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }else {
+                    String url = response.get("url").toString();
+                    Intent intent=new Intent(AuctionSummaryActivity.this,PayPageActivity.class);
+                    intent.putExtra("url",url);
+                    AuctionSummaryActivity.this.startActivity(intent);
+                }
+            }
+        });
     }
 }

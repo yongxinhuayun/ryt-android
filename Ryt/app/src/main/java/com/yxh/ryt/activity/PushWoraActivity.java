@@ -25,6 +25,7 @@ import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 
@@ -138,9 +139,6 @@ public class PushWoraActivity extends BaseActivity {
                 pickerView.show();
                 break;
             case R.id.pw_tv_send:
-                Map<String,File> fileMap=new HashMap<>();
-                File file = new File(filePath);
-                fileMap.put(file.getName(),file);
                 if ("".equals(year.toString())){
                     ToastUtil.showLong(this,"创作年份不能为空");
                     return;
@@ -157,45 +155,63 @@ public class PushWoraActivity extends BaseActivity {
                     ToastUtil.showLong(this,"材质不能为空");
                     return;
                 }
-                Map<String,String> paramsMap=new HashMap<>();
-                paramsMap.put("name",workName.getText().toString());
-                paramsMap.put("material",material.getText().toString());
-                String type="-1";
-                if ("非卖品".equals(state.getText().toString())){
-                    type="0";
-                }else if ("可售".equals(state.getText().toString())){
-                    type="1";
-                }else if ("已售".equals(state.getText().toString())){
-                    type="2";
-                }
-                paramsMap.put("type", type);
-                paramsMap.put("createYear",year.getText().toString());
-                //paramsMap.put("currentUserId", AppApplication.gUser.getId());
-                paramsMap.put("timestamp",System.currentTimeMillis()+"");
-                try {
-                    paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Map<String, String> headers = new HashMap<>();
-                headers.put("APP-Key", "APP-Secret222");
-                headers.put("APP-Secret", "APP-Secret111");
-                NetRequestUtil.postFile(Constants.BASE_PATH + "saveMasterWork.do", "pictureUrl", fileMap, paramsMap, headers, new CompleteUserInfoCallBack() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onResponse(Map<String, Object> response) {
-                        if ("0".equals(response.get("resultCode"))){
-                            ToastUtil.showLong(PushWoraActivity.this,"发布作品成功了");
-                            finish();
-                        }
-                    }
-                });
+                push();
                 break;
         }
+    }
+
+    private void push() {
+        Map<String,File> fileMap=new HashMap<>();
+        File file = new File(filePath);
+        fileMap.put(file.getName(),file);
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("name",workName.getText().toString());
+        paramsMap.put("material",material.getText().toString());
+        String type="-1";
+        if ("非卖品".equals(state.getText().toString())){
+            type="0";
+        }else if ("可售".equals(state.getText().toString())){
+            type="1";
+        }else if ("已售".equals(state.getText().toString())){
+            type="2";
+        }
+        paramsMap.put("type", type);
+        paramsMap.put("createYear",year.getText().toString());
+        //paramsMap.put("currentUserId", AppApplication.gUser.getId());
+        paramsMap.put("timestamp",System.currentTimeMillis()+"");
+        try {
+            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Map<String, String> headers = new HashMap<>();
+        headers.put("APP-Key", "APP-Secret222");
+        headers.put("APP-Secret", "APP-Secret111");
+        NetRequestUtil.postFile(Constants.BASE_PATH + "saveMasterWork.do", "pictureUrl", fileMap, paramsMap, headers, new CompleteUserInfoCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                ToastUtil.showLong(PushWoraActivity.this,"网络连接超时,稍后重试!");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showLong(PushWoraActivity.this,"发布作品成功了");
+                    finish();
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                push();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
     }
 
 }

@@ -35,6 +35,7 @@ import com.yxh.ryt.custemview.WheelSheetDialog;
 import com.yxh.ryt.util.DisplayUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.util.avalidations.ValidationModel;
@@ -139,6 +140,10 @@ public class YsjRzActivity extends BaseActivity {
             ToastUtil.showLong(YsjRzActivity.this,"最满意的作品至少有一张");
             return;
         }
+        authentication();
+    }
+
+    private void authentication() {
         Map<String,Map<String,File>> fileMap=new HashMap<>();
         fileMap.put("one",fileMap3);
         fileMap.put("two",fileMap4);
@@ -169,15 +174,30 @@ public class YsjRzActivity extends BaseActivity {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
+                ToastUtil.showLong(YsjRzActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                System.out.println("成功了");
-                finish();
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showLong(YsjRzActivity.this,"认证成功");
+                    finish();
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                authentication();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+
             }
         });
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

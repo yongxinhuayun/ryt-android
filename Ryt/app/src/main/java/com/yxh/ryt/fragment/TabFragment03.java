@@ -19,6 +19,8 @@ import com.yxh.ryt.custemview.BadgeView;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -102,11 +104,12 @@ public class TabFragment03 extends  BaseFragment {
             @Override
             public void onError(Call call, Exception e) {
                 System.out.println("失败了");
+                ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if (response.get("resultCode").equals("0")){
+                if ("0".equals(response.get("resultCode"))){
                     String noticeNum = AppApplication.getSingleGson().toJson(response.get("noticeNum"));
                     String commentNum = AppApplication.getSingleGson().toJson(response.get("commentNum"));
                     String messageNum = AppApplication.getSingleGson().toJson(response.get("messageNum"));
@@ -138,6 +141,16 @@ public class TabFragment03 extends  BaseFragment {
                     }else {
                         bvPrivateLetter.setVisibility(View.GONE);
                     }
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                loadData();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
             }
         });

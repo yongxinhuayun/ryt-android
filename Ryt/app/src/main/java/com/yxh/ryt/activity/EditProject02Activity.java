@@ -38,6 +38,7 @@ import com.yxh.ryt.custemview.CustomGridView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetImageTask;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.Sha1;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
@@ -122,6 +123,7 @@ public class EditProject02Activity extends  BaseActivity {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
+                ToastUtil.showLong(EditProject02Activity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
@@ -130,6 +132,16 @@ public class EditProject02Activity extends  BaseActivity {
                     redrawCdvRunnable.setRun(false);
                    ToastUtil.showLong(EditProject02Activity.this,"编辑成功");
                     finish();
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                twoStepRequst();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
 
             }

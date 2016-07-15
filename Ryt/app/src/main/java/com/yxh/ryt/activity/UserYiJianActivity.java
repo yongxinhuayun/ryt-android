@@ -9,11 +9,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.NotifaicationCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 
 import java.util.HashMap;
@@ -61,12 +63,12 @@ public class UserYiJianActivity extends BaseActivity{
         Matcher m = p.matcher(strEmail);
         return m.matches();
     }*/
-    private void sendSuggestion(TextView tv) {
+    private void sendSuggestion(final TextView tv) {
         if (suggestion.equals("")) {
             ToastUtil.show(getApplicationContext(),"请填写意见",0);
         } else {
             Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId","ieatht97wfw30hfd");
+        //paramsMap.put("userId","ieatht97wfw30hfd");
         paramsMap.put("content",tv.getText().toString());
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -80,11 +82,25 @@ public class UserYiJianActivity extends BaseActivity{
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
                 System.out.println("失败了");
+                ToastUtil.showLong(UserYiJianActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                ToastUtil.show(getApplicationContext(),"感谢您的反馈",1);
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.show(getApplicationContext(),"感谢您的反馈",1);
+                    finish();
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                sendSuggestion(tv);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
             }
         });
     }

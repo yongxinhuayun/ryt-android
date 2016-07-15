@@ -33,6 +33,7 @@ import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.ChatMsgEntity;
 import com.yxh.ryt.vo.HomeYSJArtWork;
 
@@ -228,6 +229,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
 				System.out.println("444444失败了");
+				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
 			}
 
 			@Override
@@ -269,7 +271,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("userId",userId);
-		paramsMap.put("currentId",currentId);
+		//paramsMap.put("currentId",currentId);
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -306,6 +308,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 							noData.setVisibility(View.GONE);
 							ySJHomeDatas.addAll(commentList);
 							commentList.clear();
+							lstv.requestLayout();
 							ySJHomeCommonAdapter.notifyDataSetChanged();
 						}else {
 							more.setVisibility(View.VISIBLE);
@@ -317,6 +320,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 							ySJHomeDatas.addAll(commentList);
 							commentList.clear();
 						}
+						lstv.requestLayout();
 						ySJHomeCommonAdapter.notifyDataSetChanged();
 					}else {
 						List<HomeYSJArtWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkList")), new TypeToken<List<HomeYSJArtWork>>() {
@@ -336,6 +340,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 							ySJHomeDatas.addAll(commentList);
 							commentList.clear();
 						}
+						lstv.requestLayout();
 						ySJHomeCommonAdapter.notifyDataSetChanged();
 					}
 				}
@@ -347,5 +352,13 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 	public void onDestroy() {
 		super.onDestroy();
 		AppApplication.getSingleContext().unregisterReceiver(receiver);
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		ySJHomeDatas.clear();
+		if (ySJHomeCommonAdapter!=null){
+			ySJHomeCommonAdapter.notifyDataSetChanged();
+		}
 	}
 }

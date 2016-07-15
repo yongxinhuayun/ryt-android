@@ -27,6 +27,8 @@ import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.User;
 
@@ -166,11 +168,25 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
+                ToastUtil.showLong(UserEditZiLiaoActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                getUser(response);
+                if ("0".equals(response.get("resultCode"))){
+                    getUser(response);
+                    ToastUtil.showLong(UserEditZiLiaoActivity.this,"修改图片成功!");
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                commitHead();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
             }
         });
     }
@@ -222,7 +238,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         } else {
             AppApplication.gUser.setMaster1("");
         }
-        System.out.print(AppApplication.gUser.toString());
+        finish();
     }
 
     @Override
@@ -344,7 +360,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
     public void inflatSign(){
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("userId", AppApplication.gUser.getId());
-        paramsMap.put("currentId", AppApplication.gUser.getId());
+        //paramsMap.put("currentId", AppApplication.gUser.getId());
         paramsMap.put("pageIndex", "1");
         paramsMap.put("pageSize", "20");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");

@@ -24,6 +24,8 @@ import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.callback.RelesaseVideoCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.NickNameValidation;
 
@@ -89,6 +91,10 @@ public class ReleaseVideoActivity extends  BaseActivity {
 
     @OnClick(R.id.rv_tv_push)
     public  void push(){
+        pushVedio();
+    }
+
+    private void pushVedio() {
         Map<String,File> fileMap=new HashMap<>();
         File file1 = new File(file);
         fileMap.put(file1.getName(), file1);
@@ -111,14 +117,29 @@ public class ReleaseVideoActivity extends  BaseActivity {
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
                 Log.d("XXXXXXXXXXXXXXXXXXXXX", "失败了啊");
+                ToastUtil.showLong(ReleaseVideoActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                System.out.println("成功了");
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showLong(ReleaseVideoActivity.this,"视频上传成功");
+                    finish();
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                push();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
             }
         });
     }
+
     @OnClick(R.id.rv_ib_cancel)
     public void cancel(){
         finish();

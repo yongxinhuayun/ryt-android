@@ -180,31 +180,36 @@ public class ForgetPwdActivity extends BaseActivity {
                     if (!AppApplication.getSingleEditTextValidator().validate()) {
                         return;
                     }
-                    Map<String, String> paramsMap = new HashMap<>();
-                    paramsMap.put("username", eTPhone.getText().toString());
-                    paramsMap.put("code", eTVerfyCode.getText().toString());
-                    paramsMap.put("timestamp", System.currentTimeMillis() + "");
-                    try {
-                        paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    NetRequestUtil.post(Constants.BASE_PATH + "verifyCode.do", paramsMap, new RegisterCallBack() {
-                        @Override
-                        public void onError(Call call, Exception e) {
-                            System.out.println("失败了");
-                        }
+                    verifyCode();
+                }
+            }
+        });
+    }
 
-                        @Override
-                        public void onResponse(Map<String, Object> response) {
-                            if (response.get("resultCode").equals("0")) {
-                                ToastUtil.showShort(AppApplication.getSingleContext(), "验证码验证成功!");
-                            } else {
-                                ToastUtil.showShort(AppApplication.getSingleContext(), "验证码验证失败!");
-                                eTVerfyCode.setText("");
-                            }
-                        }
-                    });
+    private void verifyCode() {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("username", eTPhone.getText().toString());
+        paramsMap.put("code", eTVerfyCode.getText().toString());
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "verifyCode.do", paramsMap, new RegisterCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                System.out.println("失败了");
+                ToastUtil.showLong(ForgetPwdActivity.this,"网络连接超时,稍后重试!");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if (response.get("resultCode").equals("0")) {
+                    ToastUtil.showShort(AppApplication.getSingleContext(), "验证码验证成功!");
+                } else {
+                    ToastUtil.showShort(AppApplication.getSingleContext(), "验证码验证失败!");
+                    eTVerfyCode.setText("");
                 }
             }
         });
@@ -252,6 +257,7 @@ public class ForgetPwdActivity extends BaseActivity {
                     @Override
                     public void onError(Call call, Exception e) {
                         System.out.println("失败了");
+                        ToastUtil.showLong(ForgetPwdActivity.this,"网络连接超时,稍后重试!");
                     }
 
                     @Override
@@ -292,6 +298,7 @@ public class ForgetPwdActivity extends BaseActivity {
             @Override
             public void onError(Call call, Exception e) {
                 System.out.println("失败了");
+                ToastUtil.showLong(ForgetPwdActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
@@ -306,6 +313,7 @@ public class ForgetPwdActivity extends BaseActivity {
                         @Override
                         public void onError(Call call, Exception e) {
                             System.out.println("失败了");
+                            ToastUtil.showLong(ForgetPwdActivity.this,"网络连接超时,稍后重试!");
                         }
 
                         @Override

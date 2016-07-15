@@ -23,6 +23,7 @@ import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.RongZi;
 
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public class RZInvestFragment extends BaseFragment implements AutoListView.OnRef
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
 				System.out.println("失败了");
+				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
 			}
 
 			@Override

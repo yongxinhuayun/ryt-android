@@ -21,6 +21,7 @@ import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.custemview.CustomDialog;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.ConsumerAddress;
 
@@ -153,8 +154,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
 
     private void LoadData(final int state) {
         Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("currentUserId", AppApplication.gUser.getId());
-
+        //paramsMap.put("currentUserId", AppApplication.gUser.getId());
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
@@ -164,54 +164,56 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
         NetRequestUtil.post(Constants.BASE_PATH + "listAddress.do", paramsMap, new RegisterCallBack() {
             @Override
             public void onError(Call call, Exception e) {
+                ToastUtil.showLong(ReceiverAdressActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                Log.w("response", response.toString());
-                /*if (response == null) {
-                    ll_add.setVisibility(View.GONE);
-                    ll_new_add.setVisibility(View.VISIBLE);
-                    btn_new_add.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivity(new Intent(ReceiverAdressActivity.this, NewAddressActivity.class));
+                if ("0".equals(response.get("resultCode"))){
+                    if (state == AutoListView.REFRESH) {
+                        adListview.onRefreshComplete();
+                        addressDatas.clear();
+                        List<ConsumerAddress> addressComment = null;
+                        try {
+                            addressComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("consumerAddressList")), new TypeToken<List<ConsumerAddress>>() {
+                            }.getType());
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
                         }
-                    });
-                }*/
-                if (state == AutoListView.REFRESH) {
-                    adListview.onRefreshComplete();
-                    addressDatas.clear();
-                    List<ConsumerAddress> addressComment = null;
-                    try {
-                        addressComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("consumerAddressList")), new TypeToken<List<ConsumerAddress>>() {
+                        if (null == addressComment || addressComment.size() == 0) {
+                            adListview.setResultSize(0);
+                        }
+                        if (null != addressComment && addressComment.size() > 0) {
+                            adListview.setResultSize(addressComment.size());
+                            addressDatas.addAll(addressComment);
+                            cmAdapter.notifyDataSetChanged();
+                        }
+                        return;
+                    }
+                    if (state == AutoListView.LOAD) {
+                        adListview.onLoadComplete();
+                        List<ConsumerAddress> addressComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("consumerAddressList")), new TypeToken<List<ConsumerAddress>>() {
                         }.getType());
-                    } catch (JsonSyntaxException e) {
-                        e.printStackTrace();
+                        if (null == addressComment || addressComment.size() == 0) {
+                            adListview.setResultSize(1);
+                        }
+                        if (null != addressComment && addressComment.size() > 0) {
+                            adListview.setResultSize(addressComment.size());
+                            addressDatas.addAll(addressComment);
+                            cmAdapter.notifyDataSetChanged();
+                        }
+                        return;
+                    }else if ("000000".equals(response.get("resultCode"))){
+                        SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                            @Override
+                            public void getCode(String code) {
+                                if ("0".equals(code)){
+                                    LoadData(state);
+                                }
+                            }
+                        });
+                        sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                     }
-                    if (null == addressComment || addressComment.size() == 0) {
-                        adListview.setResultSize(0);
-                    }
-                    if (null != addressComment && addressComment.size() > 0) {
-                        adListview.setResultSize(addressComment.size());
-                        addressDatas.addAll(addressComment);
-                        cmAdapter.notifyDataSetChanged();
-                    }
-                    return;
-                }
-                if (state == AutoListView.LOAD) {
-                    adListview.onLoadComplete();
-                    List<ConsumerAddress> addressComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("consumerAddressList")), new TypeToken<List<ConsumerAddress>>() {
-                    }.getType());
-                    if (null == addressComment || addressComment.size() == 0) {
-                        adListview.setResultSize(1);
-                    }
-                    if (null != addressComment && addressComment.size() > 0) {
-                        adListview.setResultSize(addressComment.size());
-                        addressDatas.addAll(addressComment);
-                        cmAdapter.notifyDataSetChanged();
-                    }
-                    return;
                 }
             }
         });

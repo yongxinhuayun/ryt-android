@@ -31,6 +31,9 @@ import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.yxh.ryt.vo.User;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.cookie.CookieJarImpl;
+import com.zhy.http.okhttp.cookie.store.MemoryCookieStore;
+import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -45,6 +48,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
+import okhttp3.OkHttpClient;
 
 public class AppApplication extends Application {
 
@@ -68,6 +72,7 @@ public class AppApplication extends Application {
 		super.onCreate();
 		context=this;
 		editTextValidator=new EditTextValidator(this);
+		OkHttpUtils.getInstance().setConnectTimeout(10,TimeUnit.SECONDS);
 		ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
 		gson = new GsonBuilder().
 				registerTypeAdapter(Double.class, new JsonSerializer<Double>() {
@@ -82,7 +87,6 @@ public class AppApplication extends Application {
 				}).create();
 		JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
 		JPushInterface.init(this);     		// 初始化 JPush
-		OkHttpUtils.getInstance().setConnectTimeout(10, TimeUnit.SECONDS);
 		DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder();
 		builder.showImageOnLoading(R.mipmap.default_icon);
 		builder.showImageForEmptyUri(R.mipmap.default_icon);

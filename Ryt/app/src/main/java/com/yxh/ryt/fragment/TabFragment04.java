@@ -230,7 +230,7 @@ public class TabFragment04 extends BaseFragment {
             btnLf.setVisibility(View.VISIBLE);
             Map<String,String> paramsMap=new HashMap<>();
             paramsMap.put("userId", AppApplication.gUser.getId());
-            paramsMap.put("currentId", AppApplication.gUser.getId());
+            //paramsMap.put("currentId", AppApplication.gUser.getId());
             paramsMap.put("pageIndex", "1");
             paramsMap.put("pageSize", "20");
             paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -243,6 +243,7 @@ public class TabFragment04 extends BaseFragment {
                 @Override
                 public void onError(Call call, Exception e) {
                     System.out.println("失败了");
+                    ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
                 }
 
                 @Override

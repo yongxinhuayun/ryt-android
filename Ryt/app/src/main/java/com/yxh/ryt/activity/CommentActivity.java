@@ -21,7 +21,9 @@ import com.yxh.ryt.callback.CommentCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ShuoMClickableSpan;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.ArtworkCommentMsg;
 
@@ -193,7 +195,7 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
         cmlistview.setOnRefreshListener(this);
     }
 
-    private void LoadData(final int state,int pageNum) {
+    private void LoadData(final int state, final int pageNum) {
         Map<String,String> paramsMap=new HashMap<>();
         //paramsMap.put("userId",AppApplication.gUser.getId());
         paramsMap.put("type","1");
@@ -209,44 +211,56 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
             @Override
             public void onError(Call call, Exception e) {
                 System.out.println("失败了");
+                ToastUtil.showLong(CommentActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                Log.d("response1", response.toString());
-                if (state == AutoListView.REFRESH) {
-                    cmlistview.onRefreshComplete();
-                    artworkCommentDatas.clear();
-                    List<ArtworkCommentMsg> artworkComment = null;
-                    try {
-                        artworkComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<ArtworkCommentMsg>>() {
+                if ("0".equals(response.get("resultCode"))){
+                    if (state == AutoListView.REFRESH) {
+                        cmlistview.onRefreshComplete();
+                        artworkCommentDatas.clear();
+                        List<ArtworkCommentMsg> artworkComment = null;
+                        try {
+                            artworkComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<ArtworkCommentMsg>>() {
+                            }.getType());
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
+                        }
+                        if (null == artworkComment || artworkComment.size() == 0) {
+                            cmlistview.setResultSize(0);
+                        }
+                        if (null != artworkComment && artworkComment.size() > 0) {
+                            cmlistview.setResultSize(artworkComment.size());
+                            artworkCommentDatas.addAll(artworkComment);
+                            cmAdapter.notifyDataSetChanged();
+                        }
+                        return;
+                    }
+                    if (state == AutoListView.LOAD) {
+                        cmlistview.onLoadComplete();
+                        List<ArtworkCommentMsg> artworkComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<ArtworkCommentMsg>>() {
                         }.getType());
-                    } catch (JsonSyntaxException e) {
-                        e.printStackTrace();
+                        if (null == artworkComment || artworkComment.size() == 0) {
+                            cmlistview.setResultSize(1);
+                        }
+                        if (null != artworkComment && artworkComment.size() > 0) {
+                            cmlistview.setResultSize(artworkComment.size());
+                            artworkCommentDatas.addAll(artworkComment);
+                            cmAdapter.notifyDataSetChanged();
+                        }
+                        return;
+                    }else if ("000000".equals(response.get("resultCode"))){
+                        SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                            @Override
+                            public void getCode(String code) {
+                                if ("0".equals(code)){
+                                    LoadData(state,pageNum);
+                                }
+                            }
+                        });
+                        sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                     }
-                    if (null == artworkComment || artworkComment.size() == 0) {
-                        cmlistview.setResultSize(0);
-                    }
-                    if (null != artworkComment && artworkComment.size() > 0) {
-                        cmlistview.setResultSize(artworkComment.size());
-                        artworkCommentDatas.addAll(artworkComment);
-                        cmAdapter.notifyDataSetChanged();
-                    }
-                    return;
-                }
-                if (state == AutoListView.LOAD) {
-                    cmlistview.onLoadComplete();
-                    List<ArtworkCommentMsg> artworkComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<ArtworkCommentMsg>>() {
-                    }.getType());
-                    if (null == artworkComment || artworkComment.size() == 0) {
-                        cmlistview.setResultSize(1);
-                    }
-                    if (null != artworkComment && artworkComment.size() > 0) {
-                        cmlistview.setResultSize(artworkComment.size());
-                        artworkCommentDatas.addAll(artworkComment);
-                        cmAdapter.notifyDataSetChanged();
-                    }
-                    return;
                 }
             }
         });

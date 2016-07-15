@@ -61,6 +61,7 @@ public class LoginActivity extends BaseActivity {
     private boolean isPhone;
     private boolean isPassword;
     private String guide;
+    private WxUser wxUser1;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, LoginActivity.class));
@@ -158,11 +159,11 @@ public class LoginActivity extends BaseActivity {
             mReciver = new WxLoginBroadcastReciver(new WxLoginBroadcastReciver.WxLoginCallBack() {
                 @Override
                 public void response(String wxUser) {
-                    final WxUser user=AppApplication.getSingleGson().fromJson(wxUser, WxUser.class);
+                    wxUser1=AppApplication.getSingleGson().fromJson(wxUser, WxUser.class);
                     Map<String,String> paramsMap=new HashMap<>();
-                    paramsMap.put("nickname",user.getNickname());
-                    paramsMap.put("headimgurl",user.getHeadimgurl());
-                    paramsMap.put("unionid",user.getUnionid());
+                    paramsMap.put("nickname",wxUser1.getNickname());
+                    paramsMap.put("headimgurl",wxUser1.getHeadimgurl());
+                    paramsMap.put("unionid",wxUser1.getUnionid());
                     paramsMap.put("timestamp", System.currentTimeMillis() + "");
                     try {
                         AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -181,7 +182,7 @@ public class LoginActivity extends BaseActivity {
                             if ("0".equals(response.get("resultCode"))) {
                                 User user = new User();
                                 user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
-                                getUser(user);
+                                getUser(user,2);
                                 Map<String, String> paramsMap = new HashMap<>();
                                 //paramsMap.put("id", user.getId());
                                 paramsMap.put("cid", JPushInterface.getRegistrationID(LoginActivity.this));
@@ -264,7 +265,7 @@ public class LoginActivity extends BaseActivity {
                 }
                 User user = new User();
                 user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
-                getUser(user);
+                getUser(user,1);
                 Map<String, String> paramsMap = new HashMap<>();
                 paramsMap.put("username", etUsername.getText().toString());
                 paramsMap.put("password", etPassword.getText().toString());
@@ -300,20 +301,31 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    private void getUser(User user) {
+    private void getUser(User user, int i) {
         if (user.getMaster()!=null){
             user.setMaster1("master");
         }else {
             user.setMaster1("");
         }
-        SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
-        SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster1()+"");
-        SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");
-        AppApplication.gUser = user;
-
+        if (i==1){
+            SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
+            SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
+            SPUtil.put(AppApplication.getSingleContext(), "current_password", user.getPassword()+"");
+            SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
+            SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex()+"");
+            SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster1()+"");
+            SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");
+            SPUtil.put(AppApplication.getSingleContext(), "current_loginState", "1");
+            user.setLoginState("1");
+            AppApplication.gUser = user;
+        }else if (i==2){
+            SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
+            SPUtil.put(AppApplication.getSingleContext(), "current_unionid", wxUser1.getUnionid() + "");
+            SPUtil.put(AppApplication.getSingleContext(), "current_master", user.getMaster1()+"");
+            SPUtil.put(AppApplication.getSingleContext(), "current_loginState", "2");
+            user.setLoginState("2");
+            AppApplication.gUser = user;
+        }
     }
 
     @Override

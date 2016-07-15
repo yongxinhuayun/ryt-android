@@ -189,7 +189,7 @@ public class ChatMsgViewAdapter extends BaseAdapter {
     public void inflatImage(String userId, String fromId, final CircleImageView imageView) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("userId", entity.getUserId());
-        paramsMap.put("currentId", userId);
+        //paramsMap.put("currentId", userId);
         paramsMap.put("pageIndex", "1");
         paramsMap.put("pageSize", "20");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");

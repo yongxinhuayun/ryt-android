@@ -28,6 +28,7 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.PageinfoList;
 
@@ -106,8 +107,18 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 	public void onResume() {
 		super.onResume();
 		userZGDatas.clear();
+		userZGCommonAdapter.notifyDataSetChanged();
 		currentPage=1;
 		LoadData(true, currentPage);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		userZGDatas.clear();
+		if (userZGCommonAdapter!=null){
+			userZGCommonAdapter.notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -183,6 +194,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
 				System.out.println("444444失败了");
+				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
 			}
 			@Override
 			public void onResponse(Map<String, Object> response) {
@@ -245,7 +257,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("userId",userId);
-		paramsMap.put("currentId",currentId);
+		//paramsMap.put("currentId",currentId);
 		paramsMap.put("type","1");
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
@@ -280,6 +292,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 							noData.setVisibility(View.GONE);
 							userZGDatas.addAll(commentList);
 							commentList.clear();
+							lstv.requestLayout();
 							userZGCommonAdapter.notifyDataSetChanged();
 						}else {
 							more.setVisibility(View.VISIBLE);
@@ -291,6 +304,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 							userZGDatas.addAll(commentList);
 							commentList.clear();
 						}
+						lstv.requestLayout();
 						userZGCommonAdapter.notifyDataSetChanged();
 					}else {
 						List<Artwork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<Artwork>>() {
@@ -310,6 +324,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 							userZGDatas.addAll(commentList);
 							commentList.clear();
 						}
+						lstv.requestLayout();
 						userZGCommonAdapter.notifyDataSetChanged();
 					}
 				}

@@ -33,7 +33,7 @@ public class AttentionActivity extends BaseActivity {
     List<BaseFragment> indexChildFragments = new ArrayList<>();
     FragmentPagerAdapter indexChildAdapter;
     @Bind(R.id.attention_pager)
-    ViewPager pager;
+    public ViewPager pager;
     @Bind(R.id.attention_indicator)
     TabPageIndicator indicator;
     private AttentionReceiver receiver;

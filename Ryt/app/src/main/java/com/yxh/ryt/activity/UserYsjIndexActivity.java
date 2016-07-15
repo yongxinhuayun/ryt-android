@@ -68,6 +68,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
     private String currentId;
     private boolean homeFlag;
     private IWXAPI api;
+    private StickHeaderLayout root;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserYsjIndexActivity.class));
@@ -131,7 +132,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
         userId = getIntent().getStringExtra("userId");
         currentId = getIntent().getStringExtra("currentId");
         mViewPager = (ViewPager) findViewById(R.id.user_ysj_pager);
-        StickHeaderLayout root = (StickHeaderLayout) findViewById(R.id.user_ysj_root);
+         root = (StickHeaderLayout) findViewById(R.id.user_ysj_root);
         manager = new StickHeaderViewPagerManager(root, mViewPager);
         manager.setOnListViewScrollListener(this);
         mFragmentList = new ArrayList<Fragment>();
@@ -163,7 +164,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
         /*if (AppApplication.gUser!=null && AppApplication.gUser.getId()!=null && !"".equals(AppApplication.gUser.getId())){*/
             Map<String,String> paramsMap=new HashMap<>();
             paramsMap.put("userId", userId);
-            paramsMap.put("currentId", currentId);
+            //paramsMap.put("currentId", currentId);
             paramsMap.put("pageIndex", "1");
             paramsMap.put("pageSize", "20");
             paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -202,10 +203,12 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                                     @Override
                                     public void onClick(View v) {
                                         letterTrans(user);
+
                                     }
                                 });
                             }
                         }
+                        root.getStickHeaderView().requestLayout();
                     }
 
                 }

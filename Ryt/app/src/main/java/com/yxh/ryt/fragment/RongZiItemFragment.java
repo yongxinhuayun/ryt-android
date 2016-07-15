@@ -3,6 +3,7 @@ package com.yxh.ryt.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
+import com.yxh.ryt.util.DisplayUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.vo.RongZi;
@@ -184,7 +186,9 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 							getActivity().startActivity(intent);
 						}
 					});
-
+					int i = DisplayUtil.px2dip(44);
+					float density = AppApplication.getSingleContext().getResources().getDisplayMetrics().density;
+					Log.d("xxxxxxx",i+""+density);
 				}
 			}
 		};

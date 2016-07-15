@@ -12,6 +12,7 @@ import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.fragment.UserJianJieFragment;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 
 import java.util.HashMap;
@@ -76,32 +77,48 @@ public class EditBriefActivity extends BaseActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.tv_save:
-                Map<String, String> paramsMap = new HashMap<>();
-                paramsMap.put("userId", AppApplication.gUser.getId());
-                paramsMap.put("type", "2");
-                paramsMap.put("timestamp", System.currentTimeMillis() + "");
-                try {
-                    paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                paramsMap.put("content", et_brief.getText().toString());
-                NetRequestUtil.post(Constants.BASE_PATH + " saveUserBrief.do", paramsMap, new RegisterCallBack() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        ToastUtil.show(getApplicationContext(),"保存失败",0);
-                    }
+                saveBrief();
+                break;
+        }
+    }
 
-                    @Override
-                    public void onResponse(Map<String, Object> response) {
-                        ToastUtil.show(getApplicationContext(),"保存成功",0);
+    private void saveBrief() {
+        Map<String, String> paramsMap = new HashMap<>();
+        //paramsMap.put("userId", AppApplication.gUser.getId());
+        paramsMap.put("type", "2");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        paramsMap.put("content", et_brief.getText().toString());
+        NetRequestUtil.post(Constants.BASE_PATH + "saveUserBrief.do", paramsMap, new RegisterCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                ToastUtil.show(getApplicationContext(),"保存失败,请重试!",0);
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.show(getApplicationContext(),"保存成功",0);
                        /* if(mUserJianJieFragment instanceof OnMainListener){
                             mUserJianJieFragment.onMainAction();
                         }*/
-                        finish();
-                    }
-                });
-                break;
-        }
+                    finish();
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                saveBrief();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
     }
 }

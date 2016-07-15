@@ -94,7 +94,9 @@ public class UserSettingActivity extends BaseActivity {
                 break;
             case R.id.btn_out:
                 AppApplication.gUser.setId("");
+                AppApplication.gUser.setLoginState("");
                 AppApplication.gUser.setUsername("");
+                AppApplication.gUser.setPassword("");
                 AppApplication.gUser.setName("");
                 AppApplication.gUser.setSex("");
                 AppApplication.gUser.setMaster1("");

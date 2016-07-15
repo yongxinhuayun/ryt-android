@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
@@ -27,12 +28,17 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.AttentionListCallBack;
+import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.JsInterface;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
+import com.yxh.ryt.vo.HomeYSJArtWork;
 import com.yxh.ryt.vo.User;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -66,8 +72,9 @@ public class AuctionOrderActivity extends BaseActivity implements View.OnClickLi
 
     class JavaInterfaceDemo {
         @JavascriptInterface
-        public void clickOnAndroid(final  String id) {
-            Map<String,String> paramsMap=new HashMap<>();
+        public void clickOnAndroid( String id) {
+            loadData(id);
+            /*Map<String,String> paramsMap=new HashMap<>();
             paramsMap.put("userId", id);
             paramsMap.put("timestamp", System.currentTimeMillis() + "");
             try {
@@ -81,6 +88,7 @@ public class AuctionOrderActivity extends BaseActivity implements View.OnClickLi
                 public void onError(Call call, Exception e) {
                     e.printStackTrace();
                     System.out.println("失败了");
+                    ToastUtil.showLong(AuctionOrderActivity.this,"网络连接超时,稍后重试!");
                 }
 
                 @Override
@@ -99,9 +107,19 @@ public class AuctionOrderActivity extends BaseActivity implements View.OnClickLi
                             intent.putExtra("currentId", AppApplication.gUser.getId());
                             AuctionOrderActivity.this.startActivity(intent);
                         }
+                    }else if ("000000".equals(response.get("resultCode"))){
+                        SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                            @Override
+                            public void getCode(String code) {
+                                if ("0".equals(code)){
+                                    LoadData(AutoListView.REFRESH, currentPage);
+                                }
+                            }
+                        });
+                        sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                     }
                 }
-            });
+            });*/
         }
         @JavascriptInterface
         public String fetchParamObject() {
@@ -113,6 +131,55 @@ public class AuctionOrderActivity extends BaseActivity implements View.OnClickLi
             intent.putExtra("artWorkOrderId",orderId);
             AuctionOrderActivity.this.startActivity(intent);
         }
+    }
+
+    private void loadData(final String id) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("userId", id);
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "user.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+                ToastUtil.showLong(AuctionOrderActivity.this,"网络连接超时,稍后重试!");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    Map<Object,Object> data= (Map<Object, Object>) response.get("data");
+                    User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(data.get("user")), User.class);
+                    if (user.getMaster()!=null){
+                        Intent intent =new Intent(AuctionOrderActivity.this,UserYsjIndexActivity.class);
+                        intent.putExtra("userId", id);
+                        intent.putExtra("currentId", AppApplication.gUser.getId());
+                        AuctionOrderActivity.this.startActivity(intent);
+                    }else {
+                        Intent intent =new Intent(AuctionOrderActivity.this,UserPtIndexActivity.class);
+                        intent.putExtra("userId", id);
+                        intent.putExtra("currentId", AppApplication.gUser.getId());
+                        AuctionOrderActivity.this.startActivity(intent);
+                    }
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                loadData(id);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
     }
 
 }

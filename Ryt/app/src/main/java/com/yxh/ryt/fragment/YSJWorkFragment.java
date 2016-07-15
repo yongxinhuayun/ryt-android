@@ -26,6 +26,7 @@ import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.custemview.CustomDialog;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.MasterWork;
 
@@ -198,6 +199,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
 				System.out.println("444444失败了");
+				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
 			}
 
 			@Override
@@ -283,6 +285,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 							noData.setVisibility(View.GONE);
 							ySJWorkDatas.addAll(commentList);
 							commentList.clear();
+							lstv.requestLayout();
 							ySJWorkCommonAdapter.notifyDataSetChanged();
 						}else {
 							more.setVisibility(View.VISIBLE);
@@ -294,6 +297,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 							ySJWorkDatas.addAll(commentList);
 							commentList.clear();
 						}
+						lstv.requestLayout();
 						ySJWorkCommonAdapter.notifyDataSetChanged();
 					}else {
 						List<MasterWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("masterWorkList")), new TypeToken<List<MasterWork>>() {
@@ -313,6 +317,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 							ySJWorkDatas.addAll(commentList);
 							commentList.clear();
 						}
+						lstv.requestLayout();
 						ySJWorkCommonAdapter.notifyDataSetChanged();
 					}
 				}
@@ -323,5 +328,13 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 	public void onClick(View v) {
 		Intent intent = new Intent("android.intent.action.FW_BROADCAST");
 		AppApplication.getSingleContext().sendBroadcast(intent);
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		ySJWorkDatas.clear();
+		if (ySJWorkCommonAdapter!=null){
+			ySJWorkCommonAdapter.notifyDataSetChanged();
+		}
 	}
 }

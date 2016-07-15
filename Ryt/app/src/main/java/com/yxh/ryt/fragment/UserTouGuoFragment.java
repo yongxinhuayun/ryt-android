@@ -23,6 +23,7 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.ConvertWork;
 
 import java.util.ArrayList;
@@ -158,7 +159,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("userId",userId);
-		paramsMap.put("currentId", currentId);
+		//paramsMap.put("currentId", currentId);
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -173,6 +174,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
 				System.out.println("444444失败了");
+				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
 			}
 			@Override
 			public void onResponse(Map<String, Object> response) {
@@ -201,6 +203,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 							noData.setVisibility(View.GONE);
 							userZGDatas.addAll(commentList);
 							commentList.clear();
+							lstv.requestLayout();
 							userZGCommonAdapter.notifyDataSetChanged();
 						}else {
 							more.setVisibility(View.VISIBLE);
@@ -212,6 +215,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 							userZGDatas.addAll(commentList);
 							commentList.clear();
 						}
+						lstv.requestLayout();
 						userZGCommonAdapter.notifyDataSetChanged();
 					}else {
 						List<ConvertWork> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworks")), new TypeToken<List<ConvertWork>>() {
@@ -231,10 +235,19 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 							userZGDatas.addAll(commentList);
 							commentList.clear();
 						}
+						lstv.requestLayout();
 						userZGCommonAdapter.notifyDataSetChanged();
 					}
 				}
 			}
 		});
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		userZGDatas.clear();
+		if (userZGCommonAdapter!=null){
+			userZGCommonAdapter.notifyDataSetChanged();
+		}
 	}
 }

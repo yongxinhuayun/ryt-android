@@ -124,7 +124,7 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
         mViewPager.setAdapter(pagerAdapter);
         TabPageIndicator indicator = (TabPageIndicator) findViewById(R.id.user_pt_indicator);
         indicator.setViewPager(mViewPager);
-        if (!userId.equals(currentId)){
+        if (userId.equals(currentId)){
             other.setVisibility(View.GONE);
         }
     }
@@ -134,7 +134,7 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
         /*if (AppApplication.gUser!=null && AppApplication.gUser.getId()!=null && !"".equals(AppApplication.gUser.getId())){*/
             Map<String,String> paramsMap=new HashMap<>();
             paramsMap.put("userId", userId);
-            paramsMap.put("currentId", currentId);
+            //paramsMap.put("currentId", currentId);
             paramsMap.put("pageIndex", "1");
             paramsMap.put("pageSize", "20");
             paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -147,6 +147,7 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
                 @Override
                 public void onError(Call call, Exception e) {
                     System.out.println("失败了");
+                    ToastUtil.showShort(AppApplication.getSingleContext(), "网络连接超时,稍后重试!");
                 }
 
                 @Override

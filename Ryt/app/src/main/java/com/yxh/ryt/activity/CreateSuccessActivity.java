@@ -30,6 +30,7 @@ import com.yxh.ryt.custemview.CustomGridView;
 import com.yxh.ryt.util.DisplayUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.util.avalidations.ValidationModel;
@@ -156,7 +157,7 @@ public class CreateSuccessActivity extends BaseActivity implements View.OnClickL
     }
     private void renZhengRequst(){
         Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("artworkId","qydeyugqqiugd5");
+        paramsMap.put("artworkId",artworkId);
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
         try {
             AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -167,7 +168,6 @@ public class CreateSuccessActivity extends BaseActivity implements View.OnClickL
         Map<String, String> headers = new HashMap<>();
         headers.put("APP-Key", "APP-Secret222");
         headers.put("APP-Secret", "APP-Secret111");
-        System.out.println(fileMap3.toString());
         NetRequestUtil.postFile(Constants.BASE_PATH + "artworkComplete.do", "file", fileMap3, paramsMap, headers, new CompleteUserInfoCallBack() {
             @Override
             public void onError(Call call, Exception e) {
@@ -179,8 +179,17 @@ public class CreateSuccessActivity extends BaseActivity implements View.OnClickL
                 if ("0".equals(response.get("resultCode"))){
                     ToastUtil.showLong(CreateSuccessActivity.this,"上传成功");
                     finish();
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                renZhengRequst();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
-
             }
         });
     }

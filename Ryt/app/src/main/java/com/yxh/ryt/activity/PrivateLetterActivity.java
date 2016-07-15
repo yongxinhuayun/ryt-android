@@ -20,6 +20,8 @@ import com.yxh.ryt.callback.NotifaicationCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
+import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.PrivateLetter;
 
 import java.util.ArrayList;
@@ -110,7 +112,7 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
         startActivity(intent);
     }
 
-    private void LoadData(final int state,int pageNum) {
+    private void LoadData(final int state, final int pageNum) {
         Map<String,String> paramsMap=new HashMap<>();
         //paramsMap.put("userId",AppApplication.gUser.getId());
         paramsMap.put("type","2");
@@ -126,43 +128,56 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
             @Override
             public void onError(Call call, Exception e) {
                 System.out.println("失败了");
+                ToastUtil.showLong(PrivateLetterActivity.this,"网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if (state == AutoListView.REFRESH) {
-                    plflistview.onRefreshComplete();
-                    privateLetterDatas.clear();
-                    List<PrivateLetter> notificationList = null;
-                    try {
-                        notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<PrivateLetter>>() {
+                if ("0".equals(response.get("resultCode"))){
+                    if (state == AutoListView.REFRESH) {
+                        plflistview.onRefreshComplete();
+                        privateLetterDatas.clear();
+                        List<PrivateLetter> notificationList = null;
+                        try {
+                            notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<PrivateLetter>>() {
+                            }.getType());
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
+                        }
+                        if (null == notificationList || notificationList.size() == 0) {
+                            plflistview.setResultSize(0);
+                        }
+                        if (null != notificationList && notificationList.size() > 0) {
+                            plflistview.setResultSize(notificationList.size());
+                            privateLetterDatas.addAll(notificationList);
+                            plfAdapter.notifyDataSetChanged();
+                        }
+                        return;
+                    }
+                    if (state == AutoListView.LOAD) {
+                        plflistview.onLoadComplete();
+                        List<PrivateLetter> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<PrivateLetter>>() {
                         }.getType());
-                    } catch (JsonSyntaxException e) {
-                        e.printStackTrace();
+                        if (null == notificationList || notificationList.size() == 0) {
+                            plflistview.setResultSize(1);
+                        }
+                        if (null != notificationList && notificationList.size() > 0) {
+                            plflistview.setResultSize(notificationList.size());
+                            privateLetterDatas.addAll(notificationList);
+                            plfAdapter.notifyDataSetChanged();
+                        }
+                        return;
+                    }else if ("000000".equals(response.get("resultCode"))){
+                        SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                            @Override
+                            public void getCode(String code) {
+                                if ("0".equals(code)){
+                                    LoadData(state,pageNum);
+                                }
+                            }
+                        });
+                        sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                     }
-                    if (null == notificationList || notificationList.size() == 0) {
-                        plflistview.setResultSize(0);
-                    }
-                    if (null != notificationList && notificationList.size() > 0) {
-                        plflistview.setResultSize(notificationList.size());
-                        privateLetterDatas.addAll(notificationList);
-                        plfAdapter.notifyDataSetChanged();
-                    }
-                    return;
-                }
-                if (state == AutoListView.LOAD) {
-                    plflistview.onLoadComplete();
-                    List<PrivateLetter> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<PrivateLetter>>() {
-                    }.getType());
-                    if (null == notificationList || notificationList.size() == 0) {
-                        plflistview.setResultSize(1);
-                    }
-                    if (null != notificationList && notificationList.size() > 0) {
-                        plflistview.setResultSize(notificationList.size());
-                        privateLetterDatas.addAll(notificationList);
-                        plfAdapter.notifyDataSetChanged();
-                    }
-                    return;
                 }
             }
         });

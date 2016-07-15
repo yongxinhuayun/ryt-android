@@ -13,6 +13,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.ContentValidation;
@@ -74,9 +75,13 @@ public class ProjectCommentReply extends BaseActivity {
         if(!AppApplication.getSingleEditTextValidator().validate()){
             return;
         }
+        sendReply();
+    }
+
+    private void sendReply() {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artworkId",artworkId+"");
-        paramsMap.put("currentUserId", currentUserId);
+        //paramsMap.put("currentUserId", currentUserId);
         if(!"".equals(messageId)){
             paramsMap.put("messageId", messageId);
         }
@@ -95,7 +100,7 @@ public class ProjectCommentReply extends BaseActivity {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
-                System.out.println("评论失败");
+                ToastUtil.showLong(ProjectCommentReply.this,"网络连接超时,稍后重试!");
             }
 
             @Override
@@ -103,6 +108,16 @@ public class ProjectCommentReply extends BaseActivity {
                 if (response.get("resultCode").equals("0")) {
                     ToastUtil.show(ProjectCommentReply.this, "评论成功", Toast.LENGTH_SHORT);
                     ProjectCommentReply.this.finish();
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                sendReply();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
             }
         });

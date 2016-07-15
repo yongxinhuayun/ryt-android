@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -28,7 +27,6 @@ import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
-import com.yxh.ryt.util.ImageUtils;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.ToastUtil;
@@ -38,8 +36,6 @@ import com.yxh.ryt.validations.NickNameValidation;
 import com.yxh.ryt.vo.User;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -178,7 +174,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
             public void onResponse(Map<String, Object> response) {
                 User user = new User();
                 user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
-                getUser(user);
+                getUser(user, 1);
                 Map<String,String> paramsMap=new HashMap<>();
                 paramsMap.put("username",username+"");
                 paramsMap.put("password", password+"");
@@ -203,7 +199,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                         }
                         User user = new User();
                         user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("userInfo")), User.class);
-                        getUser(user);
+                        getUser(user,1);
                         Map<String, String> paramsMap = new HashMap<>();
                         paramsMap.put("username", username+"");
                         paramsMap.put("password", password+"");
@@ -257,11 +253,12 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
             }
         });
     }
-    private void getUser(User user) {
+    private void getUser(User user, int i) {
         SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");
         SPUtil.put(AppApplication.getSingleContext(), "current_username", user.getUsername()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_name", user.getName()+"");
         SPUtil.put(AppApplication.getSingleContext(), "current_sex", user.getSex() + "");
+        SPUtil.put(AppApplication.getSingleContext(), "current_loginState", i+"");
         if (user.getMaster()!=null){
             SPUtil.put(AppApplication.getSingleContext(), "current_master","master");
         }else {
@@ -274,6 +271,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         }else {
             AppApplication.gUser.setMaster1("");
         }
+        AppApplication.gUser.setLoginState(i+"");
         System.out.print(AppApplication.gUser.toString());
     }
 
