@@ -75,7 +75,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 				if (state == AutoListView.REFRESH) {
 					lstv.onRefreshComplete();
 					rongZiDatas.clear();
-					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
+					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
 					}.getType());
 					if (null == objectList || objectList.size() == 0) {
 						lstv.setResultSize(0);
@@ -89,7 +89,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 				}
 				if (state == AutoListView.LOAD) {
 					lstv.onLoadComplete();
-					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<RongZi>>() {
+					List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
 					}.getType());
 					if (null == objectList || objectList.size() == 0) {
 						lstv.setResultSize(1);
