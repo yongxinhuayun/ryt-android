@@ -36,6 +36,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.AttentionActivity;
+import com.yxh.ryt.activity.InvestActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.ProjectCommentReply;
 import com.yxh.ryt.activity.UserPtIndexActivity;
@@ -137,6 +138,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private TextView fansNum;
     private Artwork artwork;
     private TextView reader;
+    private LinearLayout invest;
+    private int remainMoney;
 
     public RZProjectFragment(String artWorkId) {
         super();
@@ -192,6 +195,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         attention = (ImageButton) view.findViewById(R.id.ib_attention);
         attention.setOnClickListener(this);
         comment.setOnClickListener(this);
+        invest = ((LinearLayout) view.findViewById(R.id.rzp_ll_invest));
         llpraise = (LinearLayout) view.findViewById(R.id.ll_prise);
         //llprogress = (LinearLayout) view.findViewById(R.id.ll_progress);
         llinvester = (LinearLayout) view.findViewById(R.id.ll_invester);
@@ -216,6 +220,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         go.setOnClickListener(this);
         mListview = (ListViewForScrollView) view.findViewById(R.id.lv_comment);
         iListview = (ListViewForScrollView) view.findViewById(R.id.lv_invester);
+        invest.setOnClickListener(this);
         return view;
     }
 
@@ -350,6 +355,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
+                    artCommentDatas.clear();
                     if (flag) {
                         List<ArtworkComment> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<ArtworkComment>>() {
                         }.getType());
@@ -428,6 +434,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                    // worksNum.setText(artwork.);
                     tv_price.setText("￥ " + artwork.getInvestsMoney() + ".00");
                     tvProgress.setText(artwork.getInvestNum() + "人投资 " + "￥" + artwork.getInvestsMoney() + "/" + artwork.getInvestGoalMoney());
+                    remainMoney = artwork.getInvestGoalMoney().subtract(artwork.getInvestsMoney()).intValue();
                     deadline.setText(DateUtil.millisToStringShort(Long.parseLong(artwork.getInvestRestTime()),false,false) + "后截止");
                     //进度显示
                     progressCurrent = artwork.getInvestsMoney().doubleValue() / artwork.getInvestGoalMoney().doubleValue();
@@ -820,24 +827,18 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 break;
             case R.id.ib_go:
                 break;
+            case R.id.rzp_ll_invest:
+                if ("".equals(AppApplication.gUser.getId())) {
+                    Intent intent2 = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent2);
+                } else {
+                    Intent intent1 = new Intent(getActivity(), InvestActivity.class);
+                    intent1.putExtra("allMoney", remainMoney);
+                    intent1.putExtra("artWorkId", artWorkId);
+                    startActivity(intent1);
+                }
+                break;
             case R.id.iv_is_show:
-               /* if (isShow){
-                iv_show.setImageResource(R.mipmap.no_show_progress);
-                webView.setVisibility(View.INVISIBLE);
-                isShow = false;
-                } else if(!isShow) {
-                    iv_show.setImageResource(R.mipmap.show_progress);
-                    webView.setVisibility(View.VISIBLE);
-                    isShow = true;
-                }*/
-                /*isShow=!isShow;
-                webView.clearAnimation();  //清除动画
-                final int tempHight;
-                final int startHight = 0;  //起始高度
-                int durationMillis = 200;
-
-                if(isShow){
-                    */
                 if (mExpandView.isExpand()) {
                     mExpandView.collapse();
                     //  sv.removeView(mExpandView);
@@ -870,46 +871,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 }
                 break;
             case R.id.bt_comment:
-                AppApplication.getSingleEditTextValidator()
-                        .add(new ValidationModel(etComment, new ContentValidation()))
-                        .execute();
-                //表单没有检验通过直接退出方法
-                if (!AppApplication.getSingleEditTextValidator().validate()) {
-                    return;
-                }
-                Map<String, String> paramsMap = new HashMap<>();
-                paramsMap.put("artworkId", artWorkId + "");
-                //paramsMap.put("currentUserId", AppApplication.gUser.getId());
-                paramsMap.put("content", etComment.getText().toString());
-                /*if(!"".equals(messageId)){
-                    paramsMap.put("messageId", messageId);
-                }*/
-                /*if ( !"".equals(fatherCommentId)){
-                    paramsMap.put("fatherCommentId", fatherCommentId);
-                }*/
-                paramsMap.put("messageId", "");
-                paramsMap.put("fatherCommentId", "");
-                paramsMap.put("timestamp", System.currentTimeMillis() + "");
-                try {
-                    AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
-                    paramsMap.put("signmsg", AppApplication.signmsg);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                NetRequestUtil.post(Constants.BASE_PATH + "artworkComment.do", paramsMap, new RongZiListCallBack() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        e.printStackTrace();
-                        System.out.println("评论失败");
-                    }
-
-                    @Override
-                    public void onResponse(Map<String, Object> response) {
-                        if (response.get("resultCode").equals("0")) {
-                            ToastUtil.show(getActivity(), "评论成功", Toast.LENGTH_SHORT);
-                        }
-                    }
-                });
+                commit();
                 break;
             case R.id.ib_attention:
                 if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
@@ -934,6 +896,53 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 break;
         }
 
+    }
+
+    private void commit() {
+        AppApplication.getSingleEditTextValidator()
+                .add(new ValidationModel(etComment, new ContentValidation()))
+                .execute();
+        //表单没有检验通过直接退出方法
+        if (!AppApplication.getSingleEditTextValidator().validate()) {
+            return;
+        }
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("artworkId", artWorkId + "");
+        paramsMap.put("content", etComment.getText().toString());
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "artworkComment.do", paramsMap, new RongZiListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("评论失败");
+                ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if (response.get("resultCode").equals("0")) {
+                    ToastUtil.show(getActivity(), "评论成功", Toast.LENGTH_SHORT);
+                    etComment.setText("");
+                    loadCommentData(true, currentPage);
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                commit();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
     }
 
     private Runnable ScrollRunnable = new Runnable() {
