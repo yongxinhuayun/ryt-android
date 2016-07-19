@@ -21,6 +21,7 @@ import com.yxh.ryt.util.DataCleanManager;
 import com.yxh.ryt.util.FileSizeUtil;
 import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.ToastUtil;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.File;
 
@@ -104,6 +105,7 @@ public class UserSettingActivity extends BaseActivity {
                 SPUtil.clear(AppApplication.getSingleContext());
                 SPUtil.put(getApplicationContext(), Constants.ISFIRSTENTER, false);
                 btnOut.setVisibility(View.GONE);
+                OkHttpUtils.getInstance().getCookieStore().removeAll();
                 Intent intent=new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 break;

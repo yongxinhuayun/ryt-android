@@ -316,6 +316,7 @@ public class LoginActivity extends BaseActivity {
             SPUtil.put(AppApplication.getSingleContext(), "current_pictureUrl", user.getPictureUrl()+"");
             SPUtil.put(AppApplication.getSingleContext(), "current_loginState", "1");
             user.setLoginState("1");
+            AppApplication.gUser.setPassword(etPassword.getText().toString());
             AppApplication.gUser = user;
         }else if (i==2){
             SPUtil.put(AppApplication.getSingleContext(), "current_id", user.getId() + "");

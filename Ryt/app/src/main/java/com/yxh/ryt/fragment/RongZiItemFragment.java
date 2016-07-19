@@ -166,7 +166,7 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 					//helper.setText(R.id.fli_ll_tv_remainingTime, Utils.getJudgeDate(item.getInvestRestTime()));
 					view1 = ((TextView) helper.getView(R.id.fli_ll_tv_investGoalMoney));
 					view2= ((TextView) helper.getView(R.id.fli_ll_tv_remainingTime));
-					helper.setText(R.id.fli_ll_tv_remainingTime, item.getInvestRestTime());
+					//helper.setText(R.id.fli_ll_tv_remainingTime, item.getInvestRestTime());
 					helper.setText(R.id.fli_ll_tv_investGoalPeople, item.getInvestNum()+"");
 					helper.setImageByUrl(R.id.cl_01_tv_prc, item.getPicture_url());
 					if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){

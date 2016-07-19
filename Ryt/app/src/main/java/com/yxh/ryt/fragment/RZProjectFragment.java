@@ -2,6 +2,7 @@ package com.yxh.ryt.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ import com.yxh.ryt.custemview.RoundProgressBar;
 import com.yxh.ryt.util.DateUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ShuoMClickableSpan;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
@@ -62,6 +64,8 @@ import com.yxh.ryt.vo.ArtworkInvest;
 import com.yxh.ryt.vo.User;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -212,21 +216,14 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         go.setOnClickListener(this);
         mListview = (ListViewForScrollView) view.findViewById(R.id.lv_comment);
         iListview = (ListViewForScrollView) view.findViewById(R.id.lv_invester);
-
-        //点赞头像展示
-        showHeadNum();
-        loadInvesterData(true, currentPage);
-        loadCommentData(true, currentPage);
         return view;
     }
 
     private void showHeadNum() {
         //测量箭头的宽高
-        go.measure(0, 0);
         int heightArrow = go.getMeasuredHeight();
         int widthArrow = go.getMeasuredWidth();
         //测量prise宽高
-        llpraise.measure(0, 0);
         int heightPraise = llpraise.getMeasuredHeight();
         int widthPraise = llpraise.getMeasuredWidth();
         DisplayMetrics metric = new DisplayMetrics();
@@ -236,11 +233,11 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         //图片宽高
         widthImage = Utils.dip2px(getActivity(), 24);
         heightIamge = Utils.dip2px(getActivity(), 24);
-        //图片padding
+        //图片paddingao
         right = Utils.dip2px(getActivity(), 10);
         //一行能容纳的图片个数
         //praise与view间距
-        padding = Utils.dip2px(getActivity(), 30);
+        padding = Utils.dip2px(getActivity(), 100);
         widthView = widthScreen - widthPraise - widthArrow - padding;
         count = widthView / (widthImage + right);
     }
@@ -330,7 +327,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
     }
 
-    private void loadCommentData(final boolean flag, int pageNum) {
+    private void loadCommentData(final boolean flag, final int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artWorkId);
         paramsMap.put("pageSize", Constants.pageSize + "");
@@ -359,7 +356,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         if (commentList == null || commentList.size() == 0) {
 
                         } else if (commentList.size() < Constants.pageSize) {
-
                             loadNum5(mListview, artCommentDatas, commentList);
                             commentList.clear();
                         }
@@ -378,7 +374,16 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                             commentList.clear();
                         }
                     }
-
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                loadCommentData(flag,pageNum);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
                 setCommentAdapter();
             }
@@ -412,8 +417,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
                             toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
                     }.getType());
-                    if (artWorkPraiseList != null && artWorkPraiseList.size() > 0 && flag1) {
-                        flag1 = false;
+                    if (artWorkPraiseList != null && artWorkPraiseList.size() > 0 ) {
                         showInvesterHead(artWorkPraiseList);
                     }
 
@@ -531,7 +535,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
                     @Override
                     public void onResponse(Bitmap response) {
-                        imageView.setImageBitmap(response);
+                        Bitmap bitmap=comp(response, artWorkPraiseList.get(temp).getUser().getPictureUrl());
+                        imageView.setImageBitmap(bitmap);
                         imageView.setLayoutParams(params);
                         linearLayout.addView(imageView);
                         imageView.setOnClickListener(new View.OnClickListener() {
@@ -564,7 +569,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
                     @Override
                     public void onResponse(Bitmap response) {
-                        imageView.setImageBitmap(response);
+                        Bitmap bitmap=comp(response,artWorkPraiseList.get(temp).getUser().getPictureUrl());
+                        imageView.setImageBitmap(bitmap);
                         imageView.setLayoutParams(params);
                         linearLayout.addView(imageView);
                         imageView.setOnClickListener(new View.OnClickListener() {
@@ -581,6 +587,55 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
+    private Bitmap comp(Bitmap response, String pictureUrl) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap.CompressFormat format=Utils.getImageFormatBig(pictureUrl);
+        response.compress(format, 100, baos);
+        if( baos.toByteArray().length / 1024>1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
+            baos.reset();//重置baos即清空baos
+            response.compress(format, 50, baos);//这里压缩50%，把压缩后的数据存放到baos中
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+        BitmapFactory.Options newOpts = new BitmapFactory.Options();
+        //开始读入图片，此时把options.inJustDecodeBounds 设回true了
+        newOpts.inJustDecodeBounds = true;
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
+        newOpts.inJustDecodeBounds = false;
+        int w = newOpts.outWidth;
+        int h = newOpts.outHeight;
+        //现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
+        float hh = 800f;//这里设置高度为800f
+        float ww = 480f;//这里设置宽度为480f
+        //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
+        int be = 1;//be=1表示不缩放
+        if (w > h && w > ww) {//如果宽度大的话根据宽度固定大小缩放
+            be = (int) (newOpts.outWidth / ww);
+        } else if (w < h && h > hh) {//如果高度高的话根据宽度固定大小缩放
+            be = (int) (newOpts.outHeight / hh);
+        }
+        if (be <= 0)
+            be = 1;
+        newOpts.inSampleSize = be;//设置缩放比例
+        newOpts.inPreferredConfig = Bitmap.Config.RGB_565;//降低图片从ARGB888到RGB565
+        //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
+        isBm = new ByteArrayInputStream(baos.toByteArray());
+        bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
+        return compressImage(bitmap,pictureUrl);//压缩好比例大小后再进行质量压缩
+    }
+    private Bitmap compressImage(Bitmap image,String pictureUrl) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap.CompressFormat format=Utils.getImageFormatBig(pictureUrl);
+        image.compress(format, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        while ( baos.toByteArray().length / 1024>100) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            options -= 10;//每次都减少10
+            image.compress(format, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
+        return bitmap;
+    }
 
     private void clickHead(int temp) {
         if (artWorkPraiseList.get(temp).getUser().getMaster() != null) {
@@ -603,6 +658,10 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         super.onResume();
         artCommentDatas.clear();
         currentPage = 1;
+        //点赞头像展示
+        showHeadNum();
+        loadInvesterData(true, currentPage);
+        loadCommentData(true, currentPage);
     }
 
     @Override
@@ -811,7 +870,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 }
                 break;
             case R.id.bt_comment:
-
                 AppApplication.getSingleEditTextValidator()
                         .add(new ValidationModel(etComment, new ContentValidation()))
                         .execute();
@@ -821,7 +879,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 }
                 Map<String, String> paramsMap = new HashMap<>();
                 paramsMap.put("artworkId", artWorkId + "");
-                paramsMap.put("currentUserId", AppApplication.gUser.getId());
+                //paramsMap.put("currentUserId", AppApplication.gUser.getId());
                 paramsMap.put("content", etComment.getText().toString());
                 /*if(!"".equals(messageId)){
                     paramsMap.put("messageId", messageId);

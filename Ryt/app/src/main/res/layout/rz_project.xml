@@ -125,7 +125,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="26dp"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
@@ -133,32 +133,33 @@
             android:gravity="center">
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:id="@+id/ll_prise"
+                android:gravity="center"
                 android:background="@drawable/prise_shape">
                 <ImageView
                     android:id="@+id/iv_praise"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:src="@mipmap/before_praise"
                     />
                 <TextView
-
                     android:id="@+id/tv_praise"
                     android:text="30"
                     android:layout_marginLeft="6dp"
                     android:textColor="#D55B5C"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
             <TextView
+                android:layout_marginTop="4dp"
                 android:id="@+id/divide"
                 android:layout_toRightOf="@+id/ll_prise"
                 android:layout_width="1dp"
-                android:layout_height="match_parent"
+                android:layout_height="15dp"
                 android:background="#F5F5F5"
                 android:layout_marginLeft="20dp"
                 />
@@ -168,7 +169,8 @@
                 android:id="@+id/ll_invester"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"></LinearLayout>
+                android:orientation="horizontal">
+            </LinearLayout>
             <ImageButton
                 android:id="@+id/ib_go"
                 android:layout_alignParentRight="true"

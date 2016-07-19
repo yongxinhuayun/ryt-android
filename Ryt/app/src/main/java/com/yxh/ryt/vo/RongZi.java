@@ -3,7 +3,7 @@ package com.yxh.ryt.vo;
 import java.math.BigDecimal;
 
 /**
- * Created by 吴洪杰 on 2016/4/5.
+ * Created by  on 2016/4/5.
  */
 public class RongZi {
     /**
@@ -34,9 +34,10 @@ public class RongZi {
      * duration : null
      * startingPrice : 1000
      */
-    //private long investRestTime;
-            private String investRestTime;
+    private long investRestTime;
+     //       private String investRestTime;
     private String id;
+    private  boolean praise;
     private String title;
     private String brief;
     private Object description;
@@ -75,9 +76,17 @@ public class RongZi {
     private Object duration;
     private int startingPrice;
     private int investNum;
-
+    private int praiseNUm;
     public int getInvestNum() {
         return investNum;
+    }
+
+    public int getPraiseNUm() {
+        return praiseNUm;
+    }
+
+    public void setPraiseNUm(int praiseNUm) {
+        this.praiseNUm = praiseNUm;
     }
 
     public void setInvestNum(int investNum) {
@@ -92,21 +101,29 @@ public class RongZi {
         this.id = id;
     }
 
-    /*public long getInvestRestTime() {
+    public boolean isPraise() {
+        return praise;
+    }
+
+    public void setPraise(boolean praise) {
+        this.praise = praise;
+    }
+
+    public long getInvestRestTime() {
         return investRestTime;
     }
 
     public void setInvestRestTime(long investRestTime) {
         this.investRestTime = investRestTime;
-    }*/
+    }
 
-    public String getInvestRestTime() {
+    /*public String getInvestRestTime() {
         return investRestTime;
     }
 
     public void setInvestRestTime(String investRestTime) {
         this.investRestTime = investRestTime;
-    }
+    }*/
 
     public String getTitle() {
         return title;
@@ -319,6 +336,25 @@ public class RongZi {
         private String status;
         private Object createDatetime;
         private String type;
+        private int masterWorkNum;
+        private int fansNum;
+
+        public int getMasterWorkNum() {
+            return masterWorkNum;
+        }
+
+        public void setMasterWorkNum(int masterWorkNum) {
+            this.masterWorkNum = masterWorkNum;
+        }
+
+        public int getFansNum() {
+            return fansNum;
+        }
+
+        public void setFansNum(int fansNum) {
+            this.fansNum = fansNum;
+        }
+
         /**
          * id : icjxkedl0000b6i0
          * brief : 版画家，他使得业已消失数百年的明代印刷业老字号十竹斋重新恢复并焕发生机，成为杭州市文化产业传承创新的亮点。
