@@ -34,6 +34,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.AttentionActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.ProjectCommentReply;
 import com.yxh.ryt.activity.UserPtIndexActivity;
@@ -54,6 +55,7 @@ import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.ContentValidation;
+import com.yxh.ryt.vo.ArtWorkPraiseList;
 import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.ArtworkComment;
 import com.yxh.ryt.vo.ArtworkInvest;
@@ -79,6 +81,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private List<ArtworkComment> artCommentDatas;
     private int currentPage = 1;
     private List<User> users;
+    private List<ArtWorkPraiseList> artWorkPraiseList;
     private ImageView imageTitle;
     private ImageView dianzan;
     private boolean flag1 = true;
@@ -126,11 +129,16 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private ExpandView mExpandView;
     private LinearLayout ll_project;
     private RelativeLayout rl_progress;
+    private TextView worksNum;
+    private TextView fansNum;
+    private Artwork artwork;
+    private TextView reader;
 
     public RZProjectFragment(String artWorkId) {
         super();
         this.artWorkId = artWorkId;
     }
+
     private final Handler mHandler = new Handler();
     private Handler handler = new Handler() {
         @Override
@@ -166,10 +174,13 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         tv_project_name = (TextView) view.findViewById(R.id.tv_project_name);
         deadline = (TextView) view.findViewById(R.id.tv_deadline);
         tvProgress = (TextView) view.findViewById(R.id.tv_progress);
+        reader = (TextView) view.findViewById(R.id.tv_reader);
         tv_project_brief = (TextView) view.findViewById(R.id.tv_project_brief);
         tv_name = (TextView) view.findViewById(R.id.tv_name);
         tv_name2 = (TextView) view.findViewById(R.id.tv_name2);
         praiseNum = (TextView) view.findViewById(R.id.tv_praise);
+        worksNum = (TextView) view.findViewById(R.id.tv_num_works);
+        fansNum = (TextView) view.findViewById(R.id.tv_num_fans);
         tv_price = (TextView) view.findViewById(R.id.tv_price);
         go = (ImageButton) view.findViewById(R.id.ib_go);
         comment = (Button) view.findViewById(R.id.bt_comment);
@@ -190,7 +201,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         //webView = (WebView) view.findViewById(R.id.wv_invest_process);
         //webView.loadUrl("file:///android_asset/InvestFlowControlller.html");
         mExpandView.collapse();
-        for ( int i=0 ; i<mExpandView.getChildCount() ; i++ ) {
+        for (int i = 0; i < mExpandView.getChildCount(); i++) {
             mExpandView.getChildAt(i).setVisibility(View.GONE);
         }
 
@@ -304,7 +315,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                             }
                         }
                     };
-                    spanFatherUser.setSpan(click, 0, fatherUser.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spanFatherUser.setSpan(click, 0, fatherUser.length() + 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                     textView.setText("回复");
                     textView.append(spanFatherUser);
                     textView.append(":");
@@ -386,6 +397,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         }
         System.out.println(paramsMap.toString() + "====");
         NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkView.do", paramsMap, new RongZiListCallBack() {
+
+
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
@@ -396,21 +409,24 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             public void onResponse(Map<String, Object> response) {
                 Map<String, Object> object = (Map<String, Object>) response.get("object");
                 if (object != null) {
-                    users = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("investPeople")), new TypeToken<List<User>>() {
+                    artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                            toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
                     }.getType());
-                    if (users != null && users.size() > 0 && flag1) {
+                    if (artWorkPraiseList != null && artWorkPraiseList.size() > 0 && flag1) {
                         flag1 = false;
-                        showInvesterHead(users);
+                        showInvesterHead(artWorkPraiseList);
                     }
+
                     isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
-                    Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
+                    artwork =   AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
                     tv_project_name.setText(artwork.getTitle());
                     tv_project_brief.setText(artwork.getBrief());
+                   // worksNum.setText(artwork.);
                     tv_price.setText("￥ " + artwork.getInvestsMoney() + ".00");
-                    tvProgress.setText(artwork.getInvestNum() + "人投资 " + "￥" +artwork.getInvestsMoney() + "/" + artwork.getInvestGoalMoney());
-                    deadline.setText(artwork.getInvestRestTime().split("日")[0] + "天后截止");
+                    tvProgress.setText(artwork.getInvestNum() + "人投资 " + "￥" + artwork.getInvestsMoney() + "/" + artwork.getInvestGoalMoney());
+                    deadline.setText(DateUtil.millisToStringShort(Long.parseLong(artwork.getInvestRestTime()),false,false) + "后截止");
                     //进度显示
-                        progressCurrent = artwork.getInvestsMoney().doubleValue() / artwork.getInvestGoalMoney().doubleValue();
+                    progressCurrent = artwork.getInvestsMoney().doubleValue() / artwork.getInvestGoalMoney().doubleValue();
                     max = artwork.getInvestGoalMoney().intValue();
                     isVisibleBar();
 
@@ -420,8 +436,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         AppApplication.displayImage(artwork.getAuthor().getPictureUrl(), cl_headPortrait);
                         if ("master".equals(artwork.getAuthor().getMaster1())) {
                             headV.setVisibility(View.VISIBLE);
-                        }else if ("".equals(artwork.getAuthor().getMaster1())){
-                           headV.setVisibility(View.INVISIBLE);
+                        } else if ("".equals(artwork.getAuthor().getMaster1())) {
+                            headV.setVisibility(View.INVISIBLE);
                         }
                     }
                     if (isPraise1) {
@@ -429,6 +445,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         dianzan.setEnabled(false);
                     }
                     praiseNum.setText(artwork.getPraiseNUm() + "");
+                    reader.setText(artwork.getViewNUm() + "");
                     AppApplication.displayImage(artwork.getPicture_url(), imageTitle);
                 }
             }
@@ -436,19 +453,19 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void isVisibleBar() {
-        Point p=new Point();
+        Point p = new Point();
         getActivity().getWindowManager().getDefaultDisplay().getSize(p);
-        screenWidth=p.x;
-        screenHeight=p.y;
-         rect=new Rect(0,0,screenWidth,screenHeight );
+        screenWidth = p.x;
+        screenHeight = p.y;
+        rect = new Rect(0, 0, screenWidth, screenHeight);
         int[] location = new int[2];
         mRoundProgressBar.getLocationInWindow(location);
         System.out.println(Arrays.toString(location));
-        sv.setOnTouchListener(new View.OnTouchListener(){
+        sv.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction()==MotionEvent.ACTION_MOVE){
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
 
                     if (mRoundProgressBar.getLocalVisibleRect(rect)) {/*rect.contains(ivRect)*/
                         if (progress == 0 && progressCurrent != 0) {
@@ -458,7 +475,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         progress = 0;
                     }
 
-                } else if (event.getAction() == MotionEvent.ACTION_POINTER_UP){
+                } else if (event.getAction() == MotionEvent.ACTION_POINTER_UP) {
 
                     if (mRoundProgressBar.getLocalVisibleRect(rect)) {/*rect.contains(ivRect)*/
                         if (progress == 0) {
@@ -475,8 +492,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         });
 
 
-
-
     }
 
     private void initProgressBar(final int temp) {
@@ -489,7 +504,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     System.out.println(progress);
                     mRoundProgressBar.setProgress(progress);
                     try {
-                        Thread.sleep(250/temp);
+                        Thread.sleep(250 / temp);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -498,8 +513,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         }).start();
     }
 
-    private void showInvesterHead(final List<User> users) {
-        if (users.size() > count) {
+    private void showInvesterHead(final List<ArtWorkPraiseList> artWorkPraiseList) {
+        if (artWorkPraiseList.size() > count) {
             final LinearLayout linearLayout = new LinearLayout(getActivity());
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
             for (int j = 0; j < count; j++) {
@@ -508,7 +523,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 // 获取LayoutParams，给view对象设置宽度，高度
                 final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthImage, heightIamge);
                 params.setMargins(0, 0, right, 0);
-                NetRequestUtil.downloadImage(users.get(j).getPictureUrl(), new BitmapCallback() {
+                NetRequestUtil.downloadImage(artWorkPraiseList.get(j).getUser().getPictureUrl(), new BitmapCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
 
@@ -533,17 +548,15 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         } else {
             final LinearLayout linearLayout = new LinearLayout(getActivity());
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-            for (int j = 0; j < users.size(); j++) {
-                User user = users.get(j);
+            for (int j = 0; j < artWorkPraiseList.size(); j++) {
+                User user = artWorkPraiseList.get(j).getUser();
 
                 final CircleImageView imageView = new CircleImageView(getActivity());
-                imageView.setTag(R.id.tag_first, users.get(j).getId());
-                imageView.setTag(R.id.tag_second, users.get(j).getMaster());
                 // 获取LayoutParams，给view对象设置宽度，高度
                 final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthImage, heightIamge);
                 params.setMargins(0, 0, right, 0);
                 final int temp = j;
-                NetRequestUtil.downloadImage(users.get(j).getPictureUrl(), new BitmapCallback() {
+                NetRequestUtil.downloadImage(artWorkPraiseList.get(j).getUser().getPictureUrl(), new BitmapCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
 
@@ -570,15 +583,15 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
 
     private void clickHead(int temp) {
-        if (users.get(temp).getMaster() != null) {
+        if (artWorkPraiseList.get(temp).getUser().getMaster() != null) {
             Intent intent = new Intent(getActivity(), UserYsjIndexActivity.class);
-            intent.putExtra("userId", users.get(temp).getId());
+            intent.putExtra("userId", artWorkPraiseList.get(temp).getUser().getId());
             intent.putExtra("currentId", AppApplication.gUser.getId());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
         } else {
             Intent intent = new Intent(getActivity(), UserPtIndexActivity.class);
-            intent.putExtra("userId", users.get(temp).getId());
+            intent.putExtra("userId", artWorkPraiseList.get(temp).getUser().getId());
             intent.putExtra("currentId", AppApplication.gUser.getId());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
@@ -630,8 +643,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1) + "");
                 }
                 helper.setText(R.id.iri_tv_content, "￥" + item.getPrice() + ".00");
-               /* String s = DateUtil.date2String(item.getCreateDatetime(),"yyyy-MM-dd  HH:mm:ss");
-                Date dt = DateUtil.string2Date(s,"yyyy-MM-dd  HH:mm:ss");*/
                 helper.setText(R.id.iri_tv_date, long2Timestamp(item.getCreateDatetime()));
             }
         };
@@ -639,10 +650,11 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     }
 
     private String long2Timestamp(long time) {
-        String sTime = DateUtil.date2String(time,"yyyy-MM-dd  HH:mm:ss");
-        Date dt = DateUtil.string2Date(sTime,"yyyy-MM-dd  HH:mm:ss");
+        String sTime = DateUtil.date2String(time, "yyyy-MM-dd  HH:mm:ss");
+        Date dt = DateUtil.string2Date(sTime, "yyyy-MM-dd  HH:mm:ss");
         return DateUtil.getTimestampString(dt);
     }
+
     private void loadInvesterData(final boolean flag, int pageNum) {
 
         Map<String, String> paramsMap = new HashMap<>();
@@ -767,12 +779,12 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
                 if(isShow){
                     */
-                if(mExpandView.isExpand()){
+                if (mExpandView.isExpand()) {
                     mExpandView.collapse();
-                  //  sv.removeView(mExpandView);
+                    //  sv.removeView(mExpandView);
 
                     // mHandler.post(ScrollRunnable2);
-                    for ( int i=0 ; i<mExpandView.getChildCount() ; i++ ) {
+                    for (int i = 0; i < mExpandView.getChildCount(); i++) {
                         mExpandView.getChildAt(i).setVisibility(View.GONE);
                     }
                     /*View inflate = LayoutInflater.from(getActivity()).inflate(R.layout.rz_project, null);
@@ -788,10 +800,10 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     ft.commit();*/
                     iv_show.setImageResource(R.mipmap.show_progress);
                     mExpandView.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     mExpandView.expand();
 
-                    for ( int i=0 ; i<mExpandView.getChildCount() ; i++ ) {
+                    for (int i = 0; i < mExpandView.getChildCount(); i++) {
                         mExpandView.getChildAt(i).setVisibility(View.VISIBLE);
                     }
                     mHandler.post(ScrollRunnable);
@@ -804,11 +816,11 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         .add(new ValidationModel(etComment, new ContentValidation()))
                         .execute();
                 //表单没有检验通过直接退出方法
-                if(!AppApplication.getSingleEditTextValidator().validate()){
+                if (!AppApplication.getSingleEditTextValidator().validate()) {
                     return;
                 }
                 Map<String, String> paramsMap = new HashMap<>();
-                paramsMap.put("artworkId",artWorkId+"");
+                paramsMap.put("artworkId", artWorkId + "");
                 paramsMap.put("currentUserId", AppApplication.gUser.getId());
                 paramsMap.put("content", etComment.getText().toString());
                 /*if(!"".equals(messageId)){
@@ -842,33 +854,34 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 });
                 break;
             case R.id.ib_attention:
-                /*if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
-                    Intent intent=new Intent(getActivity(), AttentionActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("userId", currentId);
-                    intent.putExtra("otherUserId",userId);
-                    if(currentId.equals(userId)){
-                        intent.putExtra("flag","1");
-                    }else {
-                        intent.putExtra("flag","2");
-                    }
-                    startActivity(intent);
+                if (AppApplication.gUser!=null && !"".equals(AppApplication.gUser.getId())){
+                Intent intent=new Intent(getActivity(), AttentionActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("userId", AppApplication.gUser.getId());
+                intent.putExtra("otherUserId",artwork.getAuthor().getId());
+                if(AppApplication.gUser.getId().equals(artwork.getAuthor().getId())){
+                    intent.putExtra("flag","1");
                 }else {
-                    Intent intent=new Intent(getActivity(), LoginActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }*/
+                    intent.putExtra("flag","2");
+                }
+                startActivity(intent);
+            }else {
+                Intent intent=new Intent(getActivity(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+
                 break;
             default:
                 break;
-            }
+        }
 
     }
 
-    private Runnable ScrollRunnable= new Runnable() {
+    private Runnable ScrollRunnable = new Runnable() {
         @Override
         public void run() {
-            int scrollDifference = Utils.dip2px(getActivity(),160);
+            int scrollDifference = Utils.dip2px(getActivity(), 160);
             int off = screenHeight;//判断高度
             /*if (off > 0) {
                 sv.scrollBy(0, 30);
@@ -878,13 +891,13 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     mHandler.postDelayed(this, 1000);
                 }
             }*/
-            sv.smoothScrollBy(0,screenHeight - scrollDifference);
+            sv.smoothScrollBy(0, screenHeight - scrollDifference);
         }
     };
-    private Runnable ScrollRunnable2= new Runnable() {
+    private Runnable ScrollRunnable2 = new Runnable() {
         @Override
         public void run() {
-            int scrollDifference = Utils.dip2px(getActivity(),160);
+            int scrollDifference = Utils.dip2px(getActivity(), 160);
             int svHeight = sv.getHeight();
             int off = screenHeight;//判断高度
             /*if (off > 0) {
@@ -895,9 +908,10 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     mHandler.postDelayed(this, 1000);
                 }
             }*/
-            sv.smoothScrollTo(0,mExpandView.getHeight() - svHeight );
+            sv.smoothScrollTo(0, mExpandView.getHeight() - svHeight);
         }
     };
+
     private void praise(String artworkId, String s) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artworkId", artworkId + "");
@@ -926,4 +940,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             }
         });
     }
+
+
 }

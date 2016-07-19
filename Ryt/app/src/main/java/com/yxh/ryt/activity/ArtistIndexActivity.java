@@ -1,7 +1,6 @@
 package com.yxh.ryt.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -9,13 +8,10 @@ import android.support.v4.view.ViewPager;
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.ArtistTabPageIndicatorAdapter;
-import com.yxh.ryt.adapter.IndexTabPageIndicatorAdapter;
 import com.yxh.ryt.fragment.ArtistHomeFragment;
-import com.yxh.ryt.fragment.BaseFragment;
 import com.yxh.ryt.fragment.BriefFragment;
-import com.yxh.ryt.fragment.ChuangZuoItemFragment;
 import com.yxh.ryt.fragment.PaiMaiItemFragment;
-import com.yxh.ryt.fragment.RongZiItemFragment;
+import com.yxh.ryt.fragment.WorksFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +28,7 @@ public class ArtistIndexActivity extends BaseActivity {
         setContentView(R.layout.activity_artistindex);
         indexChildFragments.add(new ArtistHomeFragment("iovebhfg2tf3h0mb"));
         indexChildFragments.add(new BriefFragment("iovebhfg2tf3h0mb"));
-        indexChildFragments.add(new PaiMaiItemFragment());
+        indexChildFragments.add(new WorksFragment("iovebhfg2tf3h0mb"));
         indexChildFragments.add(new PaiMaiItemFragment());
         indexChildAdapter = new ArtistTabPageIndicatorAdapter(getSupportFragmentManager(),indexChildFragments);
         ViewPager pager = (ViewPager)findViewById(R.id.aai_pager);

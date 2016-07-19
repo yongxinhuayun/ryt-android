@@ -2,7 +2,6 @@ package com.yxh.ryt.vo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 public class Artwork implements Serializable {
@@ -24,10 +23,18 @@ public class Artwork implements Serializable {
     private List<ArtworkInvest> artworkInvests;//项目投资
     private List<ArtworkInvest> artworkInvestTopList;//投资者前三名
     private int praiseNUm;
+    private int viewNUm;
     private  boolean praise;
     private int duration;
     private String investRestTime;
     private int investNum;
+
+    public void setViewNUm(int viewNUm) {
+        this.viewNUm = viewNUm;
+    }
+    public int getViewNUm() {
+        return viewNUm;
+    }
     public String getInvestRestTime() {
         return investRestTime;
     }

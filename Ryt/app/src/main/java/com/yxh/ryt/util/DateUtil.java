@@ -193,4 +193,48 @@ public class DateUtil {
         return new SimpleDateFormat("yyyy年MM月dd日 星期").format(date) + WEEK[dayOfWeek - 1];
     }
 
+    /**
+     * * @param millis * 要转化的毫秒数。
+     * * @param isWhole * 是否强制全部显示小时/分。
+     * * @param isFormat * 时间数字是否要格式化，如果true：少位数前面补全；如果false：少位数前面不补全。
+     * * @return 返回时间字符串：小时/分/秒/毫秒的格式（如：24903600 --> 06小时55分钟）。
+     */
+    public static String millisToStringShort(long millis, boolean isWhole, boolean isFormat) {
+        String h = "";
+        String m = "";
+        String d = "";
+        if (isWhole) {
+            h = isFormat ? "00天" : "0天";
+            h = isFormat ? "00小时" : "0小时";
+            m = isFormat ? "00分钟" : "0分钟";
+        }
+        long temp = millis;
+        long dper = 24 * 60 * 60 * 1000;
+        long hper = 60 * 60 * 1000;
+        long mper = 60 * 1000;
+        long sper = 1000;
+        if (temp / dper > 0) {
+            h = temp / dper + "天";
+        }
+        temp = temp % dper;
+        if (temp / hper > 0) {
+            if (isFormat) {
+                h = temp / hper < 10 ? "0" + temp / hper : temp / hper + "";
+            } else {
+                h = temp / hper + "";
+            }
+            h += "小时";
+        }
+        temp = temp % hper;
+        if (temp / mper > 0) {
+            if (isFormat) {
+                m = temp / mper < 10 ? "0" + temp / mper : temp / mper + "";
+            } else {
+                m = temp / mper + "";
+            }
+            m += "分钟";
+        }
+        return d + h + m;
+    }
+
 }

@@ -254,6 +254,7 @@
                         android:text="51件作品"
                         android:textColor="#808080"/>
                     <TextView
+                        android:id="@+id/tv_num_fans"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/little_font"

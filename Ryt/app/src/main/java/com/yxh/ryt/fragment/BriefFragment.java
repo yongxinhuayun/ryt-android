@@ -1,36 +1,24 @@
 package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
-import com.yxh.ryt.adapter.CommonAdapter;
-import com.yxh.ryt.adapter.ViewHolder;
-import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
-import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.custemview.JustifyTextView;
 import com.yxh.ryt.custemview.ScaleScreenImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
-import com.yxh.ryt.vo.Artwork;
-import com.yxh.ryt.vo.HomeYSJArtWork;
 import com.yxh.ryt.vo.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
