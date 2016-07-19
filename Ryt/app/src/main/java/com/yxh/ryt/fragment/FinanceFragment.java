@@ -284,6 +284,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 				}
 			}
 		});
+
 	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
