@@ -267,7 +267,6 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 				if ("0".equals(response.get("resultCode"))) {
 					ToastUtil.showLong(getActivity(), "点赞成功");
 					view.setBackgroundResource(R.drawable.praise1);
-					imageView.setBackgroundColor(Color.rgb(255,255,255));
 					textView.setTextColor(Color.rgb(255,255,255));
 					textView.setText(praiseNum+1+"");
 					view.setEnabled(false);
