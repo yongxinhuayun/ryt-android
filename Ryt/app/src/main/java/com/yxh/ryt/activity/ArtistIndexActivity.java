@@ -10,7 +10,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.ArtistTabPageIndicatorAdapter;
 import com.yxh.ryt.fragment.ArtistHomeFragment;
 import com.yxh.ryt.fragment.BriefFragment;
-import com.yxh.ryt.fragment.PaiMaiItemFragment;
+import com.yxh.ryt.fragment.InvestedFragment;
 import com.yxh.ryt.fragment.WorksFragment;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class ArtistIndexActivity extends BaseActivity {
         indexChildFragments.add(new ArtistHomeFragment("iovebhfg2tf3h0mb"));
         indexChildFragments.add(new BriefFragment("iovebhfg2tf3h0mb"));
         indexChildFragments.add(new WorksFragment("iovebhfg2tf3h0mb"));
-        indexChildFragments.add(new PaiMaiItemFragment());
+        indexChildFragments.add(new InvestedFragment());
         indexChildAdapter = new ArtistTabPageIndicatorAdapter(getSupportFragmentManager(),indexChildFragments);
         ViewPager pager = (ViewPager)findViewById(R.id.aai_pager);
         pager.setOffscreenPageLimit(4);

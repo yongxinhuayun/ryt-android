@@ -1,22 +1,18 @@
 package com.yxh.ryt.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.adapter.CommonAdapter;
+import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -35,7 +31,10 @@ import okhttp3.Call;
 public class WorksFragment extends BaseFragment {
     private String userId;
     private List<MasterWork> workDatas;
-    private int currentPage=1;
+    private int currentPage = 1;
+    private CommonAdapter<MasterWork> imageAdapter;
+    private GridView gridView;
+
     public WorksFragment(String userId) {
         this.userId = userId;
     }
@@ -48,114 +47,23 @@ public class WorksFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        workDatas=new ArrayList<MasterWork>();
-        loadData(true, currentPage);
+        workDatas = new ArrayList<MasterWork>();
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_works, null);
-        GridView gridView = (GridView) view.findViewById(R.id.gridview);
-        gridView.setAdapter(new ImageAdapter(getActivity(),workDatas));
-        //单击GridView元素的响应
+        gridView = (GridView) view.findViewById(R.id.gridview);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                //弹出单击的GridView元素的位置
-                Toast.makeText(getActivity(), mThumbIds[position], Toast.LENGTH_SHORT).show();
-            }
-        });
+        loadData(true,currentPage);
+        setAdapter();
         return view;
     }
 
-    private class ImageAdapter extends BaseAdapter {
-        private Context mContext;
-        private LayoutInflater mInflater;
-        private List<MasterWork> mDatas;
 
-        public ImageAdapter(Context context, List<MasterWork> mDatas) {
-            mInflater = LayoutInflater.from(context);
-            this.mContext = context;
-            this.mDatas = mDatas;
-        }
-
-        @Override
-        public int getCount() {
-            if (mDatas == null) {return 0;}
-            return mDatas.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mDatas.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            //定义一个ImageView,显示在GridView里
-            //ImageView imageView;
-            ViewHolder viewHolder = null;
-            if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.item_image_works, parent,
-                        false);
-                viewHolder = new ViewHolder();
-                /*imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(140, 250));
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(8, 8, 8, 8);*/
-                viewHolder.mImageView = (ImageView) convertView.findViewById(R.id.iv_works);
-                viewHolder.mTitle = (TextView) convertView.findViewById(R.id.tv_title);
-                viewHolder.mNum = (TextView) convertView.findViewById(R.id.tv_works_num);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-            AppApplication.displayImage(mDatas.get(position).getPictureUrl(),viewHolder.mImageView);
-            viewHolder.mTitle.setText(mDatas.get(position).getName());
-           // viewHolder.mNum.setText(mDatas.get(position).get);
-            return convertView;
-
-        }
-        private final class ViewHolder
-        {
-            ImageView mImageView;
-            TextView mTitle;
-            TextView mNum;
-        }
-
-    }
-
-    //展示图片
-    private Integer[] mThumbIds = {
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-            R.mipmap.abaose, R.mipmap.about_ryt,
-
-    };
-
-    private void loadData(final boolean flag,int pageNum) {
+    private void loadData(final boolean flag, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("userId", userId);
         paramsMap.put("pageSize", Constants.pageSize + "");
@@ -178,7 +86,6 @@ public class WorksFragment extends BaseFragment {
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
-                    ImageAdapter imageAdapter = new ImageAdapter(getActivity(),workDatas);
                     if (flag) {
                         List<MasterWork> imageList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("masterWorkList")), new TypeToken<List<MasterWork>>() {
                         }.getType());
@@ -199,9 +106,26 @@ public class WorksFragment extends BaseFragment {
                         imageAdapter.notifyDataSetChanged();
                     }
                 }
+
             }
         });
-        }
     }
+
+    private void setAdapter() {
+        imageAdapter = new CommonAdapter<MasterWork>(getActivity(),workDatas,R.layout.item_image_works) {
+            @Override
+            public void convert(ViewHolder helper, MasterWork item) {
+                //AppApplication.displayImage(mDatas.get(position).getPictureUrl(),viewHolder.mImageView);
+
+                helper.setText(R.id.tv_title,item.getName());
+                helper.setImageByUrl(R.id.iv_works,item.getPictureUrl());
+            }
+
+
+        };
+        gridView.setAdapter(imageAdapter);
+
+    }
+}
 
 
