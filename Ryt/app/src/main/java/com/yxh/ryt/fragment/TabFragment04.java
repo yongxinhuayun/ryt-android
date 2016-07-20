@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.ArtistIndexActivity;
 import com.yxh.ryt.activity.AttentionActivity;
 import com.yxh.ryt.activity.AuctionOrderActivity;
 import com.yxh.ryt.activity.FansActivity;
@@ -23,7 +24,6 @@ import com.yxh.ryt.activity.UserPtIndexActivity;
 import com.yxh.ryt.activity.UserQianBaoActivity;
 import com.yxh.ryt.activity.UserSettingActivity;
 import com.yxh.ryt.activity.UserYiJianActivity;
-import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.activity.YsjRzActivity;
 import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
@@ -209,7 +209,7 @@ public class TabFragment04 extends BaseFragment {
             return;
         }
         if (AppApplication.gUser != null&&"master".equals(AppApplication.gUser.getMaster1())) {
-            Intent intent=new Intent(AppApplication.getSingleContext(),UserYsjIndexActivity.class);
+            Intent intent=new Intent(AppApplication.getSingleContext(),ArtistIndexActivity.class);
             intent.putExtra("userId", AppApplication.gUser.getId());
             intent.putExtra("currentId", AppApplication.gUser.getId());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
