@@ -89,7 +89,8 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 					if (state == AutoListView.REFRESH) {
 						lstv.onRefreshComplete();
 						rongZiDatas.clear();
-						List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+						List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
+								.toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
 						}.getType());
 						if (null == objectList || objectList.size() == 0) {
 							lstv.setResultSize(0);
@@ -103,7 +104,8 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 					}
 					if (state == AutoListView.LOAD) {
 						lstv.onLoadComplete();
-						List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+						List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
+								.toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
 						}.getType());
 						if (null == objectList || objectList.size() == 0) {
 							lstv.setResultSize(1);
@@ -116,10 +118,10 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 						return;
 					}
 				}else {
-					SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
-						@Override
-						public void getCode(String code) {
-							if ("0".equals(code)){
+								SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+									@Override
+									public void getCode(String code) {
+										if ("0".equals(code)){
 
 								NetRequestUtil.post(Constants.BASE_PATH + "investorIndex.do", paramsMap, new RongZiListCallBack() {
 									@Override

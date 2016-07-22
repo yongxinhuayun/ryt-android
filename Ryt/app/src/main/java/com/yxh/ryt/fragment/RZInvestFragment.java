@@ -27,13 +27,14 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-public class RZInvestFragment extends BaseFragment{
+public class RZInvestFragment extends BaseFragment implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener {
 
 	private String artWorkId;
 	private AutoListView invester;
 	private List<ArtworkInvest> investorDatas;
 	private CommonAdapter<ArtworkInvest> investorRecordCommonAdapter;
 	private int currentPage = 1;
+	private List<ArtworkInvest> investList;
 
 	public RZInvestFragment(String artWorkId) {
 		super();
@@ -51,13 +52,16 @@ public class RZInvestFragment extends BaseFragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.rz_invest, null);
 		invester = (AutoListView) view.findViewById(R.id.at_invester);
-		loadInvesterData(true, currentPage);
+		setInvesterAdapter();
+		loadInvesterData(AutoListView.REFRESH, currentPage);
+		invester.setOnRefreshListener(this);
+		invester.setOnLoadListener(this);
 		return view;
 	}
 
 
 
-	private void loadInvesterData(final boolean flag, int pageNum) {
+	private void loadInvesterData(final int state, int pageNum) {
 
 		Map<String, String> paramsMap = new HashMap<>();
 		paramsMap.put("artWorkId", artWorkId);
@@ -71,6 +75,7 @@ public class RZInvestFragment extends BaseFragment{
 			e.printStackTrace();
 		}
 		NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkInvest.do", paramsMap, new RZCommentCallBack() {
+
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
@@ -83,20 +88,37 @@ public class RZInvestFragment extends BaseFragment{
 				if ("0".equals(response.get("resultCode"))) {
 					Map<String, Object> object = (Map<String, Object>) response.get("object");
 
-					List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
+					investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
 					}.getType());
 
-					if (investList != null) {
-						investorDatas.addAll(investList);
-						investList.clear();
-						if (investList.size() < Constants.pageSize) {
+					if (state == AutoListView.REFRESH) {
+						invester.onRefreshComplete();
+						investorDatas.clear();
 
-							investorDatas.addAll(investList);
-							investList.clear();
+						if (null == investList || investList.size() == 0) {
+							invester.setResultSize(0);
 						}
+						if (null != investList && investList.size() > 0) {
+							invester.setResultSize(investList.size());
+							investorDatas.addAll(investList);
+							investorRecordCommonAdapter.notifyDataSetChanged();
+						}
+						return;
+					}
+					if (state == AutoListView.LOAD) {
+						invester.onLoadComplete();
+						;
+						if (null == investList || investList.size() == 0) {
+							invester.setResultSize(1);
+						}
+						if (null != investList && investList.size() > 0) {
+							invester.setResultSize(investList.size());
+							investorDatas.addAll(investList);
+							investorRecordCommonAdapter.notifyDataSetChanged();
+						}
+						return;
 					}
 				}
-				setInvesterAdapter();
 			}
 		});
 	}
@@ -133,8 +155,6 @@ public class RZInvestFragment extends BaseFragment{
 					helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1) + "");
 				}
 				helper.setText(R.id.iri_tv_content, "￥" + item.getPrice() + ".00");
-               /* String s = DateUtil.date2String(item.getCreateDatetime(),"yyyy-MM-dd  HH:mm:ss");
-                Date dt = DateUtil.string2Date(s,"yyyy-MM-dd  HH:mm:ss");*/
 				helper.setText(R.id.iri_tv_date, long2Timestamp(item.getCreateDatetime()));
 			}
 		};
@@ -147,6 +167,19 @@ public class RZInvestFragment extends BaseFragment{
 	}
 	@Override
 	protected void lazyLoad() {
+		if(investorDatas!=null&&investorDatas.size()>0)return;
+		loadInvesterData(AutoListView.REFRESH, currentPage);
+	}
 
+	@Override
+	public void onLoad() {
+		currentPage++;
+		loadInvesterData(AutoListView.LOAD,currentPage);
+	}
+
+	@Override
+	public void onRefresh() {
+		currentPage=1;
+		loadInvesterData(AutoListView.REFRESH,currentPage);
 	}
 }

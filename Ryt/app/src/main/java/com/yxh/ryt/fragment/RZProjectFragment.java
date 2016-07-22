@@ -206,8 +206,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         iv_show.setOnClickListener(this);
         mRoundProgressBar.setTextSize(28);
         cl_headPortrait = (CircleImageView) view.findViewById(R.id.cl_headPortrait);
-        //webView = (WebView) view.findViewById(R.id.wv_invest_process);
-        //webView.loadUrl("file:///android_asset/InvestFlowControlller.html");
         mExpandView.collapse();
         for (int i = 0; i < mExpandView.getChildCount(); i++) {
             mExpandView.getChildAt(i).setVisibility(View.GONE);
@@ -456,7 +454,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         dianzan.setEnabled(false);
                     }
                     praiseNum.setText(artwork.getPraiseNUm() + "");
-                    reader.setText(artwork.getViewNUm() + "");
+                    reader.setText(artwork.getViewNum() + "");
                     AppApplication.displayImage(artwork.getPicture_url(), imageTitle);
                 }
             }

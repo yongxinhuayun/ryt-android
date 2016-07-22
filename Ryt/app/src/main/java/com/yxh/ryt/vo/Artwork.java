@@ -23,17 +23,17 @@ public class Artwork implements Serializable {
     private List<ArtworkInvest> artworkInvests;//项目投资
     private List<ArtworkInvest> artworkInvestTopList;//投资者前三名
     private int praiseNUm;
-    private int viewNUm;
+    private int viewNum;
     private  boolean praise;
     private int duration;
     private String investRestTime;
     private int investNum;
 
-    public void setViewNUm(int viewNUm) {
-        this.viewNUm = viewNUm;
+    public void setViewNum(int viewNum) {
+        this.viewNum = viewNum;
     }
-    public int getViewNUm() {
-        return viewNUm;
+    public int getViewNum() {
+        return viewNum;
     }
     public String getInvestRestTime() {
         return investRestTime;

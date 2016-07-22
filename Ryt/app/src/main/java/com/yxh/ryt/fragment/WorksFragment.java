@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
@@ -17,7 +16,6 @@ import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.vo.MasterWork;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +46,6 @@ public class WorksFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         workDatas = new ArrayList<MasterWork>();
-
     }
 
     @Nullable
@@ -56,7 +53,6 @@ public class WorksFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_works, null);
         gridView = (GridView) view.findViewById(R.id.gridview);
-
         loadData(true,currentPage);
         setAdapter();
         return view;
@@ -106,7 +102,6 @@ public class WorksFragment extends BaseFragment {
                         imageAdapter.notifyDataSetChanged();
                     }
                 }
-
             }
         });
     }
@@ -115,8 +110,6 @@ public class WorksFragment extends BaseFragment {
         imageAdapter = new CommonAdapter<MasterWork>(getActivity(),workDatas,R.layout.item_image_works) {
             @Override
             public void convert(ViewHolder helper, MasterWork item) {
-                //AppApplication.displayImage(mDatas.get(position).getPictureUrl(),viewHolder.mImageView);
-
                 helper.setText(R.id.tv_title,item.getName());
                 helper.setImageByUrl(R.id.iv_works,item.getPictureUrl());
             }

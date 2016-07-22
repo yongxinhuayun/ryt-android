@@ -22,14 +22,4 @@
         android:textColor="@android:color/black"
         android:textSize="@dimen/title" />
 
-    <TextView
-        android:id="@+id/tv_works_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:text="5件作品"
-        android:textColor="@color/comment_hint"
-        android:textSize="@dimen/defult_font" />
-
 </LinearLayout>
