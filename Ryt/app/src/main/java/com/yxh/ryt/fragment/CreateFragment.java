@@ -205,8 +205,8 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 							}
 						});
 					}
-					helper.setText(R.id.cli1_tv_update,"最近更新:"+Utils.timeNew(item.getNewCreationDate()));
-					helper.setText(R.id.cli1_tv_finish,"预计完工:"+Utils.timeNew1(item.getCreationEndDatetime()));
+					helper.setText(R.id.cli1_tv_update,Utils.timeAndIos(item.getNewCreationDate())+"更新:");
+					helper.setText(R.id.cli1_tv_finish,"预计"+Utils.timeAndIos(item.getCreationEndDatetime())+"完工");
 					helper.setImageByUrl(R.id.clh_tv_prc, item.getPicture_url());
 					if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){
 						helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.VISIBLE);

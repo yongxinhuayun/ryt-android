@@ -89,7 +89,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 					if (state == AutoListView.REFRESH) {
 						lstv.onRefreshComplete();
 						rongZiDatas.clear();
-						List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("object")).get("artworkList")), new TypeToken<List<Create>>() {
+						List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<Create>>() {
 						}.getType());
 						if (null == objectList || objectList.size() == 0) {
 							lstv.setResultSize(0);
@@ -103,7 +103,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 					}
 					if (state == AutoListView.LOAD) {
 						lstv.onLoadComplete();
-						List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("object")).get("artworkList")), new TypeToken<List<Create>>() {
+						List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<Create>>() {
 						}.getType());
 						if (null == objectList || objectList.size() == 0) {
 							lstv.setResultSize(1);
@@ -133,7 +133,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 										if (state == AutoListView.REFRESH) {
 											lstv.onRefreshComplete();
 											rongZiDatas.clear();
-											List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("object")).get("artworkList")), new TypeToken<List<Create>>() {
+											List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<Create>>() {
 											}.getType());
 											if (null == objectList || objectList.size() == 0) {
 												lstv.setResultSize(0);
@@ -147,7 +147,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 										}
 										if (state == AutoListView.LOAD) {
 											lstv.onLoadComplete();
-											List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("object")).get("artworkList")), new TypeToken<List<Create>>() {
+											List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<Create>>() {
 											}.getType());
 											if (null == objectList || objectList.size() == 0) {
 												lstv.setResultSize(1);
@@ -176,24 +176,24 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
 		lstv.setPageSize(Constants.pageSize);
-		rongZiCommonAdapter=new CommonAdapter<Create>(AppApplication.getSingleContext(),rongZiDatas,R.layout.create_list_item1) {
+		rongZiCommonAdapter=new CommonAdapter<Create>(AppApplication.getSingleContext(),rongZiDatas,R.layout.auction_list_item1) {
 
 			@Override
 			public void convert(final ViewHolder helper, final Create item) {
 				if (item!=null){
-					helper.setText(R.id.clh_tv_title,item.getTitle());
-					helper.setText(R.id.clh_tv_brief,item.getBrief());
+					helper.setText(R.id.clh1_tv_title,item.getTitle());
+					helper.setText(R.id.clh1_tv_brief,item.getBrief());
 					if (selected.size()<rongZiDatas.size()){
 						for (int i=selected.size();i<rongZiDatas.size();i++){
 							selected.put(i,false);
 						}
 					}
 					if (item.getAuthor()!=null){
-						helper.setText(R.id.clh_tv_artistName,item.getAuthor().getName()+"");
-						helper.setImageByUrl(R.id.clh_cv_headerImage,item.getAuthor().getPictureUrl());
-						helper.setText(R.id.clh_tv_totalWork,item.getAuthor().getMasterWorkNum()+"件作品");
-						helper.setText(R.id.clh_tv_totalFans,item.getAuthor().getFansNum()+"个粉丝");
-						helper.getView(R.id.clh_cv_headerImage).setOnClickListener(new View.OnClickListener() {
+						helper.setText(R.id.clh1_tv_artistName,item.getAuthor().getName()+"");
+						helper.setImageByUrl(R.id.clh1_cv_headerImage,item.getAuthor().getPictureUrl());
+						helper.setText(R.id.clh1_tv_totalWork,item.getAuthor().getMasterWorkNum()+"件作品");
+						helper.setText(R.id.clh1_tv_totalFans,item.getAuthor().getFansNum()+"个粉丝");
+						helper.getView(R.id.clh1_cv_headerImage).setOnClickListener(new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
 								Intent intent=new Intent(getActivity(), UserYsjIndexActivity.class);
@@ -204,34 +204,42 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 							}
 						});
 					}
-					helper.setText(R.id.cli1_tv_update,"最近更新:"+Utils.timeNew(item.getNewCreationDate()));
-					helper.setText(R.id.cli1_tv_finish,"预计完工:"+Utils.timeNew1(item.getCreationEndDatetime()));
-					helper.setImageByUrl(R.id.clh_tv_prc, item.getPicture_url());
+					if ("30".equals(item.getStep())){
+						helper.setText(R.id.ali1_tv_content,"拍卖时间 "+Utils.timeAuction(item.getAuctionStartDatetime()));
+						helper.setText(R.id.clh1_tv_state,"拍卖预告");
+					}else if ("31".equals(item.getStep())){
+						helper.setText(R.id.ali1_tv_content,Utils.getJudgeDate1(item.getAuctionEndDatetime())+"后截止");
+						helper.setText(R.id.clh1_tv_state,"拍卖中");
+					}else {
+						helper.setText(R.id.ali1_tv_content,"拍卖得主 "+item.getWinner().getName());
+						helper.setText(R.id.clh1_tv_state,"拍卖结束");
+					}
+					helper.setImageByUrl(R.id.clh1_tv_prc, item.getPicture_url());
 					if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){
-						helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.VISIBLE);
-						helper.setText(R.id.clh_tv_artistTitle, item.getAuthor().getMaster().getTitle());
+						helper.getView(R.id.clh1_tv_artistTitle).setVisibility(View.VISIBLE);
+						helper.setText(R.id.clh1_tv_artistTitle, item.getAuthor().getMaster().getTitle());
 					}else{
-						helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.GONE);
+						helper.getView(R.id.clh1_tv_artistTitle).setVisibility(View.GONE);
 					}
 					if (item.isPraise()){
-						helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise1);
-						helper.getView(R.id.clh_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
-						((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
-						helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+"");
-						helper.getView(R.id.clh_ll_praise).setEnabled(false);
+						helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise1);
+						helper.getView(R.id.clh1_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
+						((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
+						helper.setText(R.id.clh1_tv_praiseNum,item.getPraiseNUm()+"");
+						helper.getView(R.id.clh1_ll_praise).setEnabled(false);
 					}else {
 						if (selected.get(helper.getPosition())){
-							helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise1);
-							helper.getView(R.id.clh_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
-							((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
-							helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+1+"");
-							helper.getView(R.id.clh_ll_praise).setEnabled(false);
+							helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise1);
+							helper.getView(R.id.clh1_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
+							((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
+							helper.setText(R.id.clh1_tv_praiseNum,item.getPraiseNUm()+1+"");
+							helper.getView(R.id.clh1_ll_praise).setEnabled(false);
 						}else {
-							helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise);
-							((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(205,55,56));
-							helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+"");
-							helper.getView(R.id.clh_ll_praise).setEnabled(true);
-							helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
+							helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise);
+							((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(205,55,56));
+							helper.setText(R.id.clh1_tv_praiseNum,item.getPraiseNUm()+"");
+							helper.getView(R.id.clh1_ll_praise).setEnabled(true);
+							helper.getView(R.id.clh1_ll_praise).setOnClickListener(new View.OnClickListener() {
 								@Override
 								public void onClick(View v) {
 									if ("".equals(AppApplication.gUser.getId())){
@@ -241,7 +249,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 										intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 										getActivity().startActivity(intent);
 									}else {
-										praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)),((TextView) helper.getView(R.id.clh_tv_praiseNum)),item.getPraiseNUm(), ((ImageView) helper.getView(R.id.clh_iv_attention)), helper);
+										praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh1_ll_praise)),((TextView) helper.getView(R.id.clh1_tv_praiseNum)),item.getPraiseNUm(), ((ImageView) helper.getView(R.id.clh1_iv_attention)), helper);
 									}
 								}
 							});

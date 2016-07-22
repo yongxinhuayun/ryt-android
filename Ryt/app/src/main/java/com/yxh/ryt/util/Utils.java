@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -67,13 +68,40 @@ public class Utils {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
 		return sdf.format(new Date(time));
 	}
+	public static String timeAuction(long time){
+		SimpleDateFormat sdf = new SimpleDateFormat("M月d日 H时m分");
+		return sdf.format(new Date(time));
+	}
 	public static String timeNew(long time){
-		SimpleDateFormat sdf = new SimpleDateFormat("M月d日HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("H时m分");
 		return sdf.format(new Date(time));
 	}
 	public static String timeNew1(long time){
 		SimpleDateFormat sdf = new SimpleDateFormat("M月d日");
 		return sdf.format(new Date(time));
+	}
+	public static String timeAndIos(long time){
+		long currentTime=System.currentTimeMillis();
+		long twoDayTime=2*24*60*60*1000;
+		if ((time-currentTime)>(twoDayTime)){
+			Date spreadTime = new Date(time);
+			String timeDate=dateFormater2.get().format(spreadTime);
+			Date today = new Date();
+			String nowDate = dateFormater2.get().format(today);
+			if (nowDate.equals(timeDate)){
+				StringBuilder builder=new StringBuilder();
+				builder.append("今天");
+				builder.append(timeNew(time));
+				return builder.toString();
+			}else {
+				StringBuilder builder=new StringBuilder();
+				builder.append("昨天");
+				builder.append(timeNew(time));
+				return builder.toString();
+			}
+		}else {
+			return timeNew1(time);
+		}
 	}
 	public static String timeTrans1(long time){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -476,8 +504,26 @@ public class Utils {
 		}else if (millions>=1000*60*60){
 			String s=millions/1000/60/60+"时";
 			return s;
-		}else {
+		}else if (millions>=1000*60){
 			String s=millions/1000/60+"分";
+			return s;
+		}else {
+			String s=millions/1000+"秒";
+			return s;
+		}
+	}public static String getJudgeDate1(long millions){
+		long currentTime= System.currentTimeMillis();
+		if ((millions-currentTime)>=1000*60*60*24){
+			String s=(millions-currentTime)/1000/60/60/24+"天";
+			return s;
+		}else if ((millions-currentTime)>=1000*60*60){
+			String s=(millions-currentTime)/1000/60/60+"时";
+			return s;
+		}else if ((millions-currentTime)>=1000*60){
+			String s=(millions-currentTime)/1000/60+"分";
+			return s;
+		}else {
+			String s=(millions-currentTime)/1000+"秒";
 			return s;
 		}
 	}
