@@ -34,7 +34,7 @@ public class UserIndexActivity extends BaseActivity {
         indexChildFragments.add(new InvestedFragment());
         indexChildAdapter = new UserTabPageIndicatorAdapter(getSupportFragmentManager(),indexChildFragments);
         ViewPager pager = (ViewPager)findViewById(R.id.aai_pager);
-        pager.setOffscreenPageLimit(4);
+        pager.setOffscreenPageLimit(3);
         pager.setAdapter(indexChildAdapter);
         //实例化TabPageIndicator然后设置ViewPager与之关联
         TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.aai_indicator);
