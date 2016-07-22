@@ -36,4 +36,5 @@ public class LoadingUtil {
     }public void dismiss(){
         dialog.dismiss();
     }
+
 }
