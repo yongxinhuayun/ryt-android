@@ -29,7 +29,8 @@ public class Auther implements Serializable {
     private long createDatetime;
     private String type;
     private Master master;
-
+    private int masterWorkNum;
+    private int fansNum;
     public String getId() {
         return id;
     }
@@ -52,6 +53,22 @@ public class Auther implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getFansNum() {
+        return fansNum;
+    }
+
+    public void setFansNum(int fansNum) {
+        this.fansNum = fansNum;
+    }
+
+    public int getMasterWorkNum() {
+        return masterWorkNum;
+    }
+
+    public void setMasterWorkNum(int masterWorkNum) {
+        this.masterWorkNum = masterWorkNum;
     }
 
     public String getPictureUrl() {

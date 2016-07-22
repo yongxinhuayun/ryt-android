@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
@@ -18,13 +20,19 @@ import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
+import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
+import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
+import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
+import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.FollowUserUtil;
 import com.yxh.ryt.vo.HomeYSJArtWork;
+import com.yxh.ryt.vo.RongZi;
+import com.yxh.ryt.vo.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +54,22 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
     private boolean bo = false;
     private String userId;
     private View header;
+    private String reward;
+    private String followNum;
+    private String sumInvestsMoney;
+    private boolean isFollowed;
+    private User user;
+    private CircleImageView headPicture;
+    private TextView name;
+    private TextView title;
+    private ImageView attention;
+    private TextView totalMoney;
+    private TextView premiumRate;
+    private TextView totalWrok;
+    private TextView totalFans;
+    private int width;
+    private int height;
+    private LoadingUtil loadingUtil;
 
     public ArtistHomeFragment( String userId) {
         super();
@@ -56,10 +80,17 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         attentionDatas=new ArrayList<HomeYSJArtWork>();
+        DisplayMetrics metric = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
+        // 屏幕宽度（像素）
+        width = metric.widthPixels;
+        height = metric.heightPixels;
+        loadingUtil = new LoadingUtil(getActivity(),width,height);
     }
 
     private void LoadData(final int state,int pageNum) {
-        Map<String,String> paramsMap=new HashMap<>();
+        loadingUtil.show();
+        final Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("userId",userId);
         //paramsMap.put("currentId",AppApplication.gUser.getId());
         paramsMap.put("pageSize", Constants.pageSize+"");
@@ -80,43 +111,142 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if ("0".equals(response.get("resultCode"))){
-                    Constants.ATTENTION_TITLE[0]="艺术家("+AppApplication.getSingleGson().toJson(response.get("followsNum"))+")";
-                    Intent intent = new Intent("android.intent.action.MY_BROADCAST");
-                    AppApplication.getSingleContext().sendBroadcast(intent);
-                    if (state == AutoListView.REFRESH) {
-                        lstv.onRefreshComplete();
-                        attentionDatas.clear();
-                        List<HomeYSJArtWork> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<HomeYSJArtWork>>() {
-                        }.getType());
-                        if (null == objectList || objectList.size() == 0) {
-                            lstv.setResultSize(0);
-                            attentionCommonAdapter.notifyDataSetChanged();
+                /*if ("".equals(AppApplication.gUser.getId())){*/
+                    if ("0".equals(response.get("resultCode"))){
+                        loadingUtil.dismiss();
+                        Map<Object,Object> object= (Map<Object, Object>) response.get("object");
+                        reward= AppApplication.getSingleGson().toJson(object.get("reward"));
+                        followNum= AppApplication.getSingleGson().toJson(object.get("followNum"));
+                        sumInvestsMoney= AppApplication.getSingleGson().toJson(object.get("sumInvestsMoney"));
+                        isFollowed= Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isFollowed")));
+                        user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("master")), User.class);
+                        AppApplication.displayImage(user.getPictureUrl(),headPicture);
+                        name.setText(user.getName());
+                        title.setText(user.getMaster().getTitle());
+                        if (isFollowed){
+                            attention.setImageResource(R.mipmap.yiguanzhu);
+                        }else {
+                            attention.setImageResource(R.mipmap.weiguanzhu);
                         }
-                        if (null != objectList && objectList.size() > 0) {
-                            lstv.setResultSize(objectList.size());
-                            attentionDatas.addAll(objectList);
-                            attentionCommonAdapter.notifyDataSetChanged();
+                        totalMoney.setText("¥"+sumInvestsMoney);
+                        if ("0".equals(sumInvestsMoney)){
+                            premiumRate.setText("0%");
+                        }else {
+                            float rate=Integer.valueOf(reward)/Integer.valueOf(sumInvestsMoney);
+                            premiumRate.setText((int)(rate*100)+"%");
                         }
-                        return;
+                        totalWrok.setText(user.getMasterWorkNum()+"件作品");
+                        totalFans.setText(user.getFansNum()+"位粉丝");
+                        if (state == AutoListView.REFRESH) {
+                            lstv.onRefreshComplete();
+                            attentionDatas.clear();
+                            List<HomeYSJArtWork> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkList")), new TypeToken<List<HomeYSJArtWork>>() {
+                            }.getType());
+                            if (null == objectList || objectList.size() == 0) {
+                                lstv.setResultSize(0);
+                                attentionCommonAdapter.notifyDataSetChanged();
+                            }
+                            if (null != objectList && objectList.size() > 0) {
+                                lstv.setResultSize(objectList.size());
+                                attentionDatas.addAll(objectList);
+                                attentionCommonAdapter.notifyDataSetChanged();
+                            }
+                            return;
+                        }
+                        if (state == AutoListView.LOAD) {
+                            lstv.onLoadComplete();
+                            List<HomeYSJArtWork> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkList")), new TypeToken<List<HomeYSJArtWork>>() {
+                            }.getType());
+                            if (null == objectList || objectList.size() == 0) {
+                                lstv.setResultSize(1);
+                                attentionCommonAdapter.notifyDataSetChanged();
+                            }
+                            if (null != objectList && objectList.size() > 0) {
+                                lstv.setResultSize(objectList.size());
+                                attentionDatas.addAll(objectList);
+                                attentionCommonAdapter.notifyDataSetChanged();
+                            }
+                            return;
+                        }
                     }
-                    if (state == AutoListView.LOAD) {
-                        lstv.onLoadComplete();
-                        List<HomeYSJArtWork> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfoList")), new TypeToken<List<HomeYSJArtWork>>() {
-                        }.getType());
-                        if (null == objectList || objectList.size() == 0) {
-                            lstv.setResultSize(1);
-                            attentionCommonAdapter.notifyDataSetChanged();
-                        }
-                        if (null != objectList && objectList.size() > 0) {
-                            lstv.setResultSize(objectList.size());
-                            attentionDatas.addAll(objectList);
-                            attentionCommonAdapter.notifyDataSetChanged();
-                        }
-                        return;
-                    }
-                }
+               /* }*//*else {
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
 
+                                NetRequestUtil.post(Constants.BASE_PATH + "investorIndex.do", paramsMap, new RongZiListCallBack() {
+                                    @Override
+                                    public void onError(Call call, Exception e) {
+                                        ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
+                                    }
+
+                                    @Override
+                                    public void onResponse(Map<String, Object> response) {
+                                        if ("0".equals(response.get("resultCode"))){
+                                            loadingUtil.dismiss();
+                                            Map<Object,Object> object= (Map<Object, Object>) response.get("object");
+                                            reward= AppApplication.getSingleGson().toJson(object.get("reward"));
+                                            followNum= AppApplication.getSingleGson().toJson(object.get("followNum"));
+                                            sumInvestsMoney= AppApplication.getSingleGson().toJson(object.get("sumInvestsMoney"));
+                                            isFollowed= Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isFollowed")));
+                                            user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("master")), User.class);
+                                            AppApplication.displayImage(user.getPictureUrl(),headPicture);
+                                            name.setText(user.getName());
+                                            title.setText(user.getMaster().getTitle());
+                                            if (isFollowed){
+                                                attention.setImageResource(R.mipmap.yiguanzhu);
+                                            }else {
+                                                attention.setImageResource(R.mipmap.weiguanzhu);
+                                            }
+                                            totalMoney.setText("¥"+sumInvestsMoney);
+                                            if ("0".equals(sumInvestsMoney)){
+                                                premiumRate.setText("0%");
+                                            }else {
+                                                float rate=Integer.valueOf(reward)/Integer.valueOf(sumInvestsMoney);
+                                                premiumRate.setText((int)(rate*100)+"%");
+                                            }
+                                            totalWrok.setText(user.getMasterWorkNum()+"件作品");
+                                            totalFans.setText(user.getFansNum()+"位粉丝");
+                                            if (state == AutoListView.REFRESH) {
+                                                lstv.onRefreshComplete();
+                                                attentionDatas.clear();
+                                                List<HomeYSJArtWork> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkList")), new TypeToken<List<HomeYSJArtWork>>() {
+                                                }.getType());
+                                                if (null == objectList || objectList.size() == 0) {
+                                                    lstv.setResultSize(0);
+                                                    attentionCommonAdapter.notifyDataSetChanged();
+                                                }
+                                                if (null != objectList && objectList.size() > 0) {
+                                                    lstv.setResultSize(objectList.size());
+                                                    attentionDatas.addAll(objectList);
+                                                    attentionCommonAdapter.notifyDataSetChanged();
+                                                }
+                                                return;
+                                            }
+                                            if (state == AutoListView.LOAD) {
+                                                lstv.onLoadComplete();
+                                                List<HomeYSJArtWork> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkList")), new TypeToken<List<HomeYSJArtWork>>() {
+                                                }.getType());
+                                                if (null == objectList || objectList.size() == 0) {
+                                                    lstv.setResultSize(1);
+                                                    attentionCommonAdapter.notifyDataSetChanged();
+                                                }
+                                                if (null != objectList && objectList.size() > 0) {
+                                                    lstv.setResultSize(objectList.size());
+                                                    attentionDatas.addAll(objectList);
+                                                    attentionCommonAdapter.notifyDataSetChanged();
+                                                }
+                                                return;
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }*/
             }
         });
     }
@@ -127,12 +257,21 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
         View contextView = inflater.inflate(R.layout.fragment_item, container, false);
         lstv = (AutoListView) contextView.findViewById(R.id.lstv);
         lstv.setPageSize(Constants.pageSize);
-        header = LayoutInflater.from(getActivity()).inflate(R.layout.touguo_header, null);
-        attentionCommonAdapter=new CommonAdapter<HomeYSJArtWork>(AppApplication.getSingleContext(),attentionDatas,R.layout.fragment_attention_item) {
+        header = LayoutInflater.from(getActivity()).inflate(R.layout.header_artisthome, null);
+        headPicture = ((CircleImageView) header.findViewById(R.id.rs_iv_headPortrait));
+        name = ((TextView) header.findViewById(R.id.hah_tv_name));
+        title = ((TextView) header.findViewById(R.id.hah_tv_title));
+        attention = ((ImageView) header.findViewById(R.id.uh1_iv_attention));
+        totalMoney = ((TextView) header.findViewById(R.id.hah_tv_totalMoney));
+        premiumRate = ((TextView) header.findViewById(R.id.hah_tv_premiumRate));
+        totalWrok = ((TextView) header.findViewById(R.id.hah_tv_totalWork));
+        totalFans = ((TextView) header.findViewById(R.id.hah_tv_totalFans));
+        attentionCommonAdapter=new CommonAdapter<HomeYSJArtWork>(AppApplication.getSingleContext(),attentionDatas,R.layout.listview_item_artisthome) {
             @Override
             public void convert(final ViewHolder helper, final HomeYSJArtWork item) {
-
-
+                helper.setText(R.id.liah_tv_title,item.getTitle());
+                helper.setText(R.id.liah_tv_brief,item.getBrief());
+                helper.setImageByUrl(R.id.liah_si_prc,item.getPicture_url());
             }
         };
         lstv.setAdapter(attentionCommonAdapter);

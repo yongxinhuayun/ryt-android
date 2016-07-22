@@ -38,7 +38,7 @@ public class Create implements Serializable {
      * praiseNUm : 0
      * investNum : 0
      */
-
+    private  boolean praise;
     private String id;
     private String title;
     private String brief;
@@ -55,7 +55,7 @@ public class Create implements Serializable {
     private int investsMoney;
     private long creationEndDatetime;
     private String type;
-    private String newCreationDate;
+    private long newCreationDate;
     private Object auctionNum;
     private Object newBidingPrice;
     private Object newBiddingDate;
@@ -86,6 +86,14 @@ public class Create implements Serializable {
 
     public void setAuthor(Auther author) {
         this.author = author;
+    }
+
+    public boolean isPraise() {
+        return praise;
+    }
+
+    public void setPraise(boolean praise) {
+        this.praise = praise;
     }
 
     public void setTitle(String title) {
@@ -204,11 +212,11 @@ public class Create implements Serializable {
         this.type = type;
     }
 
-    public String getNewCreationDate() {
+    public long getNewCreationDate() {
         return newCreationDate;
     }
 
-    public void setNewCreationDate(String newCreationDate) {
+    public void setNewCreationDate(long newCreationDate) {
         this.newCreationDate = newCreationDate;
     }
 

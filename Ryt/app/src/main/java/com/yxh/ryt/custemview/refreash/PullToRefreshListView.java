@@ -115,14 +115,14 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 			break;
 		}
 
-		// Hide our original Loading View
+		// Hide our original LoadingUtil View
 		origLoadingView.reset();
 		origLoadingView.hideAllViews();
 
 		// Make sure the opposite end is hidden too
 		oppositeListViewLoadingView.setVisibility(View.GONE);
 
-		// Show the ListView Loading View and set it to refresh.
+		// Show the ListView LoadingUtil View and set it to refresh.
 		listViewLoadingView.setVisibility(View.VISIBLE);
 		listViewLoadingView.refreshing();
 
@@ -248,7 +248,7 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 			final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
 					FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL);
 
-			// Create Loading Views ready for use later
+			// Create LoadingUtil Views ready for use later
 			FrameLayout frame = new FrameLayout(getContext());
 			mHeaderLoadingView = createLoadingLayout(getContext(), Mode.PULL_FROM_START, a);
 			mHeaderLoadingView.setVisibility(View.GONE);

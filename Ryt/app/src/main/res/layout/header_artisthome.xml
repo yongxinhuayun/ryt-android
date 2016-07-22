@@ -315,7 +315,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="16dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginBottom="56dp">
         <TextView
             android:id="@+id/hah_tv_totalWork"
             android:layout_width="wrap_content"

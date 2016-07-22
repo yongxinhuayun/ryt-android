@@ -40,7 +40,7 @@ public class PaiHangItemFragment01 extends BaseFragment implements AutoListView.
 	private void LoadData(final int state,int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("pageSize",Constants.pageSize+"");
-		paramsMap.put("pageNum", pageNum + "");
+		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);

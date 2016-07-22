@@ -117,7 +117,7 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
         //paramsMap.put("userId",AppApplication.gUser.getId());
         paramsMap.put("type","2");
         paramsMap.put("pageSize",Constants.pageSize+"");
-        paramsMap.put("pageNum", pageNum+"");
+        paramsMap.put("pageIndex", pageNum+"");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));

@@ -29,6 +29,7 @@ import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
+import com.yxh.ryt.vo.Create;
 import com.yxh.ryt.vo.RongZi;
 
 import java.util.ArrayList;
@@ -39,11 +40,11 @@ import java.util.Map;
 import okhttp3.Call;
 
 
-public class FinanceFragment extends BaseFragment implements AutoListView.OnRefreshListener,
+public class CreateFragment extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener, AdapterView.OnItemClickListener {
 	private AutoListView lstv;
-	private CommonAdapter<RongZi> rongZiCommonAdapter;
-	private List<RongZi> rongZiDatas;
+	private CommonAdapter<Create> rongZiCommonAdapter;
+	private List<Create> rongZiDatas;
 	private int currentPage=1;
 	private Map<Integer,Boolean> selected;
 	private int width;
@@ -53,7 +54,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		rongZiDatas=new ArrayList<RongZi>();
+		rongZiDatas=new ArrayList<Create>();
 		selected=new HashMap<>();
 		DisplayMetrics metric = new DisplayMetrics();
 		getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -74,7 +75,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NetRequestUtil.post(Constants.BASE_PATH + "investorIndex.do", paramsMap, new RongZiListCallBack() {
+		NetRequestUtil.post(Constants.BASE_PATH + "artWorkCreationList.do", paramsMap, new RongZiListCallBack() {
 			@Override
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
@@ -89,7 +90,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 					if (state == AutoListView.REFRESH) {
 						lstv.onRefreshComplete();
 						rongZiDatas.clear();
-						List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+						List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("object")).get("artworkList")), new TypeToken<List<Create>>() {
 						}.getType());
 						if (null == objectList || objectList.size() == 0) {
 							lstv.setResultSize(0);
@@ -103,7 +104,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 					}
 					if (state == AutoListView.LOAD) {
 						lstv.onLoadComplete();
-						List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+						List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("object")).get("artworkList")), new TypeToken<List<Create>>() {
 						}.getType());
 						if (null == objectList || objectList.size() == 0) {
 							lstv.setResultSize(1);
@@ -121,7 +122,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 						public void getCode(String code) {
 							if ("0".equals(code)){
 
-								NetRequestUtil.post(Constants.BASE_PATH + "investorIndex.do", paramsMap, new RongZiListCallBack() {
+								NetRequestUtil.post(Constants.BASE_PATH + "artWorkCreationList.do", paramsMap, new RongZiListCallBack() {
 									@Override
 									public void onError(Call call, Exception e) {
 										ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
@@ -133,7 +134,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 										if (state == AutoListView.REFRESH) {
 											lstv.onRefreshComplete();
 											rongZiDatas.clear();
-											List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+											List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("object")).get("artworkList")), new TypeToken<List<Create>>() {
 											}.getType());
 											if (null == objectList || objectList.size() == 0) {
 												lstv.setResultSize(0);
@@ -147,7 +148,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 										}
 										if (state == AutoListView.LOAD) {
 											lstv.onLoadComplete();
-											List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+											List<Create> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("object")).get("artworkList")), new TypeToken<List<Create>>() {
 											}.getType());
 											if (null == objectList || objectList.size() == 0) {
 												lstv.setResultSize(1);
@@ -176,10 +177,10 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 		View contextView = inflater.inflate(R.layout.fragment_item, container, false);
 		lstv = (AutoListView) contextView.findViewById(R.id.lstv);
 		lstv.setPageSize(Constants.pageSize);
-		rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.finance_list_item1) {
+		rongZiCommonAdapter=new CommonAdapter<Create>(AppApplication.getSingleContext(),rongZiDatas,R.layout.create_list_item1) {
 
 			@Override
-			public void convert(final ViewHolder helper, final RongZi item) {
+			public void convert(final ViewHolder helper, final Create item) {
 				if (item!=null){
 					helper.setText(R.id.clh_tv_title,item.getTitle());
 					helper.setText(R.id.clh_tv_brief,item.getBrief());
@@ -204,17 +205,15 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 							}
 						});
 					}
-					helper.setText(R.id.fli1_tv_date, Utils.getJudgeDate(item.getInvestRestTime())+"后截止");
+					helper.setText(R.id.cli1_tv_update,"最近更新:"+Utils.timeNew(item.getNewCreationDate()));
+					helper.setText(R.id.cli1_tv_finish,"预计完工:"+Utils.timeNew1(item.getCreationEndDatetime()));
 					helper.setImageByUrl(R.id.clh_tv_prc, item.getPicture_url());
-					helper.setText(R.id.fli1_tv_money,item.getInvestsMoney()+"元/"+item.getInvestGoalMoney()+"元");
 					if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){
 						helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.VISIBLE);
 						helper.setText(R.id.clh_tv_artistTitle, item.getAuthor().getMaster().getTitle());
 					}else{
 						helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.GONE);
 					}
-					double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-					helper.setProgress(R.id.fli1_pb_progress, (int)(value*100));
 					if (item.isPraise()){
 						helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise1);
 						helper.getView(R.id.clh_ll_praise).setBackgroundColor(Color.rgb(205,55,56));

@@ -89,7 +89,7 @@ public class NotificationActivity extends BaseActivity implements AutoListView.O
         //paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("type", "0");
         paramsMap.put("pageSize", Constants.pageSize + "");
-        paramsMap.put("pageNum", pageNum + "");
+        paramsMap.put("pageIndex", pageNum + "");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));

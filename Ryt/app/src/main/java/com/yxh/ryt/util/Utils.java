@@ -67,6 +67,14 @@ public class Utils {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
 		return sdf.format(new Date(time));
 	}
+	public static String timeNew(long time){
+		SimpleDateFormat sdf = new SimpleDateFormat("M月d日HH:mm:ss");
+		return sdf.format(new Date(time));
+	}
+	public static String timeNew1(long time){
+		SimpleDateFormat sdf = new SimpleDateFormat("M月d日");
+		return sdf.format(new Date(time));
+	}
 	public static String timeTrans1(long time){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(new Date(time));

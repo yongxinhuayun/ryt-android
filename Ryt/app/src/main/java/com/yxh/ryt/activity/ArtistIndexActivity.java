@@ -26,6 +26,7 @@ public class ArtistIndexActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artistindex);
+        String userId = getIntent().getStringExtra("userId");
         indexChildFragments.add(new ArtistHomeFragment("iovebhfg2tf3h0mb"));
         indexChildFragments.add(new BriefFragment("iovebhfg2tf3h0mb"));
         indexChildFragments.add(new WorksFragment("iovebhfg2tf3h0mb"));

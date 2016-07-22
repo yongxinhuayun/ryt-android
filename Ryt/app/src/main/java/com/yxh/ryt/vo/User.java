@@ -43,6 +43,7 @@ public class User {
     private boolean accountLocked;
     private boolean credentialsExpired;
     private int utype;
+    private int fansNum;
     private long lastLoginDatetime;
     private long lastLogoutDatetime;
     private long createDatetime;
@@ -60,6 +61,7 @@ public class User {
     private int count1;
     private String pictureUrl;
     private String loginState;
+    private int masterWorkNum;
     public String getMaster1() {
         return master1;
     }
@@ -68,13 +70,28 @@ public class User {
         this.master1 = master1;
     }
 
-   /* public String getSignMessage() {
+    public int getFansNum() {
+        return fansNum;
+    }
+
+    public void setFansNum(int fansNum) {
+        this.fansNum = fansNum;
+    }
+    /* public String getSignMessage() {
         return signMessage;
     }
 
     public void setsignMessage(String signMessage) {
         this.signMessage = signMessage;
     }*/
+
+    public int getMasterWorkNum() {
+        return masterWorkNum;
+    }
+
+    public void setMasterWorkNum(int masterWorkNum) {
+        this.masterWorkNum = masterWorkNum;
+    }
 
     public String getLoginState() {
         return loginState;

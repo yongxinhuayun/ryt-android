@@ -73,7 +73,7 @@ public class TabFragment01 extends  BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         indexChildFragments.add(new FinanceFragment());
-        indexChildFragments.add(new ChuangZuoItemFragment());
+        indexChildFragments.add(new CreateFragment());
         indexChildFragments.add(new PaiMaiItemFragment());
 
     }

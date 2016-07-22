@@ -864,7 +864,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	}
 
 	/**
-	 * Re-measure the Loading Views height, and adjust internal padding as
+	 * Re-measure the LoadingUtil Views height, and adjust internal padding as
 	 * necessary
 	 */
 	protected final void refreshLoadingViewsSize() {
@@ -1027,7 +1027,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		// direction
 		final LayoutParams lp = getLoadingLayoutLayoutParams();
 
-		// Remove Header, and then add Header Loading View again if needed
+		// Remove Header, and then add Header LoadingUtil View again if needed
 		if (this == mHeaderLayout.getParent()) {
 			removeView(mHeaderLayout);
 		}
@@ -1035,7 +1035,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 			addViewInternal(mHeaderLayout, 0, lp);
 		}
 
-		// Remove Footer, and then add Footer Loading View again if needed
+		// Remove Footer, and then add Footer LoadingUtil View again if needed
 		if (this == mFooterLayout.getParent()) {
 			removeView(mFooterLayout);
 		}
@@ -1043,7 +1043,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 			addViewInternal(mFooterLayout, lp);
 		}
 
-		// Hide Loading Views
+		// Hide LoadingUtil Views
 		refreshLoadingViewsSize();
 
 		// If we're not using Mode.BOTH, set mCurrentMode to mMode, otherwise
@@ -1415,14 +1415,14 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		}
 
 		/**
-		 * @return true if this mode wants the Loading Layout Header to be shown
+		 * @return true if this mode wants the LoadingUtil Layout Header to be shown
 		 */
 		public boolean showHeaderLoadingLayout() {
 			return this == PULL_FROM_START || this == BOTH;
 		}
 
 		/**
-		 * @return true if this mode wants the Loading Layout Footer to be shown
+		 * @return true if this mode wants the LoadingUtil Layout Footer to be shown
 		 */
 		public boolean showFooterLoadingLayout() {
 			return this == PULL_FROM_END || this == BOTH || this == MANUAL_REFRESH_ONLY;
