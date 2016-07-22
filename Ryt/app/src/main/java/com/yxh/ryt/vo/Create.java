@@ -47,8 +47,8 @@ public class Create implements Serializable {
     private int investGoalMoney;
     private long investStartDatetime;
     private Object investEndDatetime;
-    private Object auctionStartDatetime;
-    private Object auctionEndDatetime;
+    private long auctionStartDatetime;
+    private long auctionEndDatetime;
     private long createDatetime;
     private String picture_url;
     private String step;
@@ -60,7 +60,7 @@ public class Create implements Serializable {
     private Object newBidingPrice;
     private Object newBiddingDate;
     private Object sorts;
-    private Object winner;
+    private User winner;
     private Object feedback;
     private int duration;
     private Object startingPrice;
@@ -148,19 +148,19 @@ public class Create implements Serializable {
         this.investEndDatetime = investEndDatetime;
     }
 
-    public Object getAuctionStartDatetime() {
+    public long getAuctionStartDatetime() {
         return auctionStartDatetime;
     }
 
-    public void setAuctionStartDatetime(Object auctionStartDatetime) {
+    public void setAuctionStartDatetime(long auctionStartDatetime) {
         this.auctionStartDatetime = auctionStartDatetime;
     }
 
-    public Object getAuctionEndDatetime() {
+    public long getAuctionEndDatetime() {
         return auctionEndDatetime;
     }
 
-    public void setAuctionEndDatetime(Object auctionEndDatetime) {
+    public void setAuctionEndDatetime(long auctionEndDatetime) {
         this.auctionEndDatetime = auctionEndDatetime;
     }
 
@@ -252,11 +252,11 @@ public class Create implements Serializable {
         this.sorts = sorts;
     }
 
-    public Object getWinner() {
+    public User getWinner() {
         return winner;
     }
 
-    public void setWinner(Object winner) {
+    public void setWinner(User winner) {
         this.winner = winner;
     }
 

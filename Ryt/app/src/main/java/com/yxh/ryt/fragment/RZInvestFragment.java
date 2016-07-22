@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
-
-public class RZInvestFragment extends BaseFragment implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener {
+@SuppressLint("ValidFragment")
+public class RZInvestFragment extends BaseFragment{
 
 	private String artWorkId;
 	private AutoListView invester;
