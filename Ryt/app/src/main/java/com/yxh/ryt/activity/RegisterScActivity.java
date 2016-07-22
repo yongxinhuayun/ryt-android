@@ -35,7 +35,11 @@ import com.yxh.ryt.util.avalidations.ValidationModel;
 import com.yxh.ryt.validations.NickNameValidation;
 import com.yxh.ryt.vo.User;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,8 +90,10 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         setContentView(R.layout.registersucced);
         ButterKnife.bind(this);/*启用注解绑定*/
         String userid = getIntent().getStringExtra("userId");
-        username = getIntent().getStringExtra("username");
-        password = getIntent().getStringExtra("password");
+        //username = getIntent().getStringExtra("username");
+        username = "18510251819";
+        //password = getIntent().getStringExtra("password");
+        password = "123456";
         sexGroup.setOnCheckedChangeListener(this);
         commit.setEnabled(false);
         onEnabled();
@@ -227,29 +233,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                         });
                     }
                 });
-                /*Map<String, String> paramsMap = new HashMap<>();
-                paramsMap.put("username", username + "");
-                paramsMap.put("password", password + "");
-                paramsMap.put("cid", JPushInterface.getRegistrationID(RegisterScActivity.this));
-                paramsMap.put("timestamp", System.currentTimeMillis() + "");
-                try {
-                    AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
-                    paramsMap.put("signmsg", AppApplication.signmsg);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                NetRequestUtil.post(Constants.BASE_PATH + "userBinding.do", paramsMap, new LoginCallBack() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        System.out.println("失败了");
-                    }
-
-                    @Override
-                    public void onResponse(Map<String, Object> response) {
-                        ToastUtil.showLong(RegisterScActivity.this, "绑定成功");
-                        finish();
-                    }
-                });*/
             }
         });
     }
@@ -374,7 +357,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("xxxxxxx","nishisnsihsinsishinsisinsinisndinfis");
     }
 
     @Override
@@ -386,7 +368,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                     return;
                 }
                 Bitmap bitmap = getBitmap(data.getData());
-//                Bitmap bitmap=getBitmapFromUri(data.getData());
+               //Bitmap bitmap=getBitmapFromUri(data.getData());
                 circleImageView.setImageBitmap(bitmap);
 //                saveFile(bitmap);
                 flag = true;
@@ -395,12 +377,12 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
             case CAMERA_REQUEST_CODE:
                 File picture = new File(Environment.getExternalStorageDirectory()
                         + "/temp1.jpg");
-                Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
-                filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
+                Bitmap bitmap2 = getBitmap(Uri.fromFile(picture));
+                //filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
                 /* Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
                 bitmap1.recycle();
                 circleImageView.setImageBitmap(bitmap2);*/
-                circleImageView.setImageBitmap(bitmap1);
+                circleImageView.setImageBitmap(bitmap2);
 //                saveFile(bitmap1);
 //                startCrop(Uri.fromFile(picture));
                 flag = true;
@@ -431,20 +413,82 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         }
     }
 
-
+    private Bitmap comp(Bitmap response) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap.CompressFormat format= Bitmap.CompressFormat.JPEG;
+        response.compress(format, 100, baos);
+        if( baos.toByteArray().length / 1024>1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
+            baos.reset();//重置baos即清空baos
+            response.compress(format, 50, baos);//这里压缩50%，把压缩后的数据存放到baos中
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+        BitmapFactory.Options newOpts = new BitmapFactory.Options();
+        //开始读入图片，此时把options.inJustDecodeBounds 设回true了
+        newOpts.inJustDecodeBounds = true;
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
+        newOpts.inJustDecodeBounds = false;
+        int w = newOpts.outWidth;
+        int h = newOpts.outHeight;
+        //现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
+        float hh = 800f;//这里设置高度为800f
+        float ww = 480f;//这里设置宽度为480f
+        //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
+        int be = 1;//be=1表示不缩放
+        if (w > h && w > ww) {//如果宽度大的话根据宽度固定大小缩放
+            be = (int) (newOpts.outWidth / ww);
+        } else if (w < h && h > hh) {//如果高度高的话根据宽度固定大小缩放
+            be = (int) (newOpts.outHeight / hh);
+        }
+        if (be <= 0)
+            be = 1;
+        newOpts.inSampleSize = be;//设置缩放比例
+        newOpts.inPreferredConfig = Bitmap.Config.RGB_565;//降低图片从ARGB888到RGB565
+        //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
+        isBm = new ByteArrayInputStream(baos.toByteArray());
+        bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
+        return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
+    }
+    private Bitmap compressImage(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap.CompressFormat format=Bitmap.CompressFormat.JPEG;
+        image.compress(format, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        int length = baos.toByteArray().length;
+        while ( baos.toByteArray().length / 1024>100) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            options -= 10;//每次都减少10
+            image.compress(format, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
+        return bitmap;
+    }
     public Bitmap getBitmap(Uri data) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inSampleSize = 4;
        /* if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){*/
-        filePath = GetPathFromUri4kitkat.getPath(data);
+        String filePath1 = GetPathFromUri4kitkat.getPath(data);
         /*}else{
             filePath= ImageUtils.getRealPathByUriOld(data);
         }*/
         Bitmap bm = BitmapFactory.decodeFile(filePath, options);
         options.inJustDecodeBounds = false;
-        bm = BitmapFactory.decodeFile(filePath, options);
-        return bm;
+        bm = BitmapFactory.decodeFile(filePath1, options);
+        Bitmap bitmap1=comp(bm);
+        File file = new File(Environment.getExternalStorageDirectory()
+                + "/upLoad.jpg");
+        try {
+            filePath=file.getPath();
+            FileOutputStream fos = new FileOutputStream(file);
+            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return bitmap1;
     }
 
     private Bitmap getBitmapFromUri(Uri uri) {

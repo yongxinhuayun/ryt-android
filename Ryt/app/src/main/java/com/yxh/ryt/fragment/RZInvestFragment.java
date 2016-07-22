@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
-
+@SuppressLint("ValidFragment")
 public class RZInvestFragment extends BaseFragment{
 
 	private String artWorkId;

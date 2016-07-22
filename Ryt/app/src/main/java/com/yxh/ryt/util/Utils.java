@@ -424,23 +424,23 @@ public class Utils {
 		/*String[] split = url.split(".");
 		 url.endsWith("")
 		Log.d("bbbbbbbbb",split.length+"bbbbbbbbbbbbbbbbbbbbbbb");*/
-		if (".jpg".equals(url.endsWith(".jpg"))){
+		if ((url.endsWith(".jpg"))){
 			return ".jpg";
-		}else if (".jpeg".equals(url.endsWith(".jpeg"))){
+		}else if ((url.endsWith(".jpeg"))){
 			return ".jpeg";
-		}else if ("png".equals(url.endsWith(".png"))){
+		}else if ((url.endsWith(".png"))){
 			return ".png";
-		}else if (".gif".equals(url.endsWith(".gif"))){
+		}else if ((url.endsWith(".gif"))){
 			return ".gif";
 		}
 		return "";
 	}
 	public static Bitmap.CompressFormat getImageFormatBig(String url){
-		if (".jpg".equals(url.endsWith(".jpg"))){
+		if ((url.endsWith(".jpg"))){
 			return Bitmap.CompressFormat.JPEG;
-		}else if (".jpeg".equals(url.endsWith(".jpeg"))){
+		}else if ((url.endsWith(".jpeg"))){
 			return Bitmap.CompressFormat.JPEG;
-		}else if ("png".equals(url.endsWith(".png"))){
+		}else if ((url.endsWith(".png"))){
 			return Bitmap.CompressFormat.PNG;
 		}
 		return Bitmap.CompressFormat.JPEG;

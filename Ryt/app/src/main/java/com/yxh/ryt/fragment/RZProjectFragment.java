@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -76,7 +77,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-
+@SuppressLint("ValidFragment")
 public class RZProjectFragment extends BaseFragment implements View.OnClickListener {
 
     private String artWorkId;
