@@ -64,7 +64,7 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true">
         <activity
-            android:name=".activity.ArtistIndexActivity"
+            android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -292,7 +292,7 @@
         <activity android:name=".activity.AuctionOrderActivity" />
         <activity android:name=".activity.WalletDetailsActivity" />
         <activity android:name=".activity.CollectMoneyActivity" />
-       <!-- <activity android:name=".activity.ArtistIndexActivity" />-->
+        <activity android:name=".activity.ArtistIndexActivity" />
         <activity android:name=".activity.FinanceSummaryActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustPan|stateHidden"/>

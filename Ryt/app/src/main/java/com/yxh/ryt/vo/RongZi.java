@@ -66,7 +66,7 @@ public class RongZi {
     private BigDecimal investsMoney;
     private long creationEndDatetime;
     private String type;
-    private Object newCreationDate;
+    private long newCreationDate;
     private int auctionNum;
     private int newBidingPrice;
     private Object newBiddingDate;
@@ -255,11 +255,11 @@ public class RongZi {
         this.type = type;
     }
 
-    public Object getNewCreationDate() {
+    public long getNewCreationDate() {
         return newCreationDate;
     }
 
-    public void setNewCreationDate(Object newCreationDate) {
+    public void setNewCreationDate(long newCreationDate) {
         this.newCreationDate = newCreationDate;
     }
 

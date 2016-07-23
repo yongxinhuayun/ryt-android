@@ -138,7 +138,8 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                                         }
                                         if (state == AutoListView.LOAD) {
                                             lstv.onLoadComplete();
-                                            List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+                                            List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                                                    toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
                                             }.getType());
                                             if (null == objectList || objectList.size() == 0) {
                                                 lstv.setResultSize(1);
@@ -167,7 +168,7 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
         View contextView = inflater.inflate(R.layout.fragment_item, container, false);
         lstv = (AutoListView) contextView.findViewById(R.id.lstv);
         lstv.setPageSize(Constants.pageSize);
-        rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.finance_list_item1) {
+        rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.invest_item) {
 
             @Override
             public void convert(final ViewHolder helper, final RongZi item) {
@@ -195,17 +196,54 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                             }
                         });
                     }
-                    helper.setText(R.id.fli1_tv_date, Utils.getJudgeDate(item.getInvestRestTime())+"后截止");
                     helper.setImageByUrl(R.id.clh_tv_prc, item.getPicture_url());
-                    helper.setText(R.id.fli1_tv_money,item.getInvestsMoney()+"元/"+item.getInvestGoalMoney()+"元");
                     if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){
                         helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.VISIBLE);
                         helper.setText(R.id.clh_tv_artistTitle, item.getAuthor().getMaster().getTitle());
                     }else{
                         helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.GONE);
                     }
-                    double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-                    helper.setProgress(R.id.fli1_pb_progress, (int)(value*100));
+                    if ("1".equals(item.getType())){
+                        helper.getView(R.id.ll_finance).setVisibility(View.VISIBLE);
+                        helper.getView(R.id.ll_state_auction).setVisibility(View.GONE);
+                        helper.getView(R.id.ll_creat).setVisibility(View.GONE);
+                        helper.getView(R.id.ll_auction).setVisibility(View.GONE);
+                        helper.setText(R.id.fli1_tv_date, Utils.getJudgeDate(item.getInvestRestTime())+"后截止");
+                        helper.setText(R.id.fli1_tv_money,item.getInvestsMoney()+"元/"+item.getInvestGoalMoney()+"元");
+                        double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
+                        helper.setProgress(R.id.fli1_pb_progress, (int)(value*100));
+                    }else if ("2".equals(item.getType())){
+                        helper.getView(R.id.ll_finance).setVisibility(View.GONE);
+                        helper.getView(R.id.ll_state_auction).setVisibility(View.GONE);
+                        helper.getView(R.id.ll_creat).setVisibility(View.VISIBLE);
+                        helper.getView(R.id.ll_auction).setVisibility(View.GONE);
+                        helper.setText(R.id.cli1_tv_update,Utils.timeAndIos(item.getNewCreationDate())+"更新:");
+                        helper.setText(R.id.cli1_tv_finish,"预计"+Utils.timeAndIos(item.getCreationEndDatetime())+"完工");
+                    }else if ("3".equals(item.getType())){
+                        helper.getView(R.id.ll_finance).setVisibility(View.GONE);
+                        helper.getView(R.id.ll_state_auction).setVisibility(View.VISIBLE);
+                        helper.getView(R.id.ll_creat).setVisibility(View.GONE);
+                        helper.getView(R.id.ll_auction).setVisibility(View.VISIBLE);
+                        if ("30".equals(item.getStep())){
+                            helper.setText(R.id.ali1_tv_content,"拍卖时间 "+Utils.timeAuction(item.getAuctionStartDatetime()));
+                            helper.setText(R.id.clh1_tv_state,"拍卖预告");
+                        }else if ("31".equals(item.getStep())){
+                            helper.setText(R.id.ali1_tv_content,Utils.getJudgeDate1(item.getAuctionEndDatetime())+"后截止");
+                            helper.setText(R.id.clh1_tv_state,"拍卖中");
+                        }else {
+                            helper.setText(R.id.ali1_tv_content,"拍卖得主 "+item.getWinner().getName());
+                            helper.setText(R.id.clh1_tv_state,"拍卖结束");
+                        }
+                    }else {
+                        helper.getView(R.id.ll_finance).setVisibility(View.VISIBLE);
+                        helper.getView(R.id.ll_state_auction).setVisibility(View.GONE);
+                        helper.getView(R.id.ll_creat).setVisibility(View.GONE);
+                        helper.getView(R.id.ll_auction).setVisibility(View.GONE);
+                        helper.setText(R.id.fli1_tv_date, Utils.getJudgeDate(item.getInvestRestTime())+"后截止");
+                        helper.setText(R.id.fli1_tv_money,item.getInvestsMoney()+"元/"+item.getInvestGoalMoney()+"元");
+                        double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
+                        helper.setProgress(R.id.fli1_pb_progress, (int)(value*100));
+                    }
                     if (item.isPraise()){
                         helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise1);
                         helper.getView(R.id.clh_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
