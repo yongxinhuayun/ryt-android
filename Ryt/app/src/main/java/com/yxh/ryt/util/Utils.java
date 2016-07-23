@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -20,7 +21,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -65,7 +68,7 @@ public class Utils {
 	}
 	//格式化时间
 	public static String timeTrans(long time){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		return sdf.format(new Date(time));
 	}
 	public static String timeAuction(long time){
@@ -81,27 +84,54 @@ public class Utils {
 		return sdf.format(new Date(time));
 	}
 	public static String timeAndIos(long time){
-		long currentTime=System.currentTimeMillis();
-		long twoDayTime=2*24*60*60*1000;
-		if ((time-currentTime)>(twoDayTime)){
-			Date spreadTime = new Date(time);
-			String timeDate=dateFormater2.get().format(spreadTime);
-			Date today = new Date();
-			String nowDate = dateFormater2.get().format(today);
-			if (nowDate.equals(timeDate)){
-				StringBuilder builder=new StringBuilder();
-				builder.append("今天");
-				builder.append(timeNew(time));
-				return builder.toString();
-			}else {
-				StringBuilder builder=new StringBuilder();
-				builder.append("昨天");
-				builder.append(timeNew(time));
-				return builder.toString();
-			}
+		Date spreadTime = new Date(time);
+		String timeDate=dateFormater2.get().format(spreadTime);
+		Date today = new Date();
+		String nowDate = dateFormater2.get().format(today);
+		if (nowDate.equals(timeDate)){
+			StringBuilder builder=new StringBuilder();
+			builder.append("今天");
+			builder.append(timeNew(time));
+			return builder.toString();
+		}else if (IsYesterday(timeTrans(time))){
+                StringBuilder builder=new StringBuilder();
+                builder.append("昨天");
+                builder.append(timeNew(time));
+                return builder.toString();
 		}else {
 			return timeNew1(time);
 		}
+	}
+	public static boolean IsYesterday(String day)  {
+
+		Calendar pre = Calendar.getInstance();
+		Date predate = new Date(System.currentTimeMillis());
+		pre.setTime(predate);
+
+		Calendar cal = Calendar.getInstance();
+		Date date = null;
+		try {
+			date = getDateFormat().parse(day);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		cal.setTime(date);
+		if (cal.get(Calendar.YEAR) == (pre.get(Calendar.YEAR))) {
+			int diffDay = cal.get(Calendar.DAY_OF_YEAR)
+					- pre.get(Calendar.DAY_OF_YEAR);
+
+			if (diffDay == -1) {
+				return true;
+			}
+		}
+		return false;
+	}
+	private static ThreadLocal<SimpleDateFormat> DateLocal = new ThreadLocal<SimpleDateFormat>();
+	public static SimpleDateFormat getDateFormat() {
+		if (null == DateLocal.get()) {
+			DateLocal.set(new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA));
+		}
+		return DateLocal.get();
 	}
 	public static String timeTrans1(long time){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

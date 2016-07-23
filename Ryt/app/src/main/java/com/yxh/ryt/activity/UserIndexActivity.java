@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.ArtistTabPageIndicatorAdapter;
+import com.yxh.ryt.adapter.UserTabPageIndicatorAdapter;
 import com.yxh.ryt.fragment.ArtistHomeFragment;
 import com.yxh.ryt.fragment.BriefFragment;
 import com.yxh.ryt.fragment.InvestedFragment;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/8.
  */
-public class UserActivity extends BaseActivity {
+public class UserIndexActivity extends BaseActivity {
     List<Fragment> indexChildFragments=new ArrayList<>();
     FragmentPagerAdapter indexChildAdapter;
     @Override
@@ -31,9 +32,9 @@ public class UserActivity extends BaseActivity {
         indexChildFragments.add(new BriefFragment("iovebhfg2tf3h0mb"));
         indexChildFragments.add(new WorksFragment("iovebhfg2tf3h0mb"));
         indexChildFragments.add(new InvestedFragment());
-        indexChildAdapter = new ArtistTabPageIndicatorAdapter(getSupportFragmentManager(),indexChildFragments);
+        indexChildAdapter = new UserTabPageIndicatorAdapter(getSupportFragmentManager(),indexChildFragments);
         ViewPager pager = (ViewPager)findViewById(R.id.aai_pager);
-        pager.setOffscreenPageLimit(4);
+        pager.setOffscreenPageLimit(3);
         pager.setAdapter(indexChildAdapter);
         //实例化TabPageIndicator然后设置ViewPager与之关联
         TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.aai_indicator);
