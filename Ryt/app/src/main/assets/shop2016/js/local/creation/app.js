@@ -18,5 +18,5 @@ function redirectComment(artworkId, currentUserId, messageId, fatherCommentId,na
     window.demo.comment(artworkId, currentUserId, messageId, fatherCommentId,name);
 }       //跳转到评论
 
-//hostName = "http://192.168.1.75:8080";
-hostName = "http://ryt.efeiyi.com";//服务器域名
+hostName = "http://192.168.1.75:8080";
+//hostName = "http://ryt.efeiyi.com";//服务器域名

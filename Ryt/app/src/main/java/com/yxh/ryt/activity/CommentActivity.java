@@ -87,15 +87,15 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
                     @Override
                     public void onClick(View v) {
                         if (item.getCreator().getMaster()!=null){
-                            Intent intent=new Intent(CommentActivity.this, UserYsjIndexActivity.class);
+                            Intent intent=new Intent(CommentActivity.this, ArtistIndexActivity.class);
                             intent.putExtra("userId",item.getCreator().getId());
-                            intent.putExtra("currentId",AppApplication.gUser.getId());
+                            intent.putExtra("name",item.getCreator().getName());
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         }else {
-                            Intent intent=new Intent(CommentActivity.this, UserPtIndexActivity.class);
+                            Intent intent=new Intent(CommentActivity.this, UserIndexActivity.class);
                             intent.putExtra("userId",item.getCreator().getId());
-                            intent.putExtra("currentId",AppApplication.gUser.getId());
+                            intent.putExtra("name",item.getCreator().getName());
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         }
@@ -130,15 +130,15 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
                                 return;
                             }
                             if (AppApplication.gUser != null&&"master".equals(AppApplication.gUser.getMaster1())) {
-                                Intent intent=new Intent(AppApplication.getSingleContext(),UserYsjIndexActivity.class);
-                                intent.putExtra("userId", AppApplication.gUser.getId());
-                                intent.putExtra("currentId", AppApplication.gUser.getId());
+                                Intent intent=new Intent(AppApplication.getSingleContext(),ArtistIndexActivity.class);
+                                intent.putExtra("userId", item.getFatherArtworkCommentBean().getCreator().getId());
+                                intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getName());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                             }else if (AppApplication.gUser != null&&"".equals(AppApplication.gUser.getMaster1())){
-                                Intent intent=new Intent(AppApplication.getSingleContext(),UserPtIndexActivity.class);
-                                intent.putExtra("userId", AppApplication.gUser.getId());
-                                intent.putExtra("currentId", AppApplication.gUser.getId());
+                                Intent intent=new Intent(AppApplication.getSingleContext(),UserIndexActivity.class);
+                                intent.putExtra("userId", item.getFatherArtworkCommentBean().getCreator().getId());
+                                intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getName());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                             }
@@ -164,15 +164,15 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
                                 return;
                             }
                             if (AppApplication.gUser != null&&"master".equals(AppApplication.gUser.getMaster1())) {
-                                Intent intent=new Intent(AppApplication.getSingleContext(),UserYsjIndexActivity.class);
-                                intent.putExtra("userId", AppApplication.gUser.getId());
-                                intent.putExtra("currentId", AppApplication.gUser.getId());
+                                Intent intent=new Intent(AppApplication.getSingleContext(),ArtistIndexActivity.class);
+                                intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getId());
+                                intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getName());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                             }else if (AppApplication.gUser != null&&"".equals(AppApplication.gUser.getMaster1())){
-                                Intent intent=new Intent(AppApplication.getSingleContext(),UserPtIndexActivity.class);
-                                intent.putExtra("userId", AppApplication.gUser.getId());
-                                intent.putExtra("currentId", AppApplication.gUser.getId());
+                                Intent intent=new Intent(AppApplication.getSingleContext(),UserIndexActivity.class);
+                                intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getId());
+                                intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getName());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                             }

@@ -21,7 +21,9 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.ArtistIndexActivity;
 import com.yxh.ryt.activity.ProjectCommentReply;
+import com.yxh.ryt.activity.UserIndexActivity;
 import com.yxh.ryt.activity.UserPtIndexActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
@@ -137,15 +139,15 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                     @Override
                     public void onClick(View v) {
                         if (item.getCreator().getMaster()!=null){
-                            Intent intent=new Intent(getActivity(), UserYsjIndexActivity.class);
+                            Intent intent=new Intent(getActivity(), ArtistIndexActivity.class);
                             intent.putExtra("userId",item.getCreator().getId());
-                            intent.putExtra("currentId",AppApplication.gUser.getId());
+                            intent.putExtra("name",item.getCreator().getName());
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             getActivity().startActivity(intent);
                         }else {
-                            Intent intent=new Intent(getActivity(), UserPtIndexActivity.class);
+                            Intent intent=new Intent(getActivity(), UserIndexActivity.class);
                             intent.putExtra("userId",item.getCreator().getId());
-                            intent.putExtra("currentId",AppApplication.gUser.getId());
+                            intent.putExtra("name",item.getCreator().getName());
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             getActivity().startActivity(intent);
                         }
@@ -164,15 +166,15 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
                         @Override
                         public void onClick(View widget) {
                             if (item.getFatherComment().getCreator().getMaster()!=null){
-                                Intent intent=new Intent(getActivity(), UserYsjIndexActivity.class);
+                                Intent intent=new Intent(getActivity(), ArtistIndexActivity.class);
                                 intent.putExtra("userId",item.getFatherComment().getCreator().getId());
-                                intent.putExtra("currentId",AppApplication.gUser.getId());
+                                intent.putExtra("name",item.getCreator().getName());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 getActivity().startActivity(intent);
                             }else {
-                                Intent intent=new Intent(getActivity(), UserPtIndexActivity.class);
+                                Intent intent=new Intent(getActivity(), UserIndexActivity.class);
                                 intent.putExtra("userId",item.getFatherComment().getCreator().getId());
-                                intent.putExtra("currentId",AppApplication.gUser.getId());
+                                intent.putExtra("name",item.getCreator().getName());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 getActivity().startActivity(intent);
                             }
@@ -302,5 +304,6 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
     }
     @Override
     protected void lazyLoad() {
+
     }
 }

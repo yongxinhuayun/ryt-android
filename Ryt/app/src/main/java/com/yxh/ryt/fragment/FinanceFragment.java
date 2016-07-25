@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.ArtistIndexActivity;
 import com.yxh.ryt.activity.FinanceSummaryActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
@@ -198,9 +199,9 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 						helper.getView(R.id.clh_cv_headerImage).setOnClickListener(new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								Intent intent=new Intent(getActivity(), UserYsjIndexActivity.class);
+								Intent intent=new Intent(getActivity(), ArtistIndexActivity.class);
 								intent.putExtra("userId",item.getAuthor().getId());
-								intent.putExtra("currentId",AppApplication.gUser.getId());
+								intent.putExtra("name",item.getAuthor().getName());
 								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 								getActivity().startActivity(intent);
 							}
@@ -264,6 +265,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 	private void praise(final String artworkId, final LinearLayout view, final TextView textView, final int praiseNum, final ImageView imageView, final ViewHolder helper) {
 		Map<String, String> paramsMap = new HashMap<>();
 		paramsMap.put("artworkId", artworkId + "");
+		paramsMap.put("action ", "1");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);

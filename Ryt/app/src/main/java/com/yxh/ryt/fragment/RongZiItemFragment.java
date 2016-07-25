@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.ArtistIndexActivity;
 import com.yxh.ryt.activity.FinanceSummaryActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
@@ -181,9 +182,9 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 					helper.getView(R.id.cl_01_civ_headPortrait).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							Intent intent=new Intent(getActivity(), UserYsjIndexActivity.class);
+							Intent intent=new Intent(getActivity(), ArtistIndexActivity.class);
 							intent.putExtra("userId",item.getAuthor().getId());
-							intent.putExtra("currentId",AppApplication.gUser.getId());
+							intent.putExtra("name", item.getAuthor().getName());
 							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							getActivity().startActivity(intent);
 						}

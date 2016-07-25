@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.R;
@@ -27,9 +28,12 @@ public class ArtistIndexActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artistindex);
         String userId = getIntent().getStringExtra("userId");
-        indexChildFragments.add(new ArtistHomeFragment("iovebhfg2tf3h0mb"));
-        indexChildFragments.add(new BriefFragment("iovebhfg2tf3h0mb"));
-        indexChildFragments.add(new WorksFragment("iovebhfg2tf3h0mb"));
+        String name=getIntent().getStringExtra("name");
+        TextView textName = (TextView) findViewById(R.id.aai_tv_name);
+        textName.setText(name);
+        indexChildFragments.add(new ArtistHomeFragment(userId));
+        indexChildFragments.add(new BriefFragment(userId));
+        indexChildFragments.add(new WorksFragment(userId));
         indexChildFragments.add(new InvestedFragment());
         indexChildAdapter = new ArtistTabPageIndicatorAdapter(getSupportFragmentManager(),indexChildFragments);
         ViewPager pager = (ViewPager)findViewById(R.id.aai_pager);

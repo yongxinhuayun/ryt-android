@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.R;
@@ -12,6 +13,8 @@ import com.yxh.ryt.adapter.UserTabPageIndicatorAdapter;
 import com.yxh.ryt.fragment.ArtistHomeFragment;
 import com.yxh.ryt.fragment.BriefFragment;
 import com.yxh.ryt.fragment.InvestedFragment;
+import com.yxh.ryt.fragment.UserInvestFragment;
+import com.yxh.ryt.fragment.UserPraiseFragment;
 import com.yxh.ryt.fragment.WorksFragment;
 
 import java.util.ArrayList;
@@ -28,10 +31,12 @@ public class UserIndexActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artistindex);
         String userId = getIntent().getStringExtra("userId");
-        indexChildFragments.add(new ArtistHomeFragment("iovebhfg2tf3h0mb"));
-        indexChildFragments.add(new BriefFragment("iovebhfg2tf3h0mb"));
-        indexChildFragments.add(new WorksFragment("iovebhfg2tf3h0mb"));
-        indexChildFragments.add(new InvestedFragment());
+        String name=getIntent().getStringExtra("name");
+        TextView textName = (TextView) findViewById(R.id.aai_tv_name);
+        textName.setText(name);
+        indexChildFragments.add(new UserInvestFragment(userId));
+        indexChildFragments.add(new UserPraiseFragment(userId));
+        indexChildFragments.add(new BriefFragment(userId));
         indexChildAdapter = new UserTabPageIndicatorAdapter(getSupportFragmentManager(),indexChildFragments);
         ViewPager pager = (ViewPager)findViewById(R.id.aai_pager);
         pager.setOffscreenPageLimit(3);
@@ -40,5 +45,4 @@ public class UserIndexActivity extends BaseActivity {
         TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.aai_indicator);
         indicator.setViewPager(pager);
     }
-
 }

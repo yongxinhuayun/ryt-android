@@ -64,6 +64,7 @@ public class AppApplication extends Application {
 	public static DisplayImageOptions options;
 	public static User gUser;
 	public static Map<String,String> map;
+	public static Map<String,String> artWorkMap;
 	public static Map<String,String> ptMap;
 	public static Map<String,String> billMap;
 	public static DBHelper helper;
@@ -97,10 +98,42 @@ public class AppApplication extends Application {
 		builder.imageScaleType(ImageScaleType.EXACTLY_STRETCHED);
 		options=builder.build();
 		getMap();
+		getArtWorkMap();
 		gUser=new User();
 		getPTMap();
 		getBillMap();
 	}
+
+	private static void getArtWorkMap() {
+		artWorkMap=new HashMap<String,String>();
+		artWorkMap.put("0","发起阶段");
+		artWorkMap.put("1","融资阶段");
+		artWorkMap.put("2","制作阶段");
+		artWorkMap.put("3","拍卖阶段");
+		artWorkMap.put("4","抽奖阶段");
+		artWorkMap.put("5","驳回");
+		artWorkMap.put("100","");
+		artWorkMap.put("10","");
+		artWorkMap.put("11","");
+		artWorkMap.put("12","融资中");
+		artWorkMap.put("13", "");
+		artWorkMap.put("14","融资中");
+		artWorkMap.put("15","融资中");
+		artWorkMap.put("20", "创作中");
+		artWorkMap.put("21", "创作中");
+		artWorkMap.put("22", "创作中");
+		artWorkMap.put("23", "创作中");
+		artWorkMap.put("24", "创作中");
+		artWorkMap.put("25", "创作中");
+		artWorkMap.put("30", "拍卖中");
+		artWorkMap.put("31", "拍卖中");
+		artWorkMap.put("32", "拍卖结束");
+		artWorkMap.put("33", "拍卖结束");
+		artWorkMap.put("34", "拍卖结束");
+		artWorkMap.put("35","拍卖结束");
+		artWorkMap.put("36", "拍卖结束");
+	}
+
 	public static DBHelper getDBHelper(){
 		if (helper==null){
 			helper=new DBHelper(AppApplication.getSingleContext());

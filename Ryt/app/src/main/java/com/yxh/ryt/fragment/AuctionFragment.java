@@ -16,6 +16,8 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.ArtistIndexActivity;
+import com.yxh.ryt.activity.AuctionSummaryActivity;
 import com.yxh.ryt.activity.FinanceSummaryActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
@@ -196,9 +198,9 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 						helper.getView(R.id.clh1_cv_headerImage).setOnClickListener(new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								Intent intent=new Intent(getActivity(), UserYsjIndexActivity.class);
+								Intent intent=new Intent(getActivity(), ArtistIndexActivity.class);
 								intent.putExtra("userId",item.getAuthor().getId());
-								intent.putExtra("currentId",AppApplication.gUser.getId());
+								intent.putExtra("name",item.getAuthor().getName()+"");
 								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 								getActivity().startActivity(intent);
 							}
@@ -268,6 +270,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 	private void praise(final String artworkId, final LinearLayout view, final TextView textView, final int praiseNum, final ImageView imageView, final ViewHolder helper) {
 		Map<String, String> paramsMap = new HashMap<>();
 		paramsMap.put("artworkId", artworkId + "");
+		paramsMap.put("action ", "1");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
@@ -332,16 +335,10 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		if (position<=rongZiDatas.size()){
-			/*int[] location = new  int[2] ;
-			view1.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
-			view1.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
-			System.out.println("view--->x坐标:"+location [0]+"view--->y坐标:"+location [1]);
-			int[] location1 = new  int[2] ;
-			view2.getLocationInWindow(location1); //获取在当前窗口内的绝对坐标
-			view2.getLocationOnScreen(location1);//获取在整个屏幕内的绝对坐标
-			System.out.println("view--->x坐标:"+location1 [0]+"view--->y坐标:"+location1 [1]);*/
-			Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
-			intent.putExtra("id",rongZiDatas.get(position-1).getId());
+			Intent intent=new Intent(getActivity(), AuctionSummaryActivity.class);
+			intent.putExtra("id", rongZiDatas.get(position-1).getId());
+			intent.putExtra("title", rongZiDatas.get(position-1).getTitle());
+			intent.putExtra("name", rongZiDatas.get(position-1).getAuthor().getName());
 			startActivity(intent);
 		}
 	}

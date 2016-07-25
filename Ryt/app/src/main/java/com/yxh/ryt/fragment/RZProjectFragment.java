@@ -36,11 +36,13 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.ArtistIndexActivity;
 import com.yxh.ryt.activity.AttentionActivity;
 import com.yxh.ryt.activity.InvestActivity;
 import com.yxh.ryt.activity.InvestorActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.ProjectCommentReply;
+import com.yxh.ryt.activity.UserIndexActivity;
 import com.yxh.ryt.activity.UserPtIndexActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
@@ -284,15 +286,15 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     @Override
                     public void onClick(View v) {
                         if (item.getCreator().getMaster() != null) {
-                            Intent intent = new Intent(getActivity(), UserYsjIndexActivity.class);
+                            Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
                             intent.putExtra("userId", item.getCreator().getId());
-                            intent.putExtra("currentId", AppApplication.gUser.getId());
+                            intent.putExtra("name", item.getCreator().getName());
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             getActivity().startActivity(intent);
                         } else {
-                            Intent intent = new Intent(getActivity(), UserPtIndexActivity.class);
+                            Intent intent = new Intent(getActivity(), UserIndexActivity.class);
                             intent.putExtra("userId", item.getCreator().getId());
-                            intent.putExtra("currentId", AppApplication.gUser.getId());
+                            intent.putExtra("name", item.getCreator().getName());
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             getActivity().startActivity(intent);
                         }
@@ -311,15 +313,15 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         @Override
                         public void onClick(View widget) {
                             if (item.getFatherComment().getCreator().getMaster() != null) {
-                                Intent intent = new Intent(getActivity(), UserYsjIndexActivity.class);
+                                Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
                                 intent.putExtra("userId", item.getFatherComment().getCreator().getId());
-                                intent.putExtra("currentId", AppApplication.gUser.getId());
+                                intent.putExtra("name", item.getCreator().getName());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 getActivity().startActivity(intent);
                             } else {
-                                Intent intent = new Intent(getActivity(), UserPtIndexActivity.class);
+                                Intent intent = new Intent(getActivity(), UserIndexActivity.class);
                                 intent.putExtra("userId", item.getFatherComment().getCreator().getId());
-                                intent.putExtra("currentId", AppApplication.gUser.getId());
+                                intent.putExtra("name", item.getCreator().getName());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 getActivity().startActivity(intent);
                             }
@@ -650,15 +652,15 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
     private void clickHead(int temp) {
         if (artWorkPraiseList.get(temp).getUser().getMaster() != null) {
-            Intent intent = new Intent(getActivity(), UserYsjIndexActivity.class);
+            Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
             intent.putExtra("userId", artWorkPraiseList.get(temp).getUser().getId());
-            intent.putExtra("currentId", AppApplication.gUser.getId());
+            intent.putExtra("name", artWorkPraiseList.get(temp).getUser().getName());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
         } else {
-            Intent intent = new Intent(getActivity(), UserPtIndexActivity.class);
+            Intent intent = new Intent(getActivity(), UserIndexActivity.class);
             intent.putExtra("userId", artWorkPraiseList.get(temp).getUser().getId());
-            intent.putExtra("currentId", AppApplication.gUser.getId());
+            intent.putExtra("name", artWorkPraiseList.get(temp).getUser().getName());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
         }
@@ -1051,6 +1053,7 @@ if (investTopList != null) {
     private void praise(String artworkId, String s) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artworkId", artworkId + "");
+        paramsMap.put("action ", "1");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);

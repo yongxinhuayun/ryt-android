@@ -1,8 +1,10 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +23,18 @@ import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
+import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
+import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
+import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.RongZi;
+import com.yxh.ryt.vo.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,24 +44,42 @@ import java.util.Map;
 import okhttp3.Call;
 
 /**
- * Created by Administrator on 2016/7/18.
+ * Created by Administrator on 2016/7/8.
  */
-public class InvestedFragment extends BaseFragment implements AdapterView.OnItemClickListener, AutoListView.OnRefreshListener, AutoListView.OnLoadListener {
+@SuppressLint("ValidFragment")
+public class UserPraiseFragment extends BaseFragment implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener, AdapterView.OnItemClickListener {
+    private final String userId;
     private AutoListView lstv;
     private CommonAdapter<RongZi> rongZiCommonAdapter;
     private List<RongZi> rongZiDatas;
     private int currentPage = 1;
     private Map<Integer,Boolean> selected;
+    private int width;
+    private int height;
+    private LoadingUtil loadingUtil;
+
+    public UserPraiseFragment(String userId) {
+        super();
+        this.userId=userId;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         rongZiDatas=new ArrayList<RongZi>();
         selected=new HashMap<>();
+        DisplayMetrics metric = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
+        // 屏幕宽度（像素）
+        width = metric.widthPixels;
+        height = metric.heightPixels;
+        loadingUtil = new LoadingUtil(getActivity(),width,height);
     }
     private void LoadData(final int state, final int pageNum) {
+        loadingUtil.show();
         final Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId", AppApplication.gUser.getId());
-        paramsMap.put("action", "invest");
+        paramsMap.put("userId",userId);
+        paramsMap.put("action", "praise");
         paramsMap.put("pageSize", Constants.pageSize + "");
         paramsMap.put("pageIndex", pageNum + "");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -75,6 +99,7 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
 
             @Override
             public void onResponse(final Map<String, Object> response) {
+                loadingUtil.dismiss();
                 if ("".equals(AppApplication.gUser.getId())){
                     if (state == AutoListView.REFRESH) {
                         lstv.onRefreshComplete();
@@ -169,44 +194,43 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
         View contextView = inflater.inflate(R.layout.fragment_item, container, false);
         lstv = (AutoListView) contextView.findViewById(R.id.lstv);
         lstv.setPageSize(Constants.pageSize);
-        rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.invest_item) {
+        rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.invest_item1) {
 
             @Override
             public void convert(final ViewHolder helper, final RongZi item) {
                 if (item!=null){
-                    helper.setText(R.id.clh_tv_title,item.getTitle());
-                    helper.setText(R.id.clh_tv_brief,item.getBrief());
+                    helper.setText(R.id.clh1_tv_title,item.getTitle());
+                    helper.setText(R.id.clh1_tv_brief,item.getBrief());
                     if (selected.size()<rongZiDatas.size()){
                         for (int i=selected.size();i<rongZiDatas.size();i++){
                             selected.put(i,false);
                         }
                     }
                     if (item.getAuthor()!=null){
-                        helper.setText(R.id.clh_tv_artistName,item.getAuthor().getName()+"");
-                        helper.setImageByUrl(R.id.clh_cv_headerImage,item.getAuthor().getPictureUrl());
-                        helper.setText(R.id.clh_tv_totalWork,item.getAuthor().getMasterWorkNum()+"件作品");
-                        helper.setText(R.id.clh_tv_totalFans,item.getAuthor().getFansNum()+"个粉丝");
-                        helper.getView(R.id.clh_cv_headerImage).setOnClickListener(new View.OnClickListener() {
+                        helper.setText(R.id.clh1_tv_artistName,item.getAuthor().getName()+"");
+                        helper.setImageByUrl(R.id.clh1_cv_headerImage,item.getAuthor().getPictureUrl());
+                        helper.setText(R.id.clh1_tv_totalWork,item.getAuthor().getMasterWorkNum()+"件作品");
+                        helper.setText(R.id.clh1_tv_totalFans,item.getAuthor().getFansNum()+"个粉丝");
+                        helper.getView(R.id.clh1_cv_headerImage).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent=new Intent(getActivity(), ArtistIndexActivity.class);
                                 intent.putExtra("userId",item.getAuthor().getId());
-                                intent.putExtra("name",item.getAuthor().getId());
+                                intent.putExtra("name",item.getAuthor().getName());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 getActivity().startActivity(intent);
                             }
                         });
                     }
-                    helper.setImageByUrl(R.id.clh_tv_prc, item.getPicture_url());
+                    helper.setImageByUrl(R.id.clh1_tv_prc, item.getPicture_url());
                     if (null!=item.getAuthor().getMaster()&&!"".equals(item.getAuthor().getMaster().getTitle())){
-                        helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.VISIBLE);
-                        helper.setText(R.id.clh_tv_artistTitle, item.getAuthor().getMaster().getTitle());
+                        helper.getView(R.id.clh1_tv_artistTitle).setVisibility(View.VISIBLE);
+                        helper.setText(R.id.clh1_tv_artistTitle, item.getAuthor().getMaster().getTitle());
                     }else{
-                        helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.GONE);
+                        helper.getView(R.id.clh1_tv_artistTitle).setVisibility(View.GONE);
                     }
                     if ("1".equals(item.getType())){
                         helper.getView(R.id.ll_finance).setVisibility(View.VISIBLE);
-                        helper.getView(R.id.ll_state_auction).setVisibility(View.GONE);
                         helper.getView(R.id.ll_creat).setVisibility(View.GONE);
                         helper.getView(R.id.ll_auction).setVisibility(View.GONE);
                         helper.setText(R.id.fli1_tv_date, Utils.getJudgeDate(item.getInvestRestTime())+"后截止");
@@ -215,29 +239,23 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                         helper.setProgress(R.id.fli1_pb_progress, (int)(value*100));
                     }else if ("2".equals(item.getType())){
                         helper.getView(R.id.ll_finance).setVisibility(View.GONE);
-                        helper.getView(R.id.ll_state_auction).setVisibility(View.GONE);
                         helper.getView(R.id.ll_creat).setVisibility(View.VISIBLE);
                         helper.getView(R.id.ll_auction).setVisibility(View.GONE);
                         helper.setText(R.id.cli1_tv_update,Utils.timeAndIos(item.getNewCreationDate())+"更新:");
                         helper.setText(R.id.cli1_tv_finish,"预计"+Utils.timeAndIos(item.getCreationEndDatetime())+"完工");
                     }else if ("3".equals(item.getType())){
                         helper.getView(R.id.ll_finance).setVisibility(View.GONE);
-                        helper.getView(R.id.ll_state_auction).setVisibility(View.VISIBLE);
                         helper.getView(R.id.ll_creat).setVisibility(View.GONE);
                         helper.getView(R.id.ll_auction).setVisibility(View.VISIBLE);
                         if ("30".equals(item.getStep())){
                             helper.setText(R.id.ali1_tv_content,"拍卖时间 "+Utils.timeAuction(item.getAuctionStartDatetime()));
-                            helper.setText(R.id.clh1_tv_state,"拍卖预告");
                         }else if ("31".equals(item.getStep())){
                             helper.setText(R.id.ali1_tv_content,Utils.getJudgeDate1(item.getAuctionEndDatetime())+"后截止");
-                            helper.setText(R.id.clh1_tv_state,"拍卖中");
                         }else {
                             helper.setText(R.id.ali1_tv_content,"拍卖得主 "+item.getWinner().getName());
-                            helper.setText(R.id.clh1_tv_state,"拍卖结束");
                         }
                     }else {
                         helper.getView(R.id.ll_finance).setVisibility(View.VISIBLE);
-                        helper.getView(R.id.ll_state_auction).setVisibility(View.GONE);
                         helper.getView(R.id.ll_creat).setVisibility(View.GONE);
                         helper.getView(R.id.ll_auction).setVisibility(View.GONE);
                         helper.setText(R.id.fli1_tv_date, Utils.getJudgeDate(item.getInvestRestTime())+"后截止");
@@ -245,25 +263,36 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                         double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
                         helper.setProgress(R.id.fli1_pb_progress, (int)(value*100));
                     }
+                    if ("".equals(AppApplication.artWorkMap.get(item.getStep()))){
+                        helper.getView(R.id.ll_state_auction).setVisibility(View.GONE);
+                    }else if ("融资中".equals(AppApplication.artWorkMap.get(item.getStep()))){
+                        helper.getView(R.id.ll_state_auction).setVisibility(View.VISIBLE);
+                        helper.getView(R.id.liah_iv_progress).setVisibility(View.VISIBLE);
+                        helper.setText(R.id.clh1_tv_state,"融资中￥"+item.getInvestsMoney());
+                    }else {
+                        helper.getView(R.id.ll_state_auction).setVisibility(View.VISIBLE);
+                        helper.getView(R.id.liah_iv_progress).setVisibility(View.GONE);
+                        helper.setText(R.id.clh1_tv_state,AppApplication.artWorkMap.get(item.getStep()));
+                    }
                     if (item.isPraise()){
-                        helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise1);
-                        helper.getView(R.id.clh_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
-                        ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
-                        helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+"");
-                        helper.getView(R.id.clh_ll_praise).setEnabled(false);
+                        helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise1);
+                        helper.getView(R.id.clh1_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
+                        ((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
+                        helper.setText(R.id.clh1_tv_praiseNum,item.getPraiseNUm()+"");
+                        helper.getView(R.id.clh1_ll_praise).setEnabled(false);
                     }else {
                         if (selected.get(helper.getPosition())){
-                            helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise1);
-                            helper.getView(R.id.clh_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
-                            ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
-                            helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+1+"");
-                            helper.getView(R.id.clh_ll_praise).setEnabled(false);
+                            helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise1);
+                            helper.getView(R.id.clh1_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
+                            ((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
+                            helper.setText(R.id.clh1_tv_praiseNum,item.getPraiseNUm()+1+"");
+                            helper.getView(R.id.clh1_ll_praise).setEnabled(false);
                         }else {
-                            helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise);
-                            ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(205,55,56));
-                            helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+"");
-                            helper.getView(R.id.clh_ll_praise).setEnabled(true);
-                            helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
+                            helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise);
+                            ((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(205,55,56));
+                            helper.setText(R.id.clh1_tv_praiseNum,item.getPraiseNUm()+"");
+                            helper.getView(R.id.clh1_ll_praise).setEnabled(true);
+                            helper.getView(R.id.clh1_ll_praise).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     if ("".equals(AppApplication.gUser.getId())){
@@ -273,7 +302,7 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         getActivity().startActivity(intent);
                                     }else {
-                                        praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)),((TextView) helper.getView(R.id.clh_tv_praiseNum)),item.getPraiseNUm(), ((ImageView) helper.getView(R.id.clh_iv_attention)), helper);
+                                        praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh1_ll_praise)),((TextView) helper.getView(R.id.clh1_tv_praiseNum)),item.getPraiseNUm(), ((ImageView) helper.getView(R.id.clh1_iv_attention)), helper);
                                     }
                                 }
                             });
@@ -339,8 +368,7 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
     }
     @Override
     protected void lazyLoad() {
-        if(rongZiDatas!=null&&rongZiDatas.size()>0)return;
-        LoadData(AutoListView.REFRESH, currentPage);
+
     }
     @Override
     public void onRefresh() {
@@ -356,37 +384,21 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (position<=rongZiDatas.size()){
-			/*int[] location = new  int[2] ;
-			view1.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
-			view1.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
-			System.out.println("view--->x坐标:"+location [0]+"view--->y坐标:"+location [1]);
-			int[] location1 = new  int[2] ;
-			view2.getLocationInWindow(location1); //获取在当前窗口内的绝对坐标
-			view2.getLocationOnScreen(location1);//获取在整个屏幕内的绝对坐标
-			System.out.println("view--->x坐标:"+location1 [0]+"view--->y坐标:"+location1 [1]);*/
-            Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
-            intent.putExtra("id",rongZiDatas.get(position - 1).getId());
-            /*if ("1".equals(rongZiDatas.get(position - 1).getType())) {
+        if (position<=rongZiDatas.size()+1){
+            if ("1".equals(rongZiDatas.get(position-2).getType())){
                 Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
-                intent.putExtra("id",rongZiDatas.get(position - 1).getId());
-            }else if ("1".equals(rongZiDatas.get(position - 1).getType())) {
-                Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
-                intent.putExtra("id",rongZiDatas.get(position - 1).getId());
-            }else if ("1".equals(rongZiDatas.get(position - 1).getType())) {
-                Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
-                intent.putExtra("id",rongZiDatas.get(position - 1).getId());
-            }*/
-            startActivity(intent);
+                intent.putExtra("id",rongZiDatas.get(position-2).getId());
+                startActivity(intent);
+            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        currentPage=1;
+        rongZiDatas.clear();
+        LoadData(AutoListView.REFRESH, currentPage);
     }
 
-    }
-
-
+}

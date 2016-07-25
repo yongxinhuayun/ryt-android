@@ -20,6 +20,7 @@ import com.yxh.ryt.activity.FansActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.PublicProject01Activity;
 import com.yxh.ryt.activity.UserEditZiLiaoActivity;
+import com.yxh.ryt.activity.UserIndexActivity;
 import com.yxh.ryt.activity.UserPtIndexActivity;
 import com.yxh.ryt.activity.UserQianBaoActivity;
 import com.yxh.ryt.activity.UserSettingActivity;
@@ -211,13 +212,13 @@ public class TabFragment04 extends BaseFragment {
         if (AppApplication.gUser != null&&"master".equals(AppApplication.gUser.getMaster1())) {
             Intent intent=new Intent(AppApplication.getSingleContext(),ArtistIndexActivity.class);
             intent.putExtra("userId", AppApplication.gUser.getId());
-            intent.putExtra("currentId", AppApplication.gUser.getId());
+            intent.putExtra("name",tvUserHeaderName.getText().toString());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
         }else if (AppApplication.gUser != null&&"".equals(AppApplication.gUser.getMaster1())){
-            Intent intent=new Intent(AppApplication.getSingleContext(),UserPtIndexActivity.class);
+            Intent intent=new Intent(AppApplication.getSingleContext(),UserIndexActivity.class);
             intent.putExtra("userId", AppApplication.gUser.getId());
-            intent.putExtra("currentId", AppApplication.gUser.getId());
+            intent.putExtra("name",tvUserHeaderName.getText().toString());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
         }
