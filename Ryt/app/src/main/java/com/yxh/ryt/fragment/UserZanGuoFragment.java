@@ -181,7 +181,7 @@ public class UserZanGuoFragment extends StickHeaderBaseFragment{
 	private void praise(final View v, String id, String id1) {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("artworkId",id);
-		//paramsMap.put("currentUserId",id1);
+		paramsMap.put("action ", "1");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);

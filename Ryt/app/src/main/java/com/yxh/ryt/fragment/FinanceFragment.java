@@ -265,6 +265,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 	private void praise(final String artworkId, final LinearLayout view, final TextView textView, final int praiseNum, final ImageView imageView, final ViewHolder helper) {
 		Map<String, String> paramsMap = new HashMap<>();
 		paramsMap.put("artworkId", artworkId + "");
+		paramsMap.put("action ", "1");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);

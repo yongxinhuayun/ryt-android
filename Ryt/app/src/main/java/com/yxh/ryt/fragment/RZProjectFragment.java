@@ -983,6 +983,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private void praise(String artworkId, String s) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artworkId", artworkId + "");
+        paramsMap.put("action ", "1");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
