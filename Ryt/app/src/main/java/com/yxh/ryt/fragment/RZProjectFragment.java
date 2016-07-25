@@ -38,6 +38,7 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.AttentionActivity;
 import com.yxh.ryt.activity.InvestActivity;
+import com.yxh.ryt.activity.InvestorActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.ProjectCommentReply;
 import com.yxh.ryt.activity.UserPtIndexActivity;
@@ -63,11 +64,13 @@ import com.yxh.ryt.vo.ArtWorkPraiseList;
 import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.ArtworkComment;
 import com.yxh.ryt.vo.ArtworkInvest;
+import com.yxh.ryt.vo.ArtworkInvestTop;
 import com.yxh.ryt.vo.User;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -83,6 +86,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private String artWorkId;
     private ListViewForScrollView mListview;
     private ListViewForScrollView iListview;
+    private ListViewForScrollView iTopListview;
     private CommonAdapter<ArtworkComment> artCommentAdapter;
     private List<ArtworkComment> artCommentDatas;
     private int currentPage = 1;
@@ -103,6 +107,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private TextView tvProgress;
     private CircleImageView cl_headPortrait;
     private CommonAdapter<ArtworkInvest> investorRecordCommonAdapter;
+    private CommonAdapter<ArtworkInvestTop> investorTopAdapter;
     private List<ArtworkInvest> investorDatas;
     private LinearLayout llpraise;
     private LinearLayout llinvester;
@@ -141,6 +146,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private TextView reader;
     private LinearLayout invest;
     private int remainMoney;
+    private List<ArtworkInvestTop> investorTopDatas;
 
     public RZProjectFragment(String artWorkId) {
         super();
@@ -166,6 +172,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         super.onCreate(savedInstanceState);
         artCommentDatas = new ArrayList<ArtworkComment>();
         investorDatas = new ArrayList<>();
+        investorTopDatas = new ArrayList<>();
         showOther();
     }
 
@@ -219,6 +226,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         go.setOnClickListener(this);
         mListview = (ListViewForScrollView) view.findViewById(R.id.lv_comment);
         iListview = (ListViewForScrollView) view.findViewById(R.id.lv_invester);
+        iTopListview = (ListViewForScrollView) view.findViewById(R.id.lv_invester_top);
+        iTopListview.hideFooterView();
         invest.setOnClickListener(this);
         return view;
     }
@@ -358,18 +367,14 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     if (flag) {
                         List<ArtworkComment> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<ArtworkComment>>() {
                         }.getType());
-                        if (commentList == null || commentList.size() == 0) {
-
-                        } else if (commentList.size() < Constants.pageSize) {
-                            loadNum5(mListview, artCommentDatas, commentList);
-                            commentList.clear();
-                        }
 
                         if (commentList != null) {
                             loadNum5(mListview, artCommentDatas, commentList);
                             commentList.clear();
+                        }else{
+                            mListview.hideFooterView();
                         }
-                    } else {
+                    } /*else {
                         List<ArtworkComment> commentList = AppApplication.getSingleGson().fromJson(
                                 AppApplication.getSingleGson().toJson(object.get("artworkCommentList")),
                                 new TypeToken<List<ArtworkComment>>() {
@@ -378,7 +383,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                             loadNum5(mListview, artCommentDatas, commentList);
                             commentList.clear();
                         }
-                    }
+                    }*/
                 }else if ("000000".equals(response.get("resultCode"))){
                     SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
                         @Override
@@ -690,7 +695,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     }
                 }
 
-                if (helper.getPosition() == 0) {
+                /*if (helper.getPosition() == 0) {
                     helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
                     helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
                     helper.setImageResource(R.id.civ_top, R.mipmap.jinpai);
@@ -702,11 +707,11 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
                     helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
                     helper.setImageResource(R.id.civ_top, R.mipmap.tongpai);
-                } else {
+                } else {*/
                     helper.getView(R.id.civ_top).setVisibility(View.GONE);
                     helper.getView(R.id.cl_01_civ_pm).setVisibility(View.VISIBLE);
-                    helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1) + "");
-                }
+                    helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1 ) + "");
+               // }
                 helper.setText(R.id.iri_tv_content, "￥" + item.getPrice() + ".00");
                 helper.setText(R.id.iri_tv_date, long2Timestamp(item.getCreateDatetime()));
             }
@@ -745,41 +750,106 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
                     if (flag) {
 
-                        List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
+                        List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                                toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
                         }.getType());
-
-                        if (investList != null) {
-                            loadNum5(iListview, investorDatas, investList);
-                            investList.clear();
-                            if (investList.size() < Constants.pageSize) {
-
-                                loadNum5(iListview, investorDatas, investList);
-                                investList.clear();
-                            }
-                        }
-                    } else {
-                        List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
+List<ArtworkInvestTop> investTopList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                                toJson(object.get("artworkInvestTopList")), new TypeToken<List<ArtworkInvestTop>>() {
                         }.getType());
+if (investTopList != null) {
+    investorTopDatas.addAll(investTopList);
+    investTopList.clear();
+}
                         if (investList != null) {
-                            loadNum5(iListview, investorDatas, investList);
-                            investList.clear();
+                           // loadNum5(iListview, investorDatas, investList);
+                            addInvestorNum(investorDatas,investList);
+                            //investList.clear();
+                        }else {
+                            iListview.hideFooterView();
                         }
                     }
                 }
+                setInvestorTopAdapter();
                 setInvesterAdapter();
             }
+
         });
+    }
+    private void addInvestorNum(final List investorDatas, final List investList) {
+        if (investList.size() <= 2) {
+            investorDatas.addAll(investList);
+            iListview.hideFooterView();
+        } else {
+            for (int i = 0; i < 2; i++) {
+                investorDatas.add(investList.get(i));
+            }
+            iListview.showFooterView();
+
+            iListview.footerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),InvestorActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("data", (Serializable)investList);
+                intent.putExtras(bundle);
+                getActivity().startActivity(intent);
+            }
+        });
+    }
+    }
+
+    private void setInvestorTopAdapter() {
+        investorTopAdapter = new CommonAdapter<ArtworkInvestTop>(getActivity(), investorTopDatas, R.layout.investorrecord_item) {
+            @Override
+            public void convert(ViewHolder helper, ArtworkInvestTop item) {
+                if (item.getCreator() != null) {
+                    helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
+                    if (item.getCreator().getName() != null) {
+                        if (item.getCreator().getName().length() > 5) {
+                            helper.setText(R.id.iri_tv_nickname, item.getCreator().getName().substring(0, 5) + "...");
+                        } else {
+                            helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
+                        }
+                    }
+                }
+
+                if (helper.getPosition() == 0) {
+                    helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
+                    helper.setImageResource(R.id.civ_top, R.mipmap.jinpai);
+                } else if (helper.getPosition() == 1) {
+                    helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
+                    helper.setImageResource(R.id.civ_top, R.mipmap.yinpai);
+                } else if (helper.getPosition() == 2) {
+                    helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
+                    helper.setImageResource(R.id.civ_top, R.mipmap.tongpai);
+                } else {
+                    helper.getView(R.id.civ_top).setVisibility(View.GONE);
+                    helper.getView(R.id.cl_01_civ_pm).setVisibility(View.VISIBLE);
+                    helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1) + "");
+                }
+                helper.setText(R.id.iri_tv_content, "￥" + item.getPrice() + ".00");
+                helper.setText(R.id.iri_tv_date, long2Timestamp(item.getCreateDatetime()));
+            }
+        };
+        iTopListview.setAdapter(investorTopAdapter);
     }
 
 
     private static void loadNum5(ListViewForScrollView listView, List dataList, List list) {
-        if (list.size() <= 5) {
+        if (list.size() <= 4) {
             dataList.addAll(list);
-
-        } else {
+            listView.hideFooterView();
+        }else if(list.size() == 5) {
+            dataList.addAll(list);
+            listView.showFooterView();
+        }else {
             for (int i = 0; i < 5; i++) {
                 dataList.add(list.get(i));
             }
+            listView.showFooterView();
         }
     }
 

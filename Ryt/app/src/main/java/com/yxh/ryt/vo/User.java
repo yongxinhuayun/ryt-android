@@ -3,7 +3,9 @@ package com.yxh.ryt.vo;
 
 //import com.efeiyi.ec.zero.promotion.model.PromotionPlan;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     /**
      * id : in9xyax5cagsn8g7
      * username : 13466636718

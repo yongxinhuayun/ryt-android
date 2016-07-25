@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -50,7 +49,7 @@ public class ListViewForScrollView extends ListView {
 	private RotateAnimation downAnim;
 	private ImageView iv_arrow;
 	private ProgressBar progressBar;
-	private View footerView;
+	public View footerView;
 	/** 是否已经正在加载更多了 */
 	private boolean loadingMore;
 	private int footerViewHeight;
@@ -61,12 +60,13 @@ public class ListViewForScrollView extends ListView {
 		setSelection(getCount() - 1);
 	}
 
-	private void initFooterView() {
+	public View initFooterView() {
 		footerView = View.inflate(getContext(), R.layout.footerview, null);
 		footerView.measure(0, 0);	// 手动调用测量方法
 		footerViewHeight = footerView.getMeasuredHeight();
 		hideFooterView();
 		addFooterView(footerView);
+		return footerView;
 	}
 
 	public void hideFooterView() {
@@ -81,7 +81,7 @@ public class ListViewForScrollView extends ListView {
 	}
 
 
-	@Override
+	/*@Override
 	public void setAdapter(ListAdapter adapter) {
 		super.setAdapter(adapter);
 		int count = adapter.getCount();
@@ -91,7 +91,7 @@ public class ListViewForScrollView extends ListView {
 			hideFooterView();
 		}
 	}
-
+*/
 
 
 

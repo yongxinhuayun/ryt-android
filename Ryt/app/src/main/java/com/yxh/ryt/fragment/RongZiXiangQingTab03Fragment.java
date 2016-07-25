@@ -302,6 +302,5 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
     }
     @Override
     protected void lazyLoad() {
-        Log.d("oncreateView","lazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoadlazyLoad");
     }
 }

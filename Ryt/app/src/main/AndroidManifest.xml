@@ -60,9 +60,9 @@
         android:allowBackup="true"
         android:icon="@mipmap/ryt_logo"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:largeHeap="true">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">
@@ -293,11 +293,12 @@
         <activity android:name=".activity.WalletDetailsActivity" />
         <activity android:name=".activity.CollectMoneyActivity" />
         <activity android:name=".activity.ArtistIndexActivity" />
-        <activity android:name=".activity.FinanceSummaryActivity"
+        <activity
+            android:name=".activity.FinanceSummaryActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|navigation"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name=".activity.EditRecAddressActivity"></activity>
-
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".activity.EditRecAddressActivity" />
+        <activity android:name=".activity.InvestorActivity"></activity>
     </application>
 
 </manifest>

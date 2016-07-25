@@ -214,7 +214,7 @@ public class DateUtil {
         long mper = 60 * 1000;
         long sper = 1000;
         if (temp / dper > 0) {
-            h = temp / dper + "天";
+            d = temp / dper + "天";
         }
         temp = temp % dper;
         if (temp / hper > 0) {

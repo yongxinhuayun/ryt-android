@@ -364,7 +364,17 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
 			view2.getLocationOnScreen(location1);//获取在整个屏幕内的绝对坐标
 			System.out.println("view--->x坐标:"+location1 [0]+"view--->y坐标:"+location1 [1]);*/
             Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
-            intent.putExtra("id",rongZiDatas.get(position-1).getId());
+            intent.putExtra("id",rongZiDatas.get(position - 1).getId());
+            /*if ("1".equals(rongZiDatas.get(position - 1).getType())) {
+                Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
+                intent.putExtra("id",rongZiDatas.get(position - 1).getId());
+            }else if ("1".equals(rongZiDatas.get(position - 1).getType())) {
+                Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
+                intent.putExtra("id",rongZiDatas.get(position - 1).getId());
+            }else if ("1".equals(rongZiDatas.get(position - 1).getType())) {
+                Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
+                intent.putExtra("id",rongZiDatas.get(position - 1).getId());
+            }*/
             startActivity(intent);
         }
     }

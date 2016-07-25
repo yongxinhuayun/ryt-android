@@ -45,8 +45,8 @@
     <string name="tab02">用户(%1$s)</string>
     <string name="title_activity_pay_page">PayPage</string>
 
-    <item type="id" name="tag_first"></item>
-    <item type="id" name="tag_second"></item>
+    <item name="tag_first" type="id"></item>
+    <item name="tag_second" type="id"></item>
 
 
     <string name="pull_to_refresh_footer_release_label">松开后加载</string>
