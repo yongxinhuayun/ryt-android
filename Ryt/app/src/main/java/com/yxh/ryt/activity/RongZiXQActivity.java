@@ -402,15 +402,15 @@ public class RongZiXQActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 if (users.get(temp).getMaster()!=null){
-                                    Intent intent=new Intent(RongZiXQActivity.this, UserYsjIndexActivity.class);
+                                    Intent intent=new Intent(RongZiXQActivity.this, ArtistIndexActivity.class);
                                     intent.putExtra("userId",users.get(temp).getId());
-                                    intent.putExtra("currentId",AppApplication.gUser.getId());
+                                    intent.putExtra("name",users.get(temp).getName());
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     RongZiXQActivity.this.startActivity(intent);
                                 }else {
-                                    Intent intent=new Intent(RongZiXQActivity.this, UserPtIndexActivity.class);
+                                    Intent intent=new Intent(RongZiXQActivity.this, UserIndexActivity.class);
                                     intent.putExtra("userId",users.get(temp).getId());
-                                    intent.putExtra("currentId",AppApplication.gUser.getId());
+                                    intent.putExtra("name",users.get(temp).getName());
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     RongZiXQActivity.this.startActivity(intent);
                             }
@@ -462,15 +462,15 @@ public class RongZiXQActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 if (users.get(temp).getMaster()!=null){
-                                    Intent intent=new Intent(RongZiXQActivity.this, UserYsjIndexActivity.class);
+                                    Intent intent=new Intent(RongZiXQActivity.this, ArtistIndexActivity.class);
                                     intent.putExtra("userId",users.get(temp).getId());
-                                    intent.putExtra("currentId",AppApplication.gUser.getId());
+                                    intent.putExtra("name",users.get(temp).getName());
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     RongZiXQActivity.this.startActivity(intent);
                                 }else {
-                                    Intent intent=new Intent(RongZiXQActivity.this, UserPtIndexActivity.class);
+                                    Intent intent=new Intent(RongZiXQActivity.this, UserIndexActivity.class);
                                     intent.putExtra("userId",users.get(temp).getId());
-                                    intent.putExtra("currentId",AppApplication.gUser.getId());
+                                    intent.putExtra("name",users.get(temp).getName());
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     RongZiXQActivity.this.startActivity(intent);
                                 }
@@ -512,15 +512,15 @@ public class RongZiXQActivity extends BaseActivity {
                                         @Override
                                         public void onClick(View v) {
                                             if (users.get(ciShu).getMaster()!=null){
-                                                Intent intent=new Intent(RongZiXQActivity.this, UserYsjIndexActivity.class);
+                                                Intent intent=new Intent(RongZiXQActivity.this, ArtistIndexActivity.class);
                                                 intent.putExtra("userId",users.get(ciShu).getId());
-                                                intent.putExtra("currentId",AppApplication.gUser.getId());
+                                                intent.putExtra("name",users.get(ciShu).getName());
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 RongZiXQActivity.this.startActivity(intent);
                                             }else {
-                                                Intent intent=new Intent(RongZiXQActivity.this, UserPtIndexActivity.class);
+                                                Intent intent=new Intent(RongZiXQActivity.this, UserIndexActivity.class);
                                                 intent.putExtra("userId",users.get(ciShu).getId());
-                                                intent.putExtra("currentId",AppApplication.gUser.getId());
+                                                intent.putExtra("name",users.get(ciShu).getName());
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 RongZiXQActivity.this.startActivity(intent);
                                             }
@@ -553,15 +553,15 @@ public class RongZiXQActivity extends BaseActivity {
                                         @Override
                                         public void onClick(View v) {
                                             if (users.get(ciShu).getMaster()!=null){
-                                                Intent intent=new Intent(RongZiXQActivity.this, UserYsjIndexActivity.class);
+                                                Intent intent=new Intent(RongZiXQActivity.this, ArtistIndexActivity.class);
                                                 intent.putExtra("userId",users.get(ciShu).getId());
-                                                intent.putExtra("currentId",AppApplication.gUser.getId());
+                                                intent.putExtra("name",users.get(ciShu).getName());
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 RongZiXQActivity.this.startActivity(intent);
                                             }else {
-                                                Intent intent=new Intent(RongZiXQActivity.this, UserPtIndexActivity.class);
+                                                Intent intent=new Intent(RongZiXQActivity.this, UserIndexActivity.class);
                                                 intent.putExtra("userId",users.get(ciShu).getId());
-                                                intent.putExtra("currentId",AppApplication.gUser.getId());
+                                                intent.putExtra("name",users.get(ciShu).getName());
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 RongZiXQActivity.this.startActivity(intent);
                                             }

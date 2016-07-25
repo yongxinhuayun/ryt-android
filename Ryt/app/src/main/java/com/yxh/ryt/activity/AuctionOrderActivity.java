@@ -157,14 +157,14 @@ public class AuctionOrderActivity extends BaseActivity implements View.OnClickLi
                     Map<Object,Object> data= (Map<Object, Object>) response.get("data");
                     User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(data.get("user")), User.class);
                     if (user.getMaster()!=null){
-                        Intent intent =new Intent(AuctionOrderActivity.this,UserYsjIndexActivity.class);
+                        Intent intent =new Intent(AuctionOrderActivity.this,ArtistIndexActivity.class);
                         intent.putExtra("userId", id);
-                        intent.putExtra("currentId", AppApplication.gUser.getId());
+                        intent.putExtra("name", user.getName()+"");
                         AuctionOrderActivity.this.startActivity(intent);
                     }else {
-                        Intent intent =new Intent(AuctionOrderActivity.this,UserPtIndexActivity.class);
+                        Intent intent =new Intent(AuctionOrderActivity.this,UserIndexActivity.class);
                         intent.putExtra("userId", id);
-                        intent.putExtra("currentId", AppApplication.gUser.getId());
+                        intent.putExtra("name", user.getName()+"");
                         AuctionOrderActivity.this.startActivity(intent);
                     }
                 }else if ("000000".equals(response.get("resultCode"))){

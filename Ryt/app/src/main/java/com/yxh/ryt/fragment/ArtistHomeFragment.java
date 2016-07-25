@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -70,6 +71,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
     private int width;
     private int height;
     private LoadingUtil loadingUtil;
+    private LinearLayout other;
 
     public ArtistHomeFragment( String userId) {
         super();
@@ -111,7 +113,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                /*if ("".equals(AppApplication.gUser.getId())){*/
+                if ("".equals(AppApplication.gUser.getId())){
                     if ("0".equals(response.get("resultCode"))){
                         loadingUtil.dismiss();
                         Map<Object,Object> object= (Map<Object, Object>) response.get("object");
@@ -169,13 +171,13 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                             return;
                         }
                     }
-               /* }*//*else {
+                }else {
                     SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
                         @Override
                         public void getCode(String code) {
                             if ("0".equals(code)){
 
-                                NetRequestUtil.post(Constants.BASE_PATH + "investorIndex.do", paramsMap, new RongZiListCallBack() {
+                                NetRequestUtil.post(Constants.BASE_PATH + "userMain.do", paramsMap, new RongZiListCallBack() {
                                     @Override
                                     public void onError(Call call, Exception e) {
                                         ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
@@ -246,7 +248,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                         }
                     });
                     sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
-                }*/
+                }
             }
         });
     }
@@ -260,6 +262,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
         header = LayoutInflater.from(getActivity()).inflate(R.layout.header_artisthome, null);
         headPicture = ((CircleImageView) header.findViewById(R.id.rs_iv_headPortrait));
         name = ((TextView) header.findViewById(R.id.hah_tv_name));
+        other = ((LinearLayout) header.findViewById(R.id.uh1_ll_other));
         title = ((TextView) header.findViewById(R.id.hah_tv_title));
         attention = ((ImageView) header.findViewById(R.id.uh1_iv_attention));
         totalMoney = ((TextView) header.findViewById(R.id.hah_tv_totalMoney));
@@ -272,19 +275,31 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                 helper.setText(R.id.liah_tv_title,item.getTitle());
                 helper.setText(R.id.liah_tv_brief,item.getBrief());
                 helper.setImageByUrl(R.id.liah_si_prc,item.getPicture_url());
+                if ("".equals(AppApplication.artWorkMap.get(item.getStep()))){
+                    helper.getView(R.id.lia_fl_state).setVisibility(View.GONE);
+                }else if ("融资中".equals(AppApplication.artWorkMap.get(item.getStep()))){
+                    helper.getView(R.id.lia_fl_state).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.liah_iv_progress).setVisibility(View.VISIBLE);
+                    helper.setText(R.id.liah_iv_state,"融资中￥"+item.getInvestsMoney());
+                }else {
+                    helper.getView(R.id.lia_fl_state).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.liah_iv_progress).setVisibility(View.GONE);
+                    helper.setText(R.id.liah_iv_state,AppApplication.artWorkMap.get(item.getStep()));
+                }
             }
         };
         lstv.setAdapter(attentionCommonAdapter);
         lstv.addHeaderView(header);
         lstv.setOnRefreshListener(this);
         lstv.setOnLoadListener(this);
+        if (AppApplication.gUser.getId().equals(userId)){
+            other.setVisibility(View.GONE);
+        }
         return contextView;
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-		/*AttentionActivity activity = (AttentionActivity) getActivity();
-		activity.pager.setCurrentItem(2);*/
     }
     @Override
     protected void lazyLoad() {

@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.ArtistIndexActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
@@ -149,7 +150,7 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 				helper.getView(R.id.fai_iv_icon).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-							Intent intent=new Intent(AppApplication.getSingleContext(),UserYsjIndexActivity.class);
+							Intent intent=new Intent(AppApplication.getSingleContext(),ArtistIndexActivity.class);
 							intent.putExtra("userId", followId);
 							intent.putExtra("currentId", AppApplication.gUser.getId());
 							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

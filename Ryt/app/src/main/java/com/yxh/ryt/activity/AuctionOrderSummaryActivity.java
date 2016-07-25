@@ -117,14 +117,14 @@ public class AuctionOrderSummaryActivity extends BaseActivity implements View.On
                     Map<Object,Object> data= (Map<Object, Object>) response.get("data");
                     User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(data.get("user")), User.class);
                     if (user.getMaster()!=null){
-                        Intent intent =new Intent(AuctionOrderSummaryActivity.this,UserYsjIndexActivity.class);
+                        Intent intent =new Intent(AuctionOrderSummaryActivity.this,ArtistIndexActivity.class);
                         intent.putExtra("userId", id);
-                        intent.putExtra("currentId", AppApplication.gUser.getId());
+                        intent.putExtra("name", user.getName()+"");
                         AuctionOrderSummaryActivity.this.startActivity(intent);
                     }else {
-                        Intent intent =new Intent(AuctionOrderSummaryActivity.this,UserPtIndexActivity.class);
+                        Intent intent =new Intent(AuctionOrderSummaryActivity.this,UserIndexActivity.class);
                         intent.putExtra("userId", id);
-                        intent.putExtra("currentId", AppApplication.gUser.getId());
+                        intent.putExtra("name", user.getName()+"");
                         AuctionOrderSummaryActivity.this.startActivity(intent);
                     }
                 }else if ("000000".equals(response.get("resultCode"))){

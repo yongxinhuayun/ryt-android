@@ -127,11 +127,11 @@ public class AppApplication extends Application {
 		artWorkMap.put("25", "创作中");
 		artWorkMap.put("30", "拍卖中");
 		artWorkMap.put("31", "拍卖中");
-		artWorkMap.put("32", "拍卖中");
-		artWorkMap.put("33", "拍卖中");
-		artWorkMap.put("34", "拍卖中");
-		artWorkMap.put("35","拍卖中");
-		artWorkMap.put("36", "拍卖中");
+		artWorkMap.put("32", "拍卖结束");
+		artWorkMap.put("33", "拍卖结束");
+		artWorkMap.put("34", "拍卖结束");
+		artWorkMap.put("35","拍卖结束");
+		artWorkMap.put("36", "拍卖结束");
 	}
 
 	public static DBHelper getDBHelper(){
