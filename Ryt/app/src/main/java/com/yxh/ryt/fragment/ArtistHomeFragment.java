@@ -8,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +17,9 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.AuctionSummaryActivity;
+import com.yxh.ryt.activity.CreateSummaryActivity;
+import com.yxh.ryt.activity.FinanceSummaryActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
@@ -46,7 +50,7 @@ import okhttp3.Call;
  * Created by Administrator on 2016/7/8.
  */
 @SuppressLint("ValidFragment")
-public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener {
+public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener, AdapterView.OnItemClickListener {
     private AutoListView lstv;
     private CommonAdapter<HomeYSJArtWork> attentionCommonAdapter;
     private List<HomeYSJArtWork> attentionDatas;
@@ -94,9 +98,9 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
         loadingUtil.show();
         final Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("userId",userId);
-        //paramsMap.put("currentId",AppApplication.gUser.getId());
         paramsMap.put("pageSize", Constants.pageSize+"");
         paramsMap.put("pageIndex", pageNum + "");
+        paramsMap.put("action", "0");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -295,6 +299,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
         if (AppApplication.gUser.getId().equals(userId)){
             other.setVisibility(View.GONE);
         }
+        lstv.setOnItemClickListener(this);
         return contextView;
     }
     @Override
@@ -318,4 +323,25 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
         LoadData(AutoListView.LOAD, currentPage);
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position>=2 && position<=attentionDatas.size()+1){
+            if ("1".equals(getFirstLetter(attentionDatas.get(position-2).getStep()))){
+                Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
+                intent.putExtra("id",attentionDatas.get(position-2).getId());
+                startActivity(intent);
+            }else if ("2".equals(getFirstLetter(attentionDatas.get(position-2).getStep()))){
+                Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);
+                intent.putExtra("id",attentionDatas.get(position-2).getId());
+                startActivity(intent);
+            }else {
+                Intent intent=new Intent(getActivity(), AuctionSummaryActivity.class);
+                intent.putExtra("id",attentionDatas.get(position-2).getId());
+                startActivity(intent);
+            }
+        }
+    }
+    private String getFirstLetter(String letter){
+        return letter.trim().substring(0,1);
+    }
 }

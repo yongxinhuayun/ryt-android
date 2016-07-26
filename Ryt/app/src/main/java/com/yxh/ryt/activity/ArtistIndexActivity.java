@@ -1,12 +1,15 @@
 package com.yxh.ryt.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
+import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.ArtistTabPageIndicatorAdapter;
 import com.yxh.ryt.fragment.ArtistHomeFragment;
@@ -23,14 +26,30 @@ import java.util.List;
 public class ArtistIndexActivity extends BaseActivity {
     List<Fragment> indexChildFragments=new ArrayList<>();
     FragmentPagerAdapter indexChildAdapter;
+    private TextView edit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artistindex);
-        String userId = getIntent().getStringExtra("userId");
+        edit = ((TextView) findViewById(R.id.aai_top_edit));
+        final String userId = getIntent().getStringExtra("userId");
         String name=getIntent().getStringExtra("name");
         TextView textName = (TextView) findViewById(R.id.aai_tv_name);
         textName.setText(name);
+        if (AppApplication.gUser.getId().equals(userId)){
+            edit.setVisibility(View.VISIBLE);
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(ArtistIndexActivity.this,UserYsjIndexActivity.class);
+                    intent.putExtra("userId",userId);
+                    startActivity(intent);
+                }
+            });
+        }else {
+            edit.setVisibility(View.GONE);
+        }
         indexChildFragments.add(new ArtistHomeFragment(userId));
         indexChildFragments.add(new BriefFragment(userId));
         indexChildFragments.add(new WorksFragment(userId));

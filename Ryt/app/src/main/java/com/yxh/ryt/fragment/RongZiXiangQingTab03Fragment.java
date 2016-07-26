@@ -93,7 +93,7 @@ public class RongZiXiangQingTab03Fragment extends StickHeaderBaseFragment {
 
     @Override
     public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, null);
+        View view = inflater.inflate(R.layout.fragment_list, container,false);
         mListview = (ListView)view.findViewById(R.id.v_scroll);
         footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);

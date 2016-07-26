@@ -174,7 +174,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.rz_project, null);
+        View view = inflater.inflate(R.layout.rz_project, container,false);
         imageTitle = (ImageView) view.findViewById(R.id.cl_01_tv_prc);
         dianzan = (ImageView) view.findViewById(R.id.iv_praise);
         headV = (ImageView) view.findViewById(R.id.iv_master);

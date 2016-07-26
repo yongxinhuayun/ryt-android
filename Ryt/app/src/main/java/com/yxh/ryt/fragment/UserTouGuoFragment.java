@@ -83,7 +83,7 @@ public class UserTouGuoFragment extends StickHeaderBaseFragment{
 	}
 	@Override
 	public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_listview_touguo, null);
+		View view = inflater.inflate(R.layout.fragment_listview_touguo, container,false);
 		placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
 		lstv = (ListView)view.findViewById(R.id.fit_lstv);
 		footer = LayoutInflater.from(getActivity()).inflate(R.layout.listview_footer, null);

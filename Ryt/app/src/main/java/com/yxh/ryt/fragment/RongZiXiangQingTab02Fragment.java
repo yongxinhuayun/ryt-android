@@ -43,7 +43,7 @@ public class RongZiXiangQingTab02Fragment extends StickHeaderBaseFragment{
     }
     @Override
     public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.touziliucheng, null);
+        View view = inflater.inflate(R.layout.touziliucheng, container,false);
         WebView webView = (WebView)view.findViewById(R.id.fl_wb_all);
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);
         webView.loadUrl("file:///android_asset/InvestFlowControlller.html");

@@ -52,7 +52,7 @@ public class RZInvestFragment extends BaseFragment implements AutoListView.OnRef
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.rz_invest, null);
+		View view = inflater.inflate(R.layout.rz_invest, container,false);
 		invester = (AutoListView) view.findViewById(R.id.at_invester);
 		setInvesterAdapter();
 		loadInvesterData(AutoListView.REFRESH, currentPage);

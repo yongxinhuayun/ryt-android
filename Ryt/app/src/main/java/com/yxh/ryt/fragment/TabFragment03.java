@@ -45,7 +45,7 @@ public class TabFragment03 extends  BaseFragment {
     int count=0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab_03, null);
+        View view = inflater.inflate(R.layout.tab_03, container,false);
         ButterKnife.bind(this, view);
         bvPrivateLetter = new BadgeView(getActivity(),circlePrivateLetter);
         bvNotification = new BadgeView(getActivity(),circleNotification);

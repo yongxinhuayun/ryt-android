@@ -67,7 +67,7 @@ public class RongZiXiangQingTab01Fragment extends StickHeaderBaseFragment {
 
     @Override
     public View oncreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.rz_xq_tab01, null);
+        View view = inflater.inflate(R.layout.rz_xq_tab01, container,false);
         EventBus.getDefault().register(this);
         ButterKnife.bind(this, view);
         placeHoderHeaderLayout = (PlaceHoderHeaderLayout) view.findViewById(R.id.v_placehoder);

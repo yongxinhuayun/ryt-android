@@ -51,7 +51,7 @@ public class WorksFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.layout_works, null);
+        View view = inflater.inflate(R.layout.layout_works, container,false);
         gridView = (GridView) view.findViewById(R.id.gridview);
         loadData(true,currentPage);
         setAdapter();

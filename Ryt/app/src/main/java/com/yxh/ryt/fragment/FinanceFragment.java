@@ -166,7 +166,6 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 												rongZiDatas.addAll(objectList);
 												rongZiCommonAdapter.notifyDataSetChanged();
 											}
-
 										}
 										if (pageNum==1 && selected.size()>0){
 											selected.clear();

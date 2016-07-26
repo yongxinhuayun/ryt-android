@@ -240,7 +240,7 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         @JavascriptInterface
         public void  finalPayment( String price, String action, String artWorkId) {
             loadData1(price,action,artWorkId);
-            /*Map<String,String> paramsMap=new HashMap<>();
+            Map<String,String> paramsMap=new HashMap<>();
             //paramsMap.put("userId", AppApplication.gUser.getId());
             //paramsMap.put("userId", "imhfp1yr4636pj49");
             paramsMap.put("money", price);
@@ -268,7 +268,7 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
                     intent.putExtra("url",url);
                     AuctionSummaryActivity.this.startActivity(intent);
                 }
-            });*/
+            });
         }
         @JavascriptInterface
         public void comment(String artworkId,String currentUserId,String messageId,String fatherCommentId,String name) {

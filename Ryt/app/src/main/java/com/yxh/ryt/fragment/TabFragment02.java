@@ -38,7 +38,7 @@ public class TabFragment02 extends  BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab_02, null);
+        View view = inflater.inflate(R.layout.tab_02, container,false);
         paiHangChildAdapter = new PaiHangTabPageIndicatorAdapter(getActivity().getSupportFragmentManager(),paiHangChildFragments);
         ViewPager pager = (ViewPager)view.findViewById(R.id.pager1);
         pager.setOffscreenPageLimit(2);
