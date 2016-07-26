@@ -117,6 +117,9 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 							rongZiCommonAdapter.notifyDataSetChanged();
 						}
 					}
+					if (pageNum==1 && selected.size()>0){
+						selected.clear();
+					}
 					if (selected.size()<=rongZiDatas.size()){
 						for (int i=selected.size();i<rongZiDatas.size();i++){
 							selected.put(i,rongZiDatas.get(i).isPraise());
@@ -164,6 +167,9 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 												rongZiCommonAdapter.notifyDataSetChanged();
 											}
 
+										}
+										if (pageNum==1 && selected.size()>0){
+											selected.clear();
 										}
 										if (selected.size()<=rongZiDatas.size()){
 											for (int i=selected.size();i<rongZiDatas.size();i++){
