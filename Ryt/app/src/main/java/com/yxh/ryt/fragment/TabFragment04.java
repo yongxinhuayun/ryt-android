@@ -1,6 +1,7 @@
 package com.yxh.ryt.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -242,7 +243,7 @@ public class TabFragment04 extends BaseFragment {
                         int a =(int)sa;
                         tvUserHeaderGzNum.setText(a+"");*/
                         if (user != null) {
-                            if (null==user.getMaster() &&null!=btnLf) {
+                            if ("1".equals(user.getType()) &&null!=btnLf) {
                                 btnLf.setText("申请为艺术家");
                                 setLoginedViewValues(1, user);
                                 btnLf.setOnClickListener(new View.OnClickListener() {
@@ -252,7 +253,7 @@ public class TabFragment04 extends BaseFragment {
                                     }
                                 });
                                 AppApplication.gUser.setMaster1("");
-                            } else if (user.getMaster()!=null &&null!=btnLf) {
+                            } else if ("2".equals(user.getType()) &&null!=btnLf) {
                                 btnLf.setText("发起项目");
                                 setLoginedViewValues(2, user);
                                 btnLf.setOnClickListener(new View.OnClickListener() {
@@ -262,6 +263,12 @@ public class TabFragment04 extends BaseFragment {
                                     }
                                 });
                                 AppApplication.gUser.setMaster1("master");
+                            }else if ("0".equals(user.getType()) &&null!=btnLf) {
+                                btnLf.setTextColor(Color.rgb(128,128,128));
+                                btnLf.setText("申请为艺术家中");
+                                btnLf.setEnabled(false);
+                                setLoginedViewValues(2, user);
+                                AppApplication.gUser.setMaster1("");
                             }
                         }
                     }
