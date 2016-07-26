@@ -102,7 +102,6 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 							rongZiDatas.addAll(objectList);
 							rongZiCommonAdapter.notifyDataSetChanged();
 						}
-						return;
 					}
 					if (state == AutoListView.LOAD) {
 						lstv.onLoadComplete();
@@ -117,7 +116,11 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 							rongZiDatas.addAll(objectList);
 							rongZiCommonAdapter.notifyDataSetChanged();
 						}
-						return;
+					}
+					if (selected.size()<=rongZiDatas.size()){
+						for (int i=selected.size();i<rongZiDatas.size();i++){
+							selected.put(i,rongZiDatas.get(i).isPraise());
+						}
 					}
 				}else {
 								SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
