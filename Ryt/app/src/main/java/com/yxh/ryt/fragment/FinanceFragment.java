@@ -50,13 +50,13 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 	private int width;
 	private int height;
 	private LoadingUtil loadingUtil;
-	private Map<Integer,Boolean> state;
+	private Map<Integer,Integer> number;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		rongZiDatas=new ArrayList<RongZi>();
 		selected=new HashMap<>();
-		state=new HashMap<>();
+		number=new HashMap<>();
 		DisplayMetrics metric = new DisplayMetrics();
 		getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
 		// 屏幕宽度（像素）
@@ -119,10 +119,12 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 					}
 					if (pageNum==1 && selected.size()>0){
 						selected.clear();
+						number.clear();
 					}
 					if (selected.size()<=rongZiDatas.size()){
 						for (int i=selected.size();i<rongZiDatas.size();i++){
 							selected.put(i,rongZiDatas.get(i).isPraise());
+							number.put(i,rongZiDatas.get(i).getPraiseNUm());
 						}
 					}
 				}else {
@@ -169,10 +171,12 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 										}
 										if (pageNum==1 && selected.size()>0){
 											selected.clear();
+											number.clear();
 										}
 										if (selected.size()<=rongZiDatas.size()){
 											for (int i=selected.size();i<rongZiDatas.size();i++){
 												selected.put(i,rongZiDatas.get(i).isPraise());
+												number.put(i,rongZiDatas.get(i).getPraiseNUm());
 											}
 										}
 									}
@@ -230,18 +234,17 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 							helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise1);
 							helper.getView(R.id.clh_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
 							((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
-							helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+1+"");
+							helper.setText(R.id.clh_tv_praiseNum,number.get(helper.getPosition())+"");
 							helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
 								@Override
 								public void onClick(View v) {
-									cancelPraise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)),((TextView) helper.getView(R.id.clh_tv_praiseNum)),item.getPraiseNUm(), helper);
+									cancelPraise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)),((TextView) helper.getView(R.id.clh_tv_praiseNum)),number.get(helper.getPosition()), helper);
 								}
 							});
 						}else {
 							helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise);
 							((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(205,55,56));
-							helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+"");
-							helper.getView(R.id.clh_ll_praise).setEnabled(true);
+							helper.setText(R.id.clh_tv_praiseNum,number.get(helper.getPosition())+"");
 							helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
 								@Override
 								public void onClick(View v) {
@@ -252,7 +255,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 										intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 										getActivity().startActivity(intent);
 									}else {
-										praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)),((TextView) helper.getView(R.id.clh_tv_praiseNum)),item.getPraiseNUm(),helper);
+										praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)),((TextView) helper.getView(R.id.clh_tv_praiseNum)),number.get(helper.getPosition()),helper);
 									}
 								}
 							});
@@ -295,6 +298,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 						view.setBackgroundResource(R.drawable.praise);
 						textView.setTextColor(Color.rgb(205,55,56));
 						String raw=textView.getText().toString();
+						number.put(helper.getPosition(),Integer.valueOf(raw)-1);
 						textView.setText(Integer.valueOf(raw)-1+"");
 						selected.put(helper.getPosition(),false);
 					}else {
@@ -343,6 +347,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 						view.setBackgroundResource(R.drawable.praise1);
 						textView.setTextColor(Color.rgb(255,255,255));
 						textView.setText(praiseNum+1+"");
+						number.put(helper.getPosition(),praiseNum+1);
 						selected.put(helper.getPosition(),true);
 					}else {
 						praise(artworkId, view, textView, praiseNum, helper);
