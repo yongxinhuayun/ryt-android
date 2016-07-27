@@ -90,10 +90,10 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         setContentView(R.layout.registersucced);
         ButterKnife.bind(this);/*启用注解绑定*/
         String userid = getIntent().getStringExtra("userId");
-        //username = getIntent().getStringExtra("username");
-        username = "18510251819";
-        //password = getIntent().getStringExtra("password");
-        password = "123456";
+        username = getIntent().getStringExtra("username");
+        //username = "18510251819";
+        password = getIntent().getStringExtra("password");
+        //password = "123456";
         sexGroup.setOnCheckedChangeListener(this);
         commit.setEnabled(false);
         onEnabled();
