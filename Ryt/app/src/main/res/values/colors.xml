@@ -27,7 +27,7 @@
     <color name="color_progressbar">#E5E5E5</color>
     <color name="color_progress">#E64056</color>
     //加载更多
-    <color name="footerview">#4D4D4D</color>
+    <color name="footerview">#333333</color>
     //评论hint
     <color name="comment_hint">#666666</color>
     //invest hint

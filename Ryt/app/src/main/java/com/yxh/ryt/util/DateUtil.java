@@ -203,10 +203,12 @@ public class DateUtil {
         String h = "";
         String m = "";
         String d = "";
+        String s = "";
         if (isWhole) {
             h = isFormat ? "00天" : "0天";
-            h = isFormat ? "00小时" : "0小时";
-            m = isFormat ? "00分钟" : "0分钟";
+            h = isFormat ? "00时" : "0小";
+            m = isFormat ? "00分" : "0分";
+            s = isFormat ? "00秒" : "0秒";
         }
         long temp = millis;
         long dper = 24 * 60 * 60 * 1000;
@@ -214,7 +216,7 @@ public class DateUtil {
         long mper = 60 * 1000;
         long sper = 1000;
         if (temp / dper > 0) {
-            h = temp / dper + "天";
+            d = temp / dper + "天";
         }
         temp = temp % dper;
         if (temp / hper > 0) {
@@ -223,7 +225,7 @@ public class DateUtil {
             } else {
                 h = temp / hper + "";
             }
-            h += "小时";
+            h += "时";
         }
         temp = temp % hper;
         if (temp / mper > 0) {
@@ -232,9 +234,37 @@ public class DateUtil {
             } else {
                 m = temp / mper + "";
             }
-            m += "分钟";
+            m += "分";
         }
-        return d + h + m;
+        temp = temp % mper;
+        if (temp / sper > 0) {
+            if (isFormat) {
+                s = temp / sper < 10 ? "0" + temp / sper : temp / sper + "";
+            } else {
+                s = temp / sper + "";
+            }
+            s += "秒";
+        }
+        return d + h + m + s;
     }
-
+    /**
+     * *只显示天、时、分
+     * */
+    public static String millionToNearly(long millions){
+        long currentTime = System.currentTimeMillis();
+        long timeGap = currentTime - millions;
+        if (timeGap >= 1000*60*60*24){
+            String s = timeGap/1000/60/60/24+"天前";
+            return s;
+        }else if (timeGap < 1000*60*60*24 && timeGap >= 1000*60*60){
+            String s = timeGap/1000/60/60+"小时前";
+            return s;
+        }else if (timeGap < 1000*60*60 && timeGap >= 1000*60){
+            String s = timeGap/1000/60+"分种前";
+            return s;
+        }else {
+            String s = timeGap/1000+"秒前";
+            return s;
+        }
+    }
 }

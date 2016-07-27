@@ -23,7 +23,7 @@ import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.ArtworkInvest;
-import com.yxh.ryt.vo.ArtworkTopInvest;
+import com.yxh.ryt.vo.ArtworkInvestTop;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
     private CustomListview mListview;
     private CommonAdapter<ArtworkInvest> investorRecordCommonAdapter;
     private List<ArtworkInvest> investorDatas;
-    private List<ArtworkTopInvest> investorTOpDatas;
+    private List<ArtworkInvestTop> investorTOpDatas;
     private int currentPage = 1;
     private View footer;
     private TextView loadFull;
@@ -110,7 +110,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
         return view;
     }
 
-    private void topDatas() {
+   /* private void topDatas() {
         if (investorTOpDatas.size() == 1) {
             AppApplication.displayImage(investorTOpDatas.get(0).getUser().getPictureUrl(), icon2);
             title2.setText(investorTOpDatas.get(0).getUser().getName());
@@ -135,7 +135,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
             money2.setText(investorTOpDatas.get(0).getMoney() + "");
             money3.setText(investorTOpDatas.get(2).getMoney() + "");
         }
-    }
+    }*/
 
     private void findView(View view) {
         icon1 = ((CircleImageView) view.findViewById(R.id.flr_iv_icon1));
@@ -235,7 +235,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
                 if ("0".equals(response.get("resultCode"))) {
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
                     if (flag) {
-                        List<ArtworkTopInvest> topList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestTopList")), new TypeToken<List<ArtworkTopInvest>>() {
+                        List<ArtworkInvestTop> topList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestTopList")), new TypeToken<List<ArtworkInvestTop>>() {
                         }.getType());
                         if (topList == null || topList.size() == 0) {
                             more.setVisibility(View.GONE);
@@ -244,7 +244,7 @@ public class RongZiXiangQingTab04Fragment extends StickHeaderBaseFragment {
                             noData.setVisibility(View.VISIBLE);
                         } else {
                             investorTOpDatas.addAll(topList);
-                            topDatas();
+                            //topDatas();
                             topList.clear();
                         }
                         List<ArtworkInvest> investList1 = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
