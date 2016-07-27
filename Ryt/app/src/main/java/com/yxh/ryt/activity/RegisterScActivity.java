@@ -79,7 +79,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     private Bitmap bitmap2;
     private GoogleApiClient client;
     private String password;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
