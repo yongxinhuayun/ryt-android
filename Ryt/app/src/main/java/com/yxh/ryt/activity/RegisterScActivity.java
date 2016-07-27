@@ -76,9 +76,8 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     private static final int CROP_REQUEST_CODE = 4;
     String filePath = "";
     private String username;
-    private Bitmap bitmap2;
-    private GoogleApiClient client;
     private String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
