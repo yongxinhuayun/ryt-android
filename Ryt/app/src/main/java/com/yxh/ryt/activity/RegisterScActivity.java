@@ -77,10 +77,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     String filePath = "";
     private String username;
     private Bitmap bitmap2;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private GoogleApiClient client;
     private String password;
 
