@@ -29,7 +29,7 @@ public class UserIndexActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_artistindex);
+        setContentView(R.layout.activity_userindex);
         String userId = getIntent().getStringExtra("userId");
         String name=getIntent().getStringExtra("name");
         TextView textName = (TextView) findViewById(R.id.aai_tv_name);

@@ -72,7 +72,7 @@ public class Utils {
 		return sdf.format(new Date(time));
 	}
 	public static String timeAuction(long time){
-		SimpleDateFormat sdf = new SimpleDateFormat("M月d日 H时m分");
+		SimpleDateFormat sdf = new SimpleDateFormat("M月d日H时m分");
 		return sdf.format(new Date(time));
 	}
 	public static String timeNew(long time){
