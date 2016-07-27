@@ -196,6 +196,7 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
         intent.putExtra("name", user.getName());
         startActivity(intent);
     }
+
     //登录成功设置控件元素的值
     private void setLoginedViewValues(User user) {
         top.setText(user.getName());
