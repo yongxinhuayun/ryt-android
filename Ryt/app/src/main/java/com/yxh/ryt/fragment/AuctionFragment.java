@@ -129,7 +129,6 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 						@Override
 						public void getCode(String code) {
 							if ("0".equals(code)){
-
 								NetRequestUtil.post(Constants.BASE_PATH + "artWorkAuctionList.do", paramsMap, new RongZiListCallBack() {
 									@Override
 									public void onError(Call call, Exception e) {
