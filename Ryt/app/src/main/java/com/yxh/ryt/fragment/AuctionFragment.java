@@ -122,6 +122,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 						for (int i=selected.size();i<rongZiDatas.size();i++){
 							selected.put(i,rongZiDatas.get(i).isPraise());
 							number.put(i,rongZiDatas.get(i).getPraiseNUm());
+
 						}
 					}
 				}else {

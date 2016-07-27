@@ -139,6 +139,7 @@
         android:gravity="center_horizontal"
         android:layout_marginTop="20dp">
         <LinearLayout
+            android:id="@+id/uh1_ll_attention"
             android:layout_width="34dp"
             android:layout_height="24dp"
             android:gravity="center"
@@ -151,6 +152,7 @@
                 android:src="@mipmap/weiguanzhu"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/uh1_ll_privateLetter"
             android:layout_marginLeft="10dp"
             android:layout_width="34dp"
             android:layout_height="24dp"

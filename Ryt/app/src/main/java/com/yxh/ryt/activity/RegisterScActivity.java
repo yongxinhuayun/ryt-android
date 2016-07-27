@@ -77,7 +77,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     String filePath = "";
     private String username;
     private String password;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
