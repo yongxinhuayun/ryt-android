@@ -154,9 +154,8 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.intent.action.FW_BROADCAST");
         registerReceiver(receiver, filter);
-        if (userId.equals(currentId)){
-            other.setVisibility(View.GONE);
-        }
+        other.setVisibility(View.GONE);
+
     }
     @Override
     public void onResume() {
@@ -198,7 +197,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                         }
                         if (user != null) {
                             setLoginedViewValues(user);
-                            if (!currentId.equals(userId)){
+
                                 letter.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -206,7 +205,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
 
                                     }
                                 });
-                            }
+
                         }
                         root.getStickHeaderView().requestLayout();
                     }

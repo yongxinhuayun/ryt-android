@@ -16,6 +16,8 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.ArtistIndexActivity;
+import com.yxh.ryt.activity.AuctionSummaryActivity;
+import com.yxh.ryt.activity.CreateSummaryActivity;
 import com.yxh.ryt.activity.FinanceSummaryActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
@@ -357,36 +359,29 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position<=rongZiDatas.size()){
-			/*int[] location = new  int[2] ;
-			view1.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
-			view1.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
-			System.out.println("view--->x坐标:"+location [0]+"view--->y坐标:"+location [1]);
-			int[] location1 = new  int[2] ;
-			view2.getLocationInWindow(location1); //获取在当前窗口内的绝对坐标
-			view2.getLocationOnScreen(location1);//获取在整个屏幕内的绝对坐标
-			System.out.println("view--->x坐标:"+location1 [0]+"view--->y坐标:"+location1 [1]);*/
-            Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
-            intent.putExtra("id",rongZiDatas.get(position - 1).getId());
-            /*if ("1".equals(rongZiDatas.get(position - 1).getType())) {
+            if ("1".equals(getFirstLetter(rongZiDatas.get(position-1).getStep()))){
                 Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
-                intent.putExtra("id",rongZiDatas.get(position - 1).getId());
-            }else if ("1".equals(rongZiDatas.get(position - 1).getType())) {
-                Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
-                intent.putExtra("id",rongZiDatas.get(position - 1).getId());
-            }else if ("1".equals(rongZiDatas.get(position - 1).getType())) {
-                Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
-                intent.putExtra("id",rongZiDatas.get(position - 1).getId());
-            }*/
-            startActivity(intent);
+                intent.putExtra("id",rongZiDatas.get(position-1).getId());
+                startActivity(intent);
+            }else if ("2".equals(getFirstLetter(rongZiDatas.get(position-1).getStep()))){
+                Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);
+                intent.putExtra("id",rongZiDatas.get(position-1).getId());
+                startActivity(intent);
+            }else {
+                Intent intent=new Intent(getActivity(), AuctionSummaryActivity.class);
+                intent.putExtra("id",rongZiDatas.get(position-1).getId());
+                startActivity(intent);
+            }
         }
     }
-
+    private String getFirstLetter(String letter){
+        return letter.trim().substring(0,1);
+    }
     @Override
     public void onResume() {
         super.onResume();
 
     }
-
-    }
+}
 
 

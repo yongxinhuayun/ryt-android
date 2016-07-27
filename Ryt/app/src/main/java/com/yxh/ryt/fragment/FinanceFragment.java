@@ -50,12 +50,13 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 	private int width;
 	private int height;
 	private LoadingUtil loadingUtil;
-
+	private Map<Integer,Boolean> state;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		rongZiDatas=new ArrayList<RongZi>();
 		selected=new HashMap<>();
+		state=new HashMap<>();
 		DisplayMetrics metric = new DisplayMetrics();
 		getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
 		// 屏幕宽度（像素）
@@ -101,7 +102,6 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 							rongZiDatas.addAll(objectList);
 							rongZiCommonAdapter.notifyDataSetChanged();
 						}
-						return;
 					}
 					if (state == AutoListView.LOAD) {
 						lstv.onLoadComplete();
@@ -116,7 +116,14 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 							rongZiDatas.addAll(objectList);
 							rongZiCommonAdapter.notifyDataSetChanged();
 						}
-						return;
+					}
+					if (pageNum==1 && selected.size()>0){
+						selected.clear();
+					}
+					if (selected.size()<=rongZiDatas.size()){
+						for (int i=selected.size();i<rongZiDatas.size();i++){
+							selected.put(i,rongZiDatas.get(i).isPraise());
+						}
 					}
 				}else {
 								SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
@@ -146,7 +153,6 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 												rongZiDatas.addAll(objectList);
 												rongZiCommonAdapter.notifyDataSetChanged();
 											}
-											return;
 										}
 										if (state == AutoListView.LOAD) {
 											lstv.onLoadComplete();
@@ -160,7 +166,14 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 												rongZiDatas.addAll(objectList);
 												rongZiCommonAdapter.notifyDataSetChanged();
 											}
-											return;
+										}
+										if (pageNum==1 && selected.size()>0){
+											selected.clear();
+										}
+										if (selected.size()<=rongZiDatas.size()){
+											for (int i=selected.size();i<rongZiDatas.size();i++){
+												selected.put(i,rongZiDatas.get(i).isPraise());
+											}
 										}
 									}
 								});
@@ -186,11 +199,6 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 				if (item!=null){
 					helper.setText(R.id.clh_tv_title,item.getTitle());
 					helper.setText(R.id.clh_tv_brief,item.getBrief());
-					if (selected.size()<rongZiDatas.size()){
-						for (int i=selected.size();i<rongZiDatas.size();i++){
-							selected.put(i,false);
-						}
-					}
 					if (item.getAuthor()!=null){
 						helper.setText(R.id.clh_tv_artistName,item.getAuthor().getName()+"");
 						helper.setImageByUrl(R.id.clh_cv_headerImage,item.getAuthor().getPictureUrl());
@@ -218,19 +226,17 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 					}
 					double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
 					helper.setProgress(R.id.fli1_pb_progress, (int)(value*100));
-					if (item.isPraise()){
-						helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise1);
-						helper.getView(R.id.clh_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
-						((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
-						helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+"");
-						helper.getView(R.id.clh_ll_praise).setEnabled(false);
-					}else {
 						if (selected.get(helper.getPosition())){
 							helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise1);
 							helper.getView(R.id.clh_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
 							((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
 							helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+1+"");
-							helper.getView(R.id.clh_ll_praise).setEnabled(false);
+							helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									cancelPraise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)),((TextView) helper.getView(R.id.clh_tv_praiseNum)),item.getPraiseNUm(), helper);
+								}
+							});
 						}else {
 							helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise);
 							((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(205,55,56));
@@ -246,11 +252,11 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 										intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 										getActivity().startActivity(intent);
 									}else {
-										praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)),((TextView) helper.getView(R.id.clh_tv_praiseNum)),item.getPraiseNUm(), ((ImageView) helper.getView(R.id.clh_iv_attention)), helper);
+										praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)),((TextView) helper.getView(R.id.clh_tv_praiseNum)),item.getPraiseNUm(),helper);
 									}
 								}
 							});
-						}
+
 					}
 				}
 			}
@@ -262,10 +268,10 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 		return contextView;
 	}
 
-	private void praise(final String artworkId, final LinearLayout view, final TextView textView, final int praiseNum, final ImageView imageView, final ViewHolder helper) {
+	private void cancelPraise(final String id, final LinearLayout view, final TextView textView, final int praiseNum, final ViewHolder helper) {
 		Map<String, String> paramsMap = new HashMap<>();
-		paramsMap.put("artworkId", artworkId + "");
-		paramsMap.put("action ", "1");
+		paramsMap.put("artworkId", id + "");
+		paramsMap.put("action", "0");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
@@ -284,18 +290,69 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 			@Override
 			public void onResponse(Map<String, Object> response) {
 				if ("0".equals(response.get("resultCode"))) {
-					ToastUtil.showLong(getActivity(), "点赞成功");
-					view.setBackgroundResource(R.drawable.praise1);
-					textView.setTextColor(Color.rgb(255,255,255));
-					textView.setText(praiseNum+1+"");
-					view.setEnabled(false);
-					selected.put(helper.getPosition(),true);
+					if (selected.get(helper.getPosition())){
+						ToastUtil.showLong(getActivity(), "取消点赞");
+						view.setBackgroundResource(R.drawable.praise);
+						textView.setTextColor(Color.rgb(205,55,56));
+						String raw=textView.getText().toString();
+						textView.setText(Integer.valueOf(raw)-1+"");
+						selected.put(helper.getPosition(),false);
+					}else {
+						praise(id, view, textView, praiseNum, helper);
+					}
 				}else if ("000000".equals(response.get("resultCode"))){
 					SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
 						@Override
 						public void getCode(String code) {
 							if ("0".equals(code)){
-								praise(artworkId, view, textView, praiseNum, imageView, helper);
+								cancelPraise(id, view, textView, praiseNum, helper);
+							}
+						}
+					});
+					sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+				}
+			}
+		});
+
+	}
+
+	private void praise(final String artworkId, final LinearLayout view, final TextView textView, final int praiseNum, final ViewHolder helper) {
+		Map<String, String> paramsMap = new HashMap<>();
+		paramsMap.put("artworkId", artworkId + "");
+		paramsMap.put("action", "1");
+		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		try {
+			AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+			paramsMap.put("signmsg", AppApplication.signmsg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		NetRequestUtil.post(Constants.BASE_PATH + "artworkPraise.do", paramsMap, new RongZiListCallBack() {
+			@Override
+			public void onError(Call call, Exception e) {
+				e.printStackTrace();
+				System.out.println("失败了");
+				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
+			}
+
+			@Override
+			public void onResponse(Map<String, Object> response) {
+				if ("0".equals(response.get("resultCode"))) {
+					if (!selected.get(helper.getPosition())){
+						ToastUtil.showLong(getActivity(), "点赞成功");
+						view.setBackgroundResource(R.drawable.praise1);
+						textView.setTextColor(Color.rgb(255,255,255));
+						textView.setText(praiseNum+1+"");
+						selected.put(helper.getPosition(),true);
+					}else {
+						praise(artworkId, view, textView, praiseNum, helper);
+					}
+				}else if ("000000".equals(response.get("resultCode"))){
+					SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+						@Override
+						public void getCode(String code) {
+							if ("0".equals(code)){
+								praise(artworkId, view, textView, praiseNum,helper);
 							}
 						}
 					});

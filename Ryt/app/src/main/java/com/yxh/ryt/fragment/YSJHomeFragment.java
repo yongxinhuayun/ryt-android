@@ -271,7 +271,7 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 		noData.setVisibility(View.GONE);
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("userId",userId);
-		//paramsMap.put("currentId",currentId);
+		paramsMap.put("action","1");
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");

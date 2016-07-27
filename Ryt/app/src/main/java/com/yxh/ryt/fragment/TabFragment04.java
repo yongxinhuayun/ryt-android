@@ -1,6 +1,7 @@
 package com.yxh.ryt.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -75,31 +76,12 @@ public class TabFragment04 extends BaseFragment {
     TextView tvUserHeaderJeValue03;
     @Bind(R.id.tv_user_header_je_txt_03)
     TextView tvUserHeaderJeTxt03;
-    //    @Bind({R.id.ll_header_gz, R.id.ll_header_fs, R.id.ll_header_qm, R.id.ll_header_value})
-//    List<LinearLayout> linearLayouts;
-//    static final ButterKnife.Setter<View, Integer> ISVISIBLE = new ButterKnife.Setter<View, Integer>() {
-//        @Override
-//        public void set(View view, Integer value, int index) {
-//            if (value == 0) {//显示
-//                view.setVisibility(View.VISIBLE);
-//                return;
-//            }
-//            if (value == 1) {//隐藏
-//                view.setVisibility(View.GONE);
-//                return;
-//            }
-//        }
-//    };
     @Bind(R.id.btn_lf)
     TextView btnLf;
-    @Bind(R.id.user_setting)
-    RelativeLayout userSetting;
-    @Bind(R.id.rl_yijian)
-    RelativeLayout userYiJian;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.user_center, null);
+        View view = inflater.inflate(R.layout.user_center, container,false);
         ButterKnife.bind(this, view);
         tvUserHeaderFsNum= (TextView) view.findViewById(R.id.tv_user_header_fs_num);
         tvUserHeaderGzNum= (TextView) view.findViewById(R.id.tv_user_header_gz_num);
@@ -110,7 +92,6 @@ public class TabFragment04 extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-
     //头像点击事件
     @OnClick(R.id.ll_user_header)
     void userHeaderClick() {
@@ -262,7 +243,7 @@ public class TabFragment04 extends BaseFragment {
                         int a =(int)sa;
                         tvUserHeaderGzNum.setText(a+"");*/
                         if (user != null) {
-                            if (null==user.getMaster()) {
+                            if ("1".equals(user.getType()) &&null!=btnLf) {
                                 btnLf.setText("申请为艺术家");
                                 setLoginedViewValues(1, user);
                                 btnLf.setOnClickListener(new View.OnClickListener() {
@@ -272,7 +253,7 @@ public class TabFragment04 extends BaseFragment {
                                     }
                                 });
                                 AppApplication.gUser.setMaster1("");
-                            } else if (user.getMaster()!=null) {
+                            } else if ("2".equals(user.getType()) &&null!=btnLf) {
                                 btnLf.setText("发起项目");
                                 setLoginedViewValues(2, user);
                                 btnLf.setOnClickListener(new View.OnClickListener() {
@@ -282,6 +263,12 @@ public class TabFragment04 extends BaseFragment {
                                     }
                                 });
                                 AppApplication.gUser.setMaster1("master");
+                            }else if ("0".equals(user.getType()) &&null!=btnLf) {
+                                btnLf.setTextColor(Color.rgb(128,128,128));
+                                btnLf.setText("申请为艺术家中");
+                                btnLf.setEnabled(false);
+                                setLoginedViewValues(2, user);
+                                AppApplication.gUser.setMaster1("");
                             }
                         }
                     }

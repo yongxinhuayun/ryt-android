@@ -64,6 +64,7 @@ public class User implements Serializable {
     private String pictureUrl;
     private String loginState;
     private int masterWorkNum;
+    private String type;
     public String getMaster1() {
         return master1;
     }
@@ -86,6 +87,14 @@ public class User implements Serializable {
     public void setsignMessage(String signMessage) {
         this.signMessage = signMessage;
     }*/
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public int getMasterWorkNum() {
         return masterWorkNum;

@@ -45,7 +45,7 @@ public class RZDetailFragment extends BaseFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.rz_detail, null);
+		View view = inflater.inflate(R.layout.rz_detail, container,false);
 		//View view = inflater.inflate(R.layout.rz_xq_tab01, null);
 		llImages = (LinearLayout) view.findViewById(R.id.ll_images);
 		tvContent = (TextView) view.findViewById(R.id.tv_content);

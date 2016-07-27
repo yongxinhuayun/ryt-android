@@ -18,6 +18,8 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.ArtistIndexActivity;
+import com.yxh.ryt.activity.AuctionSummaryActivity;
+import com.yxh.ryt.activity.CreateSummaryActivity;
 import com.yxh.ryt.activity.FinanceSummaryActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.UserYsjIndexActivity;
@@ -384,15 +386,25 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (position<=rongZiDatas.size()+1){
-            if ("1".equals(rongZiDatas.get(position-2).getType())){
+        if (position<=rongZiDatas.size()){
+            if ("1".equals(getFirstLetter(rongZiDatas.get(position-1).getStep()))){
                 Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
+                intent.putExtra("id",rongZiDatas.get(position-1).getId());
+                startActivity(intent);
+            }else if ("2".equals(getFirstLetter(rongZiDatas.get(position-1).getStep()))){
+                Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);
+                intent.putExtra("id",rongZiDatas.get(position-1).getId());
+                startActivity(intent);
+            }else {
+                Intent intent=new Intent(getActivity(), AuctionSummaryActivity.class);
                 intent.putExtra("id",rongZiDatas.get(position-2).getId());
                 startActivity(intent);
             }
         }
     }
-
+    private String getFirstLetter(String letter){
+        return letter.trim().substring(0,1);
+    }
     @Override
     public void onResume() {
         super.onResume();
