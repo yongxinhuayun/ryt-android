@@ -226,7 +226,6 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
         tvUserHeaderJeTxt02.setText("投资收益");
         tvUserHeaderJeTxt03.setText("投资回报率");
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
