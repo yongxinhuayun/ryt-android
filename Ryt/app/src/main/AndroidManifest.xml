@@ -65,7 +65,8 @@
         android:largeHeap="true">
         <activity
             android:name=".activity.SplashActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -115,14 +116,21 @@
             android:name=".activity.ProjectCommentReply"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.PublicBriefActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.ForgetPwdActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ReleaseVideoActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.PushWoraActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
+        <activity
+            android:name=".activity.PublicDongtaiImageActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
         <activity
             android:name=".activity.GuideActivity"
             android:screenOrientation="portrait" />
@@ -131,7 +139,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.UserEditZiLiaoActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
@@ -148,15 +158,19 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RegisterScActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
+        <activity
+            android:name=".activity.CreateSuccessActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
         <activity
             android:name=".activity.EditSignActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.CustomMsgActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.GalleryActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
@@ -165,13 +179,51 @@
             android:name=".activity.NotificationActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.Gallery02Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.Gallery03Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.Gallery04Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.GalleryActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.PrivateLetterActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.PublicProject01Activity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
+        <activity
+            android:name=".activity.EditProject01Activity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
+        <activity
+            android:name=".activity.EditProject02Activity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
+        <activity
+            android:name=".activity.PublicProject02Activity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
         <activity
             android:name=".activity.ShowMsgActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RecordVedioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ReleaseVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RecordVedioFullActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
@@ -278,25 +330,29 @@
             android:value="a0418571f14a2f13b7794bcc" />
         <!-- </>值来自开发者平台取得的AppKey -->
 
-        <activity android:name=".activity.EditNicknameActivity" />
-        <activity android:name=".activity.EditBriefActivity" />
-        <activity android:name=".activity.FansActivity" />
-        <activity android:name=".activity.YsjRzActivity" />
+        <activity android:name=".activity.EditNicknameActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.EditBriefActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.FansActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.YsjRzActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.PayPageActivity"
-            android:label="@string/title_activity_pay_page" />
-        <activity android:name=".activity.ReceiverAdressActivity" />
-        <activity android:name=".activity.NewAddressActivity" />
-        <activity android:name=".activity.AuctionSummaryActivity" />
-        <activity android:name=".activity.UserProtocolActivity" />
-        <activity android:name=".activity.AuctionOrderActivity" />
-        <activity android:name=".activity.WalletDetailsActivity" />
-        <activity android:name=".activity.CollectMoneyActivity" />
-        <activity android:name=".activity.ArtistIndexActivity" />
+            android:label="@string/title_activity_pay_page" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ReceiverAdressActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.NewAddressActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AuctionSummaryActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.UserProtocolActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AuctionOrderActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AuctionOrderSummaryActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AuctionProtocolActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.WalletDetailsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.CollectMoneyActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ArtistIndexActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ArtistCooperateProtocolActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.FinanceSummaryActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name=".activity.EditRecAddressActivity"></activity>
+        <activity android:name=".activity.EditRecAddressActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".activity.UserIndexActivity" android:screenOrientation="portrait"></activity>
 
     </application>
 
