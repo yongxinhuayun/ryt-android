@@ -7,13 +7,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
-
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -541,7 +539,8 @@ public class Utils {
 			String s=millions/1000+"秒";
 			return s;
 		}
-	}public static String getJudgeDate1(long millions){
+	}
+	public static String getJudgeDate1(long millions){
 		long currentTime= System.currentTimeMillis();
 		if ((millions-currentTime)>=1000*60*60*24){
 			String s=(millions-currentTime)/1000/60/60/24+"天";

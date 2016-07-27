@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="投资记录"
+            android:text="评论"
             android:textColor="#333333"
             android:textSize="20sp" />
 
@@ -36,7 +36,7 @@
     </RelativeLayout>
     <com.yxh.ryt.custemview.AutoListView
         android:layout_weight="1"
-        android:id="@+id/iListview"
+        android:id="@+id/cListview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:cacheColorHint="@null"
