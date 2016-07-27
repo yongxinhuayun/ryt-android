@@ -6,7 +6,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="150dp">
-        <ImageView
+        <com.yxh.ryt.custemview.ScaleScreenImageView
             android:id="@+id/mwi_iv_icon"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"

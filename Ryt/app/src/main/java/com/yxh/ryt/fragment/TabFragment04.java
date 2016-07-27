@@ -243,7 +243,7 @@ public class TabFragment04 extends BaseFragment {
                         int a =(int)sa;
                         tvUserHeaderGzNum.setText(a+"");*/
                         if (user != null) {
-                            if ("1".equals(user.getType()) &&null!=btnLf) {
+                            if ("2".equals(user.getType()) &&null!=btnLf) {
                                 btnLf.setText("申请为艺术家");
                                 setLoginedViewValues(1, user);
                                 btnLf.setOnClickListener(new View.OnClickListener() {
@@ -253,7 +253,7 @@ public class TabFragment04 extends BaseFragment {
                                     }
                                 });
                                 AppApplication.gUser.setMaster1("");
-                            } else if ("2".equals(user.getType()) &&null!=btnLf) {
+                            } else if ("1".equals(user.getType()) &&null!=btnLf) {
                                 btnLf.setText("发起项目");
                                 setLoginedViewValues(2, user);
                                 btnLf.setOnClickListener(new View.OnClickListener() {
@@ -272,7 +272,6 @@ public class TabFragment04 extends BaseFragment {
                             }
                         }
                     }
-
                 }
             });
         }else {

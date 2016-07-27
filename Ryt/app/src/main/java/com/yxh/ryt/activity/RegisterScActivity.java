@@ -276,7 +276,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                             public void onClick(int which) {
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
-                                        getExternalStorageDirectory(), "temp1.jpg")));
+                                        getExternalStorageDirectory(), "upLoad.jpg")));
                                 startActivityForResult(intent, CAMERA_REQUEST_CODE);
                             }
                         })
@@ -376,7 +376,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                 break;
             case CAMERA_REQUEST_CODE:
                 File picture = new File(Environment.getExternalStorageDirectory()
-                        + "/temp1.jpg");
+                        + "/upLoad.jpg");
                 Bitmap bitmap2 = getBitmap(Uri.fromFile(picture));
                 //filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
                 /* Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
@@ -477,7 +477,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         bm = BitmapFactory.decodeFile(filePath1, options);
         Bitmap bitmap1=comp(bm);
         File file = new File(Environment.getExternalStorageDirectory()
-                + "/upLoad.jpg");
+                + "/upLoad"+Utils.getImageFormat(filePath1));
         try {
             filePath=file.getPath();
             FileOutputStream fos = new FileOutputStream(file);
@@ -524,7 +524,5 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     @Override
     public void onStop() {
         super.onStop();
-
-
     }
 }

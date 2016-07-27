@@ -22,6 +22,7 @@
         <com.viewpagerindicator.TabPageIndicator
             android:id="@+id/indicator"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_marginLeft="82dp"
             android:layout_marginRight="82dp"
@@ -47,7 +48,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:background="#E9E9E9"/>
    <!-- </RelativeLayout>-->
 

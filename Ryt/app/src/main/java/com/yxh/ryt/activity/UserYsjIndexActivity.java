@@ -299,7 +299,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                                 public void onClick(int which) {
                                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
-                                            getExternalStorageDirectory(), "temp.jpg")));
+                                            getExternalStorageDirectory(), "pushWork.jpg")));
                                     startActivityForResult(intent, CAMERA_REQUEST_CODE);
                                 }
                             })
@@ -333,7 +333,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                 break;
             case CAMERA_REQUEST_CODE:
                 File picture = new File(Environment.getExternalStorageDirectory()
-                        + "/temp.jpg");
+                        + "/pushWork.jpg");
                 Intent intent1=new Intent(this,PushWoraActivity.class);
                 intent1.putExtra("intent",Uri.fromFile(picture));
                 startActivity(intent1);

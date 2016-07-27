@@ -9,14 +9,22 @@
         android:layout_marginBottom="28dp"
         android:orientation="horizontal"
         android:layout_marginTop="12dp"
-        android:layout_marginLeft="54dp"
+        android:layout_marginLeft="62dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
+            android:id="@+id/ali1_iv_date"
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:layout_gravity="center_vertical"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/shijian"/>
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/ali1_iv_finalPerson"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/dezhu"/>
         <TextView
             android:layout_marginLeft="4dp"
             android:id="@+id/ali1_tv_content"

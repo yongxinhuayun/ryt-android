@@ -21,7 +21,7 @@
             android:layout_marginLeft="10dp"
             android:textSize="@dimen/defult_font"
             android:gravity="center"
-            android:text="申请为艺术家" />
+            android:text="申请为艺术家中" />
 
         <TextView
             android:id="@+id/tv_top_ct"

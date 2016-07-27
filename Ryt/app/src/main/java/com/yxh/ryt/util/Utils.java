@@ -70,7 +70,7 @@ public class Utils {
 		return sdf.format(new Date(time));
 	}
 	public static String timeAuction(long time){
-		SimpleDateFormat sdf = new SimpleDateFormat("M月d日 H时m分");
+		SimpleDateFormat sdf = new SimpleDateFormat("M月d日H时m分");
 		return sdf.format(new Date(time));
 	}
 	public static String timeNew(long time){
@@ -477,9 +477,6 @@ public class Utils {
 		return "com.android.providers.media.documents".equals(uri.getAuthority());
 	}
 	public static String getImageFormat(String url){
-		/*String[] split = url.split(".");
-		 url.endsWith("")
-		Log.d("bbbbbbbbb",split.length+"bbbbbbbbbbbbbbbbbbbbbbb");*/
 		if ((url.endsWith(".jpg"))){
 			return ".jpg";
 		}else if ((url.endsWith(".jpeg"))){

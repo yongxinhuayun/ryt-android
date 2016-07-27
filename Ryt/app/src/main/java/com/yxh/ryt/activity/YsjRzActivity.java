@@ -449,7 +449,7 @@ public class YsjRzActivity extends BaseActivity {
                         Bitmap bitmap = BitmapFactory.decodeFile(s);
                         Bitmap bitmap1 = comp(bitmap, s);
                         File file = new File(Environment.getExternalStorageDirectory()
-                                + "/identityFront.jpg");
+                                + "/identityFront"+Utils.getImageFormat(s));
                         try {
                             FileOutputStream fos = new FileOutputStream(file);
                             bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -464,7 +464,7 @@ public class YsjRzActivity extends BaseActivity {
                         Bitmap bitmap = BitmapFactory.decodeFile(s);
                         Bitmap bitmap1 = comp(bitmap, s);
                         File file = new File(Environment.getExternalStorageDirectory()
-                                + "/identityBack.jpg");
+                                + "/identityBack"+Utils.getImageFormat(s));
                         try {
                             FileOutputStream fos = new FileOutputStream(file);
                             bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -494,7 +494,7 @@ public class YsjRzActivity extends BaseActivity {
                     Bitmap bitmap = BitmapFactory.decodeFile(s);
                     Bitmap bitmap1 = comp(bitmap, s);
                     File file = new File(Environment.getExternalStorageDirectory()
-                            + "/work"+i+".jpg");
+                            + "/work"+i+Utils.getImageFormat(s));
                     try {
                         FileOutputStream fos = new FileOutputStream(file);
                         bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -523,7 +523,7 @@ public class YsjRzActivity extends BaseActivity {
                     Bitmap bitmap = BitmapFactory.decodeFile(s);
                     Bitmap bitmap1 = comp(bitmap, s);
                     File file = new File(Environment.getExternalStorageDirectory()
-                            + "/workPlace"+i+".jpg");
+                            + "/workPlace"+i+Utils.getImageFormat(s));
                     try {
                         FileOutputStream fos = new FileOutputStream(file);
                         bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -552,7 +552,7 @@ public class YsjRzActivity extends BaseActivity {
                     Bitmap bitmap = BitmapFactory.decodeFile(s);
                     Bitmap bitmap1 = comp(bitmap, s);
                     File file = new File(Environment.getExternalStorageDirectory()
-                            + "/award"+i+".jpg");
+                            + "/award"+i+Utils.getImageFormat(s));
                     try {
                         FileOutputStream fos = new FileOutputStream(file);
                         bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
