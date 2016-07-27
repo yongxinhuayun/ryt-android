@@ -298,7 +298,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 						view.setBackgroundResource(R.drawable.praise);
 						textView.setTextColor(Color.rgb(205,55,56));
 						String raw=textView.getText().toString();
-						number.put(helper.getPosition(),Integer.valueOf(raw)-1);
+						number.put(helper.getPosition(),praiseNum-1);
 						textView.setText(Integer.valueOf(raw)-1+"");
 						selected.put(helper.getPosition(),false);
 					}else {
@@ -350,7 +350,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 						number.put(helper.getPosition(),praiseNum+1);
 						selected.put(helper.getPosition(),true);
 					}else {
-						praise(artworkId, view, textView, praiseNum, helper);
+						cancelPraise(artworkId, view, textView, praiseNum, helper);
 					}
 				}else if ("000000".equals(response.get("resultCode"))){
 					SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
