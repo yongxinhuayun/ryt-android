@@ -479,9 +479,6 @@ public class Utils {
 		return "com.android.providers.media.documents".equals(uri.getAuthority());
 	}
 	public static String getImageFormat(String url){
-		/*String[] split = url.split(".");
-		 url.endsWith("")
-		Log.d("bbbbbbbbb",split.length+"bbbbbbbbbbbbbbbbbbbbbbb");*/
 		if ((url.endsWith(".jpg"))){
 			return ".jpg";
 		}else if ((url.endsWith(".jpeg"))){

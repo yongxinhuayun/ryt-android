@@ -64,9 +64,10 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true">
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".activity.RegisterScActivity"
             android:screenOrientation="portrait"
-            >
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -149,18 +150,20 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".activity.UserYsjIndexActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
         <activity
             android:name=".activity.ChuangZuoXQActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RongZiXQActivity"
             android:screenOrientation="portrait" />
-        <activity
+        <!--<activity
             android:name=".activity.RegisterScActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>-->
         <activity
             android:name=".activity.CreateSuccessActivity"
             android:screenOrientation="portrait"
@@ -351,8 +354,8 @@
         <activity android:name=".activity.FinanceSummaryActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name=".activity.EditRecAddressActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".activity.UserIndexActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".activity.EditRecAddressActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.UserIndexActivity" android:screenOrientation="portrait"/>
 
     </application>
 
