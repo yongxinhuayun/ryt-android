@@ -76,12 +76,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     private static final int CROP_REQUEST_CODE = 4;
     String filePath = "";
     private String username;
-    private Bitmap bitmap2;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
     private String password;
 
     @Override
@@ -90,16 +84,13 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         setContentView(R.layout.registersucced);
         ButterKnife.bind(this);/*启用注解绑定*/
         String userid = getIntent().getStringExtra("userId");
-        //username = getIntent().getStringExtra("username");
-        username = "18510251819";
-        //password = getIntent().getStringExtra("password");
-        password = "123456";
+        username = getIntent().getStringExtra("username");
+        //username = "18510251819";
+        password = getIntent().getStringExtra("password");
+        //password = "123456";
         sexGroup.setOnCheckedChangeListener(this);
         commit.setEnabled(false);
         onEnabled();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-       /* client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();*/
     }
 
     private void onEnabled() {

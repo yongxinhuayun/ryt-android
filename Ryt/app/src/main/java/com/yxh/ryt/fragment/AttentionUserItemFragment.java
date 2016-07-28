@@ -133,7 +133,6 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 			}
 		});
 	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -154,7 +153,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 								getActivity().startActivity(intent);
 							}else {
-								Attention_user(v,followId);
+								attention_user(v,followId);
 							}
 						}
 					});
@@ -199,9 +198,8 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		return contextView;
 	}
 
-	private void Attention_user(final View v, String followId) {
+	private void attention_user(final View v, String followId) {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId", AppApplication.gUser.getId());
 		paramsMap.put("followId", followId);
 		paramsMap.put("identifier", "0");
 		paramsMap.put("followType", "2");
@@ -251,7 +249,6 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 
 	private void NoAttention_user(final View v, String followId) {
 		Map<String,String> paramsMap=new HashMap<>();
-		paramsMap.put("userId", AppApplication.gUser.getId());
 		paramsMap.put("followId", followId);
 		paramsMap.put("identifier", "1");
 		paramsMap.put("followType", "2");

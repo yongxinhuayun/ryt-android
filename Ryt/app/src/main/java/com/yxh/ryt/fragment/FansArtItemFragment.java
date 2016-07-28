@@ -152,7 +152,7 @@ public class FansArtItemFragment extends BaseFragment implements AutoListView.On
 					public void onClick(View v) {
 							Intent intent=new Intent(AppApplication.getSingleContext(),ArtistIndexActivity.class);
 							intent.putExtra("userId", followId);
-							intent.putExtra("currentId", AppApplication.gUser.getId());
+							intent.putExtra("name", item.getArtUserFollowed().getUser().getName());
 							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							getActivity().startActivity(intent);
 					}

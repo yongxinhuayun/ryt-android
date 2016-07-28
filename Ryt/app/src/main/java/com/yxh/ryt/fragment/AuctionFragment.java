@@ -61,7 +61,6 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
-		loadingUtil.show();
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
 			paramsMap.put("signmsg", AppApplication.signmsg);
@@ -79,7 +78,6 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 			@Override
 			public void onResponse(final Map<String, Object> response) {
 				if ("".equals(AppApplication.gUser.getId())){
-					loadingUtil.dismiss();
 					if (state == AutoListView.REFRESH) {
 						lstv.onRefreshComplete();
 						rongZiDatas.clear();
@@ -115,6 +113,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 						for (int i=selected.size();i<rongZiDatas.size();i++){
 							selected.put(i,rongZiDatas.get(i).isPraise());
 							number.put(i,rongZiDatas.get(i).getPraiseNUm());
+
 						}
 					}
 				}else {
@@ -122,7 +121,6 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 						@Override
 						public void getCode(String code) {
 							if ("0".equals(code)){
-
 								NetRequestUtil.post(Constants.BASE_PATH + "artWorkAuctionList.do", paramsMap, new RongZiListCallBack() {
 									@Override
 									public void onError(Call call, Exception e) {
@@ -131,7 +129,6 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 
 									@Override
 									public void onResponse(Map<String, Object> response) {
-										loadingUtil.dismiss();
 										if (state == AutoListView.REFRESH) {
 											lstv.onRefreshComplete();
 											rongZiDatas.clear();

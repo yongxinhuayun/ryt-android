@@ -61,7 +61,6 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
-		loadingUtil.show();
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
 			paramsMap.put("signmsg", AppApplication.signmsg);
@@ -79,7 +78,6 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 			@Override
 			public void onResponse(final Map<String, Object> response) {
 				if ("".equals(AppApplication.gUser.getId())){
-					loadingUtil.dismiss();
 					if (state == AutoListView.REFRESH) {
 						lstv.onRefreshComplete();
 						rongZiDatas.clear();
@@ -131,7 +129,6 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 
 									@Override
 									public void onResponse(Map<String, Object> response) {
-										loadingUtil.dismiss();
 										if (state == AutoListView.REFRESH) {
 											lstv.onRefreshComplete();
 											rongZiDatas.clear();

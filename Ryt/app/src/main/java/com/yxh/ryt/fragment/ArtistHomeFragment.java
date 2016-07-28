@@ -3,6 +3,8 @@ package com.yxh.ryt.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +17,13 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.AttentionActivity;
 import com.yxh.ryt.activity.AuctionSummaryActivity;
 import com.yxh.ryt.activity.CreateSummaryActivity;
 import com.yxh.ryt.activity.FinanceSummaryActivity;
+import com.yxh.ryt.activity.LoginActivity;
+import com.yxh.ryt.activity.MsgActivity;
+import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
@@ -29,7 +35,10 @@ import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
+import com.yxh.ryt.vo.Artwork;
+import com.yxh.ryt.vo.FollowUserUtil;
 import com.yxh.ryt.vo.HomeYSJArtWork;
+import com.yxh.ryt.vo.RongZi;
 import com.yxh.ryt.vo.User;
 
 import java.util.ArrayList;
@@ -69,6 +78,10 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
     private int height;
     private LoadingUtil loadingUtil;
     private LinearLayout other;
+    private boolean followed;
+    private LinearLayout ll_attention;
+    private LinearLayout ll_privateLetter;
+    private int fansNum;
 
     public ArtistHomeFragment( String userId) {
         super();
@@ -79,11 +92,100 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         attentionDatas=new ArrayList<HomeYSJArtWork>();
-        loadingUtil = new LoadingUtil(getActivity(),getContext());
+        DisplayMetrics metric = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
+        // 屏幕宽度（像素）
+        width = metric.widthPixels;
+        height = metric.heightPixels;
+        loadingUtil = new LoadingUtil(getActivity(),width,height);
     }
+    private void attention_user(final View v, final String followId) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("followId", followId);
+        paramsMap.put("identifier", "0");
+        paramsMap.put("followType", "2");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "changeFollowStatus.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+            }
 
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))) {
+                    if (!isFollowed){
+                        ((ImageView) v).setImageResource(R.mipmap.yiguanzhu);
+                        isFollowed=true;
+                        fansNum=fansNum+1;
+                        totalFans.setText(fansNum+"位粉丝");
+                    }else {
+                        noAttention_user(v,followId);
+                    }
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                attention_user(v,followId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
+    }
+    private void noAttention_user(final View v, final String followId) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("followId", followId);
+        paramsMap.put("identifier", "1");
+        paramsMap.put("followType", "2");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "changeFollowStatus.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))) {
+                    if (isFollowed){
+                        ((ImageView) v).setImageResource(R.mipmap.weiguanzhu);
+                        isFollowed=false;
+                        fansNum=fansNum-1;
+                        totalFans.setText(fansNum+"位粉丝");
+                    }else {
+                        attention_user(v,followId);
+                    }
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                noAttention_user(v,followId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
+    }
     private void LoadData(final int state,int pageNum) {
-        loadingUtil.show();
         final Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("userId",userId);
         paramsMap.put("pageSize", Constants.pageSize+"");
@@ -107,7 +209,6 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
             public void onResponse(Map<String, Object> response) {
                 if ("".equals(AppApplication.gUser.getId())){
                     if ("0".equals(response.get("resultCode"))){
-                        loadingUtil.dismiss();
                         Map<Object,Object> object= (Map<Object, Object>) response.get("object");
                         reward= AppApplication.getSingleGson().toJson(object.get("reward"));
                         followNum= AppApplication.getSingleGson().toJson(object.get("followNum"));
@@ -116,12 +217,33 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                         user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("master")), User.class);
                         AppApplication.displayImage(user.getPictureUrl(),headPicture);
                         name.setText(user.getName());
-                        title.setText(user.getMaster().getTitle());
-                        if (isFollowed){
+                        if (user.getMaster().getTitle()==null || "".equals(user.getMaster().getTitle())){
+                            title.setVisibility(View.GONE);
+                        }else {
+                            title.setText(user.getMaster().getTitle());
+                        }
+                        followed=isFollowed;
+                        if (followed){
                             attention.setImageResource(R.mipmap.yiguanzhu);
                         }else {
                             attention.setImageResource(R.mipmap.weiguanzhu);
                         }
+                        ll_attention.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent=new Intent(getActivity(), LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            }
+                        });
+                        ll_privateLetter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent=new Intent(getActivity(), LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            }
+                        });
                         totalMoney.setText("¥"+sumInvestsMoney);
                         if ("0".equals(sumInvestsMoney)){
                             premiumRate.setText("0%");
@@ -178,7 +300,6 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                                     @Override
                                     public void onResponse(Map<String, Object> response) {
                                         if ("0".equals(response.get("resultCode"))){
-                                            loadingUtil.dismiss();
                                             Map<Object,Object> object= (Map<Object, Object>) response.get("object");
                                             reward= AppApplication.getSingleGson().toJson(object.get("reward"));
                                             followNum= AppApplication.getSingleGson().toJson(object.get("followNum"));
@@ -187,12 +308,40 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                                             user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("master")), User.class);
                                             AppApplication.displayImage(user.getPictureUrl(),headPicture);
                                             name.setText(user.getName());
-                                            title.setText(user.getMaster().getTitle());
-                                            if (isFollowed){
+                                            if (user.getMaster().getTitle()==null || "".equals(user.getMaster().getTitle())){
+                                                title.setVisibility(View.GONE);
+                                            }else {
+                                                title.setText(user.getMaster().getTitle());
+                                            }
+                                            followed=isFollowed;
+                                            if (followed){
                                                 attention.setImageResource(R.mipmap.yiguanzhu);
+                                                ll_attention.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        noAttention_user(attention,userId);
+                                                    }
+                                                });
                                             }else {
                                                 attention.setImageResource(R.mipmap.weiguanzhu);
+                                                ll_attention.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        attention_user(attention,userId);
+                                                    }
+                                                });
                                             }
+                                            ll_privateLetter.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    Intent intent=new Intent(getActivity(),MsgActivity.class);
+                                                    intent.putExtra("userId",AppApplication.gUser.getId());
+                                                    intent.putExtra("currentName",AppApplication.gUser.getName());
+                                                    intent.putExtra("formId", userId);
+                                                    intent.putExtra("name", user.getName());
+                                                    startActivity(intent);
+                                                }
+                                            });
                                             totalMoney.setText("¥"+sumInvestsMoney);
                                             if ("0".equals(sumInvestsMoney)){
                                                 premiumRate.setText("0%");
@@ -201,6 +350,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                                                 premiumRate.setText((int)(rate*100)+"%");
                                             }
                                             totalWrok.setText(user.getMasterWorkNum()+"件作品");
+                                            fansNum=user.getFansNum();
                                             totalFans.setText(user.getFansNum()+"位粉丝");
                                             if (state == AutoListView.REFRESH) {
                                                 lstv.onRefreshComplete();
@@ -257,6 +407,8 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
         other = ((LinearLayout) header.findViewById(R.id.uh1_ll_other));
         title = ((TextView) header.findViewById(R.id.hah_tv_title));
         attention = ((ImageView) header.findViewById(R.id.uh1_iv_attention));
+        ll_attention = ((LinearLayout) header.findViewById(R.id.uh1_ll_attention));
+        ll_privateLetter = ((LinearLayout) header.findViewById(R.id.uh1_ll_privateLetter));
         totalMoney = ((TextView) header.findViewById(R.id.hah_tv_totalMoney));
         premiumRate = ((TextView) header.findViewById(R.id.hah_tv_premiumRate));
         totalWrok = ((TextView) header.findViewById(R.id.hah_tv_totalWork));
