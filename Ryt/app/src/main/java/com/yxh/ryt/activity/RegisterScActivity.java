@@ -77,6 +77,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     String filePath = "";
     private String username;
     private String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,9 +91,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         sexGroup.setOnCheckedChangeListener(this);
         commit.setEnabled(false);
         onEnabled();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-       /* client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();*/
     }
 
     private void onEnabled() {
