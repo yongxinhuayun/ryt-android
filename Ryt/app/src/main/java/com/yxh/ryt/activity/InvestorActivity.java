@@ -58,11 +58,11 @@ public class InvestorActivity extends Activity implements AutoListView.OnRefresh
                 if (item.getCreator() != null) {
                     helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
                     if (item.getCreator().getName() != null) {
-                        if (item.getCreator().getName().length() > 5) {
+                       /* if (item.getCreator().getName().length() > 5) {
                             helper.setText(R.id.iri_tv_nickname, item.getCreator().getName().substring(0, 5) + "...");
-                        } else {
+                        } else {*/
                             helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
-                        }
+                        //}
                     }
                 }
                 helper.getView(R.id.civ_top).setVisibility(View.GONE);

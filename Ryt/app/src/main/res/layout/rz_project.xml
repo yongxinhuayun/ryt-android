@@ -133,10 +133,10 @@
                 android:gravity="center">
 
                 <LinearLayout
-                    android:id="@+id/ll_prise"
+                    android:id="@+id/ll_praise"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@drawable/prise_shape"
+                    android:background="@drawable/praise_shape"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -144,13 +144,13 @@
                         android:id="@+id/iv_praise"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/before_praise" />
+                        android:src="@mipmap/zanc" />
 
                     <TextView
                         android:id="@+id/tv_praise"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="6dp"
+                        android:layout_marginLeft="5dp"
                         android:text="30"
                         android:textColor="#D55B5C"
                         android:textSize="13sp" />
@@ -162,7 +162,7 @@
                     android:layout_height="15dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="4dp"
-                    android:layout_toRightOf="@+id/ll_prise"
+                    android:layout_toRightOf="@+id/ll_praise"
                     android:background="#F5F5F5" />
 
                 <LinearLayout
@@ -284,7 +284,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/prise_shape"
+                    android:background="@drawable/praise_shape"
                     android:src="@mipmap/weiguanzhu" />
             </RelativeLayout>
 

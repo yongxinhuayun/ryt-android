@@ -293,6 +293,8 @@
         <activity android:name=".activity.WalletDetailsActivity" />
         <activity android:name=".activity.CollectMoneyActivity" />
         <activity android:name=".activity.ArtistIndexActivity" />
+        <activity android:name=".activity.CommentListActivity" />
+        <activity android:name=".activity.UserIndexActivity" />
         <activity
             android:name=".activity.FinanceSummaryActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|navigation"
