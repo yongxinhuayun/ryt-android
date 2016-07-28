@@ -133,7 +133,6 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 			}
 		});
 	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
