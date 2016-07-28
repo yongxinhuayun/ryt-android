@@ -399,7 +399,6 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
                 }
                 break;
         }
-
     }
 
     @Override
