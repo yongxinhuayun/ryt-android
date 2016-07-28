@@ -64,6 +64,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 		height = metric.heightPixels;
 		loadingUtil = new LoadingUtil(getActivity(),width,height);
 	}
+
 	private void LoadData(final int state, final int pageNum) {
 		final Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("pageSize", Constants.pageSize+"");

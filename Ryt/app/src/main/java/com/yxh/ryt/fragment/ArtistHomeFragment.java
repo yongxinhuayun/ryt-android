@@ -81,6 +81,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
     private boolean followed;
     private LinearLayout ll_attention;
     private LinearLayout ll_privateLetter;
+    private int fansNum;
 
     public ArtistHomeFragment( String userId) {
         super();
@@ -121,8 +122,9 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                 if ("0".equals(response.get("resultCode"))) {
                     if (!isFollowed){
                         ((ImageView) v).setImageResource(R.mipmap.yiguanzhu);
-                        onRefresh();
-                        isFollowed=false;
+                        isFollowed=true;
+                        fansNum=fansNum+1;
+                        totalFans.setText(fansNum+"位粉丝");
                     }else {
                         noAttention_user(v,followId);
                     }
@@ -153,8 +155,9 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                 if ("0".equals(response.get("resultCode"))) {
                     if (isFollowed){
                         ((ImageView) v).setImageResource(R.mipmap.weiguanzhu);
-                        onRefresh();
                         isFollowed=false;
+                        fansNum=fansNum-1;
+                        totalFans.setText(fansNum+"位粉丝");
                     }else {
                         attention_user(v,followId);
                     }
@@ -186,7 +189,6 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
             public void onResponse(Map<String, Object> response) {
                 if ("".equals(AppApplication.gUser.getId())){
                     if ("0".equals(response.get("resultCode"))){
-                        loadingUtil.dismiss();
                         Map<Object,Object> object= (Map<Object, Object>) response.get("object");
                         reward= AppApplication.getSingleGson().toJson(object.get("reward"));
                         followNum= AppApplication.getSingleGson().toJson(object.get("followNum"));
@@ -320,6 +322,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                                                 premiumRate.setText((int)(rate*100)+"%");
                                             }
                                             totalWrok.setText(user.getMasterWorkNum()+"件作品");
+                                            fansNum=user.getFansNum();
                                             totalFans.setText(user.getFansNum()+"位粉丝");
                                             if (state == AutoListView.REFRESH) {
                                                 lstv.onRefreshComplete();
