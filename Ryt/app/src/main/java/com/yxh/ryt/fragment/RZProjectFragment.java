@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -21,9 +22,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -115,7 +113,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private LinearLayout llinvester;
     private ScrollView sv;
     protected static final int PRAISE_SUC = 100;
-    protected static final int COUNT_DOWN = 101;
+    protected static final int PRAISE_CANCEL = 101;
+    protected static final int COUNT_DOWN = 102;
     private int widthScreen;
     private int widthImage;
     private int widthView;
@@ -143,8 +142,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private ExpandView mExpandView;
     private LinearLayout ll_project;
     private RelativeLayout rl_progress;
-    private TextView worksNum;
-    private TextView fansNum;
+    private TextView tvWorksNum;
+    private TextView tvFansNum;
     private Artwork artwork;
     private TextView reader;
     private LinearLayout invest;
@@ -152,6 +151,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private List<ArtworkInvestTop> investorTopDatas;
     private long deadTime;
     private TextView tvInvestMoney;
+    private TextView creatTime;
+
 
     public RZProjectFragment(String artWorkId) {
         super();
@@ -167,6 +168,15 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     int a = Integer.parseInt(praiseNum.getText().toString());
                     a++;
                     praiseNum.setText(a + "");
+                    llpraise.setBackgroundResource(R.drawable.praise_after_shape);
+                    praiseNum.setTextColor(Color.rgb(255, 255, 255));
+                    break;
+                case PRAISE_CANCEL:
+                    int s = Integer.parseInt(praiseNum.getText().toString());
+                    s--;
+                    praiseNum.setText(s + "");
+                    llpraise.setBackgroundResource(R.drawable.praise_shape);
+                    praiseNum.setTextColor(Color.rgb(199, 31, 33));
                     break;
                 case COUNT_DOWN:
                     deadTime -= 1000;
@@ -207,14 +217,15 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         artCommentDatas = new ArrayList<ArtworkComment>();
         investorDatas = new ArrayList<>();
         investorTopDatas = new ArrayList<>();
-        showOther();
+
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.rz_project, container,false);
+        View view = inflater.inflate(R.layout.rz_project, container, false);
         imageTitle = (ImageView) view.findViewById(R.id.cl_01_tv_prc);
+        creatTime = (TextView) view.findViewById(R.id.tv_creat_time);
         dianzan = (ImageView) view.findViewById(R.id.iv_praise);
         headV = (ImageView) view.findViewById(R.id.iv_master);
         ll_invester = (LinearLayout) view.findViewById(R.id.ll_invester);
@@ -229,8 +240,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         tv_name = (TextView) view.findViewById(R.id.tv_name);
         tv_name2 = (TextView) view.findViewById(R.id.tv_name2);
         praiseNum = (TextView) view.findViewById(R.id.tv_praise);
-        worksNum = (TextView) view.findViewById(R.id.tv_num_works);
-        fansNum = (TextView) view.findViewById(R.id.tv_num_fans);
+        tvWorksNum = (TextView) view.findViewById(R.id.tv_num_works);
+        tvFansNum = (TextView) view.findViewById(R.id.tv_num_fans);
         tv_price = (TextView) view.findViewById(R.id.tv_price);
         go = (ImageButton) view.findViewById(R.id.ib_go);
         comment = (Button) view.findViewById(R.id.bt_comment);
@@ -239,7 +250,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         attention.setOnClickListener(this);
         comment.setOnClickListener(this);
         invest = ((LinearLayout) view.findViewById(R.id.rzp_ll_invest));
-        llpraise = (LinearLayout) view.findViewById(R.id.ll_prise);
+        llpraise = (LinearLayout) view.findViewById(R.id.ll_praise);
         llinvester = (LinearLayout) view.findViewById(R.id.ll_invester);
         mExpandView = (ExpandView) view.findViewById(R.id.expandView);
         sv = (ScrollView) view.findViewById(R.id.sv_sv);
@@ -263,6 +274,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         iTopListview = (ListViewForScrollView) view.findViewById(R.id.lv_invester_top);
         iTopListview.hideFooterView();
         invest.setOnClickListener(this);
+        showOther();
         setInvestorTopAdapter();
         setInvesterAdapter();
         setCommentAdapter();
@@ -462,11 +474,13 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
                     artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
                     deadTime = Long.parseLong(artwork.getInvestRestTime());
+                    creatTime.setText(DateUtil.millionToNearly(artwork.getCreateDatetime()));
                     tv_project_name.setText(artwork.getTitle());
                     tv_project_brief.setText(artwork.getBrief());
-                    // worksNum.setText(artwork.);
+                    tvWorksNum.setText(artwork.getAuthor().getMasterWorkNum() + "件作品");
+                    tvFansNum.setText(artwork.getAuthor().getFansNum() + "个粉丝");
                     tv_price.setText("￥ " + artwork.getInvestsMoney() + ".00");
-                    tvInvestor.setText(artwork.getInvestNum() + "人投资 " );
+                    tvInvestor.setText(artwork.getInvestNum() + "人投资 ");
                     tvInvestMoney.setText("￥" + artwork.getInvestsMoney() + "/" + artwork.getInvestGoalMoney());
                     remainMoney = artwork.getInvestGoalMoney().subtract(artwork.getInvestsMoney()).intValue();
                     //deadline.setText(DateUtil.millisToStringShort(deadTime,false,false) + "后截止");
@@ -490,8 +504,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         }
                     }
                     if (isPraise1) {
-                        dianzan.setImageResource(R.mipmap.after_praise);
-                        dianzan.setEnabled(false);
+                        llpraise.setBackgroundResource(R.drawable.praise_after_shape);
+                        praiseNum.setTextColor(Color.rgb(255, 255, 255));
                     }
                     praiseNum.setText(artwork.getPraiseNUm() + "");
                     reader.setText(artwork.getViewNum() + "");
@@ -724,11 +738,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 if (item.getCreator() != null) {
                     helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
                     if (item.getCreator().getName() != null) {
-                        if (item.getCreator().getName().length() > 5) {
-                            helper.setText(R.id.iri_tv_nickname, item.getCreator().getName().substring(0, 5) + "...");
-                        } else {
-                            helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
-                        }
+                        helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
                     }
                 }
                 helper.getView(R.id.civ_top).setVisibility(View.GONE);
@@ -814,11 +824,11 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 }
             });*/
             Intent intent = new Intent(getActivity(), InvestorActivity.class);
-            clickMore(iListview,intent);
+            clickMore(iListview, intent);
         }
     }
 
-    private void clickMore(ListViewForScrollView myListview, final Intent intent){
+    private void clickMore(ListViewForScrollView myListview, final Intent intent) {
         myListview.footerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -827,6 +837,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             }
         });
     }
+
     private void setInvestorTopAdapter() {
         investorTopAdapter = new CommonAdapter<ArtworkInvestTop>(getActivity(), investorTopDatas, R.layout.investorrecord_item) {
             @Override
@@ -878,47 +889,24 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
         }
         Intent intent = new Intent(getActivity(), CommentListActivity.class);
-        clickMore(listView,intent);
+        clickMore(listView, intent);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_prise:
+            case R.id.ll_praise:
                 //点赞
                 if ("".equals(AppApplication.gUser.getId())) {
                     Intent intent2 = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent2);
                 } else {
                     if (!isPraise1) {
-                        AnimationSet animationSet = new AnimationSet(true);
-                        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1.5f, 1, 1.5f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                        scaleAnimation.setDuration(200);
-                        animationSet.addAnimation(scaleAnimation);
-                        animationSet.setFillAfter(true);
-                        animationSet.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                AnimationSet animationSet = new AnimationSet(true);
-                                ScaleAnimation scaleAnimation = new ScaleAnimation(1.5f, 1f, 1.5f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                                scaleAnimation.setDuration(200);
-                                animationSet.addAnimation(scaleAnimation);
-                                animationSet.setFillAfter(true);
-                                dianzan.startAnimation(animationSet);
-                                dianzan.setEnabled(false);
-                                praise(artWorkId, AppApplication.gUser.getId() + "");
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                            }
-                        });
-                        dianzan.setImageResource(R.mipmap.after_praise);
-                        dianzan.startAnimation(animationSet);
+                        praise(artWorkId);
+                        isPraise1 = true;
+                    } else {
+                        cancelPraise(artWorkId);
+                        isPraise1 = false;
                     }
                 }
                 break;
@@ -1059,28 +1047,11 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             sv.smoothScrollBy(0, screenHeight - scrollDifference);
         }
     };
-    private Runnable ScrollRunnable2 = new Runnable() {
-        @Override
-        public void run() {
-            int scrollDifference = Utils.dip2px(getActivity(), 160);
-            int svHeight = sv.getHeight();
-            int off = screenHeight;//判断高度
-            /*if (off > 0) {
-                sv.scrollBy(0, 30);
-                if (sv.getScrollY() == off) {
-                    Thread.currentThread().interrupt();
-                } else {
-                    mHandler.postDelayed(this, 1000);
-                }
-            }*/
-            sv.smoothScrollTo(0, mExpandView.getHeight() - svHeight);
-        }
-    };
 
-    private void praise(String artworkId, String s) {
+    private void praise(final String artworkId) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artworkId", artworkId + "");
-        paramsMap.put("action ", "1");
+        paramsMap.put("action", "1");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
@@ -1102,10 +1073,60 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     Message msg = Message.obtain();
                     msg.what = PRAISE_SUC;
                     handler.sendMessage(msg);
+                } else if ("000000".equals(response.get("resultCode"))) {
+                    SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)) {
+                                praise(artworkId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
             }
         });
     }
 
+    private void cancelPraise(final String artworkId) {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("artworkId", artworkId + "");
+        paramsMap.put("action", "0");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "artworkPraise.do", paramsMap, new RongZiListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+                ToastUtil.showLong(getActivity(), "网络连接超时,稍后重试!");
+            }
 
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))) {
+                    ToastUtil.showLong(getActivity(), "取消点赞");
+                    Message msg = Message.obtain();
+                    msg.what = PRAISE_CANCEL;
+                    handler.sendMessage(msg);
+                } else if ("000000".equals(response.get("resultCode"))) {
+                    SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)) {
+                                cancelPraise(artworkId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
+
+    }
 }

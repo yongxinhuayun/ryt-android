@@ -69,6 +69,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 		paramsMap.put("pageSize", Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		loadingUtil.show();
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
 			paramsMap.put("signmsg", AppApplication.signmsg);
@@ -86,6 +87,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 			@Override
 			public void onResponse(final Map<String, Object> response) {
 				if ("".equals(AppApplication.gUser.getId())){
+					loadingUtil.dismiss();
 					if (state == AutoListView.REFRESH) {
 						lstv.onRefreshComplete();
 						rongZiDatas.clear();
@@ -139,6 +141,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 
 									@Override
 									public void onResponse(Map<String, Object> response) {
+										loadingUtil.dismiss();
 										if (state == AutoListView.REFRESH) {
 											lstv.onRefreshComplete();
 											rongZiDatas.clear();
@@ -256,6 +259,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 									}
 								}
 							});
+
 					}
 				}
 			}
@@ -270,7 +274,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 	private void cancelPraise(final String id, final LinearLayout view, final TextView textView, final int praiseNum, final ViewHolder helper) {
 		Map<String, String> paramsMap = new HashMap<>();
 		paramsMap.put("artworkId", id + "");
-		paramsMap.put("action","0");
+		paramsMap.put("action", "0");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
@@ -286,81 +290,81 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
 			}
 
-			@Override
-			public void onResponse(Map<String, Object> response) {
-				if ("0".equals(response.get("resultCode"))) {
-					if (selected.get(helper.getPosition())){
-						ToastUtil.showLong(getActivity(), "取消点赞");
-						view.setBackgroundResource(R.drawable.praise);
-						textView.setTextColor(Color.rgb(205,55,56));
-						String raw=textView.getText().toString();
-						number.put(helper.getPosition(),praiseNum-1);
-						textView.setText(Integer.valueOf(raw)-1+"");
-						selected.put(helper.getPosition(),false);
-					}else {
-						praise(id, view, textView, praiseNum, helper);
-					}
-				}else if ("000000".equals(response.get("resultCode"))){
-					SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
-						@Override
-						public void getCode(String code) {
-							if ("0".equals(code)){
-								cancelPraise(id, view, textView, praiseNum, helper);
-							}
-						}
-					});
-					sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
-				}
-			}
-		});
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))) {
+                    if (selected.get(helper.getPosition())) {
+                        ToastUtil.showLong(getActivity(), "取消点赞");
+                        view.setBackgroundResource(R.drawable.praise_shape);
+                        textView.setTextColor(Color.rgb(199, 31, 33));
+                        String raw = textView.getText().toString();
+                        number.put(helper.getPosition(), praiseNum - 1);
+                        textView.setText(Integer.valueOf(raw) - 1 + "");
+                        selected.put(helper.getPosition(), false);
+                    } else {
+                        praise(id, view, textView, praiseNum, helper);
+                    }
+                } else if ("000000".equals(response.get("resultCode"))) {
+                    SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)) {
+                                cancelPraise(id, view, textView, praiseNum, helper);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
 
 	}
 
-	private void praise(final String artworkId, final LinearLayout view, final TextView textView, final int praiseNum, final ViewHolder helper) {
-		Map<String, String> paramsMap = new HashMap<>();
-		paramsMap.put("artworkId", artworkId + "");
-		paramsMap.put("action", "1");
-		paramsMap.put("timestamp", System.currentTimeMillis() + "");
-		try {
-			AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
-			paramsMap.put("signmsg", AppApplication.signmsg);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		NetRequestUtil.post(Constants.BASE_PATH + "artworkPraise.do", paramsMap, new RongZiListCallBack() {
-			@Override
-			public void onError(Call call, Exception e) {
-				e.printStackTrace();
-				System.out.println("失败了");
-				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
-			}
+    private void praise(final String artworkId, final LinearLayout view, final TextView textView, final int praiseNum, final ViewHolder helper) {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("artworkId", artworkId + "");
+        paramsMap.put("action", "1");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "artworkPraise.do", paramsMap, new RongZiListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+                ToastUtil.showLong(getActivity(), "网络连接超时,稍后重试!");
+            }
 
-			@Override
-			public void onResponse(Map<String, Object> response) {
-				if ("0".equals(response.get("resultCode"))) {
-					if (!selected.get(helper.getPosition())){
-						ToastUtil.showLong(getActivity(), "点赞成功");
-						view.setBackgroundResource(R.drawable.praise1);
-						textView.setTextColor(Color.rgb(255,255,255));
-						textView.setText(praiseNum+1+"");
-						number.put(helper.getPosition(),praiseNum+1);
-						selected.put(helper.getPosition(),true);
-					}else {
-						cancelPraise(artworkId, view, textView, praiseNum, helper);
-					}
-				}else if ("000000".equals(response.get("resultCode"))){
-					SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
-						@Override
-						public void getCode(String code) {
-							if ("0".equals(code)){
-								praise(artworkId, view, textView, praiseNum,helper);
-							}
-						}
-					});
-					sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
-				}
-			}
-		});
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))) {
+                    if (!selected.get(helper.getPosition())) {
+                        ToastUtil.showLong(getActivity(), "点赞成功");
+                        view.setBackgroundResource(R.drawable.praise_after_shape);
+                        textView.setTextColor(Color.rgb(255, 255, 255));
+                        textView.setText(praiseNum + 1 + "");
+                        number.put(helper.getPosition(), praiseNum + 1);
+                        selected.put(helper.getPosition(), true);
+                    } else {
+                        cancelPraise(artworkId, view, textView, praiseNum, helper);
+                    }
+                } else if ("000000".equals(response.get("resultCode"))) {
+                    SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)) {
+                                praise(artworkId, view, textView, praiseNum, helper);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
 
 	}
 	@Override
