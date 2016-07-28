@@ -154,7 +154,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 								getActivity().startActivity(intent);
 							}else {
-								Attention_user(v,followId);
+								attention_user(v,followId);
 							}
 						}
 					});
@@ -199,7 +199,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 		return contextView;
 	}
 
-	private void Attention_user(final View v, String followId) {
+	private void attention_user(final View v, String followId) {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("followId", followId);
 		paramsMap.put("identifier", "0");
