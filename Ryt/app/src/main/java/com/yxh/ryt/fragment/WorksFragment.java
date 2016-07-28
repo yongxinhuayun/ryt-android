@@ -113,8 +113,6 @@ public class WorksFragment extends BaseFragment {
                 helper.setText(R.id.tv_title,item.getName());
                 helper.setImageByUrl(R.id.iv_works,item.getPictureUrl());
             }
-
-
         };
         gridView.setAdapter(imageAdapter);
 
