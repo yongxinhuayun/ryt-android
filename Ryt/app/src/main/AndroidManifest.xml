@@ -77,6 +77,12 @@
             android:name=".activity.IndexActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.CommentListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.InvestorActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.CreateSummaryActivity"
             android:screenOrientation="portrait" />
         <activity

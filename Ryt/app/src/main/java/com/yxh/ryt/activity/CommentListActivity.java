@@ -8,6 +8,7 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,7 +35,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-public class CommentListActivity extends Activity implements AutoListView.OnRefreshListener, AutoListView.OnLoadListener {
+public class CommentListActivity extends Activity implements AutoListView.OnRefreshListener, AutoListView.OnLoadListener, AdapterView.OnItemClickListener {
     private AutoListView cListview;
     private String artWorkId;
     private int currentPage=1;
@@ -58,13 +59,17 @@ public class CommentListActivity extends Activity implements AutoListView.OnRefr
         artCommentDatas = new ArrayList<>();
         loadData(AutoListView.REFRESH, currentPage);
         initData();
+        cListview.setOnLoadListener(this);
+        cListview.setOnRefreshListener(this);
+        cListview.setResultSize(Constants.pageSize);
+        cListview.setOnItemClickListener(this);
     }
 
     private void initData() {
         artCommentAdapter = new CommonAdapter<ArtworkComment>(this, artCommentDatas, R.layout.pdonclicktab_comment_item) {
             @Override
             public void convert(ViewHolder helper, final ArtworkComment item) {
-                LinearLayout linearLayout = helper.getView(R.id.pdctci_ll_all);
+                /*LinearLayout linearLayout = helper.getView(R.id.pdctci_ll_all);
                 linearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -84,7 +89,7 @@ public class CommentListActivity extends Activity implements AutoListView.OnRefr
                             AppApplication.getSingleContext().startActivity(intent);
                         }
                     }
-                });
+                });*/
                 helper.getView(R.id.pdctci_tv_nickName).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -168,32 +173,30 @@ public class CommentListActivity extends Activity implements AutoListView.OnRefr
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
-                    artCommentDatas.clear();
-                    
                         List<ArtworkComment> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<ArtworkComment>>() {
                         }.getType());
-
                     if (state == AutoListView.REFRESH) {
-                       
+                        artCommentDatas.clear();
+                       cListview.onRefreshComplete();
                         if (null == commentList || commentList.size() == 0) {
                             cListview.setResultSize(0);
                         }
                         if (null != commentList && commentList.size() > 0) {
                             cListview.setResultSize(commentList.size());
                             artCommentDatas.addAll(commentList);
-                            artCommentAdapter.notifyDataSetChanged();
                         }
+                        artCommentAdapter.notifyDataSetChanged();
                     }
                     if (state == AutoListView.LOAD) {
-                       
+                       cListview.onLoadComplete();
                         if (null == commentList || commentList.size() == 0) {
                             cListview.setResultSize(1);
                         }
                         if (null != commentList && commentList.size() > 0) {
                             cListview.setResultSize(commentList.size());
                             artCommentDatas.addAll(commentList);
-                            artCommentAdapter.notifyDataSetChanged();
                         }
+                        artCommentAdapter.notifyDataSetChanged();
                     }
                     
                 } else if ("000000".equals(response.get("resultCode"))) {
@@ -229,5 +232,10 @@ public class CommentListActivity extends Activity implements AutoListView.OnRefr
     public void onLoad() {
         currentPage ++;
         loadData(AutoListView.LOAD,currentPage);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 }

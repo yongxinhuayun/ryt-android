@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
@@ -36,6 +37,12 @@ public class ArtistIndexActivity extends BaseActivity {
         final String userId = getIntent().getStringExtra("userId");
         String name=getIntent().getStringExtra("name");
         TextView textName = (TextView) findViewById(R.id.aai_tv_name);
+        ((ImageView) findViewById(R.id.aai_top_lf)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         textName.setText(name);
         if (AppApplication.gUser.getId().equals(userId)){
             edit.setVisibility(View.VISIBLE);

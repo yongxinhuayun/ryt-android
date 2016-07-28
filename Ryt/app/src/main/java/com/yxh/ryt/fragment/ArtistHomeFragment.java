@@ -217,7 +217,11 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                         user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("master")), User.class);
                         AppApplication.displayImage(user.getPictureUrl(),headPicture);
                         name.setText(user.getName());
-                        title.setText(user.getMaster().getTitle());
+                        if (user.getMaster().getTitle()==null || "".equals(user.getMaster().getTitle())){
+                            title.setVisibility(View.GONE);
+                        }else {
+                            title.setText(user.getMaster().getTitle());
+                        }
                         followed=isFollowed;
                         if (followed){
                             attention.setImageResource(R.mipmap.yiguanzhu);
@@ -304,7 +308,11 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                                             user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("master")), User.class);
                                             AppApplication.displayImage(user.getPictureUrl(),headPicture);
                                             name.setText(user.getName());
-                                            title.setText(user.getMaster().getTitle());
+                                            if (user.getMaster().getTitle()==null || "".equals(user.getMaster().getTitle())){
+                                                title.setVisibility(View.GONE);
+                                            }else {
+                                                title.setText(user.getMaster().getTitle());
+                                            }
                                             followed=isFollowed;
                                             if (followed){
                                                 attention.setImageResource(R.mipmap.yiguanzhu);

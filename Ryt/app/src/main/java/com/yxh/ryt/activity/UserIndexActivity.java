@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
@@ -34,6 +35,12 @@ public class UserIndexActivity extends BaseActivity {
         String name=getIntent().getStringExtra("name");
         TextView textName = (TextView) findViewById(R.id.aai_tv_name);
         textName.setText(name);
+        findViewById(R.id.aai_top_lf).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         indexChildFragments.add(new UserInvestFragment(userId));
         indexChildFragments.add(new UserPraiseFragment(userId));
         indexChildFragments.add(new BriefFragment(userId));

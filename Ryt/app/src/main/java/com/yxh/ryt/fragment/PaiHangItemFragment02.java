@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,9 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.ArtistIndexActivity;
+import com.yxh.ryt.activity.LoginActivity;
+import com.yxh.ryt.activity.UserIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
@@ -103,7 +107,7 @@ public class PaiHangItemFragment02 extends BaseFragment implements AutoListView.
         lstv.setPageSize(Constants.pageSize);
         artistCommonAdapter = new CommonAdapter<Artist>(AppApplication.getSingleContext(), artistDatas, R.layout.paihang_yishujia_lv_item) {
             @Override
-            public void convert(ViewHolder helper, Artist item) {
+            public void convert(ViewHolder helper, final Artist item) {
                 if (helper.getPosition() == 0) {
                     helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
                     helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
@@ -121,6 +125,22 @@ public class PaiHangItemFragment02 extends BaseFragment implements AutoListView.
                     helper.getView(R.id.cl_01_civ_pm).setVisibility(View.VISIBLE);
                     helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1) + "");
                 }
+                helper.getView(R.id.ptli_rl_head).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if ("".equals(AppApplication.gUser.getId())){
+                            Intent intent=new Intent(getActivity(), LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(intent);
+                        }else {
+                            Intent intent=new Intent(getActivity(), ArtistIndexActivity.class);
+                            intent.putExtra("userId",item.getAuthor_id());
+                            intent.putExtra("name",item.getTruename());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(intent);
+                        }
+                    }
+                });
                 helper.setText(R.id.cl_01_civ_name, item.getTruename());
                 if (item.getInvest_goal_money() != null) {
                     helper.setText(R.id.cl_01_civ_price, df.format(item.getInvest_goal_money()));

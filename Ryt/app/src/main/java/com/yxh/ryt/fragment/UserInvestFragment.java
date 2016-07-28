@@ -129,7 +129,7 @@ public class UserInvestFragment extends BaseFragment implements AutoListView.OnL
                         attention.setImageResource(R.mipmap.weiguanzhu);
                     }
                     if (user.getUserBrief()!=null){
-                        title.setText(user.getUserBrief().getContent());
+                        title.setText(user.getUserBrief().getSigner());
                     }
                     name.setText(user.getName());
                     if ("0".equals(sumInvestsMoney)){

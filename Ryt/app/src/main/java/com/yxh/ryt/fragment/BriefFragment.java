@@ -76,7 +76,9 @@ public class BriefFragment extends BaseFragment {
                     if (user!=null && user.getPictureUrl()!=null){
                         AppApplication.displayImage(user.getPictureUrl(),imageView);
                     }
-                    name.setText(user.getName());
+                    if (user!=null){
+                        name.setText(user.getName());
+                    }
                 }
 
             }
