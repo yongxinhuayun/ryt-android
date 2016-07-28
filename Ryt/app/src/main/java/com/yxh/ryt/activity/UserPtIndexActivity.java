@@ -284,47 +284,6 @@ public class UserPtIndexActivity extends BaseActivity implements StickHeaderView
     }
 
     private void shareWx(final int flag) {
-       /* WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = "http://baidu.com";
-        WXMediaMessage msg = new WXMediaMessage(webpage);
-
-        msg.title = "title";
-        msg.description = getResources().getString(
-                R.string.app_name);
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-                R.mipmap.logo_qq);
-        msg.setThumbImage(thumb);
-        SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
-        reqShare.transaction = String.valueOf(System.currentTimeMillis());
-        reqShare.message = msg;
-        reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
-
-        api.sendReq(reqShare);*/
-    /*if(!api.isWXAppInstalled()) {
-        Toast.makeText(WXEntryActivity.this, "您还未安装微信客户端",
-                Toast.LENGTH_SHORT).show();
-        return;
-    }*/
-
-        /*Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("userId", AppApplication.gUser.getId());
-        paramsMap.put("timestamp", System.currentTimeMillis() + "");
-        try {
-            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
-            paramsMap.put("signmsg", AppApplication.signmsg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        NetRequestUtil.post(Constants.BASE_PATH + "toShareView.do", paramsMap, new RongZiListCallBack() {
-            @Override
-            public void onError(Call call, Exception e) {
-
-            }
-
-            @Override
-            public void onResponse(Map<String, Object> response) {
-                Log.d("xxxxxxxxxxxxxxxxxxx","1");
-                 String share_Url = (String) response.get("url");*/
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = "http://ryt.efeiyi.com/app/shareView.do";
         WXMediaMessage msg = new WXMediaMessage(webpage);
