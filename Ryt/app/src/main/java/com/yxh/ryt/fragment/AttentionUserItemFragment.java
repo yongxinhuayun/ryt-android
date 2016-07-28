@@ -192,6 +192,7 @@ public class AttentionUserItemFragment extends BaseFragment implements AutoListV
 				});
 			}
 		};
+
 		lstv.setAdapter(attentionCommonAdapter);
 		lstv.setOnRefreshListener(this);
 		lstv.setOnLoadListener(this);
