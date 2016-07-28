@@ -128,6 +128,16 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                     }else {
                         noAttention_user(v,followId);
                     }
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                attention_user(v,followId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
             }
         });
@@ -161,6 +171,16 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                     }else {
                         attention_user(v,followId);
                     }
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                noAttention_user(v,followId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
             }
         });
