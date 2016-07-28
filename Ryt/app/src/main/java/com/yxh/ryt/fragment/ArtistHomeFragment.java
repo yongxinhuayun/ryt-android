@@ -3,8 +3,6 @@ package com.yxh.ryt.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +15,11 @@ import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
-import com.yxh.ryt.activity.AttentionActivity;
 import com.yxh.ryt.activity.AuctionSummaryActivity;
 import com.yxh.ryt.activity.CreateSummaryActivity;
 import com.yxh.ryt.activity.FinanceSummaryActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.MsgActivity;
-import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
@@ -35,10 +31,7 @@ import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
-import com.yxh.ryt.vo.Artwork;
-import com.yxh.ryt.vo.FollowUserUtil;
 import com.yxh.ryt.vo.HomeYSJArtWork;
-import com.yxh.ryt.vo.RongZi;
 import com.yxh.ryt.vo.User;
 
 import java.util.ArrayList;
@@ -92,12 +85,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         attentionDatas=new ArrayList<HomeYSJArtWork>();
-        DisplayMetrics metric = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
-        // 屏幕宽度（像素）
-        width = metric.widthPixels;
-        height = metric.heightPixels;
-        loadingUtil = new LoadingUtil(getActivity(),width,height);
+        loadingUtil = new LoadingUtil(getActivity(),getContext());
     }
     private void attention_user(final View v, final String followId) {
         Map<String,String> paramsMap=new HashMap<>();

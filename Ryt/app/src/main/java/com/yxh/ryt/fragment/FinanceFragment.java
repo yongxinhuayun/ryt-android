@@ -44,8 +44,6 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
     private List<RongZi> rongZiDatas;
     private int currentPage = 1;
     private Map<Integer, Boolean> selected;
-    private int width;
-    private int height;
     private LoadingUtil loadingUtil;
     private Map<Integer, Integer> number;
 

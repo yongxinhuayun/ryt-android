@@ -87,14 +87,15 @@ public class CommentListActivity extends Activity implements AutoListView.OnRefr
                         }
                     }
                 });
-                if ("1".equals(item.getCreator().getType())) {
-                    helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
-                }else {
-                    helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
-                }
+
                 if (item.getCreator() != null) {
                     helper.setText(R.id.pdctci_tv_nickName, item.getCreator().getName());
                     helper.setImageByUrl(R.id.pdctci_iv_icon, item.getCreator().getPictureUrl());
+                    if ("1".equals(item.getCreator().getType())) {
+                        helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
+                    }else {
+                        helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
+                    }
                 }
                 helper.setText(R.id.pdctci_tv_date, DateUtil.millionToNearly(item.getCreateDatetime()));
                 if (item.getFatherComment() != null) {
