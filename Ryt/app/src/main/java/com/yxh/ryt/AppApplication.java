@@ -2,14 +2,11 @@ package com.yxh.ryt;
 
 import android.app.Application;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.os.Environment;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
@@ -22,23 +19,14 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.yxh.ryt.custemview.CircleImageView;
-import com.yxh.ryt.util.DBHelper;
-import com.yxh.ryt.util.avalidations.EditTextValidator;
-import com.google.gson.Gson;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.yxh.ryt.util.DBHelper;
+import com.yxh.ryt.util.avalidations.EditTextValidator;
 import com.yxh.ryt.vo.User;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.cookie.CookieJarImpl;
-import com.zhy.http.okhttp.cookie.store.MemoryCookieStore;
-import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,7 +36,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
-import okhttp3.OkHttpClient;
 
 public class AppApplication extends Application {
 
@@ -56,7 +43,7 @@ public class AppApplication extends Application {
 	public static BaseResp resp;
 	public static IWXAPI api;
 	public static PayReq req;
-	private  static Context context;
+	private  static Context mContext;
 	private  static Gson gson;
 	public static  String signmsg;
 	private static EditTextValidator editTextValidator;
@@ -71,7 +58,7 @@ public class AppApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		context=this;
+		mContext =getApplicationContext();
 		editTextValidator=new EditTextValidator(this);
 		OkHttpUtils.getInstance().setConnectTimeout(10,TimeUnit.SECONDS);
 		ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
@@ -249,7 +236,7 @@ public class AppApplication extends Application {
 	}*/
 	//获取全局Context
 	public static Context getSingleContext(){
-		return  context;
+		return mContext;
 	}
 	//获取全局Gson
 	public static Gson getSingleGson(){

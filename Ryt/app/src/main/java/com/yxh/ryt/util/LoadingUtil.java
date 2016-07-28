@@ -1,11 +1,9 @@
 package com.yxh.ryt.util;
 
+
 import android.app.Activity;
 import android.content.Context;
-import android.view.Display;
-import android.view.WindowManager;
 
-import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.R;
 import com.yxh.ryt.custemview.LoadingDialog;
 
@@ -14,15 +12,19 @@ import com.yxh.ryt.custemview.LoadingDialog;
  */
 public class LoadingUtil {
     private Context context;
+    private Activity active;
     private int screenWidth;
     private int screenHeight;
     private  LoadingDialog dialog;
 
 
-    public LoadingUtil(Context context, int screenWidth, int screenHeight) {
+    public LoadingUtil(Activity active, Context context) {
+        this.active = active;
         this.context = context;
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
+
+        // 屏幕宽度（像素）
+        screenWidth = Screen.getScreenWidth(active);
+        screenHeight = Screen.getScreenHeight(active);
         dialog = new LoadingDialog(context, R.style.dialog);
         //dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
@@ -36,5 +38,6 @@ public class LoadingUtil {
     }public void dismiss(){
         dialog.dismiss();
     }
+
 
 }

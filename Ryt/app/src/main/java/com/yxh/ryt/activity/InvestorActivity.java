@@ -103,6 +103,7 @@ public class InvestorActivity extends Activity implements AutoListView.OnRefresh
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
 
                 if (state == AutoListView.REFRESH) {
+                    iListview.onRefreshComplete();
                     List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
                             toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
                     }.getType());
@@ -116,6 +117,7 @@ public class InvestorActivity extends Activity implements AutoListView.OnRefresh
                     }
                 }
      if (state == AutoListView.LOAD) {
+         iListview.onLoadComplete();
          List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
                  toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
          }.getType());
@@ -143,12 +145,14 @@ public class InvestorActivity extends Activity implements AutoListView.OnRefresh
     @Override
     public void onRefresh() {
         currentPage = 1;
+        investorDatas.clear();
         loadData(AutoListView.REFRESH,currentPage);
     }
 
     @Override
     public void onLoad() {
         currentPage ++;
+        investorDatas.clear();
         loadData(AutoListView.LOAD,currentPage);
     }
 }

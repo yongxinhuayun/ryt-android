@@ -3,12 +3,10 @@ package com.yxh.ryt.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,9 +16,7 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.ArtistIndexActivity;
 import com.yxh.ryt.activity.AuctionSummaryActivity;
-import com.yxh.ryt.activity.FinanceSummaryActivity;
 import com.yxh.ryt.activity.LoginActivity;
-import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
@@ -58,12 +54,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 		rongZiDatas=new ArrayList<Create>();
 		selected=new HashMap<>();
 		number=new HashMap<>();
-		DisplayMetrics metric = new DisplayMetrics();
-		getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
-		// 屏幕宽度（像素）
-		width = metric.widthPixels;
-		height = metric.heightPixels;
-		loadingUtil = new LoadingUtil(getActivity(),width,height);
+		loadingUtil = new LoadingUtil(getActivity(),getContext());
 	}
 	private void LoadData(final int state, final int pageNum) {
 		final Map<String,String> paramsMap=new HashMap<>();

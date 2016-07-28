@@ -8,6 +8,7 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,7 +35,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-public class CommentListActivity extends Activity implements AutoListView.OnRefreshListener, AutoListView.OnLoadListener {
+public class CommentListActivity extends Activity implements AutoListView.OnRefreshListener, AutoListView.OnLoadListener, AdapterView.OnItemClickListener {
     private AutoListView cListview;
     private String artWorkId;
     private int currentPage=1;
@@ -55,6 +56,9 @@ public class CommentListActivity extends Activity implements AutoListView.OnRefr
                 finish();
             }
         });
+        cListview.setOnLoadListener(this);
+        cListview.setOnRefreshListener(this);
+        cListview.setOnItemClickListener(this);
         artCommentDatas = new ArrayList<>();
         loadData(AutoListView.REFRESH, currentPage);
         initData();
@@ -65,26 +69,6 @@ public class CommentListActivity extends Activity implements AutoListView.OnRefr
             @Override
             public void convert(ViewHolder helper, final ArtworkComment item) {
                 LinearLayout linearLayout = helper.getView(R.id.pdctci_ll_all);
-                linearLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
-                        if (item.getCreator() != null) {
-                            intent.putExtra("name", item.getCreator().getName());
-                        } else {
-                            intent.putExtra("name", "");
-                        }
-                        intent.putExtra("currentUserId", AppApplication.gUser.getId());
-                        intent.putExtra("fatherCommentId", item.getId());
-                        intent.putExtra("artworkId", artWorkId);
-                        intent.putExtra("flag", 0);
-                        intent.putExtra("messageId", "");
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        if (!item.getId().equals(AppApplication.gUser.getId())) {
-                            AppApplication.getSingleContext().startActivity(intent);
-                        }
-                    }
-                });
                 helper.getView(R.id.pdctci_tv_nickName).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -103,6 +87,11 @@ public class CommentListActivity extends Activity implements AutoListView.OnRefr
                         }
                     }
                 });
+                if ("1".equals(item.getCreator().getType())) {
+                    helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
+                }else {
+                    helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
+                }
                 if (item.getCreator() != null) {
                     helper.setText(R.id.pdctci_tv_nickName, item.getCreator().getName());
                     helper.setImageByUrl(R.id.pdctci_iv_icon, item.getCreator().getPictureUrl());
@@ -168,32 +157,32 @@ public class CommentListActivity extends Activity implements AutoListView.OnRefr
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
-                    artCommentDatas.clear();
-                    
                         List<ArtworkComment> commentList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artworkCommentList")), new TypeToken<List<ArtworkComment>>() {
                         }.getType());
 
                     if (state == AutoListView.REFRESH) {
-                       
+                        cListview.onRefreshComplete();
+                        artCommentDatas.clear();
                         if (null == commentList || commentList.size() == 0) {
                             cListview.setResultSize(0);
                         }
                         if (null != commentList && commentList.size() > 0) {
                             cListview.setResultSize(commentList.size());
                             artCommentDatas.addAll(commentList);
-                            artCommentAdapter.notifyDataSetChanged();
                         }
+                        artCommentAdapter.notifyDataSetChanged();
+
                     }
                     if (state == AutoListView.LOAD) {
-                       
+                        cListview.onLoadComplete();
                         if (null == commentList || commentList.size() == 0) {
                             cListview.setResultSize(1);
                         }
                         if (null != commentList && commentList.size() > 0) {
                             cListview.setResultSize(commentList.size());
                             artCommentDatas.addAll(commentList);
-                            artCommentAdapter.notifyDataSetChanged();
                         }
+                        artCommentAdapter.notifyDataSetChanged();
                     }
                     
                 } else if ("000000".equals(response.get("resultCode"))) {
@@ -222,6 +211,7 @@ public class CommentListActivity extends Activity implements AutoListView.OnRefr
     @Override
     public void onRefresh() {
         currentPage = 1;
+        artCommentDatas.clear();
         loadData(AutoListView.REFRESH,currentPage);
     }
 
@@ -229,5 +219,25 @@ public class CommentListActivity extends Activity implements AutoListView.OnRefr
     public void onLoad() {
         currentPage ++;
         loadData(AutoListView.LOAD,currentPage);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent = new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
+            if (artCommentDatas.get(position - 1).getCreator() != null) {
+                intent.putExtra("name",artCommentDatas.get(position - 1).getCreator().getName());
+            } else {
+                intent.putExtra("name", "");
+            }
+            intent.putExtra("currentUserId", AppApplication.gUser.getId());
+            intent.putExtra("fatherCommentId", artCommentDatas.get(position - 1).getId());
+            intent.putExtra("artworkId", artWorkId);
+            intent.putExtra("flag", 0);
+            intent.putExtra("messageId", "");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (!artCommentDatas.get(position - 1).getId().equals(AppApplication.gUser.getId())) {
+                startActivity(intent);
+            }
+
     }
 }

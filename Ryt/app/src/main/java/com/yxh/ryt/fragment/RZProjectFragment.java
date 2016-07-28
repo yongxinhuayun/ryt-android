@@ -55,6 +55,7 @@ import com.yxh.ryt.custemview.ListViewForScrollView;
 import com.yxh.ryt.custemview.RoundProgressBar;
 import com.yxh.ryt.util.DateUtil;
 import com.yxh.ryt.util.EncryptUtil;
+import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ShuoMClickableSpan;
@@ -152,6 +153,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private long deadTime;
     private TextView tvInvestMoney;
     private TextView creatTime;
+    private LoadingUtil loadingUtil;
+    private ImageView iMaster;
 
 
     public RZProjectFragment(String artWorkId) {
@@ -243,6 +246,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         tvWorksNum = (TextView) view.findViewById(R.id.tv_num_works);
         tvFansNum = (TextView) view.findViewById(R.id.tv_num_fans);
         tv_price = (TextView) view.findViewById(R.id.tv_price);
+        iMaster = (ImageView) view.findViewById(R.id.iv_master);
         go = (ImageButton) view.findViewById(R.id.ib_go);
         comment = (Button) view.findViewById(R.id.bt_comment);
         etComment = (EditText) view.findViewById(R.id.et_comment);
@@ -259,6 +263,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         rl_progress.setOnClickListener(this);
         mRoundProgressBar.setTextSize(28);
         cl_headPortrait = (CircleImageView) view.findViewById(R.id.cl_headPortrait);
+        loadingUtil = new LoadingUtil(getActivity(),getContext());
         mExpandView.collapse();
         for (int i = 0; i < mExpandView.getChildCount(); i++) {
             mExpandView.getChildAt(i).setVisibility(View.GONE);
@@ -329,6 +334,11 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         }
                     }
                 });
+                if ("1".equals(item.getCreator().getType())) {
+                    helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
+                }else {
+                    helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
+                }
                 helper.getView(R.id.pdctci_tv_nickName).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -442,6 +452,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void showOther() {
+        loadingUtil.show();
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artWorkId);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -462,6 +473,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
             @Override
             public void onResponse(Map<String, Object> response) {
+                loadingUtil.dismiss();
                 Map<String, Object> object = (Map<String, Object>) response.get("object");
                 if (object != null) {
                     artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
@@ -483,7 +495,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     tvInvestor.setText(artwork.getInvestNum() + "人投资 ");
                     tvInvestMoney.setText("￥" + artwork.getInvestsMoney() + "/" + artwork.getInvestGoalMoney());
                     remainMoney = artwork.getInvestGoalMoney().subtract(artwork.getInvestsMoney()).intValue();
-                    //deadline.setText(DateUtil.millisToStringShort(deadTime,false,false) + "后截止");
                     Message msg = Message.obtain();
                     msg.what = COUNT_DOWN;
                     handler.sendMessageDelayed(msg, 1000);
@@ -497,9 +508,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         tv_name.setText(artwork.getAuthor().getName());
                         tv_name2.setText(artwork.getAuthor().getName());
                         AppApplication.displayImage(artwork.getAuthor().getPictureUrl(), cl_headPortrait);
-                        if ("master".equals(artwork.getAuthor().getMaster1())) {
+                        if ("1".equals(artwork.getType())) {
                             headV.setVisibility(View.VISIBLE);
-                        } else if ("".equals(artwork.getAuthor().getMaster1())) {
+                        } else  {
                             headV.setVisibility(View.INVISIBLE);
                         }
                     }
@@ -798,8 +809,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         }
                     }
                 }
-                //setInvestorTopAdapter();
-                // setInvesterAdapter();
             }
 
         });
@@ -814,15 +823,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 investorDatas.add(investList.get(i));
             }
             iListview.showFooterView();
-
-      /*      iListview.footerView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), InvestorActivity.class);
-                    intent.putExtra("artWorkId", artWorkId);
-                    getActivity().startActivity(intent);
-                }
-            });*/
             Intent intent = new Intent(getActivity(), InvestorActivity.class);
             clickMore(iListview, intent);
         }

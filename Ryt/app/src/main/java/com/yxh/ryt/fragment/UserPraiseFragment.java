@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +21,10 @@ import com.yxh.ryt.activity.AuctionSummaryActivity;
 import com.yxh.ryt.activity.CreateSummaryActivity;
 import com.yxh.ryt.activity.FinanceSummaryActivity;
 import com.yxh.ryt.activity.LoginActivity;
-import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
-import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
-import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -36,7 +32,6 @@ import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.RongZi;
-import com.yxh.ryt.vo.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,12 +65,7 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
         super.onCreate(savedInstanceState);
         rongZiDatas=new ArrayList<RongZi>();
         selected=new HashMap<>();
-        DisplayMetrics metric = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
-        // 屏幕宽度（像素）
-        width = metric.widthPixels;
-        height = metric.heightPixels;
-        loadingUtil = new LoadingUtil(getActivity(),width,height);
+        loadingUtil = new LoadingUtil(getActivity(),getContext());
     }
     private void LoadData(final int state, final int pageNum) {
         loadingUtil.show();

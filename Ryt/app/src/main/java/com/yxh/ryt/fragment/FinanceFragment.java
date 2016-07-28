@@ -3,7 +3,6 @@ package com.yxh.ryt.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,12 +55,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
         rongZiDatas = new ArrayList<RongZi>();
         selected = new HashMap<>();
         number = new HashMap<>();
-        DisplayMetrics metric = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
-        // 屏幕宽度（像素）
-        width = metric.widthPixels;
-        height = metric.heightPixels;
-        loadingUtil = new LoadingUtil(getActivity(), width, height);
+        loadingUtil = new LoadingUtil(getActivity(),getContext());
     }
 
     private void loadData(final int state, final int pageNum) {
@@ -157,6 +151,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
                                         }
                                         if (state == AutoListView.LOAD) {
                                             lstv.onLoadComplete();
+                                            rongZiDatas.clear();
                                             List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
                                             }.getType());
                                             if (null == objectList || objectList.size() == 0) {
