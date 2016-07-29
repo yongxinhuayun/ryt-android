@@ -149,7 +149,6 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
                                         }
                                         if (state == AutoListView.LOAD) {
                                             lstv.onLoadComplete();
-                                            rongZiDatas.clear();
                                             List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
                                             }.getType());
                                             if (null == objectList || objectList.size() == 0) {

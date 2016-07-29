@@ -48,6 +48,11 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
     private List<RongZi> rongZiDatas;
     private int currentPage = 1;
     private Map<Integer,Boolean> selected;
+    private String userId;
+    public InvestedFragment(String userId) {
+       this.userId=userId;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +61,7 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
     }
     private void LoadData(final int state, final int pageNum) {
         final Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("userId", AppApplication.gUser.getId());
+        paramsMap.put("userId", userId);
         paramsMap.put("action", "invest");
         paramsMap.put("pageSize", Constants.pageSize + "");
         paramsMap.put("pageIndex", pageNum + "");

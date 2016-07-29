@@ -22,7 +22,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/jiaoyimingxi"/>
             <TextView
                 android:layout_marginLeft="10dp"
                 android:text="交易明细"
@@ -44,7 +44,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/tixian"/>
             <TextView
                 android:layout_marginLeft="10dp"
                 android:text="提现"

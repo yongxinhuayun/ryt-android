@@ -162,6 +162,7 @@ public class UserQianBaoActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.btn_tx:
                 Intent intent=new Intent(UserQianBaoActivity.this,UserChongZhiActivity.class);
+                intent.putExtra("remainMoney",restMoney+"");
                 UserQianBaoActivity.this.startActivity(intent);
                 break;
         }
@@ -202,7 +203,8 @@ public class UserQianBaoActivity extends BaseActivity {
         public void onClick(View v) {
            switch (v.getId()){
                case R.id.pwl_ll_detail:
-
+                   Intent intent1=new Intent(UserQianBaoActivity.this,WalletDetailsActivity.class);
+                   UserQianBaoActivity.this.startActivity(intent1);
                    break;
                case R.id.pwl_ll_withdraw:
                    Intent intent=new Intent(UserQianBaoActivity.this,CollectMoneyActivity.class);

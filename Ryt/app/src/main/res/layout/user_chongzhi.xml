@@ -9,11 +9,11 @@
         android:id="@+id/rl_top">
         <ImageView
         android:id="@+id/ib_top_lf"
-        android:layout_width="wrap_content"
+        android:layout_width="20dp"
         android:background="@null"
         android:src="@mipmap/back"
         android:layout_centerVertical="true"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="10dp"/>
         <TextView
             android:id="@+id/tv_top_ct"
@@ -69,6 +69,7 @@
                 android:layout_alignParentLeft="true"
                 android:text="账户当前余额"/>
             <TextView
+                android:id="@+id/ucz_tv_remainMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -105,21 +106,21 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@null"
+                    android:background="@drawable/login_reg_et_bg"
                     android:layout_marginLeft="10dp"
                     android:inputType="numberDecimal"
                     android:singleLine="true"
-                    android:textSize="24sp"
-                    android:hint="0.00"
+                    android:textSize="17sp"
+                    android:hint="请输入充值金额"
                     android:textColor="@android:color/black"
-                    android:text=""/>
+                    />
 
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:background="#E9E9E9"
                 android:layout_marginTop="10dp"
-                android:layout_height="1dp"></View>
+                android:layout_height="1dp"/>
         </LinearLayout>
         <TextView
             android:layout_marginLeft="20dp"

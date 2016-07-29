@@ -84,7 +84,6 @@ public class EditBriefActivity extends BaseActivity implements View.OnClickListe
 
     private void saveBrief() {
         Map<String, String> paramsMap = new HashMap<>();
-        //paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("type", "2");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -103,9 +102,6 @@ public class EditBriefActivity extends BaseActivity implements View.OnClickListe
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))){
                     ToastUtil.show(getApplicationContext(),"保存成功",0);
-                       /* if(mUserJianJieFragment instanceof OnMainListener){
-                            mUserJianJieFragment.onMainAction();
-                        }*/
                     finish();
                 }else if ("000000".equals(response.get("resultCode"))){
                     SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
