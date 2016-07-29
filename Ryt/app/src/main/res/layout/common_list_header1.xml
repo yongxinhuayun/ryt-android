@@ -125,9 +125,9 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:layout_width="49dp"
-            android:layout_height="23dp"
-            android:background="@drawable/praise1">
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:background="@drawable/praise_shape">
             <ImageView
                 android:id="@+id/clh1_iv_attention"
                 android:layout_width="wrap_content"

@@ -216,8 +216,7 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 						helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.GONE);
 					}
 					if (selected.get(helper.getPosition())){
-						helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise1);
-						helper.getView(R.id.clh_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
+						helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
 						((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
 						helper.setText(R.id.clh_tv_praiseNum,number.get(helper.getPosition())+"");
 						helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
@@ -227,8 +226,8 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 							}
 						});
 					}else {
-						helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise);
-						((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(205,55,56));
+						helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_shape);
+						((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(199, 31, 33));
 						helper.setText(R.id.clh_tv_praiseNum,number.get(helper.getPosition())+"");
 						helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
 							@Override
@@ -279,10 +278,10 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 				if ("0".equals(response.get("resultCode"))) {
 					if (selected.get(helper.getPosition())){
 						ToastUtil.showLong(getActivity(), "取消点赞");
-						view.setBackgroundResource(R.drawable.praise);
-						textView.setTextColor(Color.rgb(205,55,56));
+						view.setBackgroundResource(R.drawable.praise_shape);
+						textView.setTextColor(Color.rgb(199, 31, 33));
 						String raw=textView.getText().toString();
-						number.put(helper.getPosition(),praiseNum-1);
+						number.put(helper.getPosition(),praiseNum - 1);
 						textView.setText(Integer.valueOf(raw)-1+"");
 						selected.put(helper.getPosition(),false);
 					}else {
@@ -328,10 +327,10 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 				if ("0".equals(response.get("resultCode"))) {
 					if (!selected.get(helper.getPosition())){
 						ToastUtil.showLong(getActivity(), "点赞成功");
-						view.setBackgroundResource(R.drawable.praise1);
+						view.setBackgroundResource(R.drawable.praise_after_shape);
 						textView.setTextColor(Color.rgb(255,255,255));
-						textView.setText(praiseNum+1+"");
-						number.put(helper.getPosition(),praiseNum+1);
+						textView.setText(praiseNum + 1 + "");
+						number.put(helper.getPosition(),praiseNum + 1);
 						selected.put(helper.getPosition(),true);
 					}else {
 						cancelPraise(artworkId, view, textView, praiseNum, helper);
@@ -358,12 +357,12 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 	}
 	@Override
 	protected void lazyLoad() {
-		if(rongZiDatas!=null&&rongZiDatas.size()>0)return;
+		if(rongZiDatas != null && rongZiDatas.size() > 0)return;
 		LoadData(AutoListView.REFRESH, currentPage);
 	}
 	@Override
 	public void onRefresh() {
-		currentPage=1;
+		currentPage = 1;
 		LoadData(AutoListView.REFRESH,currentPage);
 	}
 
@@ -377,8 +376,8 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		if (position<=rongZiDatas.size()){
 			Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);
-			intent.putExtra("id", rongZiDatas.get(position-1).getId());
-			intent.putExtra("name", rongZiDatas.get(position-1).getTitle());
+			intent.putExtra("id", rongZiDatas.get(position - 1).getId());
+			intent.putExtra("name", rongZiDatas.get(position - 1).getTitle());
 			startActivity(intent);
 		}
 	}

@@ -230,8 +230,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 						helper.getView(R.id.clh1_tv_artistTitle).setVisibility(View.GONE);
 					}
 					if (selected.get(helper.getPosition())){
-						helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise1);
-						helper.getView(R.id.clh1_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
+						helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
 						((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
 						helper.setText(R.id.clh1_tv_praiseNum,number.get(helper.getPosition())+"");
 						helper.getView(R.id.clh1_ll_praise).setOnClickListener(new View.OnClickListener() {
@@ -241,8 +240,8 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 							}
 						});
 					}else {
-						helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise);
-						((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(205,55,56));
+						helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise_shape);
+						((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(199, 31, 33));
 						helper.setText(R.id.clh1_tv_praiseNum,number.get(helper.getPosition())+"");
 						helper.getView(R.id.clh1_ll_praise).setOnClickListener(new View.OnClickListener() {
 							@Override
@@ -294,8 +293,8 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 				if ("0".equals(response.get("resultCode"))) {
 					if (selected.get(helper.getPosition())){
 						ToastUtil.showLong(getActivity(), "取消点赞");
-						view.setBackgroundResource(R.drawable.praise);
-						textView.setTextColor(Color.rgb(205,55,56));
+						view.setBackgroundResource(R.drawable.praise_shape);
+						textView.setTextColor(Color.rgb(199, 31, 33));
 						String raw=textView.getText().toString();
 						number.put(helper.getPosition(),praiseNum-1);
 						textView.setText(Integer.valueOf(raw)-1+"");
@@ -343,7 +342,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 				if ("0".equals(response.get("resultCode"))) {
 					if (!selected.get(helper.getPosition())){
 						ToastUtil.showLong(getActivity(), "点赞成功");
-						view.setBackgroundResource(R.drawable.praise1);
+						view.setBackgroundResource(R.drawable.praise_after_shape);
 						textView.setTextColor(Color.rgb(255,255,255));
 						textView.setText(praiseNum+1+"");
 						number.put(helper.getPosition(),praiseNum+1);

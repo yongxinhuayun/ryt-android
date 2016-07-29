@@ -107,7 +107,6 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
                             rongZiDatas.addAll(objectList);
                             rongZiCommonAdapter.notifyDataSetChanged();
                         }
-                        return;
                     }
                     if (state == AutoListView.LOAD) {
                         lstv.onLoadComplete();
@@ -122,7 +121,6 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
                             rongZiDatas.addAll(objectList);
                             rongZiCommonAdapter.notifyDataSetChanged();
                         }
-                        return;
                     }
                 }else {
                     SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
@@ -152,7 +150,6 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
                                                 rongZiDatas.addAll(objectList);
                                                 rongZiCommonAdapter.notifyDataSetChanged();
                                             }
-                                            return;
                                         }
                                         if (state == AutoListView.LOAD) {
                                             lstv.onLoadComplete();
@@ -167,7 +164,6 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
                                                 rongZiDatas.addAll(objectList);
                                                 rongZiCommonAdapter.notifyDataSetChanged();
                                             }
-                                            return;
                                         }
                                     }
                                 });
@@ -267,21 +263,19 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
                         helper.setText(R.id.clh1_tv_state,AppApplication.artWorkMap.get(item.getStep()));
                     }
                     if (item.isPraise()){
-                        helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise1);
-                        helper.getView(R.id.clh1_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
+                        helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
                         ((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
                         helper.setText(R.id.clh1_tv_praiseNum,item.getPraiseNUm()+"");
                         helper.getView(R.id.clh1_ll_praise).setEnabled(false);
                     }else {
                         if (selected.get(helper.getPosition())){
-                            helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise1);
-                            helper.getView(R.id.clh1_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
+                            helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
                             ((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
                             helper.setText(R.id.clh1_tv_praiseNum,item.getPraiseNUm()+1+"");
                             helper.getView(R.id.clh1_ll_praise).setEnabled(false);
                         }else {
-                            helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise);
-                            ((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(205,55,56));
+                            helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise_shape);
+                            ((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(199, 31, 33));
                             helper.setText(R.id.clh1_tv_praiseNum,item.getPraiseNUm()+"");
                             helper.getView(R.id.clh1_ll_praise).setEnabled(true);
                             helper.getView(R.id.clh1_ll_praise).setOnClickListener(new View.OnClickListener() {
@@ -333,7 +327,7 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
                     ToastUtil.showLong(getActivity(), "点赞成功");
-                    view.setBackgroundResource(R.drawable.praise1);
+                    view.setBackgroundResource(R.drawable.praise_after_shape);
                     textView.setTextColor(Color.rgb(255,255,255));
                     textView.setText(praiseNum+1+"");
                     view.setEnabled(false);
