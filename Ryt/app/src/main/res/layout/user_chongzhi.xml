@@ -194,7 +194,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content">
-            <LinearLayout
+            <!--<LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:gravity="center_vertical"
@@ -225,20 +225,20 @@
                         android:text="推荐安装微信5.0及以上的版本使用"
                         />
                 </LinearLayout>
-            </LinearLayout>
-                <ImageView
+            </LinearLayout>-->
+                <!--<ImageView
                     android:src="@mipmap/go"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="50dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content" />-->
             </RelativeLayout>
-            <View
+           <!-- <View
                 android:layout_width="match_parent"
                 android:background="#E9E9E9"
                 android:layout_marginTop="10dp"
-                android:layout_height="1dp"></View>
+                android:layout_height="1dp"></View>-->
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

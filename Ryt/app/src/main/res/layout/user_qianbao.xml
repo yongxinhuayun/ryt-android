@@ -35,19 +35,24 @@
                 android:layout_centerVertical="true"
                 android:layout_height="wrap_content"
                 />
-            <View
-                android:layout_width="match_parent"
-                android:layout_alignParentBottom="true"
-                android:background="#E9E9E9"
-                android:layout_height="1dp"/>
+
         </RelativeLayout>
-    <View
+    <RelativeLayout
         android:id="@+id/uqb_line1"
-        android:layout_marginTop="12dp"
-        android:layout_below="@id/rl_top"
         android:layout_width="match_parent"
-        android:background="#E9E9E9"
-        android:layout_height="1dp"/>
+        android:layout_height="12dp"
+        android:background="#FAFAFA"
+        android:layout_below="@id/rl_top">
+        <View
+            android:layout_width="match_parent"
+            android:background="#E9E9E9"
+            android:layout_height="1dp"/>
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:background="#E9E9E9"
+            android:layout_height="1dp"/>
+    </RelativeLayout>
     <ListView
         android:layout_below="@id/uqb_line1"
         android:id="@+id/uqb_listView"
@@ -61,21 +66,18 @@
         android:cacheColorHint="#00000000"/>
 
     <LinearLayout
-        android:background="#fafafa"
+        android:background="#d01919"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_height="52dp">
-        <View
-            android:layout_width="match_parent"
-            android:background="#E9E9E9"
-            android:layout_height="1dp"/>
+        android:layout_height="44dp"
+        >
         <Button
             android:id="@+id/btn_tx"
             android:layout_width="match_parent"
-            android:text="提现"
-            android:textSize="18sp"
-            android:textColor="#EF5B70"
+            android:text="充值"
+            android:textSize="14sp"
+            android:textColor="#ffffff"
             android:background="@null"
             android:layout_height="match_parent" />
     </LinearLayout>
