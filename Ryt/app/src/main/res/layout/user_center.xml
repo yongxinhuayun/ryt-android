@@ -10,15 +10,14 @@
         android:id="@+id/rl_top"
         android:layout_width="match_parent"
         android:layout_height="50dp">
-
         <TextView
             android:id="@+id/btn_lf"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textColor="@android:color/black"
-            android:layout_marginLeft="10dp"
+            android:layout_marginRight="14dp"
             android:textSize="@dimen/defult_font"
             android:gravity="center"
             android:text="申请为艺术家中" />

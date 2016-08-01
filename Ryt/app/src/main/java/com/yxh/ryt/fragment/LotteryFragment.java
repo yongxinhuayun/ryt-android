@@ -37,7 +37,7 @@ import java.util.Map;
 import okhttp3.Call;
 
 
-public class FinanceFragment extends BaseFragment implements AutoListView.OnRefreshListener,
+public class LotteryFragment extends BaseFragment implements AutoListView.OnRefreshListener,
         AutoListView.OnLoadListener, AdapterView.OnItemClickListener {
     private AutoListView lstv;
     private CommonAdapter<RongZi> rongZiCommonAdapter;

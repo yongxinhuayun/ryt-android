@@ -22,8 +22,8 @@
             android:id="@+id/indicator"
             android:layout_height="50dp"
             android:layout_width="match_parent"
-            android:layout_marginLeft="72dp"
-            android:layout_marginRight="72dp"
+            android:layout_marginLeft="82dp"
+            android:layout_marginRight="82dp"
             />
 
         <ImageView

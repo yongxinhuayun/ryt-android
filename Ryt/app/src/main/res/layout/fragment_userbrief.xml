@@ -12,8 +12,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/fub_tv_edit"
+                android:textColor="#339b47"
+                android:textSize="16sp"
+                android:text="编辑简介"
+                android:gravity="center"
+                android:background="@drawable/green_bt"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="28dp"
+                android:layout_width="101dp"
+                android:layout_height="34dp" />
             <com.yxh.ryt.custemview.ScaleScreenImageView
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="17dp"
                 android:id="@+id/fb_siv_picture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,7 +44,7 @@
                 android:lineSpacingExtra="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#333333"/>
+                android:textColor="#000000"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -14,6 +14,7 @@ import com.yxh.ryt.adapter.UserTabPageIndicatorAdapter;
 import com.yxh.ryt.fragment.ArtistHomeFragment;
 import com.yxh.ryt.fragment.BriefFragment;
 import com.yxh.ryt.fragment.InvestedFragment;
+import com.yxh.ryt.fragment.UserBriefFragment;
 import com.yxh.ryt.fragment.UserInvestFragment;
 import com.yxh.ryt.fragment.UserPraiseFragment;
 import com.yxh.ryt.fragment.WorksFragment;
@@ -43,7 +44,7 @@ public class UserIndexActivity extends BaseActivity {
         });
         indexChildFragments.add(new UserInvestFragment(userId));
         indexChildFragments.add(new UserPraiseFragment(userId));
-        indexChildFragments.add(new BriefFragment(userId));
+        indexChildFragments.add(new UserBriefFragment(userId));
         indexChildAdapter = new UserTabPageIndicatorAdapter(getSupportFragmentManager(),indexChildFragments);
         ViewPager pager = (ViewPager)findViewById(R.id.aai_pager);
         pager.setOffscreenPageLimit(3);

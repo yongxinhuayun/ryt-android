@@ -60,7 +60,7 @@ public class ArtistIndexActivity extends BaseActivity {
         indexChildFragments.add(new ArtistHomeFragment(userId));
         indexChildFragments.add(new BriefFragment(userId));
         indexChildFragments.add(new WorksFragment(userId));
-        indexChildFragments.add(new InvestedFragment());
+        indexChildFragments.add(new InvestedFragment(userId));
         indexChildAdapter = new ArtistTabPageIndicatorAdapter(getSupportFragmentManager(),indexChildFragments);
         ViewPager pager = (ViewPager)findViewById(R.id.aai_pager);
         pager.setOffscreenPageLimit(4);

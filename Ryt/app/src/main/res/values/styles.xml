@@ -131,4 +131,8 @@
         <item name="android:windowBackground">@color/transparent</item><!--背景透明-->
         <item name="android:backgroundDimEnabled">false</item><!--模糊-->
     </style>
+    <style name="AnimTools" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_in</item>
+        <item name="android:windowExitAnimation">@anim/push_out</item>
+    </style>
 </resources>

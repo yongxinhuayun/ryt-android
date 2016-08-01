@@ -174,7 +174,7 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
         Map<String,String> paramsMap=new HashMap<>();
         //paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("money", money);
-        paramsMap.put("action", "invest");
+        paramsMap.put("action", "investAccount");
         paramsMap.put("type", "1");
         paramsMap.put("artWorkId", artworkId);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -204,11 +204,53 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                         }
                     });
                     sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
-                }else {
+                }else if ("0".equals(response.get("resultCode"))){
                     String url = response.get("url").toString();
                     Intent intent=new Intent(InvestActivity.this,PayPageActivity.class);
                     intent.putExtra("url",url);
                     InvestActivity.this.startActivity(intent);
+                }else if ("100015".equals(response.get("resultCode"))){
+                    Map<String,String> paramsMap=new HashMap<>();
+                    //paramsMap.put("userId", AppApplication.gUser.getId());
+                    paramsMap.put("money", money);
+                    paramsMap.put("action", "invest");
+                    paramsMap.put("type", "1");
+                    paramsMap.put("artWorkId", artworkId);
+                    paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                    try {
+                        AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+                        paramsMap.put("signmsg", AppApplication.signmsg);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    NetRequestUtil.post(Constants.BASE_PATH + "pay/main.do", paramsMap, new AttentionListCallBack() {
+                        @Override
+                        public void onError(Call call, Exception e) {
+                            e.printStackTrace();
+                            System.out.println("失败了");
+                            ToastUtil.showLong(InvestActivity.this,"网络连接超时,稍后重试!");
+                        }
+
+                        @Override
+                        public void onResponse(Map<String, Object> response) {
+                            if ("000000".equals(response.get("resultCode"))){
+                                SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                                    @Override
+                                    public void getCode(String code) {
+                                        if ("0".equals(code)){
+                                            investMoney();
+                                        }
+                                    }
+                                });
+                                sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                            }else {
+                                String url = response.get("url").toString();
+                                Intent intent=new Intent(InvestActivity.this,PayPageActivity.class);
+                                intent.putExtra("url",url);
+                                InvestActivity.this.startActivity(intent);
+                            }
+                        }
+                    });
                 }
             }
         });

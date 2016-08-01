@@ -17,6 +17,8 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.AttentionListCallBack;
+import com.yxh.ryt.custemview.PopWindowDialog;
+import com.yxh.ryt.util.DisplayUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -44,17 +46,18 @@ public class UserQianBaoActivity extends BaseActivity {
     ImageView ibTopLf;
     @Bind(R.id.btn_tx)
     Button btnTx;
+    @Bind(R.id.ib_top_rt)
+    ImageView top;
     @Bind(R.id.uqb_listView)
     ListView listView;
     private List<Bill> bills;
     private CommonAdapter<Bill> billCommonAdapter;
-    private View footer;
     private View header;
     private TextView reward;
     private TextView invest;
     private TextView rest;
-    private LinearLayout details;
     private BigDecimal restMoney;
+    private PopWindowDialog popWinShare;
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserQianBaoActivity.class));
     }
@@ -64,14 +67,11 @@ public class UserQianBaoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_qianbao);
         ButterKnife.bind(this);
-        footer = LayoutInflater.from(this).inflate(R.layout.auction_footview, null);
         header = LayoutInflater.from(this).inflate(R.layout.auction_header, null);
-        listView.addFooterView(footer);
         listView.addHeaderView(header);
         reward = ((TextView) header.findViewById(R.id.ah_rewardMoney));
         invest = ((TextView) header.findViewById(R.id.ah_investMoney));
         rest = ((TextView) header.findViewById(R.id.ah_restMoney));
-        details = ((LinearLayout) footer.findViewById(R.id.af_allDetails));
         bills=new ArrayList<Bill>();
         billCommonAdapter=new CommonAdapter<Bill>(AppApplication.getSingleContext(),bills,R.layout.item_wallet) {
             @Override
@@ -79,25 +79,30 @@ public class UserQianBaoActivity extends BaseActivity {
                 if (!"60".equals(item.getType())){
                     helper.setText(R.id.iw_tv_title,item.getTitle());
                     if ("0".equals(item.getOutOrIn())){
-                        helper.setText(R.id.iw_tv_changeMoney,"-"+item.getMoney());
+                        if (item.getMoney()==null || "".equals(item.getMoney())){
+                            helper.setText(R.id.iw_tv_changeMoney,"-"+"0");
+                        }else {
+                            helper.setText(R.id.iw_tv_changeMoney,"-"+item.getMoney());
+                        }
                     }else if ("1".equals(item.getOutOrIn())){
-                        helper.setText(R.id.iw_tv_changeMoney,"+"+item.getMoney());
+                        if (item.getMoney()==null || "".equals(item.getMoney())){
+                            helper.setText(R.id.iw_tv_changeMoney,"-"+"0");
+                        }else {
+                            helper.setText(R.id.iw_tv_changeMoney,"+"+item.getMoney());
+                        }
                     }
                     if (item.getCreateDatetime()!=null){
                         helper.setText(R.id.iw_tv_date, Utils.timeTrans(item.getCreateDatetime()));
                     }
-                    helper.setText(R.id.iw_tv_allMoney,item.getRestMoney()+"");
+                    if (item.getRestMoney()==null || "".equals(item.getRestMoney())){
+                        helper.setText(R.id.iw_tv_changeMoney,"0");
+                    }else {
+                        helper.setText(R.id.iw_tv_allMoney,item.getRestMoney()+"");
+                    }
                 }
             }
         };
         listView.setAdapter(billCommonAdapter);
-        details.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(UserQianBaoActivity.this,WalletDetailsActivity.class);
-                UserQianBaoActivity.this.startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -168,7 +173,7 @@ public class UserQianBaoActivity extends BaseActivity {
     void btnClick(View v) {
         switch (v.getId()) {
             case R.id.btn_tx:
-                Intent intent=new Intent(UserQianBaoActivity.this,CollectMoneyActivity.class);
+                Intent intent=new Intent(UserQianBaoActivity.this,UserChongZhiActivity.class);
                 intent.putExtra("remainMoney",restMoney+"");
                 UserQianBaoActivity.this.startActivity(intent);
                 break;
@@ -182,7 +187,44 @@ public class UserQianBaoActivity extends BaseActivity {
 
     @OnClick(R.id.ib_top_rt)
     public void back2() {
-        Intent intent=new Intent(UserQianBaoActivity.this,WalletDetailsActivity.class);
-        UserQianBaoActivity.this.startActivity(intent);
+        if (popWinShare == null) {
+            //自定义的单击事件
+            OnClickLintener paramOnClickListener = new OnClickLintener();
+            popWinShare = new PopWindowDialog(this, paramOnClickListener, DisplayUtil.dip2px(119), DisplayUtil.dip2px( 112));
+            //监听窗口的焦点事件，点击窗口外面则取消显示
+            popWinShare.getContentView().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        popWinShare.dismiss();
+                    }
+                }
+            });
+        }
+//设置默认获取焦点
+        popWinShare.setFocusable(true);
+//以某个控件的x和y的偏移量位置开始显示窗口
+        popWinShare.showAsDropDown(top, 0, 0);
+//如果窗口存在，则更新
+        popWinShare.update();
+    }
+    class OnClickLintener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+           switch (v.getId()){
+               case R.id.pwl_ll_detail:
+                   Intent intent1=new Intent(UserQianBaoActivity.this,WalletDetailsActivity.class);
+                   UserQianBaoActivity.this.startActivity(intent1);
+                   break;
+               case R.id.pwl_ll_withdraw:
+                   Intent intent=new Intent(UserQianBaoActivity.this,CollectMoneyActivity.class);
+                   intent.putExtra("remainMoney",restMoney+"");
+                   UserQianBaoActivity.this.startActivity(intent);
+                   break;
+           }
+
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.EditBriefActivity;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.JustifyTextView;
 import com.yxh.ryt.custemview.ScaleScreenImageView;
@@ -23,13 +25,14 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 /**
  * Created by Administrator on 2016/7/11.
  */
 @SuppressLint("ValidFragment")
-public class BriefFragment extends BaseFragment {
+public class UserBriefFragment extends BaseFragment {
     private String userId;
     @Bind(R.id.fb_siv_picture)
     public ScaleScreenImageView imageView;
@@ -37,7 +40,7 @@ public class BriefFragment extends BaseFragment {
     public TextView name;
     @Bind(R.id.fb_jtv_content)
     public JustifyTextView content;
-    public BriefFragment( String userId) {
+    public UserBriefFragment(String userId) {
         super();
         this.userId=userId;
     }
@@ -72,7 +75,6 @@ public class BriefFragment extends BaseFragment {
                     if (userBrief!=null && userBrief.get("content")!=null){
                         content.setText(userBrief.get("content").toString());
                     }
-                    content.setText("你杀死杀死四射将离开军绿色宫颈糜烂就卖光了将更垃圾房间");
                     User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("user")), User.class);
                     if (user!=null && user.getPictureUrl()!=null){
                         AppApplication.displayImage(user.getPictureUrl(),imageView);
@@ -87,11 +89,16 @@ public class BriefFragment extends BaseFragment {
             }
         });
     }
-
+    @OnClick(R.id.fub_tv_edit)
+    public void edit(){
+        Intent intent=new Intent(getActivity(),EditBriefActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View contextView = inflater.inflate(R.layout.fragment_brief, container, false);
+        View contextView = inflater.inflate(R.layout.fragment_userbrief, container, false);
         ButterKnife.bind(this, contextView);
         LoadData();
         return contextView;
