@@ -20,7 +20,6 @@ import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
-import com.yxh.ryt.util.ToastUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -104,7 +103,7 @@ public class TabFragment03 extends  BaseFragment {
             @Override
             public void onError(Call call, Exception e) {
                 System.out.println("失败了");
-                ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
+               // ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
             }
 
             @Override

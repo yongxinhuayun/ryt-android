@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,7 +19,6 @@ import com.yxh.ryt.activity.AuctionSummaryActivity;
 import com.yxh.ryt.activity.CreateSummaryActivity;
 import com.yxh.ryt.activity.FinanceSummaryActivity;
 import com.yxh.ryt.activity.LoginActivity;
-import com.yxh.ryt.activity.UserYsjIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
@@ -48,21 +46,23 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
     private List<RongZi> rongZiDatas;
     private int currentPage = 1;
     private Map<Integer,Boolean> selected;
+    private Map<Integer,Integer> number;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        rongZiDatas=new ArrayList<RongZi>();
-        selected=new HashMap<>();
+        rongZiDatas = new ArrayList<RongZi>();
+        selected = new HashMap<>();
+        number = new HashMap<>();
     }
-    private void LoadData(final int state, final int pageNum) {
-        final Map<String,String> paramsMap=new HashMap<>();
+    private void loadData(final int state, final int pageNum) {
+        final Map<String,String> paramsMap = new HashMap<>();
         paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("action", "invest");
         paramsMap.put("pageSize", Constants.pageSize + "");
         paramsMap.put("pageIndex", pageNum + "");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
-            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            AppApplication.signmsg =  EncryptUtil.encrypt(paramsMap);
             paramsMap.put("signmsg", AppApplication.signmsg);
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,8 +80,8 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                 if ("".equals(AppApplication.gUser.getId())){
                     if (state == AutoListView.REFRESH) {
                         lstv.onRefreshComplete();
-                        rongZiDatas.clear();
-                        List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
+                        //rongZiDatas.clear();
+                        List<RongZi> objectList  =  AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
                                 .toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
                         }.getType());
                         if (null == objectList || objectList.size() == 0) {
@@ -92,7 +92,6 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                             rongZiDatas.addAll(objectList);
                             rongZiCommonAdapter.notifyDataSetChanged();
                         }
-                        return;
                     }
                     if (state == AutoListView.LOAD) {
                         lstv.onLoadComplete();
@@ -107,10 +106,19 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                             rongZiDatas.addAll(objectList);
                             rongZiCommonAdapter.notifyDataSetChanged();
                         }
-                        return;
+                    }
+                    if (pageNum == 1 && selected.size() > 0) {
+                        selected.clear();
+                        rongZiDatas.clear();
+                    }
+                    if (selected.size() < rongZiDatas.size()) {
+                        for (int i = selected.size(); i < rongZiDatas.size(); i++) {
+                            selected.put(i, rongZiDatas.get(i).isPraise());
+                            number.put(i, rongZiDatas.get(i).getPraiseNUm());
+                        }
                     }
                 }else {
-                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                    SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
                         @Override
                         public void getCode(String code) {
                             if ("0".equals(code)){
@@ -137,7 +145,6 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                                                 rongZiDatas.addAll(objectList);
                                                 rongZiCommonAdapter.notifyDataSetChanged();
                                             }
-                                            return;
                                         }
                                         if (state == AutoListView.LOAD) {
                                             lstv.onLoadComplete();
@@ -152,7 +159,16 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                                                 rongZiDatas.addAll(objectList);
                                                 rongZiCommonAdapter.notifyDataSetChanged();
                                             }
-                                            return;
+                                        }
+                                        if (pageNum == 1 && selected.size() > 0) {
+                                            selected.clear();
+                                            //rongZiDatas.clear();
+                                        }
+                                        if (selected.size() < rongZiDatas.size()) {
+                                            for (int i = selected.size(); i < rongZiDatas.size(); i++) {
+                                                selected.put(i, rongZiDatas.get(i).isPraise());
+                                                number.put(i, rongZiDatas.get(i).getPraiseNUm());
+                                            }
                                         }
                                     }
                                 });
@@ -171,7 +187,7 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
         View contextView = inflater.inflate(R.layout.fragment_item, container, false);
         lstv = (AutoListView) contextView.findViewById(R.id.lstv);
         lstv.setPageSize(Constants.pageSize);
-        rongZiCommonAdapter=new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.invest_item) {
+        rongZiCommonAdapter = new CommonAdapter<RongZi>(AppApplication.getSingleContext(),rongZiDatas,R.layout.invest_item) {
 
             @Override
             public void convert(final ViewHolder helper, final RongZi item) {
@@ -191,7 +207,7 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                         helper.getView(R.id.clh_cv_headerImage).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent=new Intent(getActivity(), ArtistIndexActivity.class);
+                                Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
                                 intent.putExtra("userId",item.getAuthor().getId());
                                 intent.putExtra("name",item.getAuthor().getId());
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -247,22 +263,20 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                         double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
                         helper.setProgress(R.id.fli1_pb_progress, (int)(value*100));
                     }
-                    if (item.isPraise()){
-                        helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise1);
-                        helper.getView(R.id.clh_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
+      /*              if (item.isPraise()){
+                        helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
                         ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
                         helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+"");
                         helper.getView(R.id.clh_ll_praise).setEnabled(false);
                     }else {
                         if (selected.get(helper.getPosition())){
-                            helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise1);
-                            helper.getView(R.id.clh_ll_praise).setBackgroundColor(Color.rgb(205,55,56));
+                            helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
                             ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
                             helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+1+"");
                             helper.getView(R.id.clh_ll_praise).setEnabled(false);
                         }else {
-                            helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise);
-                            ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(205,55,56));
+                            helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_shape);
+                            ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(199, 31, 33));
                             helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+"");
                             helper.getView(R.id.clh_ll_praise).setEnabled(true);
                             helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
@@ -280,6 +294,36 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                                 }
                             });
                         }
+                    }*/
+                    if (selected.get(helper.getPosition())) {
+                        helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
+                        ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255, 255, 255));
+                        helper.setText(R.id.clh_tv_praiseNum, number.get(helper.getPosition()) + "");
+                        helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                cancelPraise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)), ((TextView) helper.getView(R.id.clh_tv_praiseNum)), number.get(helper.getPosition()), helper);
+                            }
+                        });
+                    } else {
+                        helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_shape);
+                        ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(199, 31, 33));
+                        helper.setText(R.id.clh_tv_praiseNum, number.get(helper.getPosition()) + "");
+                        helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if ("".equals(AppApplication.gUser.getId())) {
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    intent.putExtra("userId", item.getAuthor().getId());
+                                    intent.putExtra("currentId", AppApplication.gUser.getId());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    getActivity().startActivity(intent);
+                                } else {
+                                    praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)), ((TextView) helper.getView(R.id.clh_tv_praiseNum)), number.get(helper.getPosition()), helper);
+                                }
+                            }
+                        });
+
                     }
                 }
             }
@@ -290,11 +334,57 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
         lstv.setOnLoadListener(this);
         return contextView;
     }
+    private void cancelPraise(final String id, final LinearLayout view, final TextView textView, final int praiseNum, final ViewHolder helper) {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("artworkId", id + "");
+        paramsMap.put("action", "0");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "artworkPraise.do", paramsMap, new RongZiListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+                ToastUtil.showLong(getActivity(), "网络连接超时,稍后重试!");
+            }
 
-    private void praise(final String artworkId, final LinearLayout view, final TextView textView, final int praiseNum, final ImageView imageView, final ViewHolder helper) {
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))) {
+                    if (selected.get(helper.getPosition())) {
+                        view.setBackgroundResource(R.drawable.praise_shape);
+                        textView.setTextColor(Color.rgb(199, 31, 33));
+                        String raw = textView.getText().toString();
+                        number.put(helper.getPosition(), praiseNum - 1);
+                        textView.setText(Integer.valueOf(raw) - 1 + "");
+                        selected.put(helper.getPosition(), false);
+                    } else {
+                        praise(id, view, textView, praiseNum, helper);
+                    }
+                } else if ("000000".equals(response.get("resultCode"))) {
+                    SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)) {
+                                cancelPraise(id, view, textView, praiseNum, helper);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
+
+    }
+    private void praise(final String artworkId, final LinearLayout view, final TextView textView, final int praiseNum, final ViewHolder helper) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artworkId", artworkId + "");
-        paramsMap.put("action ", "1");
+        paramsMap.put("action", "1");
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
@@ -313,18 +403,22 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
-                    ToastUtil.showLong(getActivity(), "点赞成功");
-                    view.setBackgroundResource(R.drawable.praise1);
-                    textView.setTextColor(Color.rgb(255,255,255));
-                    textView.setText(praiseNum+1+"");
-                    view.setEnabled(false);
-                    selected.put(helper.getPosition(),true);
+                    if (!selected.get(helper.getPosition())) {
+                        ToastUtil.showLong(getActivity(), "点赞成功");
+                        view.setBackgroundResource(R.drawable.praise_after_shape);
+                        textView.setTextColor(Color.rgb(255, 255, 255));
+                        textView.setText(praiseNum + 1 + "");
+                        number.put(helper.getPosition(), praiseNum + 1);
+                        selected.put(helper.getPosition(), true);
+                    }else {
+                        cancelPraise(artworkId, view, textView, praiseNum, helper);
+                    }
                 }else if ("000000".equals(response.get("resultCode"))){
                     SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
                         @Override
                         public void getCode(String code) {
                             if ("0".equals(code)){
-                                praise(artworkId, view, textView, praiseNum, imageView, helper);
+                                praise(artworkId, view, textView, praiseNum, helper);
                             }
                         }
                     });
@@ -342,18 +436,18 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
     @Override
     protected void lazyLoad() {
         if(rongZiDatas!=null&&rongZiDatas.size()>0)return;
-        LoadData(AutoListView.REFRESH, currentPage);
+        loadData(AutoListView.REFRESH, currentPage);
     }
     @Override
     public void onRefresh() {
-        currentPage=1;
-        LoadData(AutoListView.REFRESH,currentPage);
+        currentPage = 1;
+        loadData(AutoListView.REFRESH,currentPage);
     }
 
     @Override
     public void onLoad() {
         currentPage++;
-        LoadData(AutoListView.LOAD, currentPage);
+        loadData(AutoListView.LOAD, currentPage);
     }
 
     @Override

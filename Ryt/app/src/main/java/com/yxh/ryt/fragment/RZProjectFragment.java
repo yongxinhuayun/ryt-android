@@ -280,6 +280,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         iTopListview.hideFooterView();
         invest.setOnClickListener(this);
         showOther();
+        showHeadNum();
+        loadCommentData(true,currentPage);
+        loadInvestorData(true,currentPage);
         setInvestorTopAdapter();
         setInvesterAdapter();
         setCommentAdapter();
@@ -312,13 +315,18 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private void setCommentAdapter() {
         artCommentAdapter = new CommonAdapter<ArtworkComment>(getActivity(), artCommentDatas, R.layout.pdonclicktab_comment_item) {
             @Override
-            public void convert(ViewHolder helper, final ArtworkComment item) {
+            public void convert(final ViewHolder helper, final ArtworkComment item) {
                 LinearLayout linearLayout = helper.getView(R.id.pdctci_ll_all);
                 linearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
                         if (item.getCreator() != null) {
+                            if ("1".equals(item.getCreator().getType())) {
+                                helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
+                            }else {
+                                helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
+                            }
                             intent.putExtra("name", item.getCreator().getName());
                         } else {
                             intent.putExtra("name", "");
@@ -334,11 +342,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         }
                     }
                 });
-                if ("1".equals(item.getCreator().getType())) {
-                    helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
-                }else {
-                    helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
-                }
+
                 helper.getView(R.id.pdctci_tv_nickName).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -728,12 +732,12 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     public void onResume() {
         super.onResume();
         artCommentDatas.clear();
-        investorTopDatas.clear();
-        investorDatas.clear();
+        //investorTopDatas.clear();
+        //investorDatas.clear();
         currentPage = 1;
         //点赞头像展示
-        showHeadNum();
-        loadInvestorData(true, currentPage);
+        //showHeadNum();
+       // loadInvestorData(true, currentPage);
         loadCommentData(true, currentPage);
     }
 

@@ -96,7 +96,6 @@ public class RZInvestFragment extends BaseFragment implements AutoListView.OnRef
 					if (state == AutoListView.REFRESH) {
 						invester.onRefreshComplete();
 						investorDatas.clear();
-
 						if (null == investList || investList.size() == 0) {
 							invester.setResultSize(0);
 						}
@@ -109,7 +108,6 @@ public class RZInvestFragment extends BaseFragment implements AutoListView.OnRef
 					}
 					if (state == AutoListView.LOAD) {
 						invester.onLoadComplete();
-						;
 						if (null == investList || investList.size() == 0) {
 							invester.setResultSize(1);
 						}
