@@ -79,14 +79,26 @@ public class UserQianBaoActivity extends BaseActivity {
                 if (!"60".equals(item.getType())){
                     helper.setText(R.id.iw_tv_title,item.getTitle());
                     if ("0".equals(item.getOutOrIn())){
-                        helper.setText(R.id.iw_tv_changeMoney,"-"+item.getMoney());
+                        if (item.getMoney()==null || "".equals(item.getMoney())){
+                            helper.setText(R.id.iw_tv_changeMoney,"-"+"0");
+                        }else {
+                            helper.setText(R.id.iw_tv_changeMoney,"-"+item.getMoney());
+                        }
                     }else if ("1".equals(item.getOutOrIn())){
-                        helper.setText(R.id.iw_tv_changeMoney,"+"+item.getMoney());
+                        if (item.getMoney()==null || "".equals(item.getMoney())){
+                            helper.setText(R.id.iw_tv_changeMoney,"-"+"0");
+                        }else {
+                            helper.setText(R.id.iw_tv_changeMoney,"+"+item.getMoney());
+                        }
                     }
                     if (item.getCreateDatetime()!=null){
                         helper.setText(R.id.iw_tv_date, Utils.timeTrans(item.getCreateDatetime()));
                     }
-                    helper.setText(R.id.iw_tv_allMoney,item.getRestMoney()+"");
+                    if (item.getRestMoney()==null || "".equals(item.getRestMoney())){
+                        helper.setText(R.id.iw_tv_changeMoney,"0");
+                    }else {
+                        helper.setText(R.id.iw_tv_allMoney,item.getRestMoney()+"");
+                    }
                 }
             }
         };

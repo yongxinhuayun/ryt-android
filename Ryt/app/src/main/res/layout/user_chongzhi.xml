@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:id="@+id/ucz_ll_all"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="@android:color/white"
     android:layout_height="match_parent">
@@ -69,6 +71,7 @@
                 android:layout_alignParentLeft="true"
                 android:text="账户当前余额"/>
             <TextView
+                android:textColor="#000000"
                 android:id="@+id/ucz_tv_remainMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,26 +96,29 @@
                 android:layout_height="wrap_content"
                 android:text="充值金额"/>
             <LinearLayout
+                android:id="@+id/ucz_ll_money"
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_nofocus">
                 <TextView
+                    android:id="@+id/ucz_tv_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
+                    android:textColor="#eeeeee"
+                    android:textSize="17sp"
                     android:text="￥"/>
                 <EditText
+                    android:id="@+id/ucz_et_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/login_reg_et_bg"
-                    android:layout_marginLeft="10dp"
+                    android:background="@null"
                     android:inputType="numberDecimal"
                     android:singleLine="true"
                     android:textSize="17sp"
+                    android:textColorHint="#eeeeee"
                     android:hint="请输入充值金额"
-                    android:textColor="@android:color/black"
                     />
 
             </LinearLayout>
@@ -133,12 +139,12 @@
         <View
             android:layout_width="match_parent"
             android:background="#E9E9E9"
-            android:layout_height="1dp"></View>
+            android:layout_height="1dp"/>
         <View
             android:layout_width="match_parent"
             android:background="#E9E9E9"
             android:layout_marginTop="20dp"
-            android:layout_height="1dp"></View>
+            android:layout_height="1dp"/>
         <LinearLayout
             android:orientation="vertical"
             android:padding="10dp"
@@ -148,6 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <LinearLayout
+                android:id="@+id/ucz_ll_recharge"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:gravity="center_vertical"

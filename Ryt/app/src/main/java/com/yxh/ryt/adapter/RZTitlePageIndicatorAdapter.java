@@ -26,19 +26,19 @@ public class RZTitlePageIndicatorAdapter extends FragmentPagerAdapter {
         //新建一个Fragment来展示ViewPager item的内容，并传递参数
         BaseFragment fragment = this.fragments.get(position);
         Bundle args = new Bundle();
-        args.putString("arg", Constants.INDEX_TITLE[position]);
+        args.putString("arg", Constants.RZ_TITLE[position]);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return Constants.RZ_TITLE[position % Constants.INDEX_TITLE.length];
+        return Constants.RZ_TITLE[position % Constants.RZ_TITLE.length];
     }
 
     @Override
     public int getCount() {
-        return Constants.INDEX_TITLE.length;
+        return Constants.RZ_TITLE.length;
     }
 
 }

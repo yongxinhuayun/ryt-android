@@ -14,6 +14,7 @@ import java.net.URLEncoder;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class PayPageActivity extends BaseActivity {
     @Bind(R.id.app_wb_page)
@@ -28,6 +29,9 @@ public class PayPageActivity extends BaseActivity {
         page.getSettings().setJavaScriptEnabled(true);
         url = getIntent().getStringExtra("url");
         page.loadUrl(url);
-
+    }
+    @OnClick(R.id.ib_top_lf)
+    void back(){
+        finish();
     }
 }

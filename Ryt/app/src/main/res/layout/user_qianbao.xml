@@ -67,14 +67,20 @@
 
     <LinearLayout
         android:background="#d01919"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_height="44dp"
+        android:gravity="center"
         >
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@mipmap/invest_button"/>
         <Button
+            android:layout_marginLeft="6dp"
             android:id="@+id/btn_tx"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:text="充值"
             android:textSize="14sp"
             android:textColor="#ffffff"

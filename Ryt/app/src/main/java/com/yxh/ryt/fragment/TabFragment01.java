@@ -75,7 +75,7 @@ public class TabFragment01 extends  BaseFragment {
         indexChildFragments.add(new FinanceFragment());
         indexChildFragments.add(new CreateFragment());
         indexChildFragments.add(new AuctionFragment());
-
+        indexChildFragments.add(new AuctionFragment());
     }
 
 
@@ -90,7 +90,7 @@ public class TabFragment01 extends  BaseFragment {
         View view = inflater.inflate(R.layout.tab_01, container,false);
         indexChildAdapter = new IndexTabPageIndicatorAdapter(getActivity().getSupportFragmentManager(),indexChildFragments);
         ViewPager pager = (ViewPager)view.findViewById(R.id.pager);
-        pager.setOffscreenPageLimit(3);
+        pager.setOffscreenPageLimit(4);
         pager.setAdapter(indexChildAdapter);
         //实例化TabPageIndicator然后设置ViewPager与之关联
         final TabPageIndicator indicator = (TabPageIndicator)view.findViewById(R.id.indicator);

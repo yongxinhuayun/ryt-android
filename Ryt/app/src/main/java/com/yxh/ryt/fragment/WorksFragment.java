@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016/7/18.
  */
+@SuppressLint("ValidFragment")
 public class WorksFragment extends BaseFragment {
     private String userId;
     private List<MasterWork> workDatas;
