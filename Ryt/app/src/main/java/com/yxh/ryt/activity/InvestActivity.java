@@ -258,7 +258,6 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                             });
                         }
                     });
-
                     builder.setNegativeButton("取消",
                             new android.content.DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
