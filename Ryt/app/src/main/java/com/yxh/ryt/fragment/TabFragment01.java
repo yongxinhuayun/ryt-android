@@ -95,7 +95,6 @@ public class TabFragment01 extends  BaseFragment {
         //实例化TabPageIndicator然后设置ViewPager与之关联
         final TabPageIndicator indicator = (TabPageIndicator)view.findViewById(R.id.indicator);
         indicator.setViewPager(pager);
-
         /*ButterKnife.bind(this, view);
         indexChildAdapter = new TabPageAdapter(getActivity().getSupportFragmentManager(),indexChildFragments);
         pager = (CustomViewPager)view.findViewById(R.id.pager);
