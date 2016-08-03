@@ -183,7 +183,6 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 		loadFull.setVisibility(View.GONE);
 		noData.setVisibility(View.GONE);
 	}
-
 	private void delete(String id) {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("userId", userId);
