@@ -144,7 +144,6 @@ public class CustomDialog extends Dialog {
                 layout.findViewById(R.id.positiveButton).setVisibility(
                         View.GONE);
             }
-            // set the cancel button
             if (negativeButtonText != null) {
                 ((TextView) layout.findViewById(R.id.negativeButton))
                         .setText(negativeButtonText);
