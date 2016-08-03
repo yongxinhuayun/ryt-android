@@ -29,7 +29,6 @@ public class LotteryTitlePageIndicatorAdapter extends FragmentPagerAdapter {
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public CharSequence getPageTitle(int position) {
         return Constants.lottery_TITLE[position % Constants.lottery_TITLE.length];
