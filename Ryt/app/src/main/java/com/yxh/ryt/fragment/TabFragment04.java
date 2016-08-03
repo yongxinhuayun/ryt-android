@@ -61,7 +61,6 @@ public class TabFragment04 extends BaseFragment {
         ButterKnife.bind(this, view);
         return view;
     }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
