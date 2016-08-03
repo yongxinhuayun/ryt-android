@@ -105,7 +105,6 @@ public class Utils {
 		}
 	}
 	public static boolean IsYesterday(String day)  {
-
 		Calendar pre = Calendar.getInstance();
 		Date predate = new Date(System.currentTimeMillis());
 		pre.setTime(predate);
