@@ -17,6 +17,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.activity.ArtistIndexActivity;
 import com.yxh.ryt.activity.FinanceSummaryActivity;
 import com.yxh.ryt.activity.LoginActivity;
+import com.yxh.ryt.activity.LotterySummaryActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
@@ -382,15 +383,7 @@ public class LotteryFragment extends BaseFragment implements AutoListView.OnRefr
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position <= rongZiDatas.size()) {
-            /*int[] location = new  int[2] ;
-            view1.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
-			view1.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
-			System.out.println("view--->x坐标:"+location [0]+"view--->y坐标:"+location [1]);
-			int[] location1 = new  int[2] ;
-			view2.getLocationInWindow(location1); //获取在当前窗口内的绝对坐标
-			view2.getLocationOnScreen(location1);//获取在整个屏幕内的绝对坐标
-			System.out.println("view--->x坐标:"+location1 [0]+"view--->y坐标:"+location1 [1]);*/
-            Intent intent = new Intent(getActivity(), FinanceSummaryActivity.class);
+            Intent intent = new Intent(getActivity(), LotterySummaryActivity.class);
             intent.putExtra("id", rongZiDatas.get(position - 1).getId());
             startActivity(intent);
         }
