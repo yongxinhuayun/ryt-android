@@ -265,7 +265,6 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                                     dialog.dismiss();
                                 }
                             });
-
                     CustomDialog customDialog = builder.create();
                     customDialog.setCanceledOnTouchOutside(false);
                     // 设置点击屏幕Dialog不消失
