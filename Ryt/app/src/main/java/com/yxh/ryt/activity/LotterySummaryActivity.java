@@ -50,7 +50,6 @@ public class LotterySummaryActivity extends BaseActivity implements View.OnClick
         final TabPageIndicator mindicator = (TabPageIndicator) findViewById(R.id.indicator);
         mindicator.setViewPager(pager);
 
-
     }
 
 
