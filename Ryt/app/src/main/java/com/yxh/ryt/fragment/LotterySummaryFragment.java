@@ -156,7 +156,6 @@ public class LotterySummaryFragment extends BaseFragment{
     private LoadingUtil loadingUtil;
     private ImageView iMaster;
 
-
     public LotterySummaryFragment(String artWorkId) {
         super();
         this.artWorkId = artWorkId;
