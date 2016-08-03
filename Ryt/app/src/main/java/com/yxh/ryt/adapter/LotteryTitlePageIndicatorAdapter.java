@@ -20,7 +20,6 @@ public class LotteryTitlePageIndicatorAdapter extends FragmentPagerAdapter {
         super(fm);
         this.fragments=fragments;
     }
-
     @Override
     public Fragment getItem(int position) {
         //新建一个Fragment来展示ViewPager item的内容，并传递参数
