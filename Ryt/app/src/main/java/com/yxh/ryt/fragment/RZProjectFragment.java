@@ -619,7 +619,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         });
                     }
                 });
-
             }
             llinvester.addView(linearLayout);
         } else {
