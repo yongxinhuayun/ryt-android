@@ -47,6 +47,12 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
     private int currentPage = 1;
     private Map<Integer,Boolean> selected;
     private Map<Integer,Integer> number;
+    private String userId;
+
+    public InvestedFragment(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +62,7 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
     }
     private void loadData(final int state, final int pageNum) {
         final Map<String,String> paramsMap = new HashMap<>();
-        paramsMap.put("userId", AppApplication.gUser.getId());
+        paramsMap.put("userId", userId);
         paramsMap.put("action", "invest");
         paramsMap.put("pageSize", Constants.pageSize + "");
         paramsMap.put("pageIndex", pageNum + "");
@@ -77,10 +83,9 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
 
             @Override
             public void onResponse(final Map<String, Object> response) {
-                if ("".equals(AppApplication.gUser.getId())){
                     if (state == AutoListView.REFRESH) {
                         lstv.onRefreshComplete();
-                        //rongZiDatas.clear();
+                        rongZiDatas.clear();
                         List<RongZi> objectList  =  AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
                                 .toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
                         }.getType());
@@ -109,7 +114,7 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                     }
                     if (pageNum == 1 && selected.size() > 0) {
                         selected.clear();
-                        rongZiDatas.clear();
+                        number.clear();
                     }
                     if (selected.size() < rongZiDatas.size()) {
                         for (int i = selected.size(); i < rongZiDatas.size(); i++) {
@@ -117,67 +122,7 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                             number.put(i, rongZiDatas.get(i).getPraiseNUm());
                         }
                     }
-                }else {
-                    SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
-                        @Override
-                        public void getCode(String code) {
-                            if ("0".equals(code)){
-
-                                NetRequestUtil.post(Constants.BASE_PATH + "getArtWorkList.do", paramsMap, new RongZiListCallBack() {
-                                    @Override
-                                    public void onError(Call call, Exception e) {
-                                        ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
-                                    }
-
-                                    @Override
-                                    public void onResponse(Map<String, Object> response) {
-                                        if (state == AutoListView.REFRESH) {
-                                            lstv.onRefreshComplete();
-                                            rongZiDatas.clear();
-                                            List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
-                                                    .toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
-                                            }.getType());
-                                            if (null == objectList || objectList.size() == 0) {
-                                                lstv.setResultSize(0);
-                                            }
-                                            if (null != objectList && objectList.size() > 0) {
-                                                lstv.setResultSize(objectList.size());
-                                                rongZiDatas.addAll(objectList);
-                                                rongZiCommonAdapter.notifyDataSetChanged();
-                                            }
-                                        }
-                                        if (state == AutoListView.LOAD) {
-                                            lstv.onLoadComplete();
-                                            List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
-                                                    toJson(((Map<Object,Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
-                                            }.getType());
-                                            if (null == objectList || objectList.size() == 0) {
-                                                lstv.setResultSize(1);
-                                            }
-                                            if (null != objectList && objectList.size() > 0) {
-                                                lstv.setResultSize(objectList.size());
-                                                rongZiDatas.addAll(objectList);
-                                                rongZiCommonAdapter.notifyDataSetChanged();
-                                            }
-                                        }
-                                        if (pageNum == 1 && selected.size() > 0) {
-                                            selected.clear();
-                                            //rongZiDatas.clear();
-                                        }
-                                        if (selected.size() < rongZiDatas.size()) {
-                                            for (int i = selected.size(); i < rongZiDatas.size(); i++) {
-                                                selected.put(i, rongZiDatas.get(i).isPraise());
-                                                number.put(i, rongZiDatas.get(i).getPraiseNUm());
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    });
-                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
-            }
         });
     }
 
@@ -263,38 +208,6 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                         double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
                         helper.setProgress(R.id.fli1_pb_progress, (int)(value*100));
                     }
-      /*              if (item.isPraise()){
-                        helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
-                        ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
-                        helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+"");
-                        helper.getView(R.id.clh_ll_praise).setEnabled(false);
-                    }else {
-                        if (selected.get(helper.getPosition())){
-                            helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
-                            ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
-                            helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+1+"");
-                            helper.getView(R.id.clh_ll_praise).setEnabled(false);
-                        }else {
-                            helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_shape);
-                            ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(199, 31, 33));
-                            helper.setText(R.id.clh_tv_praiseNum,item.getPraiseNUm()+"");
-                            helper.getView(R.id.clh_ll_praise).setEnabled(true);
-                            helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if ("".equals(AppApplication.gUser.getId())){
-                                        Intent intent=new Intent(getActivity(), LoginActivity.class);
-                                        intent.putExtra("userId",item.getAuthor().getId());
-                                        intent.putExtra("currentId",AppApplication.gUser.getId());
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        getActivity().startActivity(intent);
-                                    }else {
-                                        praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)),((TextView) helper.getView(R.id.clh_tv_praiseNum)),item.getPraiseNUm(), ((ImageView) helper.getView(R.id.clh_iv_attention)), helper);
-                                    }
-                                }
-                            });
-                        }
-                    }*/
                     if (selected.get(helper.getPosition())) {
                         helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
                         ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255, 255, 255));

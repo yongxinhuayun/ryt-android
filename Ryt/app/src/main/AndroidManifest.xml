@@ -361,6 +361,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name=".activity.EditRecAddressActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserIndexActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PraiseListActivity" android:screenOrientation="portrait"/>
 
     </application>
 

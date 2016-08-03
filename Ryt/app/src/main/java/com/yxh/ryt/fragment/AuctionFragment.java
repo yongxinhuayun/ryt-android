@@ -21,6 +21,7 @@ import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
+import com.yxh.ryt.util.DateUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -212,7 +213,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 						helper.getView(R.id.ali1_iv_date).setVisibility(View.VISIBLE);
 						helper.getView(R.id.ali1_iv_finalPerson).setVisibility(View.GONE);
 					}else if ("31".equals(item.getStep())){
-						helper.setText(R.id.ali1_tv_content,Utils.getJudgeDate1(item.getAuctionEndDatetime())+"后截止");
+						helper.setText(R.id.ali1_tv_content, DateUtil.millionToDead(item.getAuctionEndDatetime())+"后截止");
 						helper.setText(R.id.clh1_tv_state,"拍卖中");
 						helper.getView(R.id.ali1_iv_date).setVisibility(View.VISIBLE);
 						helper.getView(R.id.ali1_iv_finalPerson).setVisibility(View.GONE);
