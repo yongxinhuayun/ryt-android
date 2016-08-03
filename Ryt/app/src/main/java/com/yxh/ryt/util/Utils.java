@@ -69,6 +69,10 @@ public class Utils {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		return sdf.format(new Date(time));
 	}
+	public static String timeLottery(long time){
+		SimpleDateFormat sdf = new SimpleDateFormat("MM.dd HH:mm:ss.fff");
+		return sdf.format(new Date(time));
+	}
 	public static String timeAuction(long time){
 		SimpleDateFormat sdf = new SimpleDateFormat("M月d日H时m分");
 		return sdf.format(new Date(time));

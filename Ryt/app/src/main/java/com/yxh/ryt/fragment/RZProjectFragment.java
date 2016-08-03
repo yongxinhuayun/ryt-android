@@ -257,6 +257,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         llpraise = (LinearLayout) view.findViewById(R.id.ll_praise);
         llinvester = (LinearLayout) view.findViewById(R.id.ll_invester);
         mExpandView = (ExpandView) view.findViewById(R.id.expandView);
+        mExpandView.setLayoutId(R.layout.layout_expand);
+        ((WebView) mExpandView.findViewById(R.id.wv_invest_process)).loadUrl("file:///android_asset/InvestFlowControlller.html");
         sv = (ScrollView) view.findViewById(R.id.sv_sv);
         mRoundProgressBar = (RoundProgressBar) view.findViewById(R.id.rpb_progress);
         iv_show = (ImageView) view.findViewById(R.id.iv_is_show);
@@ -823,16 +825,17 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 investorDatas.add(investList.get(i));
             }
             iListview.showFooterView();
-            Intent intent = new Intent(getActivity(), InvestorActivity.class);
-            clickMore(iListview, intent);
+            clickMore(iListview, InvestorActivity.class);
         }
     }
 
-    private void clickMore(ListViewForScrollView myListview, final Intent intent) {
+    private void clickMore(ListViewForScrollView myListview, final Class cls) {
         myListview.footerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), cls);
                 intent.putExtra("artWorkId", artWorkId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(intent);
             }
         });
@@ -888,8 +891,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             listView.showFooterView();
 
         }
-        Intent intent = new Intent(getActivity(), CommentListActivity.class);
-        clickMore(listView, intent);
+        clickMore(listView, CommentListActivity.class);
     }
 
     @Override
@@ -944,7 +946,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     //ft.setTransition(FragmentTransaction.TRANSIT_NONE);
                     ft.commit();*/
                     iv_show.setImageResource(R.mipmap.show_progress);
-                    mExpandView.setVisibility(View.VISIBLE);
+                    //mExpandView.setVisibility(View.VISIBLE);
                 } else {
                     mExpandView.expand();
 

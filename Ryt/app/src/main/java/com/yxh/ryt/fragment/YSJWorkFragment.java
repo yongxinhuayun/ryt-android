@@ -143,6 +143,7 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 						@Override
 						public void onClick(View v) {
 							CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
+							builder.setTitle("确认要删除作品吗");
 							builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int which) {
 									dialog.dismiss();

@@ -21,7 +21,7 @@ public class ExpandView extends FrameLayout {
     private Animation mCollapseAnimation;
     private boolean mIsExpand;
     private WebView webView;
-
+    private int layoutId;
     public ExpandView(Context context) {
         this(context,null);
         // TODO Auto-generated constructor stub
@@ -33,12 +33,15 @@ public class ExpandView extends FrameLayout {
     public ExpandView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         // TODO Auto-generated constructor stub
+    }
+    public void setLayoutId(int layoutId){
+        this.layoutId=layoutId;
         initExpandView();
     }
     private void initExpandView() {
-        LayoutInflater.from(getContext()).inflate(R.layout.layout_expand, this, true);
-        webView = (WebView) findViewById(R.id.wv_invest_process);
-        webView.loadUrl("file:///android_asset/InvestFlowControlller.html");
+        LayoutInflater.from(getContext()).inflate(layoutId, this, true);
+        /*webView = (WebView) findViewById(R.id.wv_invest_process);
+        webView.loadUrl("file:///android_asset/InvestFlowControlller.html");*/
         mExpandAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.expand);
         mExpandAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -98,11 +101,11 @@ public class ExpandView extends FrameLayout {
     }
 
     public void setContentView(){
-        View view = null;
+        /*View view = null;
         view = LayoutInflater.from(getContext()).inflate(R.layout.layout_expand, null);
 
         removeAllViews();
-        addView(view);
+        addView(view);*/
     }
 
 }

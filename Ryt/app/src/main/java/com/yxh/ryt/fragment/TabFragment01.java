@@ -75,7 +75,7 @@ public class TabFragment01 extends  BaseFragment {
         indexChildFragments.add(new FinanceFragment());
         indexChildFragments.add(new CreateFragment());
         indexChildFragments.add(new AuctionFragment());
-        indexChildFragments.add(new AuctionFragment());
+        indexChildFragments.add(new LotteryFragment());
     }
 
 

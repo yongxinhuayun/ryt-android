@@ -116,7 +116,6 @@ public class CustomDialog extends Dialog {
             this.negativeButtonClickListener = listener;
             return this;
         }
-
         public CustomDialog create() {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -127,6 +126,7 @@ public class CustomDialog extends Dialog {
                     LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             // set the dialog title
             // set the confirm button
+            ((TextView) dialog.findViewById(R.id.dnl_tv_title)).setText(title);
             if (positiveButtonText != null) {
                 ((TextView) layout.findViewById(R.id.positiveButton))
                         .setText(positiveButtonText);

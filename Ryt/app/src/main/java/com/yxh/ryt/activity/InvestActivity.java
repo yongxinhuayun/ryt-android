@@ -1,5 +1,6 @@
 package com.yxh.ryt.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.AttentionListCallBack;
+import com.yxh.ryt.custemview.CustomDialog;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -205,52 +207,69 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                     });
                     sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }else if ("0".equals(response.get("resultCode"))){
-                    String url = response.get("url").toString();
-                    Intent intent=new Intent(InvestActivity.this,PayPageActivity.class);
-                    intent.putExtra("url",url);
-                    InvestActivity.this.startActivity(intent);
+                    ToastUtil.showLong(InvestActivity.this,"投资成功!");
+                    finish();
                 }else if ("100015".equals(response.get("resultCode"))){
-                    Map<String,String> paramsMap=new HashMap<>();
-                    //paramsMap.put("userId", AppApplication.gUser.getId());
-                    paramsMap.put("money", money);
-                    paramsMap.put("action", "invest");
-                    paramsMap.put("type", "1");
-                    paramsMap.put("artWorkId", artworkId);
-                    paramsMap.put("timestamp", System.currentTimeMillis() + "");
-                    try {
-                        AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
-                        paramsMap.put("signmsg", AppApplication.signmsg);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    NetRequestUtil.post(Constants.BASE_PATH + "pay/main.do", paramsMap, new AttentionListCallBack() {
-                        @Override
-                        public void onError(Call call, Exception e) {
-                            e.printStackTrace();
-                            System.out.println("失败了");
-                            ToastUtil.showLong(InvestActivity.this,"网络连接超时,稍后重试!");
-                        }
-
-                        @Override
-                        public void onResponse(Map<String, Object> response) {
-                            if ("000000".equals(response.get("resultCode"))){
-                                SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
-                                    @Override
-                                    public void getCode(String code) {
-                                        if ("0".equals(code)){
-                                            investMoney();
-                                        }
-                                    }
-                                });
-                                sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
-                            }else {
-                                String url = response.get("url").toString();
-                                Intent intent=new Intent(InvestActivity.this,PayPageActivity.class);
-                                intent.putExtra("url",url);
-                                InvestActivity.this.startActivity(intent);
+                    CustomDialog.Builder builder = new CustomDialog.Builder(InvestActivity.this);
+                    builder.setTitle("余额不足,确认要充值吗");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Map<String,String> paramsMap=new HashMap<>();
+                            //paramsMap.put("userId", AppApplication.gUser.getId());
+                            paramsMap.put("money", money);
+                            paramsMap.put("action", "invest");
+                            paramsMap.put("type", "1");
+                            paramsMap.put("artWorkId", artworkId);
+                            paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                            try {
+                                AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+                                paramsMap.put("signmsg", AppApplication.signmsg);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
+                            NetRequestUtil.post(Constants.BASE_PATH + "pay/main.do", paramsMap, new AttentionListCallBack() {
+                                @Override
+                                public void onError(Call call, Exception e) {
+                                    e.printStackTrace();
+                                    System.out.println("失败了");
+                                    ToastUtil.showLong(InvestActivity.this,"网络连接超时,稍后重试!");
+                                }
+
+                                @Override
+                                public void onResponse(Map<String, Object> response) {
+                                    if ("000000".equals(response.get("resultCode"))){
+                                        SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                                            @Override
+                                            public void getCode(String code) {
+                                                if ("0".equals(code)){
+                                                    investMoney();
+                                                }
+                                            }
+                                        });
+                                        sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                                    }else {
+                                        String url = response.get("url").toString();
+                                        Intent intent=new Intent(InvestActivity.this,PayPageActivity.class);
+                                        intent.putExtra("url",url);
+                                        InvestActivity.this.startActivity(intent);
+                                    }
+                                }
+                            });
                         }
                     });
+
+                    builder.setNegativeButton("取消",
+                            new android.content.DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    CustomDialog customDialog = builder.create();
+                    customDialog.setCanceledOnTouchOutside(false);
+                    // 设置点击屏幕Dialog不消失
+                    customDialog.show();
                 }
             }
         });
