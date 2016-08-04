@@ -155,11 +155,13 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private TextView creatTime;
     private LoadingUtil loadingUtil;
     private ImageView iMaster;
-
+    private Map<Integer,CircleImageView> bitmaps;
+    private int zhongjianbianliang;
 
     public RZProjectFragment(String artWorkId) {
         super();
         this.artWorkId = artWorkId;
+        bitmaps=new HashMap<>();
     }
 
     private final Handler mHandler = new Handler();
@@ -607,10 +609,16 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
                     @Override
                     public void onResponse(Bitmap response) {
+                        zhongjianbianliang++;
                         Bitmap bitmap = comp(response, artWorkPraiseList.get(temp).getUser().getPictureUrl());
                         imageView.setImageBitmap(bitmap);
                         imageView.setLayoutParams(params);
-                        linearLayout.addView(imageView);
+                        bitmaps.put(temp,imageView);
+                        if (zhongjianbianliang==count){
+                            for (int x=0;x<count;x++){
+                                linearLayout.addView(bitmaps.get(x));
+                            }
+                        }
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -640,10 +648,16 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
                     @Override
                     public void onResponse(Bitmap response) {
+                        zhongjianbianliang++;
                         Bitmap bitmap = comp(response, artWorkPraiseList.get(temp).getUser().getPictureUrl());
                         imageView.setImageBitmap(bitmap);
                         imageView.setLayoutParams(params);
-                        linearLayout.addView(imageView);
+                        bitmaps.put(temp,imageView);
+                        if (zhongjianbianliang==artWorkPraiseList.size()){
+                            for (int x=0;x<artWorkPraiseList.size();x++){
+                                linearLayout.addView(bitmaps.get(x));
+                            }
+                        }
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
