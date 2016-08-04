@@ -627,7 +627,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     System.out.println(progress);
                     mRoundProgressBar.setProgress(progress);
                     try {
-                        Thread.sleep(250 / temp);
+                        if (temp != 0) {
+                            Thread.sleep(250 / temp);
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
