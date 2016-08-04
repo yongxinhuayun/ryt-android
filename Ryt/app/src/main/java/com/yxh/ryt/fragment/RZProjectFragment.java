@@ -52,6 +52,7 @@ import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.custemview.ExpandView;
+import com.yxh.ryt.custemview.HorizontalListView;
 import com.yxh.ryt.custemview.ListViewForScrollView;
 import com.yxh.ryt.custemview.RoundProgressBar;
 import com.yxh.ryt.util.DateUtil;
@@ -70,7 +71,6 @@ import com.yxh.ryt.vo.ArtworkComment;
 import com.yxh.ryt.vo.ArtworkInvest;
 import com.yxh.ryt.vo.ArtworkInvestTop;
 import com.yxh.ryt.vo.User;
-import com.zhy.http.okhttp.callback.BitmapCallback;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -159,6 +159,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private Bitmap bitmap;
     private LinearLayout praiseLinearLayout;
     private CircleImageView mImageView;
+    private List<ArtWorkPraiseList> praiseHeadDatas;
+    private CommonAdapter<ArtWorkPraiseList> praiseHeadCommonAdapter;
+    private HorizontalListView praiseHLV;
 
     public RZProjectFragment(String artWorkId) {
         super();
@@ -176,11 +179,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     praiseNum.setText(a + "");
                     llpraise.setBackgroundResource(R.drawable.praise_after_shape);
                     praiseNum.setTextColor(Color.rgb(255, 255, 255));
-                    mImageView = new CircleImageView(getContext());
-                    AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), mImageView);
-                   // praiseLinearLayout.addView(mImageView,0);
-                    //llinvester.addView(praiseLinearLayout);
-                    llinvester.addView(mImageView,0);
+                    refreshPraise();
                     break;
                 case PRAISE_CANCEL:
                     int s = Integer.parseInt(praiseNum.getText().toString());
@@ -188,9 +187,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     praiseNum.setText(s + "");
                     llpraise.setBackgroundResource(R.drawable.praise_shape);
                     praiseNum.setTextColor(Color.rgb(199, 31, 33));
-                    //praiseLinearLayout.removeView(mImageView);
-                    //llinvester.addView(praiseLinearLayout);
-                    llinvester.removeView(mImageView);
+                    refreshPraise();
+                   // llinvester.removeView(mImageView);
                     break;
                 case COUNT_DOWN:
                     deadTime -= 1000;
@@ -231,9 +229,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         artCommentDatas = new ArrayList<ArtworkComment>();
         investorDatas = new ArrayList<>();
         investorTopDatas = new ArrayList<>();
+        praiseHeadDatas = new ArrayList<>();
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -242,7 +240,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         creatTime = (TextView) view.findViewById(R.id.tv_creat_time);
         dianzan = (ImageView) view.findViewById(R.id.iv_praise);
         headV = (ImageView) view.findViewById(R.id.iv_master);
-        ll_invester = (LinearLayout) view.findViewById(R.id.ll_invester);
+       // ll_invester = (LinearLayout) view.findViewById(R.id.ll_invester);
         ll_project = (LinearLayout) view.findViewById(R.id.ll_project);
         rl_progress = (RelativeLayout) view.findViewById(R.id.rl_progress);
         tv_project_name = (TextView) view.findViewById(R.id.tv_project_name);
@@ -262,11 +260,12 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         comment = (Button) view.findViewById(R.id.bt_comment);
         etComment = (EditText) view.findViewById(R.id.et_comment);
         attention = (ImageButton) view.findViewById(R.id.ib_attention);
+        praiseHLV = (HorizontalListView) view.findViewById(R.id.hlv_praise);
         attention.setOnClickListener(this);
         comment.setOnClickListener(this);
         invest = ((LinearLayout) view.findViewById(R.id.rzp_ll_invest));
         llpraise = (LinearLayout) view.findViewById(R.id.ll_praise);
-        llinvester = (LinearLayout) view.findViewById(R.id.ll_invester);
+        //llinvester = (LinearLayout) view.findViewById(R.id.ll_invester);
         mExpandView = (ExpandView) view.findViewById(R.id.expandView);
         sv = (ScrollView) view.findViewById(R.id.sv_sv);
         mRoundProgressBar = (RoundProgressBar) view.findViewById(R.id.rpb_progress);
@@ -297,6 +296,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         setInvestorTopAdapter();
         setInvesterAdapter();
         setCommentAdapter();
+        setPraiseHeadAdapter();
         return view;
     }
 
@@ -314,7 +314,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         //图片宽高
         widthImage = Utils.dip2px(getActivity(), 24);
         heightIamge = Utils.dip2px(getActivity(), 24);
-        //图片paddingao
+        //图片padding
         right = Utils.dip2px(getActivity(), 10);
         //一行能容纳的图片个数
         //praise与view间距
@@ -465,6 +465,40 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         });
     }
 
+    private void refreshPraise() {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("artWorkId", artWorkId);
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkView.do", paramsMap, new RongZiListCallBack() {
+
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                Map<String, Object> object = (Map<String, Object>) response.get("object");
+                if (object != null) {
+                    artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                            toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
+                    }.getType());
+                    praiseHeadDatas.clear();
+                    loadPraiseHeadData(artWorkPraiseList);
+                    praiseHeadCommonAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+
     private void showOther() {
         loadingUtil.show();
         Map<String, String> paramsMap = new HashMap<>();
@@ -493,10 +527,11 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
                             toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
                     }.getType());
-                    if (artWorkPraiseList != null && artWorkPraiseList.size() > 0) {
+                   /* if (artWorkPraiseList != null && artWorkPraiseList.size() > 0) {
                         showPraiseHead(artWorkPraiseList);
                     }
-
+*/
+                    loadPraiseHeadData(artWorkPraiseList);
                     isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
                     artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
                     deadTime = Long.parseLong(artwork.getInvestRestTime());
@@ -600,7 +635,34 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             }
         }).start();
     }
+    private void loadPraiseHeadData(final List<ArtWorkPraiseList> artWorkPraiseList) {
+        if (count == 0) {
+            go.setVisibility(View.GONE);
+        }
+        if (count != 0 && artWorkPraiseList.size() > count) {
+            for (int i = 0; i < count; i++) {
+                praiseHeadDatas.add(artWorkPraiseList.get(i));
+            }
+        }else {
+            praiseHeadDatas.addAll(artWorkPraiseList);
+        }
+    }
+    private void setPraiseHeadAdapter() {
+        praiseHeadCommonAdapter = new CommonAdapter<ArtWorkPraiseList>(getActivity(), praiseHeadDatas, R.layout.praise_head_item) {
+            @Override
+            public void convert(ViewHolder helper, ArtWorkPraiseList item) {
+                if (item.getUser().getPictureUrl() != null) {
+helper.setImageByUrl(R.id.civ_head,item.getUser().getPictureUrl());
+                }else {
+                    helper.setImageResource(R.id.civ_head,R.mipmap.default_icon);
+                }
+            }
 
+
+        };
+        praiseHLV.setAdapter(praiseHeadCommonAdapter);
+    }
+/*
     private void showPraiseHead(final List<ArtWorkPraiseList> artWorkPraiseList) {
         praiseLinearLayout = new LinearLayout(getActivity());
         if (count == 0) {
@@ -693,6 +755,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             llinvester.addView(praiseLinearLayout);
         }
     }
+*/
 
     private Bitmap comp(Bitmap response, String pictureUrl) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1117,6 +1180,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     });
                     sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
+
             }
         });
     }
@@ -1160,6 +1224,5 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 }
             }
         });
-
     }
 }

@@ -165,13 +165,21 @@
                     android:layout_toRightOf="@+id/ll_praise"
                     android:background="#F5F5F5" />
 
-                <LinearLayout
+                <!--<LinearLayout
                     android:id="@+id/ll_invester"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/divide"
-                    android:orientation="horizontal"></LinearLayout>
+                    android:orientation="horizontal"></LinearLayout>-->
+                <com.yxh.ryt.custemview.HorizontalListView
+                    android:id="@+id/hlv_praise"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/divide"
+                    android:layout_marginRight="10dp"></com.yxh.ryt.custemview.HorizontalListView>
+
 
                 <ImageButton
                     android:id="@+id/ib_go"
