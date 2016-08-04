@@ -138,7 +138,6 @@ public class RankingUserFragment extends BaseFragment implements AutoListView.On
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
 	}
 	@Override
 	protected void lazyLoad() {
