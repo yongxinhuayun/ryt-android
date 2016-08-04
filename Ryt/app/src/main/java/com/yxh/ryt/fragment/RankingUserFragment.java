@@ -150,7 +150,6 @@ public class RankingUserFragment extends BaseFragment implements AutoListView.On
 		currentPage=1;
 		LoadData(AutoListView.REFRESH,currentPage);
 	}
-
 	@Override
 	public void onLoad() {
 		currentPage++;
