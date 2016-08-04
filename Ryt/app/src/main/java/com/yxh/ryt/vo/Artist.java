@@ -3,7 +3,7 @@ package com.yxh.ryt.vo;
 import java.math.BigDecimal;
 
 /**
- * Created by 吴洪杰 on 2016/4/7.
+ *
  */
 public class Artist {
     private String author_id;
@@ -11,6 +11,15 @@ public class Artist {
     private String username;
     private BigDecimal invest_goal_money;
     private BigDecimal turnover;
+    private float bidding_rate;
+
+    public float getBidding_rate() {
+        return bidding_rate;
+    }
+
+    public void setBidding_rate(float bidding_rate) {
+        this.bidding_rate = bidding_rate;
+    }
 
     public void setPicture(String picture) {
         this.picture = picture;
