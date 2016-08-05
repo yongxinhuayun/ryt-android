@@ -281,7 +281,6 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
                     if (selected.get(helper.getPosition())) {
-                        ToastUtil.showLong(getActivity(), "取消点赞");
                         view.setBackgroundResource(R.drawable.praise_shape);
                         textView.setTextColor(Color.rgb(199, 31, 33));
                         String raw = textView.getText().toString();
@@ -330,7 +329,6 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
                     if (!selected.get(helper.getPosition())) {
-                        ToastUtil.showLong(getActivity(), "点赞成功");
                         view.setBackgroundResource(R.drawable.praise_after_shape);
                         textView.setTextColor(Color.rgb(255, 255, 255));
                         textView.setText(praiseNum + 1 + "");
