@@ -15,7 +15,6 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.ArtistIndexActivity;
-import com.yxh.ryt.activity.FinanceSummaryActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.LotterySummaryActivity;
 import com.yxh.ryt.adapter.CommonAdapter;

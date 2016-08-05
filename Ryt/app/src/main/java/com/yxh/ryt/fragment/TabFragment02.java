@@ -25,8 +25,8 @@ public class TabFragment02 extends  BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        paiHangChildFragments.add(new PaiHangItemFragment01());
-        paiHangChildFragments.add(new PaiHangItemFragment02());
+        paiHangChildFragments.add(new RankingUserFragment());
+        paiHangChildFragments.add(new RankingArtistFragment());
     }
 
 
@@ -47,6 +47,5 @@ public class TabFragment02 extends  BaseFragment {
         indicator.setViewPager(pager);
         return view;
     }
-
 
 }

@@ -18,7 +18,22 @@
             android:background="@null"
             android:layout_marginLeft="10dp"
             android:src="@mipmap/back" />-->
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+        <View
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#e6e6e6"/>
+        <com.viewpagerindicator.TabPageIndicator
+            android:id="@+id/indicator"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:paddingLeft="62dp"
+            android:paddingRight="62dp"/>
+        </FrameLayout>
+    <!--</FrameLayout>
         <com.viewpagerindicator.TabPageIndicator
             android:id="@+id/indicator"
             android:layout_height="50dp"
@@ -26,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_marginLeft="62dp"
             android:layout_marginRight="62dp"
-            />
+            />-->
         <!--<TextView-->
         <!--android:visibility="gone"-->
         <!--android:layout_width="50dp"-->
@@ -46,10 +61,10 @@
             android:layout_marginRight="10dp"
             android:src="@mipmap/share01" />-->
 
-        <View
+        <!--<View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#E9E9E9"/>
+            android:background="#E9E9E9"/>-->
    <!-- </RelativeLayout>-->
 
 

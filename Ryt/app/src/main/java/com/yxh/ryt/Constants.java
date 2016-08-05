@@ -23,11 +23,11 @@ public class Constants {
     public static final String WX_INSTALL_ACTION = "wx_install_action";
     public static final String WX_NOTINSTALL_ACTION = "wx_notinstall_action";
     public static final String[] INDEX_TITLE = new String[] { "融资", "创作", "拍卖","抽奖" };
-    public static final String[] RZ_TITLE = new String[] { "项目", "详情", "投资" };
+    public static final String[] RZ_TITLE = new String[] { "项目", "详情", "投资","历史作品" };
     public static final String[] lottery_TITLE = new String[] { "抽奖", "项目", "详情" };
     public static  String[] ATTENTION_TITLE = new String[] { "艺术家(0)", "用户(0)" };
 
-    public static final String[] PAIHANG_TITLE = new String[] { "投资者排行", "艺术家排行" };
+    public static final String[] PAIHANG_TITLE = new String[] { "投资者", "艺术家" };
     public static final String[] RONGZI_XQ_TITLE = new String[] { "项目详情","投资流程","用户评论", "投资记录" };
     public static final String[] USER_YSJ_TITLE = new String[] { "主页","简介","作品", "投过的","赞过的" };
     public static final String[] ARTIST_TITLE = new String[] { "主页","简介","作品", "投过的" };

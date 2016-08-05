@@ -50,7 +50,7 @@ public class UserIndexActivity extends BaseActivity {
         pager.setOffscreenPageLimit(3);
         pager.setAdapter(indexChildAdapter);
         //实例化TabPageIndicator然后设置ViewPager与之关联
-        TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.aai_indicator);
+        TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.aui_indicator);
         indicator.setViewPager(pager);
     }
 }
