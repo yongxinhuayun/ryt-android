@@ -225,7 +225,7 @@ public class TabFragment04 extends BaseFragment {
                                 });
                                 AppApplication.gUser.setMaster1("");
                             } else if ("1".equals(user.getType()) &&null!=btnLf) {
-                                btnLf.setText("申请为艺术家中");
+                                btnLf.setText("发起项目");
                                 setLoginedViewValues(2, user);
                                 btnLf.setOnClickListener(new View.OnClickListener() {
                                     @Override
