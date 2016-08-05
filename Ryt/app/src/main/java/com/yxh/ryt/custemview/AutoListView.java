@@ -1,8 +1,5 @@
 package com.yxh.ryt.custemview;
 
-import com.yxh.ryt.R;
-import com.yxh.ryt.util.Utils;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -12,11 +9,14 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.ListView;
+
+import com.yxh.ryt.R;
+import com.yxh.ryt.util.Utils;
 
 /**
  * @author SunnyCoffee

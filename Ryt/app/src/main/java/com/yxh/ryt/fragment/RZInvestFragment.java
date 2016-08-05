@@ -129,37 +129,21 @@ public class RZInvestFragment extends BaseFragment implements AutoListView.OnRef
 				if (item.getCreator() != null) {
 					helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
 					if (item.getCreator().getName() != null) {
-						if (item.getCreator().getName().length() > 5) {
-							helper.setText(R.id.iri_tv_nickname, item.getCreator().getName().substring(0, 5) + "...");
-						} else {
-							helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
-						}
+						helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
 					}
 				}
-
-				if (helper.getPosition() == 0) {
-					helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
-					helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
-					helper.setImageResource(R.id.civ_top, R.mipmap.jinpai);
-				} else if (helper.getPosition() == 1) {
-					helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
-					helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
-					helper.setImageResource(R.id.civ_top, R.mipmap.yinpai);
-				} else if (helper.getPosition() == 2) {
-					helper.getView(R.id.civ_top).setVisibility(View.VISIBLE);
-					helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
-					helper.setImageResource(R.id.civ_top, R.mipmap.tongpai);
-				} else {
-					helper.getView(R.id.civ_top).setVisibility(View.GONE);
-					helper.getView(R.id.cl_01_civ_pm).setVisibility(View.VISIBLE);
-					helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1) + "");
-				}
-				helper.setText(R.id.iri_tv_content, "￥" + item.getPrice() + ".00");
-				helper.setText(R.id.iri_tv_date, long2Timestamp(item.getCreateDatetime()));
+				helper.getView(R.id.civ_top).setVisibility(View.GONE);
+				helper.getView(R.id.cl_01_civ_pm).setVisibility(View.VISIBLE);
+				helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1) + "");
+				helper.setText(R.id.iri_tv_content, "￥" + item.getPrice());
+				helper.setText(R.id.iri_tv_date, DateUtil.millionToNearly(item.getCreateDatetime()));
 			}
 		};
 		invester.setAdapter(investorRecordCommonAdapter);
+		invester.setOnLoadListener(this);
+		invester.setOnRefreshListener(this);
 	}
+
 	private String long2Timestamp(long time) {
 		String sTime = DateUtil.date2String(time,"yyyy-MM-dd  HH:mm:ss");
 		Date dt = DateUtil.string2Date(sTime,"yyyy-MM-dd  HH:mm:ss");

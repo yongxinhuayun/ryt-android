@@ -30,7 +30,7 @@ public class InvestorActivity extends Activity implements AutoListView.OnRefresh
     private CommonAdapter<ArtworkInvest> investorAdapter;
     private AutoListView iListview;
     private String artWorkId;
-    private int currentPage=1;
+    private int currentPage = 1;
     private ImageButton back;
 
     @Override
@@ -58,18 +58,13 @@ public class InvestorActivity extends Activity implements AutoListView.OnRefresh
                 if (item.getCreator() != null) {
                     helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
                     if (item.getCreator().getName() != null) {
-                       /* if (item.getCreator().getName().length() > 5) {
-                            helper.setText(R.id.iri_tv_nickname, item.getCreator().getName().substring(0, 5) + "...");
-                        } else {*/
-                            helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
-                        //}
+                        helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
                     }
                 }
                 helper.getView(R.id.civ_top).setVisibility(View.GONE);
                 helper.getView(R.id.cl_01_civ_pm).setVisibility(View.VISIBLE);
-                helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1 ) + "");
-                // }
-                helper.setText(R.id.iri_tv_content, "￥" + item.getPrice() + ".00");
+                helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1) + "");
+                helper.setText(R.id.iri_tv_content, "￥" + item.getPrice());
                 helper.setText(R.id.iri_tv_date, DateUtil.millionToNearly(item.getCreateDatetime()));
             }
         };
@@ -79,7 +74,7 @@ public class InvestorActivity extends Activity implements AutoListView.OnRefresh
     }
 
 
-    private void loadData(final int state , int pageNum) {
+    private void loadData(final int state, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artWorkId);
         paramsMap.put("pageSize", Constants.pageSize + "");
@@ -100,7 +95,7 @@ public class InvestorActivity extends Activity implements AutoListView.OnRefresh
             @Override
             public void onResponse(Map<String, Object> response) {
 
-                    Map<String, Object> object = (Map<String, Object>) response.get("object");
+                Map<String, Object> object = (Map<String, Object>) response.get("object");
 
                 if (state == AutoListView.REFRESH) {
                     iListview.onRefreshComplete();
@@ -117,11 +112,11 @@ public class InvestorActivity extends Activity implements AutoListView.OnRefresh
                         investorAdapter.notifyDataSetChanged();
                     }
                 }
-     if (state == AutoListView.LOAD) {
-         iListview.onLoadComplete();
-         List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
-                 toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
-         }.getType());
+                if (state == AutoListView.LOAD) {
+                    iListview.onLoadComplete();
+                    List<ArtworkInvest> investList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                            toJson(object.get("artworkInvestList")), new TypeToken<List<ArtworkInvest>>() {
+                    }.getType());
                     if (null == investList || investList.size() == 0) {
                         iListview.setResultSize(1);
                     }
@@ -146,12 +141,12 @@ public class InvestorActivity extends Activity implements AutoListView.OnRefresh
     @Override
     public void onRefresh() {
         currentPage = 1;
-        loadData(AutoListView.REFRESH,currentPage);
+        loadData(AutoListView.REFRESH, currentPage);
     }
 
     @Override
     public void onLoad() {
-        currentPage ++;
-        loadData(AutoListView.LOAD,currentPage);
+        currentPage++;
+        loadData(AutoListView.LOAD, currentPage);
     }
 }
