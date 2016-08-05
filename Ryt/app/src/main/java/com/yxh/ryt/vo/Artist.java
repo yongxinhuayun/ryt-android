@@ -20,7 +20,6 @@ public class Artist {
     public void setBidding_rate(float bidding_rate) {
         this.bidding_rate = bidding_rate;
     }
-
     public void setPicture(String picture) {
         this.picture = picture;
     }
