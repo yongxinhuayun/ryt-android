@@ -48,5 +48,4 @@ public class TabFragment02 extends  BaseFragment {
         return view;
     }
 
-
 }

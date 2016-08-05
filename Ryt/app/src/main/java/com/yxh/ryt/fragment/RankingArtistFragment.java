@@ -166,7 +166,6 @@ public class RankingArtistFragment extends BaseFragment implements AutoListView.
         currentPage++;
         LoadData(AutoListView.LOAD, currentPage);
     }
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position>0 &&position<=artistDatas.size()){

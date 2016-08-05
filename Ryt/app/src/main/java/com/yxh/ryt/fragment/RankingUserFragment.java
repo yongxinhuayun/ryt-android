@@ -154,7 +154,6 @@ public class RankingUserFragment extends BaseFragment implements AutoListView.On
 		currentPage++;
 		LoadData(AutoListView.LOAD,currentPage);
 	}
-
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		if (position>0 &&position<=investorDatas.size()){
