@@ -172,12 +172,20 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/divide"
                     android:orientation="horizontal"></LinearLayout>-->
+                <com.yxh.ryt.custemview.CircleImageView
+                    android:id="@+id/civ_pic"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@+id/divide"
+                    android:visibility="gone"
+                    android:src="@mipmap/default_icon"/>
                 <com.yxh.ryt.custemview.HorizontalListView
                     android:id="@+id/hlv_praise"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/divide"
+                    android:layout_toRightOf="@+id/civ_pic"
                     android:layout_marginRight="10dp"></com.yxh.ryt.custemview.HorizontalListView>
 
 

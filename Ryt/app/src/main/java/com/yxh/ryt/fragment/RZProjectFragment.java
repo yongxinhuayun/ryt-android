@@ -77,6 +77,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -162,6 +163,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private List<ArtWorkPraiseList> praiseHeadDatas;
     private CommonAdapter<ArtWorkPraiseList> praiseHeadCommonAdapter;
     private HorizontalListView praiseHLV;
+    private CircleImageView praisePic;
 
     public RZProjectFragment(String artWorkId) {
         super();
@@ -174,21 +176,37 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PRAISE_SUC:
+                    isPraise1 = true;
                     int a = Integer.parseInt(praiseNum.getText().toString());
                     a++;
                     praiseNum.setText(a + "");
                     llpraise.setBackgroundResource(R.drawable.praise_after_shape);
                     praiseNum.setTextColor(Color.rgb(255, 255, 255));
-                    refreshPraise();
+                    praisePic.setVisibility(View.VISIBLE);
+                    AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), praisePic);
+                    //refreshPraise();
                     break;
                 case PRAISE_CANCEL:
+                    isPraise1 = false;
                     int s = Integer.parseInt(praiseNum.getText().toString());
                     s--;
                     praiseNum.setText(s + "");
                     llpraise.setBackgroundResource(R.drawable.praise_shape);
                     praiseNum.setTextColor(Color.rgb(199, 31, 33));
-                    refreshPraise();
-                   // llinvester.removeView(mImageView);
+                    praisePic.setVisibility(View.GONE);
+                   /* for (int i = 0;i < praiseHeadDatas.size();i++){
+                        if (AppApplication.gUser.getId().equals(praiseHeadDatas.get(i).getUser().getId())) {
+                            praiseHeadDatas.remove(praiseHeadDatas.get(i));
+                        }
+                    }*/
+                    for (Iterator<ArtWorkPraiseList> it = praiseHeadDatas.iterator(); it.hasNext(); ) {
+                        ArtWorkPraiseList ss = it.next();
+                        if (AppApplication.gUser.getId().equals(ss.getUser().getId())) {
+                            it.remove();
+                        }
+                    }
+                    praiseHeadCommonAdapter.notifyDataSetChanged();
+                    // refreshPraise();
                     break;
                 case COUNT_DOWN:
                     deadTime -= 1000;
@@ -240,7 +258,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         creatTime = (TextView) view.findViewById(R.id.tv_creat_time);
         dianzan = (ImageView) view.findViewById(R.id.iv_praise);
         headV = (ImageView) view.findViewById(R.id.iv_master);
-       // ll_invester = (LinearLayout) view.findViewById(R.id.ll_invester);
+        praisePic = (CircleImageView) view.findViewById(R.id.civ_pic);
+        // ll_invester = (LinearLayout) view.findViewById(R.id.ll_invester);
         ll_project = (LinearLayout) view.findViewById(R.id.ll_project);
         rl_progress = (RelativeLayout) view.findViewById(R.id.rl_progress);
         tv_project_name = (TextView) view.findViewById(R.id.tv_project_name);
@@ -273,7 +292,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         rl_progress.setOnClickListener(this);
         mRoundProgressBar.setTextSize(28);
         cl_headPortrait = (CircleImageView) view.findViewById(R.id.cl_headPortrait);
-        loadingUtil = new LoadingUtil(getActivity(),getContext());
+        loadingUtil = new LoadingUtil(getActivity(), getContext());
         mExpandView.collapse();
         for (int i = 0; i < mExpandView.getChildCount(); i++) {
             mExpandView.getChildAt(i).setVisibility(View.GONE);
@@ -291,8 +310,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         invest.setOnClickListener(this);
         showOther();
         showHeadNum();
-        loadCommentData(true,currentPage);
-        loadInvestorData(true,currentPage);
+        loadCommentData(true, currentPage);
+        loadInvestorData(true, currentPage);
         setInvestorTopAdapter();
         setInvesterAdapter();
         setCommentAdapter();
@@ -335,7 +354,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         if (item.getCreator() != null) {
                             if ("1".equals(item.getCreator().getType())) {
                                 helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
-                            }else {
+                            } else {
                                 helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
                             }
                             intent.putExtra("name", item.getCreator().getName());
@@ -559,13 +578,16 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         AppApplication.displayImage(artwork.getAuthor().getPictureUrl(), cl_headPortrait);
                         if ("1".equals(artwork.getType())) {
                             headV.setVisibility(View.VISIBLE);
-                        } else  {
+                        } else {
                             headV.setVisibility(View.INVISIBLE);
                         }
                     }
                     if (isPraise1) {
                         llpraise.setBackgroundResource(R.drawable.praise_after_shape);
                         praiseNum.setTextColor(Color.rgb(255, 255, 255));
+                    } else {
+                        llpraise.setBackgroundResource(R.drawable.praise_shape);
+                        praiseNum.setTextColor(Color.rgb(199, 31, 33));
                     }
                     praiseNum.setText(artwork.getPraiseNUm() + "");
                     reader.setText(artwork.getViewNum() + "");
@@ -627,9 +649,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     System.out.println(progress);
                     mRoundProgressBar.setProgress(progress);
                     try {
-                        if (temp != 0) {
-                            Thread.sleep(250 / temp);
-                        }
+                        Thread.sleep(250 / temp);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -637,6 +657,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             }
         }).start();
     }
+
     private void loadPraiseHeadData(final List<ArtWorkPraiseList> artWorkPraiseList) {
         if (count == 0) {
             go.setVisibility(View.GONE);
@@ -645,23 +666,36 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             for (int i = 0; i < count; i++) {
                 praiseHeadDatas.add(artWorkPraiseList.get(i));
             }
-        }else {
+        } else {
             praiseHeadDatas.addAll(artWorkPraiseList);
         }
     }
+
     private void setPraiseHeadAdapter() {
         praiseHeadCommonAdapter = new CommonAdapter<ArtWorkPraiseList>(getActivity(), praiseHeadDatas, R.layout.praise_head_item) {
             @Override
             public void convert(ViewHolder helper, ArtWorkPraiseList item) {
                 if (item.getUser().getPictureUrl() != null) {
-helper.setImageByUrl(R.id.civ_head,item.getUser().getPictureUrl());
-                }else {
-                    helper.setImageResource(R.id.civ_head,R.mipmap.default_icon);
+                    helper.setImageByUrl(R.id.civ_head, item.getUser().getPictureUrl());
+                } else {
+                    helper.setImageResource(R.id.civ_head, R.mipmap.default_icon);
                 }
             }
 
 
         };
+        praiseHLV.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_MOVE:
+                        return true;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
         praiseHLV.setAdapter(praiseHeadCommonAdapter);
     }
 /*
@@ -998,16 +1032,14 @@ helper.setImageByUrl(R.id.civ_head,item.getUser().getPictureUrl());
                 } else {
                     if (!isPraise1) {
                         praise(artWorkId);
-                        isPraise1 = true;
                     } else {
                         cancelPraise(artWorkId);
-                        isPraise1 = false;
                     }
                 }
                 break;
             case R.id.ib_go:
-                Intent intent = new Intent(getActivity(),PraiseListActivity.class);
-                intent.putExtra("artWorkId",artWorkId);
+                Intent intent = new Intent(getActivity(), PraiseListActivity.class);
+                intent.putExtra("artWorkId", artWorkId);
                 startActivity(intent);
                 break;
             case R.id.rzp_ll_invest:
@@ -1167,10 +1199,13 @@ helper.setImageByUrl(R.id.civ_head,item.getUser().getPictureUrl());
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
-                    ToastUtil.showLong(getActivity(), "点赞成功");
-                    Message msg = Message.obtain();
-                    msg.what = PRAISE_SUC;
-                    handler.sendMessage(msg);
+                    if (!isPraise1){
+                        Message msg = Message.obtain();
+                        msg.what = PRAISE_SUC;
+                        handler.sendMessage(msg);
+                    }else {
+                        cancelPraise(artworkId);
+                    }
                 } else if ("000000".equals(response.get("resultCode"))) {
                     SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
                         @Override
@@ -1209,10 +1244,13 @@ helper.setImageByUrl(R.id.civ_head,item.getUser().getPictureUrl());
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
-                    ToastUtil.showLong(getActivity(), "取消点赞");
-                    Message msg = Message.obtain();
-                    msg.what = PRAISE_CANCEL;
-                    handler.sendMessage(msg);
+                    if (isPraise1){
+                        Message msg = Message.obtain();
+                        msg.what = PRAISE_CANCEL;
+                        handler.sendMessage(msg);
+                    }else {
+                        praise(artworkId);
+                    }
                 } else if ("000000".equals(response.get("resultCode"))) {
                     SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
                         @Override

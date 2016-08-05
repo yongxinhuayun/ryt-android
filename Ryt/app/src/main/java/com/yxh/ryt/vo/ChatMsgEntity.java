@@ -4,6 +4,15 @@ package com.yxh.ryt.vo;
 public class ChatMsgEntity {
     private static final String TAG = ChatMsgEntity.class.getSimpleName();
 
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
+    private String picUrl;
     private String name;
 
     private String date;
