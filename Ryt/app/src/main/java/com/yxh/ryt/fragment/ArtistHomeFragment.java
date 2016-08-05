@@ -457,6 +457,8 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
             if ("1".equals(getFirstLetter(attentionDatas.get(position-2).getStep()))){
                 Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
                 intent.putExtra("id",attentionDatas.get(position-2).getId());
+                intent.putExtra("name", attentionDatas.get(position - 2).getTitle());
+                intent.putExtra("userId",attentionDatas.get(position-2).getAuthor().getId());
                 startActivity(intent);
             }else if ("2".equals(getFirstLetter(attentionDatas.get(position-2).getStep()))){
                 Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);

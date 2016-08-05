@@ -392,6 +392,8 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 			System.out.println("view--->x坐标:"+location1 [0]+"view--->y坐标:"+location1 [1]);*/
             Intent intent = new Intent(getActivity(), FinanceSummaryActivity.class);
             intent.putExtra("id", rongZiDatas.get(position - 1).getId());
+            intent.putExtra("name", rongZiDatas.get(position - 1).getTitle());
+            intent.putExtra("userId",rongZiDatas.get(position-1).getAuthor().getId());
             startActivity(intent);
         }
     }

@@ -374,6 +374,8 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
             if ("1".equals(getFirstLetter(rongZiDatas.get(position-1).getStep()))){
                 Intent intent=new Intent(getActivity(), FinanceSummaryActivity.class);
                 intent.putExtra("id",rongZiDatas.get(position-1).getId());
+                intent.putExtra("name",rongZiDatas.get(position-1).getTitle());
+                intent.putExtra("userId",rongZiDatas.get(position-1).getAuthor().getId());
                 startActivity(intent);
             }else if ("2".equals(getFirstLetter(rongZiDatas.get(position-1).getStep()))){
                 Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);
