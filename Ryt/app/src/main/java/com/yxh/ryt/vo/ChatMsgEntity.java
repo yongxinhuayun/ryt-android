@@ -1,7 +1,9 @@
 
 package com.yxh.ryt.vo;
 
-public class ChatMsgEntity {
+import java.io.Serializable;
+
+public class ChatMsgEntity implements Serializable {
     private static final String TAG = ChatMsgEntity.class.getSimpleName();
 
     private String name;

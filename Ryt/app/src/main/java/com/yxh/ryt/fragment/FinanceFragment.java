@@ -210,13 +210,13 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
                     helper.setText(R.id.fli1_tv_date, Utils.getJudgeDate(item.getInvestRestTime()) + "后截止");
                     helper.setImageByUrl(R.id.clh_tv_prc, item.getPicture_url());
                     helper.setText(R.id.fli1_tv_money, item.getInvestsMoney() + "元/" + item.getInvestGoalMoney() + "元");
-                    if (null != item.getAuthor().getMaster() && !"".equals(item.getAuthor().getMaster().getTitle())) {
-                        helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.VISIBLE);
-                        helper.setText(R.id.clh_tv_artistTitle, item.getAuthor().getMaster().getTitle());
-                    } else {
-                        helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.GONE);
-                    }
-                    double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
+                        if (null != item.getAuthor().getMaster() && !"".equals(item.getAuthor().getMaster().getTitle())) {
+                            helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.VISIBLE);
+                            helper.setText(R.id.clh_tv_artistTitle, item.getAuthor().getMaster().getTitle());
+                        } else {
+                            helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.GONE);
+                        }
+                    double  value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
                     helper.setProgress(R.id.fli1_pb_progress, (int) (value * 100));
                     if (selected.get(helper.getPosition())) {
                         helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);

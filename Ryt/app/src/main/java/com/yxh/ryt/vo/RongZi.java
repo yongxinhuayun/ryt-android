@@ -1,11 +1,12 @@
 package com.yxh.ryt.vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * Created by  on 2016/4/5.
  */
-public class RongZi {
+public class RongZi implements Serializable {
     /**
      * id : qydeyugqqiugd7
      * title : 测试6

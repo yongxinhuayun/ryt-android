@@ -1,9 +1,11 @@
 package com.yxh.ryt.vo;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2016/4/5.
  */
-public class PrivateLetter {
+public class PrivateLetter implements Serializable {
     private String id;
     private String content;
     private User fromUser;
