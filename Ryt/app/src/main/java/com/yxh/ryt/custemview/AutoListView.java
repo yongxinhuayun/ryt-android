@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -122,18 +121,16 @@ public class AutoListView extends ListView implements OnScrollListener {
 	private void initView(Context context) {
 
 		// 设置箭头特效
-		animation = new RotateAnimation(0, -180,
+		animation = new RotateAnimation(0, -180f,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-		animation.setInterpolator(new LinearInterpolator());
-		animation.setDuration(100);
+		animation.setDuration(300);
 		animation.setFillAfter(true);
 
-		reverseAnimation = new RotateAnimation(-180, 0,
+		reverseAnimation = new RotateAnimation(-180f, -360f,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-		reverseAnimation.setInterpolator(new LinearInterpolator());
-		reverseAnimation.setDuration(100);
+		reverseAnimation.setDuration(300);
 		reverseAnimation.setFillAfter(true);
 
 		inflater = LayoutInflater.from(context);
@@ -330,36 +327,37 @@ public class AutoListView extends ListView implements OnScrollListener {
 			case NONE:
 				topPadding(-headerContentHeight);
 				tip.setText(R.string.pull_to_refresh);
-				refreshing.setVisibility(View.GONE);
-				arrow.clearAnimation();
-				arrow.setImageResource(R.mipmap.pull_to_refresh_arrow);
+				refreshing.setVisibility(View.INVISIBLE);
+				//arrow.clearAnimation();
 				break;
 			case PULL:
 				arrow.setVisibility(View.VISIBLE);
 				tip.setVisibility(View.VISIBLE);
 				lastUpdate.setVisibility(View.VISIBLE);
-				refreshing.setVisibility(View.GONE);
+				refreshing.setVisibility(View.INVISIBLE);
 				tip.setText(R.string.pull_to_refresh);
-				arrow.clearAnimation();
+				//arrow.clearAnimation();
 				arrow.setAnimation(reverseAnimation);
+				arrow.startAnimation(reverseAnimation);
 				break;
 			case RELEASE:
 				arrow.setVisibility(View.VISIBLE);
 				tip.setVisibility(View.VISIBLE);
 				lastUpdate.setVisibility(View.VISIBLE);
-				refreshing.setVisibility(View.GONE);
-				tip.setText(R.string.pull_to_refresh);
+				refreshing.setVisibility(View.INVISIBLE);
 				tip.setText(R.string.release_to_refresh);
-				arrow.clearAnimation();
+				//arrow.clearAnimation();
 				arrow.setAnimation(animation);
+				arrow.startAnimation(animation);
 				break;
 			case REFRESHING:
 				topPadding(headerContentInitialHeight);
 				refreshing.setVisibility(View.VISIBLE);
 				arrow.clearAnimation();
-				arrow.setVisibility(View.GONE);
-				tip.setVisibility(View.GONE);
-				lastUpdate.setVisibility(View.GONE);
+				arrow.setVisibility(View.INVISIBLE);
+				tip.setVisibility(View.VISIBLE);
+				tip.setText("正在刷新");
+				lastUpdate.setVisibility(View.VISIBLE);
 				break;
 		}
 	}

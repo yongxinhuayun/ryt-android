@@ -18,24 +18,32 @@
             android:layout_centerVertical="true"
             android:orientation="vertical" >
 
-            <ProgressBar
-                android:id="@+id/refreshing"
-                style="@style/customProgressBar" />
+               <!-- style="@style/customProgressBar"-->
+            />
 
             <TextView
                 android:id="@+id/tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:textColor="#676767"/>
 
             <TextView
                 android:id="@+id/lastUpdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="#676767"
                 android:textSize="12sp" />
         </LinearLayout>
-
+        <ProgressBar
+            android:id="@+id/refreshing"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/loading"/>
         <ImageView
             android:id="@+id/arrow"
             android:layout_width="wrap_content"
@@ -44,7 +52,7 @@
             android:layout_marginRight="20dp"
             android:layout_toLeftOf="@id/layout"
 
-            android:src="@mipmap/pull_to_refresh_arrow" />
+            android:src="@mipmap/refresh_arrow" />
     </RelativeLayout>
 
 
