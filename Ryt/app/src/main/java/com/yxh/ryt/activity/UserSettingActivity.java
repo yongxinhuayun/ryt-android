@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -18,12 +17,9 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.util.DataCleanManager;
-import com.yxh.ryt.util.FileSizeUtil;
 import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.ToastUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
-
-import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,13 +38,13 @@ public class UserSettingActivity extends BaseActivity {
     @Bind(R.id.go3)
     TextView huanCun;
     private SettingReceiver receiver;
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case 1:
-                    huanCun.setText("0B");
+                    huanCun.setText("0.0Byte");
                     ToastUtil.showLong(UserSettingActivity.this, "清除缓存成功");
             }
         }
@@ -81,15 +77,16 @@ public class UserSettingActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         try {
-            huanCun.setText(FileSizeUtil.getAutoFileOrFilesSize(Environment.getExternalStorageDirectory() + File.separator + "im/video"));
+            String allCache = DataCleanManager.getCacheSize(getExternalCacheDir());
+            huanCun.setText(allCache);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @OnClick({R.id.rl_about,R.id.btn_out,R.id.rl_hc})
-    void itemClick(View v){
-        switch (v.getId()){
+    @OnClick({R.id.rl_about, R.id.btn_out, R.id.rl_hc})
+    void itemClick(View v) {
+        switch (v.getId()) {
             case R.id.rl_about:
                 UserSettingAboutActivity.openActivity(this);
                 break;
@@ -106,20 +103,21 @@ public class UserSettingActivity extends BaseActivity {
                 SPUtil.put(getApplicationContext(), Constants.ISFIRSTENTER, false);
                 btnOut.setVisibility(View.GONE);
                 OkHttpUtils.getInstance().getCookieStore().removeAll();
-                Intent intent=new Intent(this, LoginActivity.class);
+                Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 break;
             case R.id.rl_hc:
-                if ("0B".equals(huanCun.getText().toString())){
-                    ToastUtil.showLong(UserSettingActivity.this,"不需要清除缓存");
+                if ("0B".equals(huanCun.getText().toString())) {
+                    ToastUtil.showLong(UserSettingActivity.this, "不需要清除缓存");
                     break;
                 }
-                Thread thread=new Thread(new Runnable() {
+                Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        DataCleanManager.deleteFolderFile(Environment.getExternalStorageDirectory() + File.separator + "im/video", true);
-                        Message message=new Message();
-                        message.what=1;
+                        DataCleanManager.cleanInternalCache(getApplicationContext());
+                        DataCleanManager.cleanExternalCache(getApplicationContext());
+                        Message message = new Message();
+                        message.what = 1;
                         handler.sendMessage(message);
                     }
                 });
@@ -127,16 +125,18 @@ public class UserSettingActivity extends BaseActivity {
                 break;
         }
     }
+
     public class SettingReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(action.equals("android.intent.action.LOGIN_SUC_BROADCAST")){
+            if (action.equals("android.intent.action.LOGIN_SUC_BROADCAST")) {
                 btnOut.setVisibility(View.VISIBLE);
             }
         }
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -147,6 +147,7 @@ public class UserSettingActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
     @OnClick(R.id.us_ib_back)
     public void back() {
         finish();

@@ -83,7 +83,6 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
     private String[] dataArray = new String[]{};
 
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         switch (v.getId()) {
             case R.id.btn_send:
                 send();
@@ -103,7 +102,7 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
             entity.setName(currentName);
             entity.setMsgType(false);
             entity.setText(contString);
-            //entity.setUserId(fromId);
+            entity.setPicUrl(AppApplication.gUser.getPictureUrl());
             pushMessageRequst();
             mDataArrays.add(entity);
             mAdapter.notifyDataSetChanged();
@@ -176,7 +175,6 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
 
     private void LoadData() {
         Map<String, String> paramsMap = new HashMap<>();
-        //paramsMap.put("userId", userId);
         paramsMap.put("fromUserId", fromId);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -203,10 +201,9 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
                             PrivateLetter next = iterator.next();
                             entity.setDate(Utils.timeToFormatTemp("yyyy-MM-dd hh:mm:ss", next.getCreateDatetime()));
                             entity.setName(next.getFromUser().getName());
+                            entity.setPicUrl(next.getFromUser().getPictureUrl());
                             entity.setText(next.getContent());
-                        /*if(AppApplication.gUser.getId().equals(next.getFromUser().getId())) {
-							entity.setMsgType(false);
-						}*/
+
                             entity.setUserId(next.getFromUser().getId());
                             if (userId.equals(next.getFromUser().getId())) {
                                 entity.setMsgType(false);

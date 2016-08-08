@@ -23,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -43,6 +44,7 @@ import com.yxh.ryt.activity.CommentListActivity;
 import com.yxh.ryt.activity.InvestActivity;
 import com.yxh.ryt.activity.InvestorActivity;
 import com.yxh.ryt.activity.LoginActivity;
+import com.yxh.ryt.activity.PraiseListActivity;
 import com.yxh.ryt.activity.ProjectCommentReply;
 import com.yxh.ryt.activity.UserIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
@@ -51,6 +53,7 @@ import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.custemview.ExpandView;
+import com.yxh.ryt.custemview.HorizontalListView;
 import com.yxh.ryt.custemview.ListViewForScrollView;
 import com.yxh.ryt.custemview.RoundProgressBar;
 import com.yxh.ryt.util.DateUtil;
@@ -69,13 +72,13 @@ import com.yxh.ryt.vo.ArtworkComment;
 import com.yxh.ryt.vo.ArtworkInvest;
 import com.yxh.ryt.vo.ArtworkInvestTop;
 import com.yxh.ryt.vo.User;
-import com.zhy.http.okhttp.callback.BitmapCallback;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -155,13 +158,17 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private TextView creatTime;
     private LoadingUtil loadingUtil;
     private ImageView iMaster;
-    private Map<Integer,CircleImageView> bitmaps;
-    private int zhongjianbianliang;
+    private Bitmap bitmap;
+    private LinearLayout praiseLinearLayout;
+    private CircleImageView mImageView;
+    private List<ArtWorkPraiseList> praiseHeadDatas;
+    private CommonAdapter<ArtWorkPraiseList> praiseHeadCommonAdapter;
+    private HorizontalListView praiseHLV;
+    private CircleImageView myPraise;
 
     public RZProjectFragment(String artWorkId) {
         super();
         this.artWorkId = artWorkId;
-        bitmaps=new HashMap<>();
     }
 
     private final Handler mHandler = new Handler();
@@ -170,18 +177,45 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PRAISE_SUC:
+                    isPraise1 = true;
                     int a = Integer.parseInt(praiseNum.getText().toString());
                     a++;
                     praiseNum.setText(a + "");
                     llpraise.setBackgroundResource(R.drawable.praise_after_shape);
                     praiseNum.setTextColor(Color.rgb(255, 255, 255));
+                    myPraise.setVisibility(View.VISIBLE);
+                    myPraise.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getActivity(), PraiseListActivity.class);
+                            intent.putExtra("artWorkId", artWorkId);
+                            startActivity(intent);
+                        }
+                    });
+                    AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), myPraise);
+                    //refreshPraise();
                     break;
                 case PRAISE_CANCEL:
+                    isPraise1 = false;
                     int s = Integer.parseInt(praiseNum.getText().toString());
                     s--;
                     praiseNum.setText(s + "");
                     llpraise.setBackgroundResource(R.drawable.praise_shape);
                     praiseNum.setTextColor(Color.rgb(199, 31, 33));
+                    myPraise.setVisibility(View.GONE);
+                   /* for (int i = 0;i < praiseHeadDatas.size();i++){
+                        if (AppApplication.gUser.getId().equals(praiseHeadDatas.get(i).getUser().getId())) {
+                            praiseHeadDatas.remove(praiseHeadDatas.get(i));
+                        }
+                    }*/
+                    for (Iterator<ArtWorkPraiseList> it = praiseHeadDatas.iterator(); it.hasNext(); ) {
+                        ArtWorkPraiseList ss = it.next();
+                        if (AppApplication.gUser.getId().equals(ss.getUser().getId())) {
+                            it.remove();
+                        }
+                    }
+                    praiseHeadCommonAdapter.notifyDataSetChanged();
+                    // refreshPraise();
                     break;
                 case COUNT_DOWN:
                     deadTime -= 1000;
@@ -222,9 +256,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         artCommentDatas = new ArrayList<ArtworkComment>();
         investorDatas = new ArrayList<>();
         investorTopDatas = new ArrayList<>();
+        praiseHeadDatas = new ArrayList<>();
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -233,7 +267,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         creatTime = (TextView) view.findViewById(R.id.tv_creat_time);
         dianzan = (ImageView) view.findViewById(R.id.iv_praise);
         headV = (ImageView) view.findViewById(R.id.iv_master);
-        ll_invester = (LinearLayout) view.findViewById(R.id.ll_invester);
+        myPraise = (CircleImageView) view.findViewById(R.id.civ_pic);
+        // ll_invester = (LinearLayout) view.findViewById(R.id.ll_invester);
         ll_project = (LinearLayout) view.findViewById(R.id.ll_project);
         rl_progress = (RelativeLayout) view.findViewById(R.id.rl_progress);
         tv_project_name = (TextView) view.findViewById(R.id.tv_project_name);
@@ -253,21 +288,20 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         comment = (Button) view.findViewById(R.id.bt_comment);
         etComment = (EditText) view.findViewById(R.id.et_comment);
         attention = (ImageButton) view.findViewById(R.id.ib_attention);
+        praiseHLV = (HorizontalListView) view.findViewById(R.id.hlv_praise);
         attention.setOnClickListener(this);
         comment.setOnClickListener(this);
         invest = ((LinearLayout) view.findViewById(R.id.rzp_ll_invest));
         llpraise = (LinearLayout) view.findViewById(R.id.ll_praise);
-        llinvester = (LinearLayout) view.findViewById(R.id.ll_invester);
+        //llinvester = (LinearLayout) view.findViewById(R.id.ll_invester);
         mExpandView = (ExpandView) view.findViewById(R.id.expandView);
-        mExpandView.setLayoutId(R.layout.layout_expand);
-        ((WebView) mExpandView.findViewById(R.id.wv_invest_process)).loadUrl("file:///android_asset/InvestFlowControlller.html");
         sv = (ScrollView) view.findViewById(R.id.sv_sv);
         mRoundProgressBar = (RoundProgressBar) view.findViewById(R.id.rpb_progress);
         iv_show = (ImageView) view.findViewById(R.id.iv_is_show);
         rl_progress.setOnClickListener(this);
         mRoundProgressBar.setTextSize(28);
         cl_headPortrait = (CircleImageView) view.findViewById(R.id.cl_headPortrait);
-        loadingUtil = new LoadingUtil(getActivity(),getContext());
+        loadingUtil = new LoadingUtil(getActivity(), getContext());
         mExpandView.collapse();
         for (int i = 0; i < mExpandView.getChildCount(); i++) {
             mExpandView.getChildAt(i).setVisibility(View.GONE);
@@ -283,10 +317,22 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         iTopListview = (ListViewForScrollView) view.findViewById(R.id.lv_invester_top);
         iTopListview.hideFooterView();
         invest.setOnClickListener(this);
+        praiseHLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), PraiseListActivity.class);
+                intent.putExtra("artWorkId", artWorkId);
+                startActivity(intent);
+            }
+        });
         showOther();
+        showHeadNum();
+        loadCommentData(true, currentPage);
+        loadInvestorData(true, currentPage);
         setInvestorTopAdapter();
         setInvesterAdapter();
         setCommentAdapter();
+        setPraiseHeadAdapter();
         return view;
     }
 
@@ -304,7 +350,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         //图片宽高
         widthImage = Utils.dip2px(getActivity(), 24);
         heightIamge = Utils.dip2px(getActivity(), 24);
-        //图片paddingao
+        //图片padding
         right = Utils.dip2px(getActivity(), 10);
         //一行能容纳的图片个数
         //praise与view间距
@@ -316,13 +362,18 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private void setCommentAdapter() {
         artCommentAdapter = new CommonAdapter<ArtworkComment>(getActivity(), artCommentDatas, R.layout.pdonclicktab_comment_item) {
             @Override
-            public void convert(ViewHolder helper, final ArtworkComment item) {
+            public void convert(final ViewHolder helper, final ArtworkComment item) {
                 LinearLayout linearLayout = helper.getView(R.id.pdctci_ll_all);
                 linearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
                         if (item.getCreator() != null) {
+                            if ("1".equals(item.getCreator().getType())) {
+                                helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
+                            } else {
+                                helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
+                            }
                             intent.putExtra("name", item.getCreator().getName());
                         } else {
                             intent.putExtra("name", "");
@@ -338,11 +389,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         }
                     }
                 });
-                if ("1".equals(item.getCreator().getType())) {
-                    helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
-                }else {
-                    helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
-                }
+
                 helper.getView(R.id.pdctci_tv_nickName).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -450,10 +497,43 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     });
                     sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
-                // setCommentAdapter();
             }
         });
     }
+
+    private void refreshPraise() {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("artWorkId", artWorkId);
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkView.do", paramsMap, new RongZiListCallBack() {
+
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                Map<String, Object> object = (Map<String, Object>) response.get("object");
+                if (object != null) {
+                    artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                            toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
+                    }.getType());
+                    praiseHeadDatas.clear();
+                    loadPraiseHeadData(artWorkPraiseList);
+                    praiseHeadCommonAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
 
     private void showOther() {
         loadingUtil.show();
@@ -483,10 +563,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
                             toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
                     }.getType());
-                    if (artWorkPraiseList != null && artWorkPraiseList.size() > 0) {
-                        showInvesterHead(artWorkPraiseList);
-                    }
 
+                    loadPraiseHeadData(artWorkPraiseList);
                     isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
                     artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
                     deadTime = Long.parseLong(artwork.getInvestRestTime());
@@ -514,13 +592,16 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         AppApplication.displayImage(artwork.getAuthor().getPictureUrl(), cl_headPortrait);
                         if ("1".equals(artwork.getType())) {
                             headV.setVisibility(View.VISIBLE);
-                        } else  {
+                        } else {
                             headV.setVisibility(View.INVISIBLE);
                         }
                     }
                     if (isPraise1) {
                         llpraise.setBackgroundResource(R.drawable.praise_after_shape);
                         praiseNum.setTextColor(Color.rgb(255, 255, 255));
+                    } else {
+                        llpraise.setBackgroundResource(R.drawable.praise_shape);
+                        praiseNum.setTextColor(Color.rgb(199, 31, 33));
                     }
                     praiseNum.setText(artwork.getPraiseNUm() + "");
                     reader.setText(artwork.getViewNum() + "");
@@ -591,87 +672,46 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         }).start();
     }
 
-    private void showInvesterHead(final List<ArtWorkPraiseList> artWorkPraiseList) {
-        if (artWorkPraiseList.size() > count) {
-            final LinearLayout linearLayout = new LinearLayout(getActivity());
-            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-            for (int j = 0; j < count; j++) {
-                final int temp = j;
-                final CircleImageView imageView = new CircleImageView(getActivity());
-                // 获取LayoutParams，给view对象设置宽度，高度
-                final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthImage, heightIamge);
-                params.setMargins(0, 0, right, 0);
-                NetRequestUtil.downloadImage(artWorkPraiseList.get(j).getUser().getPictureUrl(), new BitmapCallback() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-
-                    }
-
-                    @Override
-                    public void onResponse(Bitmap response) {
-                        zhongjianbianliang++;
-                        Bitmap bitmap = comp(response, artWorkPraiseList.get(temp).getUser().getPictureUrl());
-                        imageView.setImageBitmap(bitmap);
-                        imageView.setLayoutParams(params);
-                        bitmaps.put(temp,imageView);
-                        if (zhongjianbianliang==count){
-                            for (int x=0;x<count;x++){
-                                linearLayout.addView(bitmaps.get(x));
-                            }
-                        }
-                        imageView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                clickHead(temp);
-                            }
-                        });
-                    }
-                });
+    private void loadPraiseHeadData(final List<ArtWorkPraiseList> artWorkPraiseList) {
+        if (count == 0) {
+            go.setVisibility(View.GONE);
+        }
+        if (count != 0 && artWorkPraiseList.size() > count) {
+            for (int i = 0; i < count; i++) {
+                praiseHeadDatas.add(artWorkPraiseList.get(i));
             }
-            llinvester.addView(linearLayout);
         } else {
-            final LinearLayout linearLayout = new LinearLayout(getActivity());
-            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-            for (int j = 0; j < artWorkPraiseList.size(); j++) {
-                User user = artWorkPraiseList.get(j).getUser();
-
-                final CircleImageView imageView = new CircleImageView(getActivity());
-                // 获取LayoutParams，给view对象设置宽度，高度
-                final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthImage, heightIamge);
-                params.setMargins(0, 0, right, 0);
-                final int temp = j;
-                NetRequestUtil.downloadImage(artWorkPraiseList.get(j).getUser().getPictureUrl(), new BitmapCallback() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-
-                    }
-
-                    @Override
-                    public void onResponse(Bitmap response) {
-                        zhongjianbianliang++;
-                        Bitmap bitmap = comp(response, artWorkPraiseList.get(temp).getUser().getPictureUrl());
-                        imageView.setImageBitmap(bitmap);
-                        imageView.setLayoutParams(params);
-                        bitmaps.put(temp,imageView);
-                        if (zhongjianbianliang==artWorkPraiseList.size()){
-                            for (int x=0;x<artWorkPraiseList.size();x++){
-                                linearLayout.addView(bitmaps.get(x));
-                            }
-                        }
-                        imageView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                clickHead(temp);
-                            }
-                        });
-                    }
-                });
-
-            }
-            llinvester.addView(linearLayout);
+            praiseHeadDatas.addAll(artWorkPraiseList);
         }
     }
 
+    private void setPraiseHeadAdapter() {
+        praiseHeadCommonAdapter = new CommonAdapter<ArtWorkPraiseList>(getActivity(), praiseHeadDatas, R.layout.praise_head_item) {
+            @Override
+            public void convert(ViewHolder helper, ArtWorkPraiseList item) {
+                if (item.getUser().getPictureUrl() != null) {
+                    helper.setImageByUrl(R.id.civ_head, item.getUser().getPictureUrl());
+                } else {
+                    helper.setImageResource(R.id.civ_head, R.mipmap.default_icon);
+                }
+            }
+
+
+        };
+        praiseHLV.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_MOVE:
+                        return true;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
+        praiseHLV.setAdapter(praiseHeadCommonAdapter);
+    }
     private Bitmap comp(Bitmap response, String pictureUrl) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap.CompressFormat format = Utils.getImageFormatBig(pictureUrl);
@@ -743,18 +783,12 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     public void onResume() {
         super.onResume();
         artCommentDatas.clear();
-        investorTopDatas.clear();
-        investorDatas.clear();
         currentPage = 1;
-        //点赞头像展示
-        showHeadNum();
-        loadInvestorData(true, currentPage);
         loadCommentData(true, currentPage);
     }
 
     @Override
     protected void lazyLoad() {
-
     }
 
     private void setInvesterAdapter() {
@@ -770,8 +804,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 helper.getView(R.id.civ_top).setVisibility(View.GONE);
                 helper.getView(R.id.cl_01_civ_pm).setVisibility(View.VISIBLE);
                 helper.setText(R.id.cl_01_civ_pm, (helper.getPosition() + 1) + "");
-                // }
-                helper.setText(R.id.iri_tv_content, "￥" + item.getPrice() + ".00");
+                helper.setText(R.id.iri_tv_content, "￥" + item.getPrice());
                 helper.setText(R.id.iri_tv_date, DateUtil.millionToNearly(item.getCreateDatetime()));
             }
         };
@@ -838,17 +871,16 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 investorDatas.add(investList.get(i));
             }
             iListview.showFooterView();
-            clickMore(iListview, InvestorActivity.class);
+            Intent intent = new Intent(getActivity(), InvestorActivity.class);
+            clickMore(iListview, intent);
         }
     }
 
-    private void clickMore(ListViewForScrollView myListview, final Class cls) {
+    private void clickMore(ListViewForScrollView myListview, final Intent intent) {
         myListview.footerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), cls);
                 intent.putExtra("artWorkId", artWorkId);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(intent);
             }
         });
@@ -861,11 +893,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 if (item.getCreator() != null) {
                     helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
                     if (item.getCreator().getName() != null) {
-                        if (item.getCreator().getName().length() > 5) {
-                            helper.setText(R.id.iri_tv_nickname, item.getCreator().getName().substring(0, 5) + "...");
-                        } else {
                             helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
-                        }
                     }
                 }
 
@@ -882,7 +910,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     helper.getView(R.id.cl_01_civ_pm).setVisibility(View.GONE);
                     helper.setImageResource(R.id.civ_top, R.mipmap.tongpai);
                 }
-                helper.setText(R.id.iri_tv_content, "￥" + item.getPrice() + ".00");
+                helper.setText(R.id.iri_tv_content, "￥" + item.getPrice());
                 helper.setText(R.id.iri_tv_date, DateUtil.millionToNearly(item.getCreateDatetime()));
             }
         };
@@ -904,7 +932,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             listView.showFooterView();
 
         }
-        clickMore(listView, CommentListActivity.class);
+        Intent intent = new Intent(getActivity(), CommentListActivity.class);
+        clickMore(listView, intent);
     }
 
     @Override
@@ -918,14 +947,15 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 } else {
                     if (!isPraise1) {
                         praise(artWorkId);
-                        isPraise1 = true;
                     } else {
                         cancelPraise(artWorkId);
-                        isPraise1 = false;
                     }
                 }
                 break;
             case R.id.ib_go:
+                Intent intent = new Intent(getActivity(), PraiseListActivity.class);
+                intent.putExtra("artWorkId", artWorkId);
+                startActivity(intent);
                 break;
             case R.id.rzp_ll_invest:
                 if ("".equals(AppApplication.gUser.getId())) {
@@ -959,7 +989,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     //ft.setTransition(FragmentTransaction.TRANSIT_NONE);
                     ft.commit();*/
                     iv_show.setImageResource(R.mipmap.show_progress);
-                    //mExpandView.setVisibility(View.VISIBLE);
+                    mExpandView.setVisibility(View.VISIBLE);
                 } else {
                     mExpandView.expand();
 
@@ -975,20 +1005,20 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 break;
             case R.id.ib_attention:
                 if (AppApplication.gUser != null && !"".equals(AppApplication.gUser.getId())) {
-                    Intent intent = new Intent(getActivity(), AttentionActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("userId", AppApplication.gUser.getId());
-                    intent.putExtra("otherUserId", artwork.getAuthor().getId());
+                    Intent intent1 = new Intent(getActivity(), AttentionActivity.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent1.putExtra("userId", AppApplication.gUser.getId());
+                    intent1.putExtra("otherUserId", artwork.getAuthor().getId());
                     if (AppApplication.gUser.getId().equals(artwork.getAuthor().getId())) {
-                        intent.putExtra("flag", "1");
+                        intent1.putExtra("flag", "1");
                     } else {
-                        intent.putExtra("flag", "2");
+                        intent1.putExtra("flag", "2");
                     }
-                    startActivity(intent);
+                    startActivity(intent1);
                 } else {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                    Intent intent2 = new Intent(getActivity(), LoginActivity.class);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent2);
                 }
 
                 break;
@@ -1084,10 +1114,13 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
-                    ToastUtil.showLong(getActivity(), "点赞成功");
-                    Message msg = Message.obtain();
-                    msg.what = PRAISE_SUC;
-                    handler.sendMessage(msg);
+                    if (!isPraise1){
+                        Message msg = Message.obtain();
+                        msg.what = PRAISE_SUC;
+                        handler.sendMessage(msg);
+                    }else {
+                        cancelPraise(artworkId);
+                    }
                 } else if ("000000".equals(response.get("resultCode"))) {
                     SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
                         @Override
@@ -1099,6 +1132,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     });
                     sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
+
             }
         });
     }
@@ -1125,10 +1159,13 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
-                    ToastUtil.showLong(getActivity(), "取消点赞");
-                    Message msg = Message.obtain();
-                    msg.what = PRAISE_CANCEL;
-                    handler.sendMessage(msg);
+                    if (isPraise1){
+                        Message msg = Message.obtain();
+                        msg.what = PRAISE_CANCEL;
+                        handler.sendMessage(msg);
+                    }else {
+                        praise(artworkId);
+                    }
                 } else if ("000000".equals(response.get("resultCode"))) {
                     SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
                         @Override
@@ -1142,6 +1179,5 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 }
             }
         });
-
     }
 }

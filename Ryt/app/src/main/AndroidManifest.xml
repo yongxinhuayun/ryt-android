@@ -65,9 +65,9 @@
         android:largeHeap="true">
         <activity
             android:name=".activity.SplashActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden">
+            android:screenOrientation="portrait">
+           <!-- android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -364,6 +364,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name=".activity.EditRecAddressActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserIndexActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PraiseListActivity" android:screenOrientation="portrait"/>
 
     </application>
 

@@ -212,7 +212,7 @@ public class CommentListActivity extends Activity implements AutoListView.OnRefr
     @Override
     public void onRefresh() {
         currentPage = 1;
-        artCommentDatas.clear();
+        //artCommentDatas.clear();
         loadData(AutoListView.REFRESH,currentPage);
     }
 

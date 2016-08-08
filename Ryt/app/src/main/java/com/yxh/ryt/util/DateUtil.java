@@ -73,7 +73,7 @@ public class DateUtil {
     public static String getTimestampString(Date date) {
         Date curDate = new Date();
         long splitTime = curDate.getTime() - date.getTime();
-        if (splitTime <(30 * ONE_DAY)) {
+        if (splitTime < (30 * ONE_DAY)) {
             if (splitTime < ONE_MINUTE) {
                 return "刚刚";
             }
@@ -247,23 +247,47 @@ public class DateUtil {
         }
         return d + h + m + s;
     }
+
     /**
+     * *几天前
      * *只显示天、时、分
-     * */
-    public static String millionToNearly(long millions){
+     */
+    public static String millionToNearly(long millions) {
         long currentTime = System.currentTimeMillis();
         long timeGap = currentTime - millions;
-        if (timeGap >= 1000*60*60*24){
-            String s = timeGap/1000/60/60/24+"天前";
+        if (timeGap >= 1000 * 60 * 60 * 24) {
+            String s = timeGap / 1000 / 60 / 60 / 24 + "天前";
             return s;
-        }else if (timeGap < 1000*60*60*24 && timeGap >= 1000*60*60){
-            String s = timeGap/1000/60/60+"小时前";
+        } else if (timeGap < 1000 * 60 * 60 * 24 && timeGap >= 1000 * 60 * 60) {
+            String s = timeGap / 1000 / 60 / 60 + "小时前";
             return s;
-        }else if (timeGap < 1000*60*60 && timeGap >= 1000*60){
-            String s = timeGap/1000/60+"分种前";
+        } else if (timeGap < 1000 * 60 * 60 && timeGap >= 1000 * 60) {
+            String s = timeGap / 1000 / 60 + "分种前";
             return s;
-        }else {
-            String s = timeGap/1000+"秒前";
+        } else {
+            String s = timeGap / 1000 + "秒前";
+            return s;
+        }
+    }
+
+    /**
+     * *几天后截止
+     * *只显示天、时、分
+     */
+    public static String millionToDead(long millions) {
+        long currentTime = System.currentTimeMillis();
+        long timeGap = millions - currentTime;
+        if (timeGap >= 1000 * 60 * 60 * 24) {
+            String s = timeGap / 1000 / 60 / 60 / 24 + "天";
+            return s;
+        } else if (timeGap < 1000 * 60 * 60 * 24 && timeGap >= 1000 * 60 * 60) {
+            String s = timeGap / 1000 / 60 / 60 + "小时";
+            return s;
+        } else if (timeGap < 1000 * 60 * 60 && timeGap >= 1000 * 60) {
+            String s = timeGap / 1000 / 60 + "分种";
+            return s;
+        } else {
+            String s = timeGap / 1000 + "秒";
             return s;
         }
     }

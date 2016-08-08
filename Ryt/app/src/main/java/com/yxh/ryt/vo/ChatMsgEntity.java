@@ -6,6 +6,15 @@ import java.io.Serializable;
 public class ChatMsgEntity implements Serializable {
     private static final String TAG = ChatMsgEntity.class.getSimpleName();
 
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
+    private String picUrl;
     private String name;
 
     private String date;
