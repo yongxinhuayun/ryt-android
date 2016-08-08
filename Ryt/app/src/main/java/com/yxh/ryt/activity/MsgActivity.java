@@ -207,7 +207,8 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
                             entity.setUserId(next.getFromUser().getId());
                             if (userId.equals(next.getFromUser().getId())) {
                                 entity.setMsgType(false);
-
+                            }else {
+                                entity.setMsgType(true);
                             }
                             mDataArrays.add(entity);
                         }

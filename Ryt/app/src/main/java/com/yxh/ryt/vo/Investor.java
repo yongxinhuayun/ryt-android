@@ -1,11 +1,12 @@
 package com.yxh.ryt.vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * Created by 吴洪杰 on 2016/4/7.
  */
-public class Investor {
+public class Investor implements Serializable {
     private String user_id;
     private String truename;
     private String username;

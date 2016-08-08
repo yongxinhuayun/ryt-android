@@ -1,9 +1,11 @@
 package com.yxh.ryt.vo;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2016/4/5.
  */
-public class Notification {
+public class Notification implements Serializable {
     private String content;
     private long createDatetime;
     private int isWatch;

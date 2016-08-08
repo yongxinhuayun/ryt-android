@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="20dp">
         <ImageView
-            android:src="@mipmap/yirongzi"
+            android:src="@mipmap/rongzijine"
             android:layout_gravity="center_vertical"
             android:layout_width="15dp"
             android:layout_height="18dp" />
@@ -41,7 +41,7 @@
         </FrameLayout>
         <ImageView
             android:layout_marginLeft="12dp"
-            android:src="@mipmap/jiezhishijian"
+            android:src="@mipmap/jizhishijian"
             android:layout_gravity="center_vertical"
             android:layout_width="15dp"
             android:layout_height="18dp" />

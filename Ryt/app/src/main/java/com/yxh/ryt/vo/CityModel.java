@@ -1,8 +1,9 @@
 package com.yxh.ryt.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CityModel {
+public class CityModel implements Serializable {
 	private String name;
 	private List<DistrictModel> districtList;
 	private String id;

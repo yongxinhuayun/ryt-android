@@ -1,6 +1,8 @@
 package com.yxh.ryt.vo;
 
-public class DistrictModel {
+import java.io.Serializable;
+
+public class DistrictModel implements Serializable {
 	private String name;
 	private String id;
 	

@@ -1,11 +1,12 @@
 package com.yxh.ryt.vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  *
  */
-public class Artist {
+public class Artist implements Serializable {
     private String author_id;
     private String truename;
     private String username;
