@@ -21,6 +21,7 @@ import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
+import com.yxh.ryt.util.AnimPraiseCancel;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -282,6 +283,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
                 if ("0".equals(response.get("resultCode"))) {
                     if (selected.get(helper.getPosition())) {
                         view.setBackgroundResource(R.drawable.praise_shape);
+                        AnimPraiseCancel.animCancelPraise(helper.getView(R.id.iv_xin_hui_left),helper.getView(R.id.iv_xin_hui_right));
                         textView.setTextColor(Color.rgb(199, 31, 33));
                         String raw = textView.getText().toString();
                         number.put(helper.getPosition(), praiseNum - 1);
@@ -305,6 +307,8 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
         });
 
     }
+
+
 
     private void praise(final String artworkId, final LinearLayout view, final TextView textView, final int praiseNum, final ViewHolder helper) {
         Map<String, String> paramsMap = new HashMap<>();
@@ -330,10 +334,28 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
                 if ("0".equals(response.get("resultCode"))) {
                     if (!selected.get(helper.getPosition())) {
                         view.setBackgroundResource(R.drawable.praise_after_shape);
+                        AnimPraiseCancel.animPraise(helper.getView(R.id.iv_praise_red));
                         textView.setTextColor(Color.rgb(255, 255, 255));
                         textView.setText(praiseNum + 1 + "");
                         number.put(helper.getPosition(), praiseNum + 1);
                         selected.put(helper.getPosition(), true);
+                        //向上平移
+                        /*Animator anim1 = ObjectAnimator.ofFloat(helper.getView(R.id.iv_praise_red),"translationY",0f,-150f);
+                        anim1.setDuration(2000);
+                        AnimatorSet animatorSet = new AnimatorSet();
+                        animatorSet.playSequentially(anim1);
+                        animatorSet.start();*/
+                       /* TranslateAnimation anim1 = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF,0f,TranslateAnimation.RELATIVE_TO_SELF,0f,
+                                TranslateAnimation.RELATIVE_TO_SELF,0f,TranslateAnimation.RELATIVE_TO_SELF,0f);
+                        anim1.setDuration(3000);
+                        anim1.setFillAfter(true);
+                        helper.getView(R.id.iv_praise).startAnimation(anim1);*/
+                        /*AnimationSet animatorSet = new AnimationSet(true);
+                        Animation translateAnimation= AnimationUtils.loadAnimation(getActivity(), R.anim.translate);//加载Xml文件中的动画
+                        Animation alphaAnimation = AnimationUtils.loadAnimation(getActivity(),R.anim.alpha);
+                        animatorSet.addAnimation(translateAnimation);*/
+                        //animatorSet.setInterpolator(getActivity(), android.R.anim.anticipate_interpolator);
+                        //animatorSet.addAnimation(animatorSet);
                     } else {
                         cancelPraise(artworkId, view, textView, praiseNum, helper);
                     }
@@ -352,6 +374,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
         });
 
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -401,4 +424,6 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
         super.onResume();
 
     }
+
+
 }

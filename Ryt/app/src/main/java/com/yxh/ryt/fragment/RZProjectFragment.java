@@ -97,7 +97,8 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private List<User> users;
     private List<ArtWorkPraiseList> artWorkPraiseList;
     private ImageView imageTitle;
-    private ImageView dianzan;
+    private ImageView leftPraise;
+    private ImageView rightPraise;
     private boolean flag1 = true;
     private boolean isPraise1;
     private LinearLayout ll_invester;
@@ -197,6 +198,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     break;
                 case PRAISE_CANCEL:
                     isPraise1 = false;
+                   // leftPraise.setVisibility(View.VISIBLE);
+                    //rightPraise.setVisibility(View.VISIBLE);
+                    //AnimPraiseCancel.animCancelPraise(leftPraise,rightPraise);
                     int s = Integer.parseInt(praiseNum.getText().toString());
                     s--;
                     praiseNum.setText(s + "");
@@ -264,8 +268,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.rz_project, container, false);
         imageTitle = (ImageView) view.findViewById(R.id.cl_01_tv_prc);
+        leftPraise = (ImageView) view.findViewById(R.id.iv_xin_hui_left);
+        rightPraise = (ImageView) view.findViewById(R.id.iv_xin_hui_right);
         creatTime = (TextView) view.findViewById(R.id.tv_creat_time);
-        dianzan = (ImageView) view.findViewById(R.id.iv_praise);
         headV = (ImageView) view.findViewById(R.id.iv_master);
         myPraise = (CircleImageView) view.findViewById(R.id.civ_pic);
         // ll_invester = (LinearLayout) view.findViewById(R.id.ll_invester);
