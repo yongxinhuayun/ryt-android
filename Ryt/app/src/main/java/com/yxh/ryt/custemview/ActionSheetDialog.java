@@ -181,9 +181,10 @@ public class ActionSheetDialog {
 		}
 	}
 
-	public void show() {
+	public ActionSheetDialog show() {
 		setSheetItems();
 		dialog.show();
+		return null;
 	}
 
 	public interface OnSheetItemClickListener {

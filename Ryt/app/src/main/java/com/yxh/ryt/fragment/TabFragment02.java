@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -19,6 +20,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016-4-4.
  */
+@SuppressLint("ValidFragment")
 public class TabFragment02 extends  BaseFragment {
     List<BaseFragment> paiHangChildFragments=new ArrayList<>();
     FragmentPagerAdapter paiHangChildAdapter;

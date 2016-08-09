@@ -1,8 +1,9 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
 import android.widget.AbsListView;
-
+@SuppressLint("ValidFragment")
 public abstract class ScrollTabHolderFragment extends BaseFragment implements ScrollTabHolder {
 
 	private int fragmentId;

@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016/4/13.
  */
+@SuppressLint("ValidFragment")
 public class CommentFragment extends BaseFragment implements AutoListView.OnLoadListener {
     private AutoListView lstv;
     private CommonAdapter<ArtworkComment> commentCommonAdapter;

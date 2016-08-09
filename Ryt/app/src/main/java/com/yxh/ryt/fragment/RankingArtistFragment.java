@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,7 +31,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-
+@SuppressLint("ValidFragment")
 public class RankingArtistFragment extends BaseFragment implements AutoListView.OnRefreshListener,
         AutoListView.OnLoadListener, AdapterView.OnItemClickListener {
     private AutoListView lstv;
@@ -127,9 +128,10 @@ public class RankingArtistFragment extends BaseFragment implements AutoListView.
                 }
                 helper.setImageByUrl(R.id.fra_civ_headerImage,item.getPicture());
                 helper.setText(R.id.fra_tv_name,item.getTruename());
-                float b =  (float)(Math.round(item.getBidding_rate()*10000))/100;
-                helper.setText(R.id.fra_tv_content,b+"%");
-                if (b>100){
+                float f =Float.valueOf(item.getBidding_rate()*100);
+                String s = String.format("%.2f", f);
+                helper.setText(R.id.fra_tv_content,s+"%");
+                if (f>100){
                     ((ImageView) helper.getView(R.id.fra_iv_rate)).setImageResource(R.mipmap.paihang_jiantou_red);
                 }else {
                     ((ImageView) helper.getView(R.id.fra_iv_rate)).setImageResource(R.mipmap.paihang_jiantou_green);

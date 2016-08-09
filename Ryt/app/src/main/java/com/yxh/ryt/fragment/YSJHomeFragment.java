@@ -128,48 +128,46 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 				helper.setText(R.id.mpi_tv_stage,AppApplication.map.get(item.getStep()));
 				helper.getView(R.id.mpi_tv_left).setVisibility(View.GONE);
 				helper.getView(R.id.mpi_tv_right).setVisibility(View.GONE);
-				if (userId.equals(currentId)){
-					if ("100".equals(item.getStep())){
-						helper.getView(R.id.mpi_tv_left).setVisibility(View.VISIBLE);
-						((TextView) helper.getView(R.id.mpi_tv_left)).setText("提交项目");
-						((TextView) helper.getView(R.id.mpi_tv_left)).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								submitArtwork(item.getId(), userId, "10");
-							}
-						});
-						helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);
-						((TextView) helper.getView(R.id.mpi_tv_right)).setText("编辑项目");
-						helper.getView(R.id.mpi_tv_right).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								Intent intent=new Intent(getActivity(), EditProject01Activity.class);
-								intent.putExtra("artWorkId",item.getId());
-								intent.putExtra("currentUserId",AppApplication.gUser.getId());
-								getActivity().startActivity(intent);
-							}
-						});
-					}else if ("21".equals(item.getStep()) || "22".equals(item.getStep())){
-						helper.getView(R.id.mpi_tv_left).setVisibility(View.VISIBLE);
-						helper.getView(R.id.mpi_tv_left).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								Intent intent=new Intent(getActivity(), CreateSuccessActivity.class);
-								intent.putExtra("artworkId",item.getId());
-								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-								getActivity().startActivity(intent);
-							}
-						});
-						((TextView) helper.getView(R.id.mpi_tv_left)).setText("创作完成");
-						helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);
-						((TextView) helper.getView(R.id.mpi_tv_right)).setText("发布动态");
-						helper.getView(R.id.mpi_tv_right).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								dynamic(item.getId());
-							}
-						});
-					}
+				if ("100".equals(item.getStep())){
+					helper.getView(R.id.mpi_tv_left).setVisibility(View.VISIBLE);
+					((TextView) helper.getView(R.id.mpi_tv_left)).setText("提交项目");
+					((TextView) helper.getView(R.id.mpi_tv_left)).setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							submitArtwork(item.getId(), userId, "10");
+						}
+					});
+					helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);
+					((TextView) helper.getView(R.id.mpi_tv_right)).setText("编辑项目");
+					helper.getView(R.id.mpi_tv_right).setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent intent=new Intent(getActivity(), EditProject01Activity.class);
+							intent.putExtra("artWorkId",item.getId());
+							intent.putExtra("currentUserId",AppApplication.gUser.getId());
+							getActivity().startActivity(intent);
+						}
+					});
+				}else if ("21".equals(item.getStep()) || "22".equals(item.getStep())){
+					helper.getView(R.id.mpi_tv_left).setVisibility(View.VISIBLE);
+					helper.getView(R.id.mpi_tv_left).setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent intent=new Intent(getActivity(), CreateSuccessActivity.class);
+							intent.putExtra("artworkId",item.getId());
+							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							getActivity().startActivity(intent);
+						}
+					});
+					((TextView) helper.getView(R.id.mpi_tv_left)).setText("创作完成");
+					helper.getView(R.id.mpi_tv_right).setVisibility(View.VISIBLE);
+					((TextView) helper.getView(R.id.mpi_tv_right)).setText("发布动态");
+					helper.getView(R.id.mpi_tv_right).setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							dynamic(item.getId());
+						}
+					});
 				}
 
 			}

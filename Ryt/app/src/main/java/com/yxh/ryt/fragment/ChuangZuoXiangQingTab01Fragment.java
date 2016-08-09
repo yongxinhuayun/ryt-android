@@ -68,7 +68,6 @@ public class ChuangZuoXiangQingTab01Fragment extends StickHeaderBaseFragment {
 
         return view;
     }
-
     @Subscribe
     public void onEventMainThread(Map<String, Object> objectMap) {
     }
