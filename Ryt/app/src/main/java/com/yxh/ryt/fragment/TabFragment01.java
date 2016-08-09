@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -18,6 +19,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016-4-4.
  */
+@SuppressLint("ValidFragment")
 public class TabFragment01 extends  BaseFragment {
     List<BaseFragment> indexChildFragments=new ArrayList<>();
     FragmentPagerAdapter indexChildAdapter;
@@ -75,7 +77,6 @@ public class TabFragment01 extends  BaseFragment {
         indexChildFragments.add(new FinanceFragment());
         indexChildFragments.add(new CreateFragment());
         indexChildFragments.add(new AuctionFragment());
-        indexChildFragments.add(new LotteryFragment());
     }
 
 
@@ -90,7 +91,7 @@ public class TabFragment01 extends  BaseFragment {
         View view = inflater.inflate(R.layout.tab_01, container,false);
         indexChildAdapter = new IndexTabPageIndicatorAdapter(getActivity().getSupportFragmentManager(),indexChildFragments);
         ViewPager pager = (ViewPager)view.findViewById(R.id.pager);
-        pager.setOffscreenPageLimit(4);
+        pager.setOffscreenPageLimit(3);
         pager.setAdapter(indexChildAdapter);
         //实例化TabPageIndicator然后设置ViewPager与之关联
         final TabPageIndicator indicator = (TabPageIndicator)view.findViewById(R.id.indicator);

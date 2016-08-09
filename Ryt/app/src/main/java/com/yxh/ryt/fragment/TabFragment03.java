@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016-4-4.
  */
+@SuppressLint("ValidFragment")
 public class TabFragment03 extends  BaseFragment {
 
     @Bind(R.id.ft3_ci_notification)

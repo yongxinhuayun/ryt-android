@@ -56,7 +56,7 @@ public class UserQianBaoActivity extends BaseActivity {
     private TextView reward;
     private TextView invest;
     private TextView rest;
-    private BigDecimal restMoney;
+    private String restMoney;
     private PopWindowDialog popWinShare;
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserQianBaoActivity.class));
@@ -139,8 +139,10 @@ public class UserQianBaoActivity extends BaseActivity {
                     UserMoney userMoney = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("object")), UserMoney.class);
                     if (userMoney!=null){
                         invest.setText("¥ "+userMoney.getInvestMoney());
-                        rest.setText(userMoney.getRestMoney()+"元");
-                        restMoney = userMoney.getRestMoney();
+                        float f =Float.valueOf(String.valueOf(userMoney.getRestMoney()));
+                        String s = String.format("%.2f", f);
+                        rest.setText(s+"元");
+                        restMoney = s;
                         reward.setText(userMoney.getRewardMoney()+"元");
                         if (userMoney.getBillList() != null) {
                             if (userMoney.getBillList().size() <= 5) {

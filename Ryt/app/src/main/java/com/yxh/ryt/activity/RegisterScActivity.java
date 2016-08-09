@@ -1,15 +1,25 @@
 package com.yxh.ryt.activity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -18,6 +28,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.kevin.crop.UCrop;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
@@ -25,6 +36,7 @@ import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.custemview.CircleImageView;
+import com.yxh.ryt.fragment.PictureSelectFragment;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -38,6 +50,7 @@ import com.yxh.ryt.vo.User;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -70,14 +83,24 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     private boolean flag = false;
     private boolean isNickyname;
     private static final String IMAGE_UNSPECIFIED = "image/*";
-    private static final int PHOTO_RESOULT = 4;
-    private static final int ALBUM_REQUEST_CODE = 1;
-    private static final int CAMERA_REQUEST_CODE = 2;
-    private static final int CROP_REQUEST_CODE = 4;
     String filePath = "";
     private String username;
     private String password;
 
+    protected static final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 101;
+    protected static final int REQUEST_STORAGE_WRITE_ACCESS_PERMISSION = 102;
+    private static final int GALLERY_REQUEST_CODE = 0;    // 相册选图标记
+    private static final int CAMERA_REQUEST_CODE = 1;    // 相机拍照标记
+    // 拍照临时图片
+    private String mTempPhotoPath;
+    // 剪切后图像文件
+    private Uri mDestinationUri;
+
+    /**
+     * 图片选择的监听回调
+     */
+    private ActionSheetDialog dialog;
+    private AlertDialog mAlertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +114,8 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         sexGroup.setOnCheckedChangeListener(this);
         commit.setEnabled(false);
         onEnabled();
+        mDestinationUri = Uri.fromFile(new File(getCacheDir(), "cropImage.jpeg"));
+        mTempPhotoPath = Environment.getExternalStorageDirectory() + File.separator + "photo.jpeg";
     }
 
     private void onEnabled() {
@@ -216,7 +241,6 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
 
                             @Override
                             public void onResponse(Map<String, Object> response) {
-
                                     Intent intent=new Intent(RegisterScActivity.this,IndexActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -255,9 +279,27 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         finish();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_STORAGE_READ_ACCESS_PERMISSION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pickFromGallery();
+                }
+                break;
+            case REQUEST_STORAGE_WRITE_ACCESS_PERMISSION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    takePhoto();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
     @OnClick(R.id.rs_iv_headPortrait)
     public void headPortrait() {
-        new ActionSheetDialog(this)
+        /*new ActionSheetDialog(this)
                 .builder()
                 .setCancelable(false)
                 .setCanceledOnTouchOutside(true)
@@ -280,9 +322,170 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                                 startActivityForResult(intent, ALBUM_REQUEST_CODE);
                             }
                         })
-                .show();
+                .show();*/
+        // 设置图片点击监
+        dialog= new ActionSheetDialog(this)
+                .builder()
+                .setCancelable(false)
+                .setCanceledOnTouchOutside(true)
+                .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
+                        new ActionSheetDialog.OnSheetItemClickListener() {
+                            @Override
+                            public void onClick(int which) {
+                                takePhoto();
+                            }
+                        })
+                .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
+                        new ActionSheetDialog.OnSheetItemClickListener() {
+                            @Override
+                            public void onClick(int which) {
+                                pickFromGallery();
+                            }
+                        })
+        ;
+        dialog.show();
+    }
+    private void takePhoto() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN // Permission was added in API Level 16
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    "选择图片时需要读取权限",
+                    REQUEST_STORAGE_WRITE_ACCESS_PERMISSION);
+        } else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(mTempPhotoPath)));
+            startActivityForResult(intent, CAMERA_REQUEST_CODE);
+        }
     }
 
+    private void pickFromGallery() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN // Permission was added in API Level 16
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE,
+                    "拍照时需要存储权限",
+                    REQUEST_STORAGE_READ_ACCESS_PERMISSION);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_PICK, null);
+            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+            startActivityForResult(intent, GALLERY_REQUEST_CODE);
+        }
+    }
+    @SuppressLint("NewApi")
+    protected void requestPermission(final String permission, String rationale, final int requestCode) {
+        if (shouldShowRequestPermissionRationale(permission)) {
+            showAlertDialog("权限需求", rationale,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            requestPermissions(new String[]{permission}, requestCode);
+                        }
+                    }, "确定", null, "取消");
+        } else {
+            requestPermissions(new String[]{permission}, requestCode);
+        }
+    }
+    /**
+     * 显示指定标题和信息的对话框
+     *
+     * @param title                         - 标题
+     * @param message                       - 信息
+     * @param onPositiveButtonClickListener - 肯定按钮监听
+     * @param positiveText                  - 肯定按钮信息
+     * @param onNegativeButtonClickListener - 否定按钮监听
+     * @param negativeText                  - 否定按钮信息
+     */
+    protected void showAlertDialog(@Nullable String title, @Nullable String message,
+                                   @Nullable DialogInterface.OnClickListener onPositiveButtonClickListener,
+                                   @NonNull String positiveText,
+                                   @Nullable DialogInterface.OnClickListener onNegativeButtonClickListener,
+                                   @NonNull String negativeText) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton(positiveText, onPositiveButtonClickListener);
+        builder.setNegativeButton(negativeText, onNegativeButtonClickListener);
+        mAlertDialog = builder.show();
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case CAMERA_REQUEST_CODE:   // 调用相机拍照
+                    File temp = new File(mTempPhotoPath);
+                    startCropActivity(Uri.fromFile(temp));
+                    flag = true;
+                    dianji(flag, isNickyname, sex);
+                    break;
+                case GALLERY_REQUEST_CODE:  // 直接从相册获取
+                    startCropActivity(data.getData());
+                    flag = true;
+                    dianji(flag, isNickyname, sex);
+                    break;
+                case UCrop.REQUEST_CROP:    // 裁剪图片结果
+                    handleCropResult(data);
+                    break;
+                case UCrop.RESULT_ERROR:    // 裁剪图片错误
+                    handleCropError(data);
+                    break;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    /**
+     * 裁剪图片方法实现
+     *
+     * @param uri
+     */
+    public void startCropActivity(Uri uri) {
+        UCrop.of(uri, mDestinationUri)
+                .withAspectRatio(1, 1)
+                .withMaxResultSize(512, 512)
+                .withTargetActivity(CropActivity.class)
+                .start(this);
+    }
+
+    /**
+     * 处理剪切成功的返回值
+     *
+     * @param result
+     */
+    private void handleCropResult(Intent result) {
+        deleteTempPhotoFile();
+        final Uri resultUri = UCrop.getOutput(result);
+        if (null != resultUri ) {
+            Bitmap bitmap = getBitmap(resultUri);
+            circleImageView.setImageBitmap(bitmap);
+        } else {
+            Toast.makeText(this, "无法剪切选择图片", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 处理剪切失败的返回值
+     *
+     * @param result
+     */
+    private void handleCropError(Intent result) {
+        deleteTempPhotoFile();
+        final Throwable cropError = UCrop.getError(result);
+        if (cropError != null) {
+            Toast.makeText(this, cropError.getMessage(), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "无法剪切选择图片", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 删除拍照临时文件
+     */
+    private void deleteTempPhotoFile() {
+        File tempFile = new File(mTempPhotoPath);
+        if (tempFile.exists() && tempFile.isFile()) {
+            tempFile.delete();
+        }
+    }
    /* private void showPopwindowHead() {
         // 利用layoutInflater获得View
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -350,7 +553,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         super.onResume();
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         switch (requestCode) {
@@ -370,9 +573,9 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                         + "/upLoad.jpg");
                 Bitmap bitmap2 = getBitmap(Uri.fromFile(picture));
                 //filePath = Utils.getFilePathFromUri(Uri.fromFile(picture), this);
-                /* Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
+                *//* Bitmap bitmap2 = Utils.rotaingImageView(filePath, bitmap1);
                 bitmap1.recycle();
-                circleImageView.setImageBitmap(bitmap2);*/
+                circleImageView.setImageBitmap(bitmap2);*//*
                 circleImageView.setImageBitmap(bitmap2);
 //                saveFile(bitmap1);
 //                startCrop(Uri.fromFile(picture));
@@ -380,29 +583,10 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
                 dianji(flag, isNickyname, sex);
                 break;
             case CROP_REQUEST_CODE:
-//                if (data == null) {
-//                    return;
-//                }
-//                Bundle extras = data.getExtras();
-//                if (extras != null) {
-//                    Bitmap photo = extras.getParcelable("data");
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    BitmapFactory.Options options = new BitmapFactory.Options();
-//                    options.inSampleSize = 4;  //这里表示原来图片的1/4
-//                    photo.
-//                    BitmapFactory.Options options = new BitmapFactory.Options();
-//                    options.inJustDecodeBounds = true;
-//                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                    photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-//                    InputStream isBm = new ByteArrayInputStream(baos.toByteArray());
-//                    BitmapFactory.decodeStream(isBm, null, options);
-//                    final int i = ImageUtils.calculateInSampleSize(new ImageUtils.ImageSize(options.outWidth, options.outHeight), new ImageUtils.ImageSize(100, 100));
-//                }
-//                break;
             default:
                 break;
         }
-    }
+    }*/
 
     private Bitmap comp(Bitmap response) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -437,15 +621,14 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         isBm = new ByteArrayInputStream(baos.toByteArray());
         bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
-        return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
+        return bitmap;//压缩好比例大小后再进行质量压缩
     }
     private Bitmap compressImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap.CompressFormat format=Bitmap.CompressFormat.JPEG;
         image.compress(format, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
-        int length = baos.toByteArray().length;
-        while ( baos.toByteArray().length / 1024>100) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+        while ( baos.toByteArray().length / 1024>300) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
             options -= 10;//每次都减少10
             image.compress(format, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
@@ -457,29 +640,25 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     public Bitmap getBitmap(Uri data) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        options.inSampleSize = 4;
-       /* if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){*/
+        options.inSampleSize = 1;
         String filePath1 = GetPathFromUri4kitkat.getPath(data);
-        /*}else{
-            filePath= ImageUtils.getRealPathByUriOld(data);
-        }*/
         Bitmap bm = BitmapFactory.decodeFile(filePath, options);
         options.inJustDecodeBounds = false;
         bm = BitmapFactory.decodeFile(filePath1, options);
-        Bitmap bitmap1=comp(bm);
+        //Bitmap bitmap1=compressImage(bm);
         File file = new File(Environment.getExternalStorageDirectory()
                 + "/upLoad"+Utils.getImageFormat(filePath1));
         try {
             filePath=file.getPath();
             FileOutputStream fos = new FileOutputStream(file);
-            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return bitmap1;
+        return bm;
     }
 
     private Bitmap getBitmapFromUri(Uri uri) {
@@ -516,4 +695,5 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
     public void onStop() {
         super.onStop();
     }
+
 }

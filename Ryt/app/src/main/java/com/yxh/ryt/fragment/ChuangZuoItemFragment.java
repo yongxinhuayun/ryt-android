@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-
+@SuppressLint("ValidFragment")
 public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.OnRefreshListener,
 		AutoListView.OnLoadListener, AdapterView.OnItemClickListener {
 	private AutoListView lstv;

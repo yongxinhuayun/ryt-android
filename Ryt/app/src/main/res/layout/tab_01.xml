@@ -30,8 +30,8 @@
             android:id="@+id/indicator"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:paddingLeft="62dp"
-            android:paddingRight="62dp"/>
+            android:paddingLeft="72dp"
+            android:paddingRight="72dp"/>
         </FrameLayout>
     <!--</FrameLayout>
         <com.viewpagerindicator.TabPageIndicator

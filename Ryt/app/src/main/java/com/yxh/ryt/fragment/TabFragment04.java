@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016-4-4.
  */
+@SuppressLint("ValidFragment")
 public class TabFragment04 extends BaseFragment {
     @Bind(R.id.uc_iv_headImage)
     CircleImageView rsIvHeadPortrait;
@@ -76,38 +78,6 @@ public class TabFragment04 extends BaseFragment {
             return;
         }
     }
-    /*//关注点击事件
-    @OnClick(R.id.ll_header_gz)
-    public void fans(){
-        if (!"".equals(AppApplication.gUser.getId())){
-            Intent intent=new Intent(getActivity(), AttentionActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("userId", AppApplication.gUser.getId() + "");
-            intent.putExtra("otherUserId",AppApplication.gUser.getId()+"");
-            intent.putExtra("flag","1");
-            getActivity().startActivity(intent);
-        }else {
-            Intent intent=new Intent(getActivity(), LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getActivity().startActivity(intent);
-        }
-    }
-    //粉丝点击事件
-    @OnClick(R.id.ll_header_fs)
-    public void attention(){
-        if (!"".equals(AppApplication.gUser.getId())){
-            Intent intent=new Intent(getActivity(), FansActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("userId", AppApplication.gUser.getId() + "");
-            intent.putExtra("otherUserId",AppApplication.gUser.getId()+"");
-            intent.putExtra("flag","1");
-            getActivity().startActivity(intent);
-        }else {
-            Intent intent=new Intent(getActivity(), LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getActivity().startActivity(intent);
-        }
-    }*/
     //拍卖订单
     @OnClick(R.id.rl_auction)
     public void order(){

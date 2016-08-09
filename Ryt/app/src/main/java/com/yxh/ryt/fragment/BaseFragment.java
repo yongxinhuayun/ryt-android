@@ -1,9 +1,11 @@
 package com.yxh.ryt.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,13 @@ import android.view.ViewGroup;
  * Created by 吴洪杰 on 2016/4/1.
  */
 public abstract class BaseFragment extends Fragment {
+    protected Context mContext 	= null;
+    /** 依附的Activity */
+    protected Activity mActivity= null;
+
+    private AlertDialog mAlertDialog;
+    protected static final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 101;
+    protected static final int REQUEST_STORAGE_WRITE_ACCESS_PERMISSION = 102;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +31,12 @@ public abstract class BaseFragment extends Fragment {
         super.onAttach(context);
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mContext  = activity;
+        mActivity = activity;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

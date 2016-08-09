@@ -3,9 +3,10 @@
     android:id="@+id/ucz_ll_all"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@android:color/white"
+    android:background="#fafafa"
     android:layout_height="match_parent">
     <RelativeLayout
+        android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:id="@+id/rl_top">
@@ -48,111 +49,125 @@
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
             android:background="#E9E9E9"
-            android:layout_height="1dp"></View>
+            android:layout_height="1dp"/>
     </RelativeLayout>
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
         <View
             android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
             android:background="#E9E9E9"
-            android:layout_height="1dp"></View>
-        <RelativeLayout
+            android:layout_height="1dp"/>
+        <LinearLayout
+            android:background="#ffffff"
             android:layout_width="match_parent"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:layout_height="50dp">
+            android:paddingLeft="17dp"
+            android:paddingRight="17dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
+                android:textSize="16sp"
+                android:textColor="#333333"
                 android:text="账户当前余额"/>
             <TextView
-                android:textColor="#000000"
+                android:textColor="#666666"
                 android:id="@+id/ucz_tv_remainMoney"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
+                android:gravity="right"
                 android:text="￥5.00"/>
-        </RelativeLayout>
+        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:background="#E9E9E9"
-            android:layout_height="1dp"></View>
-        <LinearLayout
-            android:orientation="vertical"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="90dp">
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:textSize="18sp"
-                android:layout_height="wrap_content"
-                android:text="充值金额"/>
-            <LinearLayout
-                android:id="@+id/ucz_ll_money"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_nofocus">
-                <TextView
-                    android:id="@+id/ucz_tv_money"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#eeeeee"
-                    android:textSize="17sp"
-                    android:text="￥"/>
-                <EditText
-                    android:id="@+id/ucz_et_money"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:inputType="numberDecimal"
-                    android:singleLine="true"
-                    android:textSize="17sp"
-                    android:textColorHint="#eeeeee"
-                    android:hint="请输入充值金额"
-                    />
+            android:layout_height="1dp"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="#E9E9E9"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"/>
+    <LinearLayout
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingLeft="17dp"
+        android:paddingRight="17dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
 
-            </LinearLayout>
-            <View
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:layout_height="wrap_content"
+            android:text="充值金额"/>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/ucz_ll_money"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_nofocus">
+            <TextView
+                android:id="@+id/ucz_tv_money"
+                android:layout_width="wrap_content"
+                android:layout_height="17dp"
+                android:textColor="#eeeeee"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:text="￥"/>
+            <EditText
+                android:layout_marginLeft="7dp"
+                android:id="@+id/ucz_et_money"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:background="#E9E9E9"
-                android:layout_marginTop="10dp"
-                android:layout_height="1dp"/>
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:textSize="14sp"
+                android:textColorHint="#eeeeee"
+                android:hint="请输入充值金额"
+                />
         </LinearLayout>
         <TextView
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#DB2828"
             android:text="充值金额将直接存入个人账户中"/>
-        <View
-            android:layout_width="match_parent"
-            android:background="#E9E9E9"
-            android:layout_height="1dp"/>
-        <View
-            android:layout_width="match_parent"
-            android:background="#E9E9E9"
-            android:layout_marginTop="20dp"
-            android:layout_height="1dp"/>
-        <LinearLayout
-            android:orientation="vertical"
-            android:padding="10dp"
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="#E9E9E9"
+        android:layout_height="1dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:background="#E9E9E9"
+        android:layout_marginTop="10dp"
+        android:layout_height="1dp"/>
+    <LinearLayout
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:paddingLeft="17dp"
+        android:paddingRight="17dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
             <LinearLayout
                 android:id="@+id/ucz_ll_recharge"
                 android:orientation="horizontal"
@@ -160,7 +175,7 @@
                 android:gravity="center_vertical"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@mipmap/security_login_logo"
                     android:layout_width="80dp"
                     android:layout_height="80dp" />
                 <LinearLayout
@@ -186,23 +201,18 @@
                 </LinearLayout>
 
             </LinearLayout>
-                <ImageView
-                    android:src="@mipmap/go"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:background="#E9E9E9"
-                android:layout_marginTop="10dp"
-                android:layout_height="1dp"></View>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content">
-            <!--<LinearLayout
+            <ImageView
+                android:src="@mipmap/go"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <!--<RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+            &lt;!&ndash;<LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:gravity="center_vertical"
@@ -233,20 +243,23 @@
                         android:text="推荐安装微信5.0及以上的版本使用"
                         />
                 </LinearLayout>
-            </LinearLayout>-->
-                <!--<ImageView
-                    android:src="@mipmap/go"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="50dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />-->
-            </RelativeLayout>
-           <!-- <View
-                android:layout_width="match_parent"
-                android:background="#E9E9E9"
-                android:layout_marginTop="10dp"
-                android:layout_height="1dp"></View>-->
-        </LinearLayout>
+            </LinearLayout>&ndash;&gt;
+            &lt;!&ndash;<ImageView
+                android:src="@mipmap/go"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />&ndash;&gt;
+        </RelativeLayout>-->
+        <!-- <View
+             android:layout_width="match_parent"
+             android:background="#E9E9E9"
+             android:layout_marginTop="10dp"
+             android:layout_height="1dp"></View>-->
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="#E9E9E9"
+        android:layout_height="1dp"/>
 </LinearLayout>

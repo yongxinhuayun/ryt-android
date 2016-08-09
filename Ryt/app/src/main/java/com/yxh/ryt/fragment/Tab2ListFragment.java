@@ -22,7 +22,7 @@ import com.yxh.ryt.custemview.refreash.PullToRefreshListView;
 import com.yxh.ryt.custemview.refreash.PullToRefreshListView.OnHeaderScrollListener;
 
 import java.util.ArrayList;
-
+@SuppressLint("ValidFragment")
 public class Tab2ListFragment extends ScrollTabHolderFragment {
 
 	private PullToRefreshListView listView;

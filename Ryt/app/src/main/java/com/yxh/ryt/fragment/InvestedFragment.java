@@ -1,5 +1,6 @@
 package com.yxh.ryt.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016/7/18.
  */
+@SuppressLint("ValidFragment")
 public class InvestedFragment extends BaseFragment implements AdapterView.OnItemClickListener, AutoListView.OnRefreshListener, AutoListView.OnLoadListener {
     private AutoListView lstv;
     private CommonAdapter<RongZi> rongZiCommonAdapter;

@@ -125,7 +125,9 @@ public class RankingUserFragment extends BaseFragment implements AutoListView.On
 				}
 				helper.setImageByUrl(R.id.fru_civ_headerImage,item.getPicture());
 				helper.setText(R.id.fru_tv_name,item.getTruename());
-				helper.setText(R.id.fru_tv_content,"￥"+item.getRois());
+				float f =Float.valueOf(String.valueOf(item.getRois()));
+				String s = String.format("%.2f", f);
+				helper.setText(R.id.fru_tv_content,"￥"+s);
 			}
 		};
 		lstv.setAdapter(investorCommonAdapter);
