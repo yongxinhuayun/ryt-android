@@ -45,7 +45,7 @@ public class UserQianBaoActivity extends BaseActivity {
     @Bind(R.id.ib_top_lf)
     ImageView ibTopLf;
     @Bind(R.id.btn_tx)
-    Button btnTx;
+    TextView btnTx;
     @Bind(R.id.ib_top_rt)
     ImageView top;
     @Bind(R.id.uqb_listView)
@@ -171,10 +171,10 @@ public class UserQianBaoActivity extends BaseActivity {
         });
     }
 
-    @OnClick({ R.id.btn_tx})
+    @OnClick({ R.id.uqb_ll_money})
     void btnClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_tx:
+            case R.id.uqb_ll_money:
                 Intent intent=new Intent(UserQianBaoActivity.this,UserChongZhiActivity.class);
                 intent.putExtra("remainMoney",restMoney+"");
                 UserQianBaoActivity.this.startActivity(intent);

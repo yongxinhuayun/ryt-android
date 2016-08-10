@@ -2,12 +2,14 @@ package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
@@ -132,8 +134,10 @@ public class RankingArtistFragment extends BaseFragment implements AutoListView.
                 String s = String.format("%.2f", f);
                 helper.setText(R.id.fra_tv_content,s+"%");
                 if (f>100){
+                    ((TextView) helper.getView(R.id.fra_tv_content)).setTextColor(Color.rgb(199, 31, 33));
                     ((ImageView) helper.getView(R.id.fra_iv_rate)).setImageResource(R.mipmap.paihang_jiantou_red);
                 }else {
+                    ((TextView) helper.getView(R.id.fra_tv_content)).setTextColor(Color.rgb(79, 182, 65));
                     ((ImageView) helper.getView(R.id.fra_iv_rate)).setImageResource(R.mipmap.paihang_jiantou_green);
                 }
             }

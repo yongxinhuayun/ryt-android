@@ -72,6 +72,9 @@ public class PushWoraActivity extends BaseActivity {
         Uri uri=intent.getParcelableExtra("intent");
         if (uri !=null){
             Bitmap bitmap=getBitmap(uri);
+            if (bitmap==null){
+                return;
+            }
             imageWork.setImageBitmap(bitmap);
 
         }
@@ -118,7 +121,7 @@ public class PushWoraActivity extends BaseActivity {
         image.compress(format, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
         int length = baos.toByteArray().length;
-        while ( baos.toByteArray().length / 1024>100) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+        while ( baos.toByteArray().length / 1024>300) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
             options -= 10;//每次都减少10
             image.compress(format, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
@@ -139,7 +142,10 @@ public class PushWoraActivity extends BaseActivity {
         Bitmap bm = BitmapFactory.decodeFile(filePath, options);
         options.inJustDecodeBounds = false;
         bm = BitmapFactory.decodeFile(filePath1, options);
-        Bitmap bitmap1=comp(bm);
+        if (bm==null){
+            return null;
+        }
+        Bitmap bitmap1=compressImage(bm);
         File file = new File(Environment.getExternalStorageDirectory()
                 + "/pushWork"+Utils.getImageFormat(filePath1));
         try {

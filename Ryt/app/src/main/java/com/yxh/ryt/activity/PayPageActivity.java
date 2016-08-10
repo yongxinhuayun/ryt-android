@@ -1,10 +1,14 @@
 package com.yxh.ryt.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.util.Xml;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.yxh.ryt.R;
 import com.yxh.ryt.util.URLEncoderURI;
@@ -26,8 +30,21 @@ public class PayPageActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_page);
         ButterKnife.bind(this);
-        page.getSettings().setJavaScriptEnabled(true);
         url = getIntent().getStringExtra("url");
+        WebSettings webSettings = page.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        page.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if( url.startsWith("http:") || url.startsWith("https:") ) {
+                    return false;
+                }
+                // Otherwise allow the OS to handle things like tel, mailto, etc.
+                /*Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity( intent );*/
+                return true;
+            }
+        });
         page.loadUrl(url);
     }
     @OnClick(R.id.ib_top_lf)

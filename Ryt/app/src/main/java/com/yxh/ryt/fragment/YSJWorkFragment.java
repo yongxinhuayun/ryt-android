@@ -137,7 +137,6 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 				helper.setImageByUrl(R.id.mwi_iv_icon, item.getPictureUrl());
 				helper.setText(R.id.mwi_iv_title, item.getName());
 				helper.setText(R.id.mwi_tv_description, item.getMaterial() + "/" + Utils.timeToFormatTemp("yyyy", item.getCreateDatetime()) + "/" + judgeStaus(item.getType()));
-				if (userId.equals(currentId)){
 					helper.getView(R.id.mwi_iv_delete).setVisibility(View.VISIBLE);
 					helper.getView(R.id.mwi_iv_delete).setOnClickListener(new View.OnClickListener() {
 						@Override
@@ -162,18 +161,13 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 							builder.create().show();
 						}
 					});
-				}else {
-					helper.getView(R.id.mwi_iv_delete).setVisibility(View.GONE);
-				}
 
 			}
 		};
 		lstv.setAdapter(ySJWorkCommonAdapter);
 		lstv.addFooterView(footer);
-		if (userId.equals(currentId)){
-			lstv.addHeaderView(header);
-			header.setOnClickListener(this);
-		}
+		lstv.addHeaderView(header);
+		header.setOnClickListener(this);
 		loadFull = (TextView) footer.findViewById(R.id.loadFull);
 		noData = (TextView) footer.findViewById(R.id.noData);
 		more = (TextView) footer.findViewById(R.id.more);

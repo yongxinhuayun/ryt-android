@@ -187,8 +187,12 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                     if (response.get("resultCode").equals("0")) {
                         Map<String, Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
                         final User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")), User.class);
-                        tvUserHeaderFsNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("followNum")));
-                        tvUserHeaderGzNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("num")));
+                        if (AppApplication.getSingleGson()!=null &&AppApplication.getSingleGson().toJson(pageInfo.get("followNum"))!=null &&tvUserHeaderFsNum!=null){
+                            tvUserHeaderFsNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("followNum")));
+                        }
+                        if (AppApplication.getSingleGson()!=null &&AppApplication.getSingleGson().toJson(AppApplication.getSingleGson().toJson(pageInfo.get("num")))!=null&&tvUserHeaderGzNum!=null){
+                            tvUserHeaderGzNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("num")));
+                        }
                         boolean followed = (boolean) pageInfo.get("followed");
                         if (followed){
                             attention.setImageResource(R.mipmap.guanzhuhou);
@@ -332,6 +336,9 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                 startActivity(intent);
                 break;
             case CAMERA_REQUEST_CODE:
+                if (data==null){
+                    return;
+                }
                 File picture = new File(Environment.getExternalStorageDirectory()
                         + "/pushWork.jpg");
                 Intent intent1=new Intent(this,PushWoraActivity.class);
@@ -541,11 +548,8 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("userId", currentId);
                     intent.putExtra("otherUserId",userId);
-                    if(currentId.equals(userId)){
-                        intent.putExtra("flag","1");
-                    }else {
-                        intent.putExtra("flag","2");
-                    }
+                    intent.putExtra("flag","1");
+
                     startActivity(intent);
                 }else {
                     Intent intent=new Intent(this, LoginActivity.class);
@@ -559,11 +563,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("userId", currentId);
                     intent.putExtra("otherUserId",userId);
-                    if(currentId.equals(userId)){
-                        intent.putExtra("flag","1");
-                    }else {
-                        intent.putExtra("flag","2");
-                    }
+                    intent.putExtra("flag","1");
                     startActivity(intent);
                 }else {
                     Intent intent=new Intent(this, LoginActivity.class);

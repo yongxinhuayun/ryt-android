@@ -72,7 +72,7 @@ public class BriefFragment extends BaseFragment {
                     if (userBrief!=null && userBrief.get("content")!=null){
                         content.setText(userBrief.get("content").toString());
                     }
-                    content.setText("你杀死杀死四射将离开军绿色宫颈糜烂就卖光了将更垃圾房间");
+                    content.setVisibility(View.GONE);
                     User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("user")), User.class);
                     if (user!=null && user.getPictureUrl()!=null){
                         AppApplication.displayImage(user.getPictureUrl(),imageView);
