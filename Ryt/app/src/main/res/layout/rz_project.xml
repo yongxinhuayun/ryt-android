@@ -120,7 +120,7 @@
                        android:layout_height="wrap_content"
                        android:layout_marginLeft="14dp"
                        android:layout_marginTop="5dp"
-                       android:text="目标投资金额"
+                       android:text="目标融资金额"
                        android:textColor="#808080"
                        android:textSize="@dimen/defult_font" />
 
