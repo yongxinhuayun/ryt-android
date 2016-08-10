@@ -207,6 +207,9 @@ public class AppApplication extends Application {
 		}
 		return -1;
 	}
+	public static ImageLoader getImageLoader(){
+		return ImageLoader.getInstance();
+	}
 	public static void displayImage(String url,ImageView view){
 		ImageLoader.getInstance().displayImage(url, view, options, animateFirstListener);
 	}

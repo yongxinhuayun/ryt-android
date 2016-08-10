@@ -436,6 +436,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 case CAMERA_REQUEST_CODE:   // 调用相机拍照
                     File temp = new File(mTempPhotoPath);
                     startCropActivity(Uri.fromFile(temp));
+
                     break;
                 case GALLERY_REQUEST_CODE:  // 直接从相册获取
                     startCropActivity(data.getData());
@@ -474,6 +475,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         if (null != resultUri ) {
             Bitmap bitmap = getBitmap(resultUri);
             circleImageView.setImageBitmap(bitmap);
+            commitHead();
         } else {
             Toast.makeText(this, "无法剪切选择图片", Toast.LENGTH_SHORT).show();
         }

@@ -77,6 +77,11 @@
             android:name=".activity.IndexActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.CropActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
+        <activity
             android:name=".activity.LotterySummaryActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -96,9 +101,17 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RegisterActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize|stateAlwaysHidden"/>
         <activity
             android:name=".activity.UserYiJianActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.HeadImageActivity"
+            android:theme="@style/DialogActivity"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.UserSettingActivity"

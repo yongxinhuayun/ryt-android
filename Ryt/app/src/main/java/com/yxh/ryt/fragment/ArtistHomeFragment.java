@@ -2,6 +2,7 @@ package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.activity.AuctionSummaryActivity;
 import com.yxh.ryt.activity.CreateSummaryActivity;
 import com.yxh.ryt.activity.FinanceSummaryActivity;
+import com.yxh.ryt.activity.HeadImageActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.MsgActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
@@ -34,6 +36,7 @@ import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.HomeYSJArtWork;
 import com.yxh.ryt.vo.User;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -294,7 +297,22 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                                             sumInvestsMoney= AppApplication.getSingleGson().toJson(object.get("sumInvestsMoney"));
                                             isFollowed= Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isFollowed")));
                                             user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("master")), User.class);
-                                            AppApplication.displayImage(user.getPictureUrl(),headPicture);
+                                            final Bitmap bitmap=AppApplication.getImageLoader().loadImageSync(user.getPictureUrl());
+                                            headPicture.setImageBitmap(bitmap);
+                                            headPicture.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    Intent intent = new Intent(getActivity(), HeadImageActivity.class);
+                                                    // intent传递bitmap
+                                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                                    byte[] bitmapByte = baos.toByteArray();
+                                                    intent.putExtra("bitmap", bitmapByte);
+                                                    intent.putExtra("url",user.getPictureUrl());
+                                                    getActivity().startActivity(intent);
+
+                                                }
+                                            });
                                             name.setText(user.getName());
                                             if (user.getMaster().getTitle()==null || "".equals(user.getMaster().getTitle())){
                                                 title.setVisibility(View.GONE);

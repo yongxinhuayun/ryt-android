@@ -170,10 +170,8 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 		};
 		lstv.setAdapter(ySJWorkCommonAdapter);
 		lstv.addFooterView(footer);
-		if (userId.equals(currentId)){
-			lstv.addHeaderView(header);
-			header.setOnClickListener(this);
-		}
+		lstv.addHeaderView(header);
+		header.setOnClickListener(this);
 		loadFull = (TextView) footer.findViewById(R.id.loadFull);
 		noData = (TextView) footer.findViewById(R.id.noData);
 		more = (TextView) footer.findViewById(R.id.more);

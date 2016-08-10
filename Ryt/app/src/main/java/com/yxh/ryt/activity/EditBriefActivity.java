@@ -25,16 +25,18 @@ public class EditBriefActivity extends BaseActivity implements View.OnClickListe
     private TextView back;
     private TextView save;
     private EditText et_brief;
-    private UserJianJieFragment mUserJianJieFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brief);
+        String content = getIntent().getStringExtra("content");
         back = (TextView) findViewById(R.id.tv_back);
         save = (TextView) findViewById(R.id.tv_save);
         et_brief = (EditText) findViewById(R.id.et_brief);
-        mUserJianJieFragment = new UserJianJieFragment();
+        if (content!=null){
+            et_brief.setText(content);
+        }
         back.setOnClickListener(this);
         save.setOnClickListener(this);
     }

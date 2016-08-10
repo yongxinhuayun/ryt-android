@@ -165,7 +165,9 @@ public class UserJianJieFragment extends StickHeaderBaseFragment implements View
 	public void onClick(View v) {
 		switch(v.getId()) {
 			case R.id.fue_bt_edit:
-				startActivity(new Intent(getActivity(), EditBriefActivity.class));
+				Intent intent=new Intent(getActivity(),EditBriefActivity.class);
+				intent.putExtra("content",content.getText().toString());
+				startActivity(intent);
 				break;
 			default:
 				break;
