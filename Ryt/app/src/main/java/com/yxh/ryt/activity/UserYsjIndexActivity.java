@@ -187,8 +187,12 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                     if (response.get("resultCode").equals("0")) {
                         Map<String, Object> pageInfo = (Map<String, Object>) response.get("pageInfo");
                         final User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(pageInfo.get("user")), User.class);
-                        tvUserHeaderFsNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("followNum")));
-                        tvUserHeaderGzNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("num")));
+                        if (AppApplication.getSingleGson()!=null &&AppApplication.getSingleGson().toJson(pageInfo.get("followNum"))!=null &&tvUserHeaderFsNum!=null){
+                            tvUserHeaderFsNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("followNum")));
+                        }
+                        if (AppApplication.getSingleGson()!=null &&AppApplication.getSingleGson().toJson(AppApplication.getSingleGson().toJson(pageInfo.get("num")))!=null&&tvUserHeaderGzNum!=null){
+                            tvUserHeaderGzNum.setText(AppApplication.getSingleGson().toJson(pageInfo.get("num")));
+                        }
                         boolean followed = (boolean) pageInfo.get("followed");
                         if (followed){
                             attention.setImageResource(R.mipmap.guanzhuhou);
