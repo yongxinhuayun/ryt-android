@@ -367,7 +367,7 @@ public class EditProject02Activity extends  BaseActivity {
                 for (String s:path){
                     i++;
                     Bitmap bitmap = BitmapFactory.decodeFile(s);
-                    Bitmap bitmap1 = comp(bitmap, s);
+                    Bitmap bitmap1 = compressImage(bitmap, s);
                     File file = new File(Environment.getExternalStorageDirectory()
                             + "/editArtSecond"+i+Utils.getImageFormat(s));
                     try {
@@ -422,11 +422,11 @@ public class EditProject02Activity extends  BaseActivity {
         //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         isBm = new ByteArrayInputStream(baos.toByteArray());
         bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
-        return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
+        return bitmap;//压缩好比例大小后再进行质量压缩
     }
-    private Bitmap compressImage(Bitmap image) {
+    private Bitmap compressImage(Bitmap image,String s) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap.CompressFormat format=Bitmap.CompressFormat.JPEG;
+        Bitmap.CompressFormat format=Utils.getImageFormatBig(s);
         image.compress(format, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
         int length = baos.toByteArray().length;

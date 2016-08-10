@@ -541,11 +541,8 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("userId", currentId);
                     intent.putExtra("otherUserId",userId);
-                    if(currentId.equals(userId)){
-                        intent.putExtra("flag","1");
-                    }else {
-                        intent.putExtra("flag","2");
-                    }
+                    intent.putExtra("flag","1");
+
                     startActivity(intent);
                 }else {
                     Intent intent=new Intent(this, LoginActivity.class);
@@ -559,11 +556,7 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("userId", currentId);
                     intent.putExtra("otherUserId",userId);
-                    if(currentId.equals(userId)){
-                        intent.putExtra("flag","1");
-                    }else {
-                        intent.putExtra("flag","2");
-                    }
+                    intent.putExtra("flag","1");
                     startActivity(intent);
                 }else {
                     Intent intent=new Intent(this, LoginActivity.class);

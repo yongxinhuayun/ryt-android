@@ -322,7 +322,13 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
                         helper.getView(R.id.clh1_ll_praise).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                cancelPraise(item.getId(), ((LinearLayout) helper.getView(R.id.clh1_ll_praise)), ((TextView) helper.getView(R.id.clh1_tv_praiseNum)), number.get(helper.getPosition()), helper);
+                                if (selected.get(helper.getPosition())){
+                                    helper.getView(R.id.clh1_ll_praise).setEnabled(false);
+                                    cancelPraise(item.getId(), ((LinearLayout) helper.getView(R.id.clh1_ll_praise)), ((TextView) helper.getView(R.id.clh1_tv_praiseNum)), number.get(helper.getPosition()), helper);
+                                }else {
+                                    helper.getView(R.id.clh1_ll_praise).setEnabled(false);
+                                    praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh1_ll_praise)), ((TextView) helper.getView(R.id.clh1_tv_praiseNum)), number.get(helper.getPosition()), helper);
+                                }
                             }
                         });
                     } else {
@@ -332,13 +338,11 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
                         helper.getView(R.id.clh1_ll_praise).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if ("".equals(AppApplication.gUser.getId())) {
-                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                    intent.putExtra("userId", item.getAuthor().getId());
-                                    intent.putExtra("currentId", AppApplication.gUser.getId());
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    getActivity().startActivity(intent);
-                                } else {
+                                if (selected.get(helper.getPosition())){
+                                    helper.getView(R.id.clh1_ll_praise).setEnabled(false);
+                                    cancelPraise(item.getId(), ((LinearLayout) helper.getView(R.id.clh1_ll_praise)), ((TextView) helper.getView(R.id.clh1_tv_praiseNum)), number.get(helper.getPosition()), helper);
+                                }else {
+                                    helper.getView(R.id.clh1_ll_praise).setEnabled(false);
                                     praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh1_ll_praise)), ((TextView) helper.getView(R.id.clh1_tv_praiseNum)), number.get(helper.getPosition()), helper);
                                 }
                             }
@@ -376,16 +380,13 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
-                    if (selected.get(helper.getPosition())) {
                         view.setBackgroundResource(R.drawable.praise_shape);
+                        view.setEnabled(true);
                         textView.setTextColor(Color.rgb(199, 31, 33));
                         String raw = textView.getText().toString();
                         number.put(helper.getPosition(), praiseNum - 1);
                         textView.setText(Integer.valueOf(raw) - 1 + "");
                         selected.put(helper.getPosition(), false);
-                    } else {
-                        praise(id, view, textView, praiseNum, helper);
-                    }
                 } else if ("000000".equals(response.get("resultCode"))) {
                     SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
                         @Override
@@ -423,15 +424,12 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
-                    if (!selected.get(helper.getPosition())) {
                     view.setBackgroundResource(R.drawable.praise_after_shape);
+                    view.setEnabled(true);
                     textView.setTextColor(Color.rgb(255,255,255));
                     textView.setText(praiseNum + 1 + "");
                     number.put(helper.getPosition(), praiseNum + 1);
                     selected.put(helper.getPosition(), true);
-                } else {
-                    cancelPraise(artworkId, view, textView, praiseNum, helper);
-                }
                 }else if ("000000".equals(response.get("resultCode"))){
                     SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
                         @Override

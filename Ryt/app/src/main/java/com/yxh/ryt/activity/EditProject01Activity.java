@@ -390,15 +390,18 @@ public class EditProject01Activity extends  BaseActivity {
                 ivImage.setImageBitmap(resizeBitmap1);
                 break;
             case CAMERA_REQUEST_CODE:
+                File picture = new File(Environment.getExternalStorageDirectory()
+                        + "/editArtFirst.jpg");
+                Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
+                if (bitmap1==null){
+                    break;
+                }
                 int height=Utils.dip2px(EditProject01Activity.this,224);
                 int left=Utils.dip2px(EditProject01Activity.this,14);
                 int right=Utils.dip2px(EditProject01Activity.this,14);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthzong,height);
                 params.setMargins(left,0,right,0);
                 ivImage.setLayoutParams(params);
-                File picture = new File(Environment.getExternalStorageDirectory()
-                        + "/editArtFirst.jpg");
-                Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
                 int bmpWidth  = bitmap1.getWidth();
                 int bmpHeight  = bitmap1.getHeight();
                 float scaleWidth  = (float) widthzong / bmpWidth;     //按固定大小缩放  sWidth 写多大就多大
@@ -426,7 +429,10 @@ public class EditProject01Activity extends  BaseActivity {
         Bitmap bm = BitmapFactory.decodeFile(filePath, options);
         options.inJustDecodeBounds = false;
         bm = BitmapFactory.decodeFile(filePath1, options);
-        Bitmap bitmap1=comp(bm);
+        if (bm==null){
+            return null;
+        }
+        Bitmap bitmap1=compressImage(bm);
         File file = new File(Environment.getExternalStorageDirectory()
                 + "/pushArtFirst"+Utils.getImageFormat(filePath1));
         try {
@@ -474,7 +480,7 @@ public class EditProject01Activity extends  BaseActivity {
         //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         isBm = new ByteArrayInputStream(baos.toByteArray());
         bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
-        return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
+        return bitmap;//压缩好比例大小后再进行质量压缩
     }
     private Bitmap compressImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -482,7 +488,7 @@ public class EditProject01Activity extends  BaseActivity {
         image.compress(format, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
         int length = baos.toByteArray().length;
-        while ( baos.toByteArray().length / 1024>100) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+        while ( baos.toByteArray().length / 1024>300) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
             options -= 10;//每次都减少10
             image.compress(format, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
