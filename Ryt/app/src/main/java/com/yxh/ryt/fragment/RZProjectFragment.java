@@ -56,6 +56,7 @@ import com.yxh.ryt.custemview.ExpandView;
 import com.yxh.ryt.custemview.HorizontalListView;
 import com.yxh.ryt.custemview.ListViewForScrollView;
 import com.yxh.ryt.custemview.RoundProgressBar;
+import com.yxh.ryt.util.AnimPraiseCancel;
 import com.yxh.ryt.util.DateUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.LoadingUtil;
@@ -99,6 +100,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private ImageView imageTitle;
     private ImageView leftPraise;
     private ImageView rightPraise;
+    private ImageView redPraise;
     private boolean flag1 = true;
     private boolean isPraise1;
     private LinearLayout ll_invester;
@@ -182,6 +184,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     int a = Integer.parseInt(praiseNum.getText().toString());
                     a++;
                     praiseNum.setText(a + "");
+                    AnimPraiseCancel.animPraise(redPraise);
                     llpraise.setBackgroundResource(R.drawable.praise_after_shape);
                     praiseNum.setTextColor(Color.rgb(255, 255, 255));
                     myPraise.setVisibility(View.VISIBLE);
@@ -194,13 +197,10 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         }
                     });
                     AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), myPraise);
-                    //refreshPraise();
                     break;
                 case PRAISE_CANCEL:
                     isPraise1 = false;
-                   // leftPraise.setVisibility(View.VISIBLE);
-                    //rightPraise.setVisibility(View.VISIBLE);
-                    //AnimPraiseCancel.animCancelPraise(leftPraise,rightPraise);
+                    AnimPraiseCancel.animCancelPraise(leftPraise,rightPraise);
                     int s = Integer.parseInt(praiseNum.getText().toString());
                     s--;
                     praiseNum.setText(s + "");
@@ -270,6 +270,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         imageTitle = (ImageView) view.findViewById(R.id.cl_01_tv_prc);
         leftPraise = (ImageView) view.findViewById(R.id.iv_xin_hui_left);
         rightPraise = (ImageView) view.findViewById(R.id.iv_xin_hui_right);
+        redPraise = (ImageView) view.findViewById(R.id.iv_praise_red);
         creatTime = (TextView) view.findViewById(R.id.tv_creat_time);
         headV = (ImageView) view.findViewById(R.id.iv_master);
         myPraise = (CircleImageView) view.findViewById(R.id.civ_pic);

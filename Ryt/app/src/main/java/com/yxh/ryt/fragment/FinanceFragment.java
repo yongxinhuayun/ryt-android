@@ -220,23 +220,13 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
                         }
                     double  value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
                     helper.setProgress(R.id.fli1_pb_progress, (int) (value * 100));
-                    if (selected.get(helper.getPosition())) {
-                        helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
-                        ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255, 255, 255));
-                        helper.setText(R.id.clh_tv_praiseNum, number.get(helper.getPosition()) + "");
-                        helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                    helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (selected.get(helper.getPosition())) {
                                 cancelPraise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)), ((TextView) helper.getView(R.id.clh_tv_praiseNum)), number.get(helper.getPosition()), helper);
-                            }
-                        });
-                    } else {
-                        helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_shape);
-                        ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(199, 31, 33));
-                        helper.setText(R.id.clh_tv_praiseNum, number.get(helper.getPosition()) + "");
-                        helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                                helper.getView(R.id.clh_ll_praise).setEnabled(false);
+                            }else {
                                 if ("".equals(AppApplication.gUser.getId())) {
                                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                                     intent.putExtra("userId", item.getAuthor().getId());
@@ -245,9 +235,19 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
                                     getActivity().startActivity(intent);
                                 } else {
                                     praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)), ((TextView) helper.getView(R.id.clh_tv_praiseNum)), number.get(helper.getPosition()), helper);
+                                    helper.getView(R.id.clh_ll_praise).setEnabled(false);
                                 }
                             }
-                        });
+                        }
+                    });
+                    if (selected.get(helper.getPosition())) {
+                        helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
+                        ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255, 255, 255));
+                        helper.setText(R.id.clh_tv_praiseNum, number.get(helper.getPosition()) + "");
+                    } else {
+                        helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_shape);
+                        ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(199, 31, 33));
+                        helper.setText(R.id.clh_tv_praiseNum, number.get(helper.getPosition()) + "");
 
                     }
                 }
@@ -283,6 +283,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
                     if (selected.get(helper.getPosition())) {
+                        helper.getView(R.id.clh_ll_praise).setEnabled(true);
                         view.setBackgroundResource(R.drawable.praise_shape);
                         AnimPraiseCancel.animCancelPraise(helper.getView(R.id.iv_xin_hui_left),helper.getView(R.id.iv_xin_hui_right));
                         textView.setTextColor(Color.rgb(199, 31, 33));
@@ -334,6 +335,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
                     if (!selected.get(helper.getPosition())) {
+                        helper.getView(R.id.clh_ll_praise).setEnabled(true);
                         view.setBackgroundResource(R.drawable.praise_after_shape);
                         AnimPraiseCancel.animPraise(helper.getView(R.id.iv_praise_red));
                         textView.setTextColor(Color.rgb(255, 255, 255));

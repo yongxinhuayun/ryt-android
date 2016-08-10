@@ -22,7 +22,7 @@ public class Constants {
     public static final String WX_PAY_ACTION_FAILURE = "wx_pay_failure";
     public static final String WX_INSTALL_ACTION = "wx_install_action";
     public static final String WX_NOTINSTALL_ACTION = "wx_notinstall_action";
-    public static final String[] INDEX_TITLE = new String[] { "融资", "创作", "拍卖","抽奖" };
+    public static final String[] INDEX_TITLE = new String[] { "融资", "创作", "拍卖" };
     public static final String[] RZ_TITLE = new String[] { "项目", "详情", "投资","历史作品" };
     public static final String[] lottery_TITLE = new String[] { "抽奖", "项目", "详情" };
     public static  String[] ATTENTION_TITLE = new String[] { "艺术家(0)", "用户(0)" };
