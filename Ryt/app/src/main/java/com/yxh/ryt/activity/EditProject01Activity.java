@@ -228,9 +228,17 @@ public class EditProject01Activity extends  BaseActivity {
             }
         });
     }
-    @OnClick(R.id.btn_next)
+    @OnClick({R.id.ib_top_lf,R.id.btn_next})
     public void next(View v){
-        oneStepRequst();
+        switch (v.getId()){
+            case R.id.ib_top_lf:
+                finish();
+                break;
+            case R.id.btn_next:
+                oneStepRequst();
+                break;
+        }
+
     }
     @OnClick(R.id.iv_image)
     public void addImage(View v){
