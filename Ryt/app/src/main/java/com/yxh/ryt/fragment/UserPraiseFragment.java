@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
+import com.yxh.ryt.util.DisplayUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -32,6 +34,7 @@ import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.RongZi;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -277,6 +280,15 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
                     }else if ("融资中".equals(AppApplication.artWorkMap.get(item.getStep()))){
                         helper.getView(R.id.ll_state_auction).setVisibility(View.VISIBLE);
                         helper.getView(R.id.liah_iv_progress).setVisibility(View.VISIBLE);
+                        ImageView progress = (ImageView) helper.getView(R.id.liah_iv_progress);
+                        ViewGroup.LayoutParams para = progress.getLayoutParams();//获取按钮的布局
+                        BigDecimal a = new BigDecimal("0");
+                        if (0==item.getInvestGoalMoney().compareTo(a)){
+                            para.width=0;
+                        }else {
+                            para.width= DisplayUtil.dip2px(item.getInvestsMoney().floatValue()/item.getInvestGoalMoney().floatValue()*90);
+                        }
+                        progress.setLayoutParams(para);
                         helper.setText(R.id.clh1_tv_state,"融资中￥"+item.getInvestsMoney());
                     }else {
                         helper.getView(R.id.ll_state_auction).setVisibility(View.VISIBLE);

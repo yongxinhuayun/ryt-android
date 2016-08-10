@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.CaptioningManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +29,7 @@ import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.custemview.CircleImageView;
+import com.yxh.ryt.util.DisplayUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -37,12 +39,14 @@ import com.yxh.ryt.vo.HomeYSJArtWork;
 import com.yxh.ryt.vo.User;
 
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
+import okhttp3.internal.framed.Variant;
 
 /**
  * Created by Administrator on 2016/7/8.
@@ -430,6 +434,15 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                 }else if ("融资中".equals(AppApplication.artWorkMap.get(item.getStep()))){
                     helper.getView(R.id.lia_fl_state).setVisibility(View.VISIBLE);
                     helper.getView(R.id.liah_iv_progress).setVisibility(View.VISIBLE);
+                    ImageView progress = (ImageView) helper.getView(R.id.liah_iv_progress);
+                    ViewGroup.LayoutParams para = progress.getLayoutParams();//获取按钮的布局
+                    BigDecimal a = new BigDecimal("0");
+                    if (0==item.getInvestGoalMoney().compareTo(a)){
+                        para.width=0;
+                    }else {
+                        para.width= DisplayUtil.dip2px(item.getInvestsMoney().floatValue()/item.getInvestGoalMoney().floatValue()*90);
+                    }
+                    progress.setLayoutParams(para);
                     helper.setText(R.id.liah_iv_state,"融资中￥"+item.getInvestsMoney());
                 }else {
                     helper.getView(R.id.lia_fl_state).setVisibility(View.VISIBLE);
