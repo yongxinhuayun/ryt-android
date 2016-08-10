@@ -39,8 +39,9 @@ public class PayPageActivity extends BaseActivity {
                 if( url.startsWith("http:") || url.startsWith("https:") ) {
                     return false;
                 }
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity( intent );
+                // Otherwise allow the OS to handle things like tel, mailto, etc.
+                /*Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity( intent );*/
                 return true;
             }
         });

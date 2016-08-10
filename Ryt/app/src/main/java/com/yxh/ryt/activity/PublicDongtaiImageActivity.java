@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -37,7 +38,11 @@ import com.yxh.ryt.util.phote.util.ImageItem;
 import com.yxh.ryt.util.phote.util.PublicWay;
 import com.yxh.ryt.util.phote.util.Res;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -265,15 +270,43 @@ public class PublicDongtaiImageActivity extends  BaseActivity {
             super.onRestart();
         }
 
-
+    private Bitmap compressImage(Bitmap image,String s) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap.CompressFormat format=Utils.getImageFormatBig(s);
+        image.compress(format, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        int length = baos.toByteArray().length;
+        while ( baos.toByteArray().length / 1024>300) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            options -= 10;//每次都减少10
+            image.compress(format, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
+        return bitmap;
+    }
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             if(requestCode == REQUEST_IMAGE){
             if(resultCode == RESULT_OK&&Bimp.tempSelectBitmap.size()<9){
                 // 获取返回的图片列表
                 List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
                 // 处理你自己的逻辑 ....
+                int i=0;
                 for (String s:path){
-                    File file = new File(s);
+                    i++;
+                    Bitmap bitmap = BitmapFactory.decodeFile(s);
+                    Bitmap bitmap1 = compressImage(bitmap, s);
+                    File file = new File(Environment.getExternalStorageDirectory()
+                            + "/dynamicImage"+i+Utils.getImageFormat(s));
+                    try {
+                        FileOutputStream fos = new FileOutputStream(file);
+                        bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        fos.flush();
+                        fos.close();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                     fileMap.put(file.getName(),file);
                     String fileName = String.valueOf(System.currentTimeMillis());
                     ImageItem takePhoto = new ImageItem();

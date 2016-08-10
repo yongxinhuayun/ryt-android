@@ -332,6 +332,9 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                 startActivity(intent);
                 break;
             case CAMERA_REQUEST_CODE:
+                if (data==null){
+                    return;
+                }
                 File picture = new File(Environment.getExternalStorageDirectory()
                         + "/pushWork.jpg");
                 Intent intent1=new Intent(this,PushWoraActivity.class);
