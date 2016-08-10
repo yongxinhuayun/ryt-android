@@ -307,6 +307,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         mRoundProgressBar.setTextSize(28);
         cl_headPortrait = (CircleImageView) view.findViewById(R.id.cl_headPortrait);
         loadingUtil = new LoadingUtil(getActivity(), getContext());
+        mExpandView.setLayoutId(R.layout.layout_expand);
+        webView = (WebView) mExpandView.findViewById(R.id.wv_invest_process);
+        webView.loadUrl("file:///android_asset/InvestFlowControlller.html");
         mExpandView.collapse();
         for (int i = 0; i < mExpandView.getChildCount(); i++) {
             mExpandView.getChildAt(i).setVisibility(View.GONE);
@@ -578,7 +581,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     tv_project_brief.setText(artwork.getBrief());
                     tvWorksNum.setText(artwork.getAuthor().getMasterWorkNum() + "件作品");
                     tvFansNum.setText(artwork.getAuthor().getFansNum() + "个粉丝");
-                    tv_price.setText("￥ " + artwork.getInvestsMoney() + ".00");
+                    tv_price.setText("￥ " + artwork.getInvestGoalMoney() + ".00");
                     tvInvestor.setText(artwork.getInvestNum() + "人投资 ");
                     tvInvestMoney.setText("￥" + artwork.getInvestsMoney() + "/" + artwork.getInvestGoalMoney());
                     remainMoney = artwork.getInvestGoalMoney().subtract(artwork.getInvestsMoney()).intValue();
