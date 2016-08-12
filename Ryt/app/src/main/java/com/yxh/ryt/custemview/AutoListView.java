@@ -121,7 +121,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 	private void initView(Context context) {
 
 		// 设置箭头特效
-		animation = new RotateAnimation(0, -180f,
+		animation = new RotateAnimation(0f, -180f,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
 		animation.setDuration(300);
@@ -151,6 +151,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 		measureView(header);
 		headerContentHeight = header.getMeasuredHeight();
 		topPadding(-headerContentHeight);
+
 		this.addHeaderView(header);
 		this.addFooterView(footer);
 		this.setOnScrollListener(this);
@@ -325,10 +326,11 @@ public class AutoListView extends ListView implements OnScrollListener {
 	private void refreshHeaderViewByState() {
 		switch (state) {
 			case NONE:
+				/*this.smoothScrollToPositionFromTop(1,0,500);
+				this.setSelection(1);*/
 				topPadding(-headerContentHeight);
-				tip.setText(R.string.pull_to_refresh);
 				refreshing.setVisibility(View.INVISIBLE);
-				//arrow.clearAnimation();
+				arrow.clearAnimation();
 				break;
 			case PULL:
 				arrow.setVisibility(View.VISIBLE);

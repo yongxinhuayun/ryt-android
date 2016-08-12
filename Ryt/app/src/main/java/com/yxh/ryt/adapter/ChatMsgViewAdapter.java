@@ -103,7 +103,7 @@ public class ChatMsgViewAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (position == 0) {
             viewHolder.tvSendTime.setText(entity.getDate());
         } else {

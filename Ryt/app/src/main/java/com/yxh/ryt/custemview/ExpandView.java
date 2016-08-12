@@ -100,11 +100,11 @@ public class ExpandView extends FrameLayout {
     }
 
     public void setContentView(){
-        /*View view = null;
+        View view = null;
         view = LayoutInflater.from(getContext()).inflate(R.layout.layout_expand, null);
 
         removeAllViews();
-        addView(view);*/
+        addView(view);
     }
 
 }

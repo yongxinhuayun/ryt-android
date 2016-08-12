@@ -219,7 +219,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                         }
                     }
                     praiseHeadCommonAdapter.notifyDataSetChanged();
-                    // refreshPraise();
                     break;
                 case COUNT_DOWN:
                     deadTime -= 1000;
@@ -509,40 +508,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
             }
         });
     }
-
-    private void refreshPraise() {
-        Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("artWorkId", artWorkId);
-        paramsMap.put("timestamp", System.currentTimeMillis() + "");
-        try {
-            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
-            paramsMap.put("signmsg", AppApplication.signmsg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkView.do", paramsMap, new RongZiListCallBack() {
-
-            @Override
-            public void onError(Call call, Exception e) {
-                e.printStackTrace();
-                System.out.println("失败了");
-            }
-
-            @Override
-            public void onResponse(Map<String, Object> response) {
-                Map<String, Object> object = (Map<String, Object>) response.get("object");
-                if (object != null) {
-                    artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
-                            toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
-                    }.getType());
-                    praiseHeadDatas.clear();
-                    loadPraiseHeadData(artWorkPraiseList);
-                    praiseHeadCommonAdapter.notifyDataSetChanged();
-                }
-            }
-        });
-    }
-
 
     private void showOther() {
         loadingUtil.show();
@@ -1088,7 +1053,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private Runnable ScrollRunnable = new Runnable() {
         @Override
         public void run() {
-            int scrollDifference = Utils.dip2px(getActivity(), 160);
+            int scrollDifference = Utils.dip2px(getActivity(), 160 + 44);
             int off = screenHeight;//判断高度
             /*if (off > 0) {
                 sv.scrollBy(0, 30);
