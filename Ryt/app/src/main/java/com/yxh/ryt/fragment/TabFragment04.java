@@ -8,22 +8,17 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.ArtistIndexActivity;
-import com.yxh.ryt.activity.AttentionActivity;
 import com.yxh.ryt.activity.AuctionOrderActivity;
-import com.yxh.ryt.activity.FansActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.PublicProject01Activity;
 import com.yxh.ryt.activity.UserEditZiLiaoActivity;
 import com.yxh.ryt.activity.UserIndexActivity;
-import com.yxh.ryt.activity.UserPtIndexActivity;
 import com.yxh.ryt.activity.UserQianBaoActivity;
 import com.yxh.ryt.activity.UserSettingActivity;
 import com.yxh.ryt.activity.UserYiJianActivity;
@@ -68,7 +63,7 @@ public class TabFragment04 extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
     }
     //头像点击事件
-    @OnClick(R.id.uc_iv_headImage)
+    @OnClick(R.id.rl_user_headImage)
     void userHeaderClick() {
         if ("".equals(AppApplication.gUser.getId())) {
             LoginActivity.openActivity(getActivity());
@@ -215,6 +210,11 @@ public class TabFragment04 extends BaseFragment {
                     }
                 }
             });
+        }else {
+            btnLf.setText("申请为艺术家");
+            AppApplication.displayImage(AppApplication.gUser.getPictureUrl(),rsIvHeadPortrait);
+            tvUserHeaderName.setText("游客");
+            topName.setText("游客");
         }
 
     }

@@ -1,10 +1,11 @@
 package com.yxh.ryt.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yxh.ryt.AppApplication;
@@ -15,7 +16,6 @@ import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
-import com.yxh.ryt.vo.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +40,8 @@ public class CollectMoneyActivity extends BaseActivity {
     EditText amount;
     @Bind(R.id.cm_tv_commit)
     TextView commit;
+    @Bind(R.id.iv_back)
+    ImageView back;
     private boolean isAccount;
     private boolean isAmount;
     private boolean isName;
@@ -54,6 +56,12 @@ public class CollectMoneyActivity extends BaseActivity {
         money.setText("¥ "+remainMoney);
         commit.setEnabled(false);
         clickable();
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     private void clickable() {
         account.addTextChangedListener(new TextWatcher() {

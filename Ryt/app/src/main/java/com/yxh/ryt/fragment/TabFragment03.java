@@ -160,6 +160,7 @@ public class TabFragment03 extends  BaseFragment {
     public void onClick(View view){
         Intent intent=null;
         switch (view.getId()){
+            //通知
             case R.id.ft3_ll_notification:
                 if ("".equals(AppApplication.gUser.getId())){
                     intent=new Intent(getActivity(), LoginActivity.class);
@@ -170,6 +171,7 @@ public class TabFragment03 extends  BaseFragment {
                     bvNotification.setVisibility(View.GONE);
                 }
                 break;
+            //评论
             case R.id.ft3_ll_comment:
                 if ("".equals(AppApplication.gUser.getId())){
                     intent=new Intent(getActivity(), LoginActivity.class);
@@ -180,6 +182,7 @@ public class TabFragment03 extends  BaseFragment {
                     bvComment.setVisibility(View.GONE);
                 }
                 break;
+            //私信
             case R.id.ft3_ll_privateLetter:
                 if ("".equals(AppApplication.gUser.getId())){
                     intent=new Intent(getActivity(), LoginActivity.class);

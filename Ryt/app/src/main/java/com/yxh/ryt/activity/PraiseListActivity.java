@@ -1,6 +1,7 @@
 package com.yxh.ryt.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.google.gson.reflect.TypeToken;
@@ -41,6 +42,12 @@ public class PraiseListActivity extends BaseActivity implements AutoListView.OnL
         setContentView(R.layout.praise_list);
         back = (ImageView) findViewById(R.id.iv_back);
         lvPraise = (AutoListView) findViewById(R.id.lv_praise);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         loadData(AutoListView.REFRESH, currentPage);
         praiseAdapter = new CommonAdapter<ArtWorkPraiseList>(this, praiseDatas, R.layout.praise_list_item) {

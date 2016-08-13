@@ -40,7 +40,7 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
     ButterKnife.Setter<View, Integer> SETCOLOR = new ButterKnife.Setter<View, Integer>() {
         @Override public void set(View view, Integer value, int index) {
             LinearLayout ll=(LinearLayout)view;
-            if(value==index){
+            if(value == index){
                 ll.setBackgroundResource(R.mipmap.heise);
             }else {
                 ll.setBackgroundResource(R.drawable.qianbaoweixuanzhong);
@@ -124,7 +124,7 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        for (int i=0;i<6;i++){
+        for (int i = 0;i < 6;i++){
             tabTvs.get(i).setBackgroundResource(R.drawable.qianbaoweixuanzhong);
             tabTvs1.get(i).setTextColor(Color.BLACK);
         }
@@ -167,7 +167,11 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                 finish();
                 break;
             case R.id.imp_tv_invest:
-                investMoney();
+                if (Integer.parseInt(other.getText().toString()) < 2) {
+                    ToastUtil.showShort(getApplicationContext(),"投资最低2元");
+                }else {
+                    investMoney();
+                }
                 break;
         }
     }

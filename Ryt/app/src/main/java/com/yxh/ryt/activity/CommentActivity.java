@@ -68,10 +68,10 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
                             Intent intent=null;
                             Log.d("XXXXXXXXXXXX",AppApplication.getStep(item.getArtwork().getStep())+"");
                             if (AppApplication.getStep(item.getArtwork().getStep())==1 || AppApplication.getStep(item.getArtwork().getStep())==3 ){
-                                intent=new Intent(AppApplication.getSingleContext(), RongZiXQActivity.class);
+                                intent=new Intent(AppApplication.getSingleContext(), FinanceSummaryActivity.class);
                                 intent.putExtra("id", item.getArtwork().getId());
                             }else if(AppApplication.getStep(item.getArtwork().getStep())==2){
-                                intent=new Intent(AppApplication.getSingleContext(), ChuangZuoXQActivity.class);
+                                intent=new Intent(AppApplication.getSingleContext(), CreateSummaryActivity.class);
                                 intent.putExtra("id", item.getArtwork().getId());
                             }
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -30,11 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#E9E9E9"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="12dp"
-        android:background="#E9E9E9"/>
 
         <com.yxh.ryt.custemview.AutoListView
             android:id="@+id/pl_message_listView"
