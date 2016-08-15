@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,7 +115,7 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     protected void onResume() {
         super.onResume();
         LoadData();
-        webView.loadUrl("file:///android_asset/A2.html");
+        webView.loadUrl("file:///android_asset/progress.html");
         webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo");
     }
     private void LoadData() {

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +76,7 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
     protected void onResume() {
         super.onResume();
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("file:///android_asset/A3-1.html");
+        webView.loadUrl("file:///android_asset/auction.html");
         webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo1");
         share.setOnClickListener(new View.OnClickListener() {
             @Override
