@@ -102,7 +102,7 @@ public class UserSettingActivity extends BaseActivity {
                 SPUtil.clear(AppApplication.getSingleContext());
                 SPUtil.put(getApplicationContext(), Constants.ISFIRSTENTER, false);
                 btnOut.setVisibility(View.GONE);
-                OkHttpUtils.getInstance().getCookieStore().removeAll();
+                OkHttpUtils.getInstance().getCookieStore().getCookies().clear();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 break;

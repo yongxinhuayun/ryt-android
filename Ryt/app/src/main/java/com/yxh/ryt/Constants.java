@@ -3,9 +3,8 @@ package com.yxh.ryt;
 public class Constants {
     //网络请求基地址
     //public static final String BASE_PATH="http://192.168.1.75:8080/app/";
-    public static final String BASE_PATH="http://192.168.1.60:8080/app/";
     //public static final String BASE_PATH="http://craft.efeiyi.com/app-wikiServer/app/";
-    //public static final String BASE_PATH="http://ryt.efeiyi.com/app/";
+    public static final String BASE_PATH="http://ryt.efeiyi.com/app/";
     //融艺投APP_KEY
     public static final String APP_KEY="BL2QEuXUXNoGbNeHObD4EzlX+KuGc70U";
     //微信APP_ID
@@ -31,7 +30,7 @@ public class Constants {
     public static final String[] PAIHANG_TITLE = new String[] { "投资者", "艺术家" };
     public static final String[] RONGZI_XQ_TITLE = new String[] { "项目详情","投资流程","用户评论", "投资记录" };
     public static final String[] USER_YSJ_TITLE = new String[] { "主页","简介","作品", "投过的","赞过的" };
-    public static final String[] ARTIST_TITLE = new String[] { "主页","简介","作品", "投过的" };
+    public static final String[] ARTIST_TITLE = new String[] { "主页","简介","作品", "投过的","赞过的"};
     public static final String[] USER_PT_TITLE = new String[] { "投过的","赞过的","简介"};
     public static final int pageSize=20;
 

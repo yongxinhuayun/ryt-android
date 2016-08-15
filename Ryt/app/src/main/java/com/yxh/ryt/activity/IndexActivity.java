@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.TabPageAdapter;
 import com.yxh.ryt.custemview.CustomViewPager;
@@ -43,10 +44,10 @@ public class IndexActivity extends BaseActivity {
         @Override public void set(View view, Integer value, int index) {
             TextView textView=(TextView)view;
             if(value==index){
-                textView.setTextColor(Color.rgb(232,63,85));//可以将选择和未选择的color抽出
+                textView.setTextColor(Color.rgb(255,255,255));//可以将选择和未选择的color抽出
                 return;
             }
-            textView.setTextColor(Color.rgb(161,161,161));
+            textView.setTextColor(Color.rgb(238,238,238));
         }
     };
     @Bind({ R.id.iv_tab_01, R.id.iv_tab_02, R.id.iv_tab_03 ,R.id.iv_tab_04})
@@ -58,32 +59,32 @@ public class IndexActivity extends BaseActivity {
             if(value==index){
                 switch (value){
                     case 0:
-                        imageView.setImageResource(R.mipmap.shouye_yixuanze);
+                        imageView.setImageResource(R.mipmap.shouyexuanzhong);
                         break;
                     case 1:
-                        imageView.setImageResource(R.mipmap.paihang_yixuanze);
+                        imageView.setImageResource(R.mipmap.paihangxuanzhong);
                         break;
                     case 2:
-                        imageView.setImageResource(R.mipmap.xiaoxi_yixuanze);
+                        imageView.setImageResource(R.mipmap.xiaozixuanzhong);
                         break;
                     case 3:
-                        imageView.setImageResource(R.mipmap.wode_yixuanze);
+                        imageView.setImageResource(R.mipmap.wodexuanzhong);
                         break;
                 }
                 return;
             }
             switch (index){
                 case 0:
-                    imageView.setImageResource(R.mipmap.shouye_weixuanze);
+                    imageView.setImageResource(R.mipmap.shouyeweixuanzhong);
                     break;
                 case 1:
-                    imageView.setImageResource(R.mipmap.paihang_weixuanze);
+                    imageView.setImageResource(R.mipmap.paihangweixuanzhong);
                     break;
                 case 2:
-                    imageView.setImageResource(R.mipmap.xiaoxi_weixuanze);
+                    imageView.setImageResource(R.mipmap.xiaoxiweixuanzhong);
                     break;
                 case 3:
-                    imageView.setImageResource(R.mipmap.wode_weixuanze);
+                    imageView.setImageResource(R.mipmap.wodeweixuanzhong);
                     break;
             }
             return;
@@ -188,9 +189,14 @@ public class IndexActivity extends BaseActivity {
 //                    tabFragment03 = new TabFragment03();
 //                }
 //                transaction.replace(R.id.fl_tab, tabFragment03);
-                indexPager.setCurrentItem(2,false);
-                ButterKnife.apply(tabTvs, SETCOLOR, 2);
-                ButterKnife.apply(tabIvs, SETIMAGE, 2);
+                if ("".equals(AppApplication.gUser.getId())){
+                    Intent intent=new Intent(this,LoginActivity.class);
+                    startActivity(intent);
+                }else {
+                    indexPager.setCurrentItem(2,false);
+                    ButterKnife.apply(tabTvs, SETCOLOR, 2);
+                    ButterKnife.apply(tabIvs, SETIMAGE, 2);
+                }
                 break;
             case R.id.rl_tab_04:
 //                if (tabFragment04 == null)
@@ -198,9 +204,14 @@ public class IndexActivity extends BaseActivity {
 //                    tabFragment04 = new TabFragment04();
 //                }
 //                transaction.replace(R.id.fl_tab, tabFragment04);
-                indexPager.setCurrentItem(3,false);
-                ButterKnife.apply(tabTvs, SETCOLOR, 3);
-                ButterKnife.apply(tabIvs, SETIMAGE, 3);
+                if ("".equals(AppApplication.gUser.getId())){
+                    Intent intent=new Intent(this,LoginActivity.class);
+                    startActivity(intent);
+                }else {
+                    indexPager.setCurrentItem(3,false);
+                    ButterKnife.apply(tabTvs, SETCOLOR, 3);
+                    ButterKnife.apply(tabIvs, SETIMAGE, 3);
+                }
                 break;
         }
         // transaction.addToBackStack();

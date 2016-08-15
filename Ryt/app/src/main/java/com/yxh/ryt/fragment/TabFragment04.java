@@ -56,6 +56,9 @@ public class TabFragment04 extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.user_center, container,false);
         ButterKnife.bind(this, view);
+        if (btnLf!=null){
+            btnLf.setVisibility(View.GONE);
+        }
         return view;
     }
     @Override
@@ -147,7 +150,6 @@ public class TabFragment04 extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (AppApplication.gUser!=null && AppApplication.gUser.getId()!=null && !"".equals(AppApplication.gUser.getId())){
-            btnLf.setVisibility(View.VISIBLE);
             Map<String,String> paramsMap=new HashMap<>();
             paramsMap.put("userId", AppApplication.gUser.getId());
             //paramsMap.put("currentId", AppApplication.gUser.getId());
@@ -180,6 +182,7 @@ public class TabFragment04 extends BaseFragment {
                         tvUserHeaderGzNum.setText(a+"");*/
                         if (user != null) {
                             if ("2".equals(user.getType()) &&null!=btnLf) {
+                                btnLf.setVisibility(View.VISIBLE);
                                 btnLf.setText("申请为艺术家");
                                 setLoginedViewValues(1, user);
                                 btnLf.setOnClickListener(new View.OnClickListener() {
@@ -190,6 +193,7 @@ public class TabFragment04 extends BaseFragment {
                                 });
                                 AppApplication.gUser.setMaster1("");
                             } else if ("1".equals(user.getType()) &&null!=btnLf) {
+                                btnLf.setVisibility(View.VISIBLE);
                                 btnLf.setText("发起项目");
                                 setLoginedViewValues(2, user);
                                 btnLf.setOnClickListener(new View.OnClickListener() {
@@ -200,6 +204,7 @@ public class TabFragment04 extends BaseFragment {
                                 });
                                 AppApplication.gUser.setMaster1("master");
                             }else if ("0".equals(user.getType()) &&null!=btnLf) {
+                                btnLf.setVisibility(View.VISIBLE);
                                 btnLf.setTextColor(Color.rgb(128,128,128));
                                 btnLf.setText("申请为艺术家中");
                                 btnLf.setEnabled(false);
@@ -221,7 +226,6 @@ public class TabFragment04 extends BaseFragment {
 
     //登录成功设置控件元素的值
     private void setLoginedViewValues(int type,User user) {
-
         AppApplication.displayImage(user.getPictureUrl(),rsIvHeadPortrait);
         tvUserHeaderName.setText(user.getName()+"");
         topName.setText(user.getName()+"");
