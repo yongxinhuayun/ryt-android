@@ -284,7 +284,7 @@ public class EditProject01Activity extends  BaseActivity {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("title",evTitle.getText().toString());
         paramsMap.put("duration",evDuration.getText().toString());
-        paramsMap.put("userId",currentUserId);
+        //paramsMap.put("userId",currentUserId);
         //paramsMap.put("userId","imhfp1yr4636pj49");
         paramsMap.put("investGoalMoney",evMenoy.getText().toString());
         paramsMap.put("timestamp",System.currentTimeMillis()+"");

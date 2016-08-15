@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.RongZi;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.cookie.store.CookieStore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,7 +118,7 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
                     }
                     if (selected.size() <= rongZiDatas.size()) {
                         for (int i = selected.size(); i < rongZiDatas.size(); i++) {
-                            selected.put(i, rongZiDatas.get(i).isPraise());
+                            selected.put(i, false);
                             number.put(i, rongZiDatas.get(i).getPraiseNUm());
                         }
                     }

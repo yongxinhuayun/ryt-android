@@ -325,9 +325,9 @@ public class AutoListView extends ListView implements OnScrollListener {
 	private void refreshHeaderViewByState() {
 		switch (state) {
 			case NONE:
-				//topPadding(-headerContentHeight);
-				this.smoothScrollToPositionFromTop(1,0,1000);
-				this.setSelection(1);
+				topPadding(-headerContentHeight);
+				//this.smoothScrollToPositionFromTop(1,0,1000);
+				//this.setSelection(1);
 				tip.setText(R.string.pull_to_refresh);
 				refreshing.setVisibility(View.INVISIBLE);
 				//arrow.clearAnimation();

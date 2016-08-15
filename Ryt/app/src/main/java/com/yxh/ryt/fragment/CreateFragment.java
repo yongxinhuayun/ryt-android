@@ -112,7 +112,7 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 					}
 					if (selected.size()<=rongZiDatas.size()){
 						for (int i=selected.size();i<rongZiDatas.size();i++){
-							selected.put(i,rongZiDatas.get(i).isPraise());
+							selected.put(i, false);
 							number.put(i,rongZiDatas.get(i).getPraiseNUm());
 						}
 					}

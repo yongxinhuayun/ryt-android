@@ -45,7 +45,7 @@
             android:id="@+id/ft3_iv_notification"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:src="@mipmap/notification"
+            android:src="@mipmap/tongzhi"
             android:layout_centerVertical="true"/>
         <TextView
             android:id="@+id/ft3_tv_notification"
@@ -87,7 +87,7 @@
             android:id="@+id/ft3_iv_comment"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:src="@mipmap/comment"
+            android:src="@mipmap/pinglun"
             android:layout_centerVertical="true"/>
         <TextView
             android:id="@+id/ft3_tv_comment"
@@ -130,7 +130,7 @@
             android:id="@+id/ft3_iv_privateLetter"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:src="@mipmap/priletter"
+            android:src="@mipmap/sixin"
             android:layout_centerVertical="true"/>
         <TextView
             android:id="@+id/ft3_tv_privateLetter"
