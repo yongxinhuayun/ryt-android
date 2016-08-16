@@ -69,7 +69,6 @@
                 android:src="@mipmap/yixuanze" />
 
             <TextView
-
                 android:id="@+id/tv_defult"
                 android:layout_width="wrap_content"
                 android:layout_height="18dp"

@@ -3,33 +3,28 @@
  */
 //页面的初始化和渲染页面(统一调配函数)
 function initPage(artWorkId, currentUserId, usernmae, password) {
-    var paramStr = window.demo.fetchParamObject();
-        var paramObject = JSON.parse(paramStr);
-        var param = new Object();
-        //param.artWorkId = paramObject.artWorkId;
-        param.artWorkId = paramObject.artWorkId;
-        param.usernmae = "13693097151";
-        //param.currentUserId = paramObject.currentUserId;
-        param.currentUserId = paramObject.currentUserId;
-        param.password = "123123";
-        console.log("==============================");
-        console.log("param.artWorkId"+param.artWorkId+"param.currentUserId"+param.currentUserId);
-        console.log("==============================");
-        PageVariable.param = param;
-        PageVariable.artWorkId = param.artWorkId;
-        PageVariable.username = param.usernmae;
-        PageVariable.password = param.password;
-        console.log("==============================");
-        console.log("PageVariable.password"+PageVariable.password+"PageVariable.username"+PageVariable.username);
-        console.log("==============================");
-        login(loginCallback);
-    /*var param = new Object();
+    alert(artWorkId+currentUserId+usernmae+password);
+    var param = new Object();
     param.artWorkId = artWorkId;
     param.currentUserId = currentUserId;
-    PageVariable.param = param;*/
-    //PageVariable.artWorkId = artWorkId;
-
+    PageVariable.param = param;
+    PageVariable.artWorkId = artWorkId;
+    PageVariable.username = usernmae;
+    PageVariable.password = password;
+    login(loginCallback);
 }
+
+/*//页面的初始化和渲染页面(统一调配函数)
+function initPage(artWorkId, currentUserId) {
+    var param = new Object();
+    param.artWorkId = artWorkId;
+    param.currentUserId = currentUserId;
+    PageVariable.param = param;
+    PageVariable.artWorkId = artWorkId;
+    getArtWorkBaseInfoData(getArtWorkBaseInfo);
+    getArtWorkDetailData(getArtWorkDetail);
+    login(loginCallback);
+}*/
 
 
 function loginCallback() {

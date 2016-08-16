@@ -90,20 +90,23 @@ function dealRequestParam(requestParam) {
   return paramResult;
 }   //处理请求模板
 function getParamObject() {
-  var artWorkId = "ipeulrut2z8gf2s0";
-  var currentUserId = "ih33g5t18ge151fg";
-  var artWorkOrderId = "123";
-  var param = PageVariable.param;
-  if (typeof param["currentUserId"] != "undefined" && param["currentUserId"] != null && param["currentUserId"] != "") {
-    currentUserId = param["currentUserId"];
-  }
-  if (typeof param["artWorkOrderId"] != "undefined" && param["artWorkOrderId"] != null && param["artWorkOrderId"] != "") {
-    artWorkOrderId = param["artWorkOrderId"];
-  }
-  if (typeof param["artWorkId"] != "undefined" && param["artWorkId"] != null && param["artWorkId"] != "") {
-    artWorkId = param["artWorkId"];
-  }
-  return {artWorkId: artWorkId, currentUserId: currentUserId, artWorkOrderId: artWorkOrderId}
+  //var artWorkId = "ipeulrut2z8gf2s0";
+  //var currentUserId = "ih33g5t18ge151fg";
+  //var artWorkOrderId = "123";
+//  var param = PageVariable.param;
+//  if (typeof param["currentUserId"] != "undefined" && param["currentUserId"] != null && param["currentUserId"] != "") {
+//    currentUserId = param["currentUserId"];
+//  }
+//  if (typeof param["artWorkOrderId"] != "undefined" && param["artWorkOrderId"] != null && param["artWorkOrderId"] != "") {
+//    artWorkOrderId = param["artWorkOrderId"];
+//  }
+//  if (typeof param["artWorkId"] != "undefined" && param["artWorkId"] != null && param["artWorkId"] != "") {
+//    artWorkId = param["artWorkId"];
+//  }
+//  return {artWorkId: artWorkId, currentUserId: currentUserId, artWorkOrderId: artWorkOrderId}
+    
+    PageVariable.param.agent = "h5"
+    return PageVariable.param;
 }//获得请求参数对象
 //时间格式化相关
 Date.prototype.format = function (fmt) { //author: meizz
@@ -409,5 +412,5 @@ var pageEntity = {
   pageIndex: 1
 };     //分页信息对象
 var swiperContainerOption = {};             //swiper插件使用的配置对象
-var hostName = "http://192.168.1.60:8080"; //域名对象
+var hostName = "http://192.168.1.75:8080"; //域名对象
 var RequestUrl = {};  //接口对象

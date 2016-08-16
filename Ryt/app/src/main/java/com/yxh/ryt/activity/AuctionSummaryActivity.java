@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,8 +19,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
@@ -33,9 +38,14 @@ import com.yxh.ryt.util.JsInterface;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
+import com.yxh.ryt.util.Utils;
+import com.yxh.ryt.vo.Artwork;
+import com.yxh.ryt.vo.ConsumerAddress;
 import com.yxh.ryt.vo.User;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -47,12 +57,26 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
     private WebView webView;
     private JsInterface jsInterface = new JsInterface();
     private String id;
+    private String userId;
     private String name;
     private ImageView back;
     private TextView title;
     private String titleName;
     private ImageButton share;
     private IWXAPI api;
+    private LinearLayout llPay;
+    private TextView tvPay;
+    private ImageView ivPay;
+    private ImageView add;
+    private ImageView selected;
+    private TextView depositPrice;
+    private RelativeLayout address;
+    private LinearLayout llAdd;
+    private TextView userName;
+    private TextView userPhone;
+    private TextView userAddress;
+    private TextView auctionProtocol;
+    private boolean agree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +84,21 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID); //初始化api
         api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
         setContentView(R.layout.activity_auctionsummary);
+        llPay = (LinearLayout) findViewById(R.id.ll_pay);
+        tvPay = (TextView) findViewById(R.id.tv_pay);
+        ivPay = (ImageView) findViewById(R.id.iv_pay);
         webView = (WebView) findViewById(R.id.aas_wb_all);
         back = (ImageView) findViewById(R.id.ib_top_lf);
         title = (TextView) findViewById(R.id.tv_top_ct);
         share = (ImageButton) findViewById(R.id.ib_top_rt);
         back.setOnClickListener(this);
         id = getIntent().getStringExtra("id");
+        userId = getIntent().getStringExtra("userId");
         name = getIntent().getStringExtra("name");
         titleName = getIntent().getStringExtra("title");
         title.setText(titleName);
+        llPay.setOnClickListener(this);
+
 
     }
 
@@ -137,59 +167,6 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
 
     }
     private void shareWx(final int flag) {
-        /*WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = "http://baidu.com";
-        WXMediaMessage msg = new WXMediaMessage(webpage);
-
-        msg.title = "title";
-        msg.description = getResources().getString(
-                R.string.app_name);
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-                R.mipmap.logo_qq);
-        msg.setThumbImage(thumb);
-        SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
-        reqShare.transaction = String.valueOf(System.currentTimeMillis());
-        reqShare.message = msg;
-        reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
-
-        api.sendReq(reqShare);*/
-       /* Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("userId", AppApplication.gUser.getId());
-        paramsMap.put("timestamp", System.currentTimeMillis() + "");
-        try {
-            AppApplication.signmsg = EncryptUtil.encrypt(paramsMap);
-            paramsMap.put("signmsg", AppApplication.signmsg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        NetRequestUtil.post(Constants.BASE_PATH + "toShareView.do", paramsMap, new RongZiListCallBack() {
-            @Override
-            public void onError(Call call, Exception e) {
-
-            }
-
-            @Override
-            public void onResponse(Map<String, Object> response) {
-                Log.d("xxxxxxxxxxxxxxxx","1");
-                String share_Url = (String) response.get("url");*/
-                /*WXWebpageObject webpage = new WXWebpageObject();
-                webpage.webpageUrl = share_Url;
-                WXMediaMessage msg = new WXMediaMessage(webpage);
-
-                msg.title = "title";
-                msg.description = getResources().getString(
-                        R.string.app_name);
-                Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-                        R.mipmap.ryt_logo);
-                msg.setThumbImage(thumb);
-                SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
-                reqShare.transaction = String.valueOf(System.currentTimeMillis());
-                reqShare.message = msg;
-                reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
-
-                api.sendReq(reqShare);*/
-
-
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = "http://ryt.efeiyi.com/app/shareView.do";
         WXMediaMessage msg = new WXMediaMessage(webpage);
@@ -205,9 +182,6 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
 
         api.sendReq(reqShare);
-        /*    }
-        });*/
-
     }
 
     @Override
@@ -217,11 +191,132 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
             case R.id.ib_top_lf:
                 finish();
                 break;
-            default:
+            case R.id.ll_pay:
+                ivPay.setImageResource(R.mipmap.commit_money);
+                tvPay.setText("提交保证金");
+                llPay.setBackgroundColor(Color.rgb(87,172,104));
+                showPopup(llPay);
                 break;
+            case R.id.iv_selected:
+                if (!agree) {
+                selected.setImageResource(R.mipmap.commit_money);
+                    llPay.setEnabled(true);
+                agree = true;
+                } else {
+                    selected.setImageResource(R.mipmap.before);
+                    llPay.setEnabled(false);
+                    agree = false;
+                }
         }
     }
 
+    private void showPopup(View view) {
+        // 加载pop显示的布局文件
+        View contentView = View.inflate(getApplicationContext(),
+                R.layout.auction_pay_pop, null);
+        // 得到pop界面中的控件
+        add = (ImageView) contentView.findViewById(R.id.iv_add);
+        depositPrice = (TextView) contentView.findViewById(R.id.tv_price);
+        auctionProtocol = (TextView) contentView.findViewById(R.id.tv_auction_protocol);
+        selected = (ImageView) contentView.findViewById(R.id.iv_selected);
+        address = (RelativeLayout) contentView.findViewById(R.id.rl_address);
+        llAdd = (LinearLayout) contentView.findViewById(R.id.ll_add_address);
+        //姓名
+        userName = (TextView) contentView.findViewById(R.id.tv_name);
+        userPhone = (TextView) contentView.findViewById(R.id.tv_phone);
+        userAddress = (TextView) contentView.findViewById(R.id.tv_address);
+        initData(id);
+        initAddress();
+        selected.setOnClickListener(this);
+        auctionProtocol.setOnClickListener(this);
+
+        // 弹出一个泡泡
+        PopupWindow pw = new PopupWindow(contentView,
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        // 设置背景：只有添加了背景后才能响应返回键的事件
+        pw.setBackgroundDrawable(new ColorDrawable());
+        pw.showAsDropDown(view, 0, Utils.px2dip(this,-5));
+        pw.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                ivPay.setImageResource(R.mipmap.money);
+                tvPay.setText("缴纳保证金");
+                llPay.setBackgroundColor(Color.rgb(205,55,56));
+            }
+        });
+    }
+//获取并加载保证金金额
+    private void initData(final String artWorkId) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("artWorkId", artWorkId);
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.get(Constants.BASE_PATH + "artWorkAuctionView.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+                ToastUtil.showLong(AuctionSummaryActivity.this,"网络连接超时,稍后重试!");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                System.out.println(response);
+                Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                        toJson(response.get("artwork")), Artwork.class);
+                depositPrice.setText("￥" + artwork.getInvestGoalMoney().divide(new BigDecimal(10),0, BigDecimal.ROUND_UP).toString() + "");
+
+            }
+        });
+    }
+    //加载收货地址
+    private void initAddress() {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "listAddress.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+                ToastUtil.showLong(AuctionSummaryActivity.this,"网络连接超时,稍后重试!");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                System.out.println(response);
+                List<ConsumerAddress> addressComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(
+                        response.get("consumerAddressList")), new TypeToken<List<ConsumerAddress>>() {}.getType());
+                if ( addressComment != null && addressComment.size() == 0) {
+                    address.setVisibility(View.INVISIBLE);
+                    llAdd.setVisibility(View.VISIBLE);
+                    add.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(getApplicationContext(),ReceiverAdressActivity.class));
+                        }
+                    });
+                }else {
+                    llAdd.setVisibility(View.INVISIBLE);
+                    address.setVisibility(View.VISIBLE);
+                    userName.setText(addressComment.get(0).getConsignee());
+                    userPhone.setText(addressComment.get(0).getPhone());
+                    userAddress.setText(addressComment.get(0).getDetails());
+                }
+            }
+        });
+
+    }
     class JavaInterfaceDemo {
         @JavascriptInterface
         public void clickOnAndroid1(String id) {
@@ -377,4 +472,5 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
             }
         });
     }
+
 }

@@ -2,13 +2,22 @@
  * Created by Administrator on 2016/5/31 0031.
  */
 function initPage(artWorkId, currentUserId, username, password) {
+//    alert(artWorkId+currentUserId+usernmae+password);
+//    var param = new Object();
+//    param.artWorkId = artWorkId;
+//    param.currentUserId = currentUserId;
+//    PageVariable.param = param;
+//    PageVariable.artWorkId = artWorkId;
+//    PageVariable.username = username;
+//    PageVariable.password = password;
     var param = new Object();
     param.artWorkId = artWorkId;
     param.currentUserId = currentUserId;
     PageVariable.param = param;
     PageVariable.artWorkId = artWorkId;
-    PageVariable.username = username;
-    PageVariable.password = password;
+    refreshPageEntity();
+    getArtWorkBaseInfoData(getArtWorkBaseInfo);
+    getArtWorkDetailData(getArtWorkDetail);
     login(loginCallback);
 }  //初始化页面
 function loginCallback() {

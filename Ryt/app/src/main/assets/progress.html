@@ -288,7 +288,7 @@
     {{ for (var i = 0 ; i < it.artWorkPraiseList.length ; i++) {
     var praise = it.artWorkPraiseList[i];
     }}
-    <a href="">{{=praise.user.name}}</a><em>，</em>
+    <a onclick="redirectUser('{{=praise.user.id}}')">{{=praise.user.name}}</a><em>，</em>
     {{ } }}
 
 </script>
@@ -344,7 +344,7 @@
 
 <script>
     $(function () {
-        initPage("", "", "13693097151", "123123");
+        //initPage("", "", "13693097151", "123123");
         //解决进度页面高度问题
         setTimeout(function () {
             $('.header.swiper-menu .item span:first-child').trigger('click');

@@ -22,7 +22,7 @@
                 <div class="ui bd infobase" id="mainInfo2">
                 </div>
                 <!--出价记录-->
-                <div class="ui bd invest" id="auctionList">
+                <div id="auctionList">
                 </div>
                 <!--评论以及评论列表-->
 
@@ -191,7 +191,7 @@
     </li>
     {{ } }}
 </script>
-<script type="text/x-dot-template" id="preBottomButton">
+<script type="text/x-dot-template" id="preBottomButton2">
 
     {{ if(it.step == "30"){ }}
     <div class="btm-min">
@@ -267,7 +267,7 @@
     </div>
     {{ } }}
 </script>
-<script type="text/x-dot-template" id="beingBottomButton">
+<script type="text/x-dot-template" id="beingBottomButton2">
     {{ if(it.step == "31" && PageVariable.isSubmitDepositPrice == "0" ){ }}
 
     <div class="btm-min">
@@ -336,8 +336,8 @@
 
 
 </script>
-<script type="text/x-dot-template" id="afterBottomButton">
-
+<script type="text/x-dot-template" id="afterBottomButton2">
+    <div class="ui bd invest">
 
     {{ if(it.step == "32" && it.winner.id == getCurrentUserId()){ }}
 
@@ -374,7 +374,7 @@
         </div>
     </div>
     {{ } }}
-
+</div>
 </script>
 <script type="text/x-dot-template" id="artWorkMaster">
     <div class="content">
@@ -657,7 +657,7 @@
     }//接口对象
 
     $().ready(function () {
-        initPage("", "", "13693097151", "123123");
+        //initPage("", "", "13693097151", "123123");
         //解决进度页面高度问题
         setTimeout(function () {
             $('.header.swiper-menu .item span:first-child').trigger('click');
