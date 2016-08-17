@@ -48,8 +48,10 @@ import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.Artwork;
 import com.yxh.ryt.vo.User;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -58,9 +60,6 @@ import okhttp3.Call;
  * Created by Administrator on 2016/6/6.
  */
 public class AuctionSummaryActivity extends BaseActivity implements View.OnClickListener {
-    private ImageView back;
-    private ImageView share;
-    IWXAPI api;
     private TextView top;
     private String id;
     private String name;
@@ -69,7 +68,7 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
     private ImageView back;
     private TextView title;
     private String titleName;
-    private ImageButton share;
+    private ImageView share;
     private IWXAPI api;
     private LinearLayout llPay;
     private LinearLayout llBid;
@@ -78,6 +77,7 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
     private TextView tvSubtraction;
     private TextView bidPrice;
     private LinearLayout llPayFinal;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +86,6 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
         setContentView(R.layout.createsummary_activity);
         setContentView(R.layout.activity_auctionsummary);
-
-        webView = (WebView) findViewById(R.id.aas_wb_all);
         back = (ImageView) findViewById(R.id.ib_top_lf);
         share = (ImageView) findViewById(R.id.ib_top_rt);
         title = (TextView) findViewById(R.id.tv_top_ct);
@@ -107,6 +105,7 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         llPayFinal.setOnClickListener(this);
         llPay.setOnClickListener(this);
         id = getIntent().getStringExtra("id");
+        userId = getIntent().getStringExtra("userId");
         name = getIntent().getStringExtra("title");
         top.setText(name);
         csFragments.add(new AuctionSummaryFragment(id));
@@ -119,7 +118,6 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         //实例化TabPageIndicator然后设置ViewPager与之关联
         TabPageIndicator mindicator = (TabPageIndicator) findViewById(R.id.indicator);
         mindicator.setViewPager(pager);
-        userId = getIntent().getStringExtra("userId");
         name = getIntent().getStringExtra("name");
         titleName = getIntent().getStringExtra("title");
         title.setText(titleName);
@@ -220,7 +218,7 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         super.onResume();
     }
 
-    @Override
+    /*@Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ib_top_lf:
@@ -232,11 +230,9 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
                 break;
             default:
                 break;
-        }
             }
         });
-        initbutton();
-    }
+    p*/
 
     private void showShareDialog() {
         View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_share_weixin_view, null);
@@ -314,6 +310,10 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
             case R.id.ib_top_lf:
                 finish();
                 break;
+            //分享
+            case R.id.ib_top_rt:
+                showShareDialog();
+                break;
             case R.id.ll_pay:
                 Intent mIntent = new Intent(this,CommitDepositPriceActivity.class);
                 mIntent.putExtra("artWorkId",id);
@@ -336,27 +336,5 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
     }
 
 
-
-
-
-
-
-private void shareWx(final int flag) {
-        WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = "http://ryt.efeiyi.com/app/shareView.do";
-        WXMediaMessage msg = new WXMediaMessage(webpage);
-
-        msg.title = "融艺投App";
-        msg.description = "面向艺术家与大众进行艺术交流与投资的应用";
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-        R.mipmap.logo108);
-        msg.setThumbImage(thumb);
-        SendMessageToWX.Req reqShare = new SendMessageToWX.Req();
-        reqShare.transaction = String.valueOf(System.currentTimeMillis());
-        reqShare.message = msg;
-        reqShare.scene = flag==0?SendMessageToWX.Req.WXSceneSession:SendMessageToWX.Req.WXSceneTimeline;
-
-        api.sendReq(reqShare);
-        }
 
 }
