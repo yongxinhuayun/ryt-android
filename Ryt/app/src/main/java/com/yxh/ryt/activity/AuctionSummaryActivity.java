@@ -84,7 +84,7 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID); //初始化api
         api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
-        setContentView(R.layout.createsummary_activity);
+        setContentView(R.layout.activity_auctionsummary);
         back = (ImageView) findViewById(R.id.ib_top_lf);
         share = (ImageView) findViewById(R.id.ib_top_rt);
         title = (TextView) findViewById(R.id.tv_top_ct);
@@ -94,11 +94,9 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         llPay = (LinearLayout) findViewById(R.id.ll_pay);
         llPayFinal = (LinearLayout) findViewById(R.id.ll_pay_final);
         llBid = (LinearLayout) findViewById(R.id.ll_bid);
-        share = (ImageButton) findViewById(R.id.ib_top_rt);
         top = (TextView) findViewById(R.id.csa_tv_title);
         back.setOnClickListener(this);
         share.setOnClickListener(this);
-        llPay.setOnClickListener(this);
         tvAdd.setOnClickListener(this);
         tvSubtraction.setOnClickListener(this);
         llPayFinal.setOnClickListener(this);
@@ -117,10 +115,6 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         //实例化TabPageIndicator然后设置ViewPager与之关联
         TabPageIndicator mindicator = (TabPageIndicator) findViewById(R.id.indicator);
         mindicator.setViewPager(pager);
-        name = getIntent().getStringExtra("name");
-        titleName = getIntent().getStringExtra("title");
-        title.setText(titleName);
-
         //显示缴纳保证金按钮还是出价
         initbutton();
     }
