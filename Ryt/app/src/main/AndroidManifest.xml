@@ -115,6 +115,10 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.CommitDepositPriceActivity"
+            android:theme="@android:style/Theme.Translucent"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.UserSettingActivity"
             android:screenOrientation="portrait" />
         <activity
