@@ -104,7 +104,7 @@ public class AuctionSummaryFragment extends BaseFragment{
 		}
 		@JavascriptInterface
 		public String fetchParamObject1() {
-			return "{\"artWorkId\":\""+id+"\",\"currentUserId\":\""+AppApplication.gUser.getId()+"\"}";
+			return "{\"artWorkId\":\""+id+"\",\"currentUserId\":\""+AppApplication.gUser.getId()+"\",\"username\": \""+AppApplication.gUser.getUsername()+"\",\"password\": \""+AppApplication.gUser.getPassword()+"\" }";
 		}
 		@JavascriptInterface
 		public void auctionProtocol() {

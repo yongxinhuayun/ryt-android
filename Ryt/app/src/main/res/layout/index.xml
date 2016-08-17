@@ -19,12 +19,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:background="#33000000"
+        android:background="#343434"
         android:layout_height="0.5dp"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:background="#33000000"
+        android:background="#343434"
         android:layout_height="52dp">
         <LinearLayout
             android:id="@+id/rl_tab_01"

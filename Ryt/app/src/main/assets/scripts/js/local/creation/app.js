@@ -22,8 +22,9 @@ function redirectUser(userid) {
 }
 
 
-function redirectComment(artworkId, currentUserId, messageId, fatherCommentId) {
-    window.location.href = "";
+function redirectComment(artworkId, currentUserId, messageId, fatherCommentId,name) {
+    console.log(name+"====================");
+    window.demo.comment(artworkId, currentUserId, messageId, fatherCommentId,name);
 }       //@TODO 跳转到评论
 
 // hostName = "http://192.168.1.43";                           //服务器域名

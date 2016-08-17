@@ -105,7 +105,7 @@
         <h1 class="fl t21">{{=it.name}}</h1>
     </div>
     <div class="bd item">
-        <li class="bd c33">静寂迷人的夜空，是记忆深处最遥远和笃定的依恋</li>
+        <li class="bd c33" style="height:14px;line-height:14px">{{=it.brief}}</li>
         {{ if(it.step=="30"){ }}
         <li class="bd c71" id="currentPrice">¥ {{=(it.startingPrice==null ? "0.00" : it.startingPrice)}}
         </li>
@@ -149,7 +149,7 @@
             }}
             <li class="good">
                 <div class="fl t12">
-                    <span><img src="{{=biddingF.creator.pictureUrl}}" width="30" height="30" alt=""></span>
+                    <span onclick="redirectUser('{{=biddingF.creator.id}}')"><img src="{{=biddingF.creator.pictureUrl}}" width="30" height="30" alt=""></span>
                     <span>{{=dealUsername(biddingF.creator.username,3,4)}}</span>
                     <span>{{=getDateFormatStr(biddingF.createDatetime,"MM.dd")}}</span>
                     <span>{{=getDateFormatStr(biddingF.createDatetime,"hh:mm:ss")}}</span>
@@ -161,7 +161,7 @@
             }}
             <li>
                 <div class="fl t12">
-                    <span><img src="{{=bidding.creator.pictureUrl}}" width="30" height="30" alt=""></span>
+                    <span onclick="redirectUser('{{=biddingF.creator.id}}')"><img src="{{=bidding.creator.pictureUrl}}" width="30" height="30" alt=""></span>
                     <span>{{=dealUsername(bidding.creator.username,3,4)}}</span>
                     <span class="">{{=getDateFormatStr(bidding.createDatetime,"MM.dd")}}</span>
                     <span>{{=getDateFormatStr(bidding.createDatetime,"hh:mm:ss")}}</span>
@@ -198,191 +198,9 @@
     </li>
     {{ } }}
 </script>
-<script type="text/x-dot-template" id="preBottomButton">
-
-    {{ if(it.step == "30"){ }}
-    <div class="btm-min">
-        <div class="btm-fixed" style="z-index:2;">
-            {{ if(PageVariable.isSubmitDepositPrice == "0"){ }}
-            <!--<a class="links" title="缴纳保证金">已缴纳保证金</a>-->
-            <a class="bd-btn-cell cff cd37" title="投资" disabled><i class="icons icon-acution"></i>已缴纳保证金</a>
-            {{ }else{ }}
-            <!--<a class="links" id="btn_pay" title="缴纳保证金">缴纳保证金</a>-->
-            <a class="bd-btn-cell cff cd37" title="投资"><i class="icons icon-acution"></i>缴纳保证金</a>
-            {{ } }}
-        </div>
-        <div class="btm-box">
-            <div class="btm-b-page">
-                <form action="">
-                    <!--内容-->
-                    <div class="bd   pl15">
-                        <!--信息-->
-                        <p class="mz1 bd"><em class="t14 c00 mr12">保证金</em><span class="t21 c71">¥ <strong>{{=getDepositPrice(it.startingPrice)}}</strong></span>
-                        </p>
-                        <p class="bd t12 c99 line-21 pb15">保证金将被冻结，若竞拍不成功将退回您所选的支付方式的账户中。</p>
-                        <!--地址-->
 
 
-                        <a class="bd bor-top-f5 bor-btm-f5" onclick="redirectConsumerAddress()">
-                            {{if(typeof PageVariable.consumerAddress!= "undefined" && PageVariable.consumerAddress !=
-                            null ){ }}
-                            <div class="site bd">
-                                <p class="bd t14 c33 mb12"><span class="st-name">{{=PageVariable.consumerAddress.consignee}}</span><span
-                                        class="st-num">{{=PageVariable.consumerAddress.phone}}</span></p>
-                                <p class="bd t14 c80 st-page">
-                                    {{=PageVariable.consumerAddress.provinceStr+PageVariable.consumerAddress.details}}</p>
-                            </div>
-                            {{ }else{ }}
-                            <a onclick="redirectConsumerAddress()">
-                                <div class="add tc bd pr15">
-                                    <i class="add-icon"></i>
-                                    <p class="t14 c80">添加收货地址~</p>
-                                </div>
-                            </a>
-                            {{ } }}
-                        </a>
 
-                        <!--支付-->
-                        <div class="bd pay bor-top-f5 bor-btm-f5">
-                            <i class="pay-icon"></i>
-                            <p class="t14 c00">支付宝支付</p>
-                        </div>
-                        <!--处理协议-->
-                        <div class="bd deal ">
-                            <i class="deal-icon mo"></i>
-                            <p class="t14 c33">同意融艺投竞拍协议<a>《融艺投竞拍协议》</a></p>
-                        </div>
-                    </div>
-                    <!--提交-->
-                    {{if(typeof PageVariable.consumerAddress!= "undefined" && PageVariable.consumerAddress != null ){ }}
-                    <!--<a onclick="submitDepositPrice('{{=it.startingPrice}}')" class="submit">提交保证金</a>-->
-                    <a class="btm-wind bd tc pr15" onclick="submitDepositPrice('{{=it.startingPrice}}')">
-                        <i class="wi-icon"></i>
-                        <span class="t14 cff">提交保证金</span>
-                    </a>
-                    {{ }else{ }}
-                    <a class="btm-wind bd tc pr15">
-                        <i class="wi-icon"></i>
-                        <span class="t14 cff">提交保证金</span>
-                    </a>
-
-                    {{ } }}
-                </form>
-            </div>
-            <div class="btm-bg"></div>
-        </div>
-    </div>
-    {{ } }}
-</script>
-<script type="text/x-dot-template" id="beingBottomButton">
-    {{ if(it.step == "31" && PageVariable.isSubmitDepositPrice == "0" ){ }}
-
-    <div class="btm-min">
-        <div class="btm-fixed" style="z-index:2;">
-            {{ if(PageVariable.isSubmitDepositPrice == "0"){ }}
-            <!--<a class="links" title="缴纳保证金">已缴纳保证金</a>-->
-            <a class="bd-btn-cell cff cd37" title="投资" disabled><i class="icons icon-acution"></i>已缴纳保证金</a>
-            {{ }else{ }}
-            <!--<a class="links" id="btn_pay" title="缴纳保证金">缴纳保证金</a>-->
-            <a class="bd-btn-cell cff cd37" title="投资"><i class="icons icon-acution"></i>缴纳保证金</a>
-            {{ } }}
-        </div>
-        <div class="btm-box">
-            <div class="btm-b-page">
-                <form action="">
-                    <!--内容-->
-                    <div class="bd   pl15">
-                        <!--信息-->
-                        <p class="mz1 bd"><em class="t14 c00 mr12">保证金</em><span class="t21 c71">¥ <strong>{{=getDepositPrice(it.startingPrice)}}</strong></span>
-                        </p>
-                        <p class="bd t12 c99 line-21 pb15">保证金将被冻结，若竞拍不成功将退回您所选的支付方式的账户中。</p>
-                        <!--地址-->
-
-
-                        <a class="bd bor-top-f5 bor-btm-f5" onclick="redirectConsumerAddress()">
-                            {{if(typeof PageVariable.consumerAddress!= "undefined" && PageVariable.consumerAddress !=
-                            null ){ }}
-                            <div class="site bd">
-                                <p class="bd t14 c33 mb12"><span class="st-name">{{=PageVariable.consumerAddress.consignee}}</span><span
-                                        class="st-num">{{=PageVariable.consumerAddress.phone}}</span></p>
-                                <p class="bd t14 c80 st-page">
-                                    {{=PageVariable.consumerAddress.provinceStr+PageVariable.consumerAddress.details}}</p>
-                            </div>
-                            {{ }else{ }}
-                            <div class="add tc bd pr15">
-                                <i class="add-icon"></i>
-                                <p class="t14 c80">添加收货地址~</p>
-                            </div>
-                            {{ } }}
-                        </a>
-
-                        <!--支付-->
-                        <div class="bd pay bor-top-f5 bor-btm-f5">
-                            <i class="pay-icon"></i>
-                            <p class="t14 c00">支付宝支付</p>
-                        </div>
-                        <!--处理协议-->
-                        <div class="bd deal ">
-                            <i class="deal-icon mo"></i>
-                            <p class="t14 c33">同意融艺投竞拍协议<a>《融艺投竞拍协议》</a></p>
-                        </div>
-                    </div>
-                    <!--提交-->
-                    <!--<a onclick="submitDepositPrice('{{=it.startingPrice}}')" class="submit">提交保证金</a>-->
-                    <a class="btm-wind bd tc pr15" onclick="submitDepositPrice('{{=it.startingPrice}}')">
-                        <i class="wi-icon"></i>
-                        <span class="t14 cff">提交保证金</span>
-                    </a>
-
-                </form>
-            </div>
-            <div class="btm-bg"></div>
-        </div>
-    </div>
-    {{ } }}
-
-
-</script>
-<script type="text/x-dot-template" id="afterBottomButton">
-
-
-    {{ if(it.step == "32" && it.winner.id == getCurrentUserId()){ }}
-
-
-    <div class="btm-min">
-        <div class="btm-fixed" style="z-index:2;">
-            <a class="bd-btn-cell cff cd37" title="投资"><i class="icons icon-acution"></i>支付尾款</a>
-        </div>
-        <div class="btm-box">
-            <div class="btm-b-page">
-                <!--内容-->
-                <div class="bd   pl15">
-                    <!--信息-->
-                    <p class="mz1 bd"><em class="t14 c00 mr12">尾款</em><span class="t21 c71">¥ <strong>{{=getCurrentFinalPrice()}}</strong></span>
-                    </p>
-                    <!--支付-->
-                    <div class="bd pay bor-top-f5 bor-btm-f5">
-                        <i class="pay-icon"></i>
-                        <p class="t14 c00">支付宝支付</p>
-                    </div>
-                    <!--处理协议-->
-                    <div class="bd deal ">
-                        <i class="deal-icon mo"></i>
-                        <p class="t14 c33">同意融艺投竞拍协议<a onclick="redirectProtocol()">《融艺投竞拍协议》</a></p>
-                    </div>
-                </div>
-                <!--提交-->
-                <a class="btm-wind bd tc pr15" onclick="submitRestPrice()">
-                    <i class="wi-icon"></i>
-                    <span class="t14 cff">确认支付</span>
-                </a>
-            </div>
-            <div class="btm-bg"></div>
-        </div>
-    </div>
-    {{ } }}
-
-</script>
 <script type="text/x-dot-template" id="artWorkMaster">
     <div class="content">
         <div class="thumb"><img src="{{=it.pictureUrl}}" height="35" width="35" alt=""><i

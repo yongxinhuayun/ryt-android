@@ -123,7 +123,7 @@ public class ProgressFragment extends BaseFragment {
         }
         @JavascriptInterface
         public void comment(String artworkId,String currentUserId,String messageId,String fatherCommentId,String name) {
-            if ("undefined".equals(fatherCommentId)){
+            if ("undefined".equals(name)){
                 if ("".equals(AppApplication.gUser.getId())) {
                     Intent intent2 = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent2);

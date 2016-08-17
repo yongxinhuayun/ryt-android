@@ -44,10 +44,10 @@ public class IndexActivity extends BaseActivity {
         @Override public void set(View view, Integer value, int index) {
             TextView textView=(TextView)view;
             if(value==index){
-                textView.setTextColor(Color.rgb(255,255,255));//可以将选择和未选择的color抽出
+                textView.setTextColor(Color.rgb(245,245,245));//可以将选择和未选择的color抽出
                 return;
             }
-            textView.setTextColor(Color.rgb(238,238,238));
+            textView.setTextColor(Color.rgb(128,128,128));
         }
     };
     @Bind({ R.id.iv_tab_01, R.id.iv_tab_02, R.id.iv_tab_03 ,R.id.iv_tab_04})
