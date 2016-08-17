@@ -24,17 +24,29 @@ public class Artwork implements Serializable {
     private List<ArtworkInvest> artworkInvestTopList;//投资者前三名
     private int praiseNUm;
     private int viewNum;
-    private  boolean praise;
+    private boolean praise;
     private int duration;
     private String investRestTime;
     private int investNum;
 
+    public void setWinner(User winner) {
+        this.winner = winner;
+    }
+
+    public User getWinner() {
+        return winner;
+    }
+
+    private User winner;
+
     public void setViewNum(int viewNum) {
         this.viewNum = viewNum;
     }
+
     public int getViewNum() {
         return viewNum;
     }
+
     public String getInvestRestTime() {
         return investRestTime;
     }
@@ -300,8 +312,8 @@ public class Artwork implements Serializable {
 
     private String newCreationDate;//最新创作时间
 
-    private  Integer  auctionNum;//竞价记录次数
-    private  BigDecimal newBidingPrice;//最新竞价价格
-    private  String newBiddingDate;//最新出价时间
+    private Integer auctionNum;//竞价记录次数
+    private BigDecimal newBidingPrice;//最新竞价价格
+    private String newBiddingDate;//最新出价时间
 
 }
