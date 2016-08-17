@@ -85,7 +85,6 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID); //初始化api
         api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
         setContentView(R.layout.createsummary_activity);
-        setContentView(R.layout.activity_auctionsummary);
         back = (ImageView) findViewById(R.id.ib_top_lf);
         share = (ImageView) findViewById(R.id.ib_top_rt);
         title = (TextView) findViewById(R.id.tv_top_ct);
@@ -96,9 +95,9 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         llPayFinal = (LinearLayout) findViewById(R.id.ll_pay_final);
         llBid = (LinearLayout) findViewById(R.id.ll_bid);
         share = (ImageButton) findViewById(R.id.ib_top_rt);
+        top = (TextView) findViewById(R.id.csa_tv_title);
         back.setOnClickListener(this);
         share.setOnClickListener(this);
-        top = (TextView) findViewById(R.id.csa_tv_title);
         llPay.setOnClickListener(this);
         tvAdd.setOnClickListener(this);
         tvSubtraction.setOnClickListener(this);
