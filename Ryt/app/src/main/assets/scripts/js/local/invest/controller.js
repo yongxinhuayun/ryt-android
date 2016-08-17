@@ -1,15 +1,27 @@
 /**
  * Created by Administrator on 2016/5/31 0031.
  */
-function initPage(artWorkId, currentUserId, username, password) {
-    var param = new Object();
-    param.artWorkId = artWorkId;
-    param.currentUserId = currentUserId;
-    PageVariable.param = param;
-    PageVariable.artWorkId = artWorkId;
-    PageVariable.username = username;
-    PageVariable.password = password;
-    login(loginCallback);
+function initPage() {
+    var paramStr = window.demo1.fetchParamObject1();
+                            var paramObject = JSON.parse(paramStr);
+                            var param = new Object();
+                            //param.artWorkId = paramObject.artWorkId;
+                            param.artWorkId = paramObject.artWorkId;
+                            param.username = paramObject.username;
+                            //param.currentUserId = paramObject.currentUserId;
+                            param.currentUserId = paramObject.currentUserId;
+                            param.password = paramObject.password;
+                            console.log("==============================");
+                            console.log("param.artWorkId"+param.artWorkId+"param.currentUserId"+param.currentUserId);
+                            console.log("==============================");
+                            PageVariable.param = param;
+                            PageVariable.artWorkId = param.artWorkId;
+                            PageVariable.username = param.username;
+                            PageVariable.password = param.password;
+                            console.log("==============================");
+                            console.log("PageVariable.password"+PageVariable.password+"PageVariable.username"+PageVariable.username);
+                            console.log("==============================");
+                            loginCallback();
 }  //初始化页面
 function loginCallback() {
     refreshPageEntity();
@@ -89,7 +101,7 @@ function getArtWorkBaseInfo() {
     getCurrentDefaultConsumerAddressData(getBottomButton);
     getAuctionTimeResult();
     getArtWorkAuctionData(getArtWorkAuctionBidding);
-    getArtFollowMasterListData(checkArtFollowMaster);
+    // getArtFollowMasterListData(checkArtFollowMaster);
     tabsHeight();
     for (var i = 0; i < artWorkProject.messageList.length; i++) {
         var message = artWorkProject.messageList[i];

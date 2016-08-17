@@ -88,6 +88,9 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
         this.userId=userId;
     }
 
+    public ArtistHomeFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

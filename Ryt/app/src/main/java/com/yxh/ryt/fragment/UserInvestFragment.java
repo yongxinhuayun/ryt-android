@@ -49,7 +49,7 @@ import okhttp3.Call;
  */
 @SuppressLint("ValidFragment")
 public class UserInvestFragment extends BaseFragment implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener, AdapterView.OnItemClickListener {
-    private final String userId;
+    private  String userId;
     private AutoListView lstv;
     private CommonAdapter<RongZi> rongZiCommonAdapter;
     private List<RongZi> rongZiDatas;
@@ -75,6 +75,9 @@ public class UserInvestFragment extends BaseFragment implements AutoListView.OnL
     public UserInvestFragment(String userId) {
         super();
         this.userId = userId;
+    }
+
+    public UserInvestFragment() {
     }
 
     @Override

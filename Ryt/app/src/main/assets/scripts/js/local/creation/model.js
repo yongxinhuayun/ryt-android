@@ -45,7 +45,7 @@ var ArtWorkComment = function (commentList) {
 var ArtWorkInvestRecord = function (investList, topThreeList) {
     this.investList = investList;//1.投资记录列表
     this.topThreeList = topThreeList;
-}
+};
 
 var PageVariable = {
     artWorkId: "",          //当前项目的id

@@ -46,6 +46,8 @@ public class ChuangZuoItemFragment extends BaseFragment implements AutoListView.
 		chuangZuoDatas=new ArrayList<Create>();
 	}
 
+	public ChuangZuoItemFragment() {
+	}
 
 	private void LoadData(final int state, final int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();

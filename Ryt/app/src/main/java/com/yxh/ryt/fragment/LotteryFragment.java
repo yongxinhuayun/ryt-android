@@ -179,6 +179,9 @@ public class LotteryFragment extends BaseFragment implements AutoListView.OnRefr
         });
     }
 
+    public LotteryFragment() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -160,8 +160,8 @@
             android:background="@drawable/circularbead_1">
             <ImageView
                 android:id="@+id/uh1_iv_privateLetter"
-                android:layout_width="17dp"
-                android:layout_height="12dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@mipmap/sixin"/>
         </LinearLayout>
 

@@ -56,6 +56,9 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
         this.userId = userId;
     }
 
+    public InvestedFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

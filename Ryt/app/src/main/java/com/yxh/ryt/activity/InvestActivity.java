@@ -82,35 +82,41 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                 ButterKnife.apply(tabTvs, SETCOLOR,0);
                 ButterKnife.apply(tabTvs1, SETCOLOR1,0);
                 money=2+"";
+                //other.setText(money);
                 invest.setText("投资"+2+"元");
                 break;
             case R.id.imp_ll_5:
                 ButterKnife.apply(tabTvs, SETCOLOR,1);
                 ButterKnife.apply(tabTvs1, SETCOLOR1,1);
                 money=5+"";
+                //other.setText(money);
                 invest.setText("投资" + 5 + "元");
                 break;
             case R.id.imp_ll_10:
                 ButterKnife.apply(tabTvs, SETCOLOR,2);
                 ButterKnife.apply(tabTvs1, SETCOLOR1,2);
                 money=10+"";
+                //other.setText(money);
                 invest.setText("投资" + 10 + "元");
                 break;
             case R.id.imp_ll_28:
                 ButterKnife.apply(tabTvs, SETCOLOR,3);
                 ButterKnife.apply(tabTvs1, SETCOLOR1,3);
                 money=28+"";
+                //other.setText(money);
                 invest.setText("投资" + 28 + "元");
                 break;
             case R.id.imp_ll_88:
                 ButterKnife.apply(tabTvs, SETCOLOR,4);
                 ButterKnife.apply(tabTvs1, SETCOLOR1,4);
                 money=88+"";
+                //other.setText(money);
                 invest.setText("投资" + 88 + "元");
                 break;
             case R.id.imp_ll_all:
                 ButterKnife.apply(tabTvs, SETCOLOR, 5);
                 ButterKnife.apply(tabTvs1, SETCOLOR1, 5);
+                //other.setText(money);
                 invest.setText("投资" + allMoney + "元");
                 break;
         }
@@ -167,18 +173,25 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                 finish();
                 break;
             case R.id.imp_tv_invest:
-                if (Integer.parseInt(other.getText().toString()) < 2) {
+                /*if (Integer.parseInt(other.getText().toString()) < 2) {
                     ToastUtil.showShort(getApplicationContext(),"投资最低2元");
-                }else {
+                }else {*/
+                if ("".equals(other.getText().toString())){
                     investMoney();
+                }else {
+                    if (Integer.parseInt(other.getText().toString()) < 2) {
+                        ToastUtil.showShort(getApplicationContext(),"投资最低2元");
+                    }else {
+                        investMoney();
+                    }
                 }
+                /*}*/
                 break;
         }
     }
 
     private void investMoney() {
         Map<String,String> paramsMap=new HashMap<>();
-        //paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("money", money);
         paramsMap.put("action", "investAccount");
         paramsMap.put("type", "1");

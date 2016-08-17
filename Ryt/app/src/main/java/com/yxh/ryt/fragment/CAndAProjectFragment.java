@@ -86,7 +86,7 @@ import java.util.Map;
 import okhttp3.Call;
 
 @SuppressLint("ValidFragment")
-public class RZProjectFragment extends BaseFragment implements View.OnClickListener {
+public class CAndAProjectFragment extends BaseFragment implements View.OnClickListener {
 
     private String artWorkId;
     private ListViewForScrollView mListview;
@@ -153,7 +153,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private TextView tvFansNum;
     private Artwork artwork;
     private TextView reader;
-    private LinearLayout invest;
     private int remainMoney;
     private List<ArtworkInvestTop> investorTopDatas;
     private long deadTime;
@@ -169,12 +168,12 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private HorizontalListView praiseHLV;
     private CircleImageView myPraise;
 
-    public RZProjectFragment(String artWorkId) {
+    public CAndAProjectFragment(String artWorkId) {
         super();
         this.artWorkId = artWorkId;
     }
 
-    public RZProjectFragment() {
+    public CAndAProjectFragment() {
     }
 
     private final Handler mHandler = new Handler();
@@ -268,7 +267,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.rz_project, container, false);
+        View view = inflater.inflate(R.layout.rz_project1, container, false);
         imageTitle = (ImageView) view.findViewById(R.id.cl_01_tv_prc);
         leftPraise = (ImageView) view.findViewById(R.id.iv_xin_hui_left);
         rightPraise = (ImageView) view.findViewById(R.id.iv_xin_hui_right);
@@ -299,7 +298,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         praiseHLV = (HorizontalListView) view.findViewById(R.id.hlv_praise);
         attention.setOnClickListener(this);
         comment.setOnClickListener(this);
-        invest = ((LinearLayout) view.findViewById(R.id.rzp_ll_invest));
         llpraise = (LinearLayout) view.findViewById(R.id.ll_praise);
         //llinvester = (LinearLayout) view.findViewById(R.id.ll_invester);
         mExpandView = (ExpandView) view.findViewById(R.id.expandView);
@@ -327,7 +325,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         iListview = (ListViewForScrollView) view.findViewById(R.id.lv_invester);
         iTopListview = (ListViewForScrollView) view.findViewById(R.id.lv_invester_top);
         iTopListview.hideFooterView();
-        invest.setOnClickListener(this);
         praiseHLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -933,17 +930,6 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 Intent intent = new Intent(getActivity(), PraiseListActivity.class);
                 intent.putExtra("artWorkId", artWorkId);
                 startActivity(intent);
-                break;
-            case R.id.rzp_ll_invest:
-                if ("".equals(AppApplication.gUser.getId())) {
-                    Intent intent2 = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(intent2);
-                } else {
-                    Intent intent1 = new Intent(getActivity(), InvestActivity.class);
-                    intent1.putExtra("allMoney", remainMoney);
-                    intent1.putExtra("artWorkId", artWorkId);
-                    startActivity(intent1);
-                }
                 break;
             case R.id.rl_progress:
                 if (mExpandView.isExpand()) {

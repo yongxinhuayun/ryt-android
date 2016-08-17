@@ -51,6 +51,9 @@ public class CommentFragment extends BaseFragment implements AutoListView.OnLoad
         return contextView;
     }
 
+    public CommentFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

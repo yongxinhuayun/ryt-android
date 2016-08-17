@@ -57,6 +57,10 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 		number=new HashMap<>();
 		loadingUtil = new LoadingUtil(getActivity(),getActivity());
 	}
+
+	public CreateFragment() {
+	}
+
 	private void LoadData(final int state, final int pageNum) {
 		final Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("pageSize", Constants.pageSize+"");

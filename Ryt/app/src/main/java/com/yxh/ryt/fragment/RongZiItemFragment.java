@@ -109,6 +109,9 @@ public class RongZiItemFragment extends BaseFragment implements AutoListView.OnR
 		});
 	}
 
+	public RongZiItemFragment() {
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

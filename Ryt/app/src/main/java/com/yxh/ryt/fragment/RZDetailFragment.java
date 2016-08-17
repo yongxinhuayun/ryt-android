@@ -28,7 +28,7 @@ import okhttp3.Call;
 @SuppressLint("ValidFragment")
 public class RZDetailFragment extends BaseFragment {
 
-	private final String artWorkId;
+	private  String artWorkId;
 	private LinearLayout llImages;
 	private TextView tvContent;
 	private TextView tvJiehuo;
@@ -41,6 +41,9 @@ public class RZDetailFragment extends BaseFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+
+	public RZDetailFragment() {
 	}
 
 	@Override

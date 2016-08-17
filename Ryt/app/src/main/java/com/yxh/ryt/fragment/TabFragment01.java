@@ -79,6 +79,8 @@ public class TabFragment01 extends  BaseFragment {
         indexChildFragments.add(new AuctionFragment());
     }
 
+    public TabFragment01() {
+    }
 
     @Override
     protected void lazyLoad() {

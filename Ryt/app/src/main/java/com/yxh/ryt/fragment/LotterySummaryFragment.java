@@ -166,6 +166,8 @@ public class LotterySummaryFragment extends BaseFragment{
 
     }
 
+    public LotterySummaryFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

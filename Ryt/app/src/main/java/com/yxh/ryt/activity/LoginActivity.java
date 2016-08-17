@@ -3,9 +3,13 @@ package com.yxh.ryt.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -29,6 +33,7 @@ import com.yxh.ryt.validations.UserNameValidation;
 import com.yxh.ryt.vo.User;
 import com.yxh.ryt.vo.WxUser;
 import com.yxh.ryt.wxapi.WxUtil;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -284,6 +289,7 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(Map<String, Object> response) {
+                        syncCookie(Constants.BASE_PATH+"j_spring_security_check", OkHttpUtils.getInstance().getCookieStore().getCookies().get(0)+"");
                         if ("guide".equals(guide)){
                             Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
                             startActivity(intent);
@@ -335,6 +341,22 @@ public class LoginActivity extends BaseActivity {
             unregisterReceiver(mReciver);
         }
 
+    }
+    /**
+     * 将cookie同步到WebView
+     * @param url WebView要加载的url
+     * @param cookie 要同步的cookie
+     * @return true 同步cookie成功，false同步cookie失败
+     * @Author JPH
+     */
+    public  boolean syncCookie(String url,String cookie) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            CookieSyncManager.createInstance(this);
+        }
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setCookie(url, cookie);//如果没有特殊需求，这里只需要将session id以"key=value"形式作为cookie即可
+        String newCookie = cookieManager.getCookie(url);
+        return TextUtils.isEmpty(newCookie)?false:true;
     }
 
 }

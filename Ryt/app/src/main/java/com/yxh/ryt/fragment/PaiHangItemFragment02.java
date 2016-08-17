@@ -45,6 +45,9 @@ public class PaiHangItemFragment02 extends BaseFragment implements AutoListView.
 
     }
 
+    public PaiHangItemFragment02() {
+    }
+
     private void LoadData(final int state, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("pageSize", Constants.pageSize + "");

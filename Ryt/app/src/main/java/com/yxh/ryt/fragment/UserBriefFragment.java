@@ -45,6 +45,9 @@ public class UserBriefFragment extends BaseFragment {
         this.userId=userId;
     }
 
+    public UserBriefFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -79,8 +79,7 @@ function getArtFollowMasterListData(callback) {
             PageVariable.artFollowMasterList = dataTemp["artUserFollowedList"];
         }, data, callback);
     }
-    ajaxRequest(hostName + RequestUrl.artFollowMasterList, getParamObject(), window.artFollowMasterListSuccess, function () {
-    }, "artFollowMasterListSuccess");
+    ajaxRequest(hostName + RequestUrl.artFollowMasterList, getParamObject(), window.artFollowMasterListSuccess, false, "artFollowMasterListSuccess");
 }
 //添加对当前大师的关注
 function newArtFollowMasterData(callback) {
@@ -180,7 +179,7 @@ function newArtWorkPraise(messageId, action) {
             var message = dataTemp.artworkMessage;
             $("#" + message.id + "praise").html(getPraiseList(message));
             $("#" + message.id + "buttons").html(getMessageButtons(message));
-            if (action == "0" && message.artWorkPraiseList.length==0) {
+            if (action == "0" && message.artWorkPraiseList.length == 0) {
                 $("#" + message.id + "praiseIcon").hide();
             } else {
                 $("#" + message.id + "praiseIcon").show();

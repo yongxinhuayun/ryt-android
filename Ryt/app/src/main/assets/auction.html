@@ -22,7 +22,8 @@
                 <div class="ui bd infobase" id="mainInfo2">
                 </div>
                 <!--出价记录-->
-                <div class="ui bd invest" id="auctionList">
+                <div id="auctionList">
+
                 </div>
                 <!--评论以及评论列表-->
 
@@ -139,6 +140,7 @@
     </div>
 </script>
 <script type="text/x-dot-template" id="artWorkAuctionBidding">
+<div class="ui bd invest">
     <div class="bd dd">
         <ul>
             {{
@@ -148,7 +150,9 @@
             <li class="good">
                 <div class="fl t12">
                     <span><img src="{{=biddingF.creator.pictureUrl}}" width="30" height="30" alt=""></span>
-                    <span>{{=dealUsername(biddingF.creator.username,3,4)}}</span><span class="">{{=getDateFormatStr(biddingF.createDatetime,"MM.dd")}}</span><span>{{=getDateFormatStr(biddingF.createDatetime,"hh:mm:ss")}}</span>
+                    <span>{{=dealUsername(biddingF.creator.username,3,4)}}</span>
+                    <span>{{=getDateFormatStr(biddingF.createDatetime,"MM.dd")}}</span>
+                    <span>{{=getDateFormatStr(biddingF.createDatetime,"hh:mm:ss")}}</span>
                 </div>
                 <em>成交<a>¥ {{=parseInt(biddingF.price)}}</a></em>
             </li>
@@ -158,7 +162,9 @@
             <li>
                 <div class="fl t12">
                     <span><img src="{{=bidding.creator.pictureUrl}}" width="30" height="30" alt=""></span>
-                    <span>{{=dealUsername(bidding.creator.username,3,4)}}</span><span class="">{{=getDateFormatStr(bidding.createDatetime,"MM.dd")}}</span><span>{{=getDateFormatStr(bidding.createDatetime,"hh:mm:ss")}}</span>
+                    <span>{{=dealUsername(bidding.creator.username,3,4)}}</span>
+                    <span class="">{{=getDateFormatStr(bidding.createDatetime,"MM.dd")}}</span>
+                    <span>{{=getDateFormatStr(bidding.createDatetime,"hh:mm:ss")}}</span>
                 </div>
                 <em>出局<a>¥ {{=parseInt(bidding.price)}}</a></em>
             </li>
@@ -166,6 +172,7 @@
             <!--<a href="" class="bd t13 c4c bor-top-f5 more">查看更多</a>-->
         </ul>
     </div>
+</div>
 </script>
 <script type="text/x-dot-template" id="artWorkComment">
     {{
@@ -657,7 +664,7 @@
     }//接口对象
 
     $().ready(function () {
-        initPage("", "", "13693097151", "123123");
+        initPage();
         //解决进度页面高度问题
         setTimeout(function () {
             $('.header.swiper-menu .item span:first-child').trigger('click');

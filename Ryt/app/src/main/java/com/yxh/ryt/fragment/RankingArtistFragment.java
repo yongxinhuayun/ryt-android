@@ -48,6 +48,9 @@ public class RankingArtistFragment extends BaseFragment implements AutoListView.
 
     }
 
+    public RankingArtistFragment() {
+    }
+
     private void LoadData(final int state, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("pageSize", Constants.pageSize + "");

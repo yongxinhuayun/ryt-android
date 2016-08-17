@@ -61,6 +61,9 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
         loadingUtil = new LoadingUtil(getActivity(),getContext());
     }
 
+    public FinanceFragment() {
+    }
+
     private void loadData(final int state, final int pageNum) {
         final Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("pageSize", Constants.pageSize + "");

@@ -31,6 +31,9 @@ public abstract class BaseFragment extends Fragment {
         super.onAttach(context);
     }
 
+    public BaseFragment() {
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

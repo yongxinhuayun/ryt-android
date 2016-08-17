@@ -65,6 +65,10 @@ public class TabFragment04 extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
+
+    public TabFragment04() {
+    }
+
     //头像点击事件
     @OnClick(R.id.rl_user_headImage)
     void userHeaderClick() {

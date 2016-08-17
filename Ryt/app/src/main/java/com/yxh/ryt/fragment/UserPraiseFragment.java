@@ -44,7 +44,7 @@ import okhttp3.Call;
  */
 @SuppressLint("ValidFragment")
 public class UserPraiseFragment extends BaseFragment implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener, AdapterView.OnItemClickListener {
-    private final String userId;
+    private  String userId;
     private AutoListView lstv;
     private CommonAdapter<RongZi> rongZiCommonAdapter;
     private List<RongZi> rongZiDatas;
@@ -58,6 +58,9 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
     public UserPraiseFragment(String userId) {
         super();
         this.userId = userId;
+    }
+
+    public UserPraiseFragment() {
     }
 
     @Override
@@ -251,8 +254,8 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
                         helper.getView(R.id.ll_finance).setVisibility(View.GONE);
                         helper.getView(R.id.ll_creat).setVisibility(View.VISIBLE);
                         helper.getView(R.id.ll_auction).setVisibility(View.GONE);
-                        helper.setText(R.id.cli1_tv_update, Utils.timeAndIos(item.getNewCreationDate()) + "更新:");
-                        helper.setText(R.id.cli1_tv_finish, "预计" + Utils.timeAndIos(item.getCreationEndDatetime()) + "完工");
+                        helper.setText(R.id.cli_tv_update, Utils.timeAndIos(item.getNewCreationDate()) + "更新:");
+                        helper.setText(R.id.cli_tv_finish, "预计" + Utils.timeAndIos(item.getCreationEndDatetime()) + "完工");
                     } else if ("3".equals(item.getType())) {
                         helper.getView(R.id.ll_finance).setVisibility(View.GONE);
                         helper.getView(R.id.ll_creat).setVisibility(View.GONE);

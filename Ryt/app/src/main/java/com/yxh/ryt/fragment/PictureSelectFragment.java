@@ -46,6 +46,9 @@ public  class PictureSelectFragment extends BaseFragment{
     private ActionSheetDialog dialog;
     private AlertDialog mAlertDialog;
 
+    public PictureSelectFragment() {
+    }
+
     /**
      * 剪切图片
      */

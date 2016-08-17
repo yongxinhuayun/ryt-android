@@ -43,7 +43,11 @@ public class RankingUserFragment extends BaseFragment implements AutoListView.On
 		super.onCreate(savedInstanceState);
 		investorDatas=new ArrayList<Investor>();
 	}
-	private void LoadData(final int state,int pageNum) {
+
+	public RankingUserFragment() {
+	}
+
+	private void LoadData(final int state, int pageNum) {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("pageSize",Constants.pageSize+"");
 		paramsMap.put("pageIndex", pageNum + "");

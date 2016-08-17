@@ -43,6 +43,9 @@ public class RZInvestFragment extends BaseFragment implements AutoListView.OnRef
 		this.artWorkId = artWorkId;
 	}
 
+	public RZInvestFragment() {
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

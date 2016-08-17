@@ -58,6 +58,10 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 		number=new HashMap<>();
 		loadingUtil = new LoadingUtil(getActivity(),getContext());
 	}
+
+	public AuctionFragment() {
+	}
+
 	private void LoadData(final int state, final int pageNum) {
 		final Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("pageSize", Constants.pageSize+"");

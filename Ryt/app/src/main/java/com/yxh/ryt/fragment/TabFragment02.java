@@ -37,6 +37,9 @@ public class TabFragment02 extends  BaseFragment {
 
     }
 
+    public TabFragment02() {
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

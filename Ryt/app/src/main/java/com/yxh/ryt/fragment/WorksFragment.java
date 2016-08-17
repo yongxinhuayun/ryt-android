@@ -39,6 +39,9 @@ public class WorksFragment extends BaseFragment {
         this.userId = userId;
     }
 
+    public WorksFragment() {
+    }
+
     @Override
     protected void lazyLoad() {
 

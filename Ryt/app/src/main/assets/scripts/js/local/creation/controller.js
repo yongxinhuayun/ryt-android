@@ -2,37 +2,32 @@
  * Created by Administrator on 2016/5/31 0031.
  */
 //页面的初始化和渲染页面(统一调配函数)
-function initPage(artWorkId, currentUserId, usernmae, password) {
+function initPage() {
     var paramStr = window.demo.fetchParamObject();
-        var paramObject = JSON.parse(paramStr);
-        var param = new Object();
-        //param.artWorkId = paramObject.artWorkId;
-        param.artWorkId = paramObject.artWorkId;
-        param.usernmae = "13693097151";
-        //param.currentUserId = paramObject.currentUserId;
-        param.currentUserId = paramObject.currentUserId;
-        param.password = "123123";
-        console.log("==============================");
-        console.log("param.artWorkId"+param.artWorkId+"param.currentUserId"+param.currentUserId);
-        console.log("==============================");
-        PageVariable.param = param;
-        PageVariable.artWorkId = param.artWorkId;
-        PageVariable.username = param.usernmae;
-        PageVariable.password = param.password;
-        console.log("==============================");
-        console.log("PageVariable.password"+PageVariable.password+"PageVariable.username"+PageVariable.username);
-        console.log("==============================");
-        login(loginCallback);
-    /*var param = new Object();
-    param.artWorkId = artWorkId;
-    param.currentUserId = currentUserId;
-    PageVariable.param = param;*/
-    //PageVariable.artWorkId = artWorkId;
-
+                        var paramObject = JSON.parse(paramStr);
+                        var param = new Object();
+                        //param.artWorkId = paramObject.artWorkId;
+                        param.artWorkId = paramObject.artWorkId;
+                        param.username = paramObject.username;
+                        //param.currentUserId = paramObject.currentUserId;
+                        param.currentUserId = paramObject.currentUserId;
+                        param.password = paramObject.password;
+                        console.log("==============================");
+                        console.log("param.artWorkId"+param.artWorkId+"param.currentUserId"+param.currentUserId);
+                        console.log("==============================");
+                        PageVariable.param = param;
+                        PageVariable.artWorkId = param.artWorkId;
+                        PageVariable.username = param.username;
+                        PageVariable.password = param.password;
+                        console.log("==============================");
+                        console.log("PageVariable.password"+PageVariable.password+"PageVariable.username"+PageVariable.username);
+                        console.log("==============================");
+                        loginCallback();
 }
 
 
 function loginCallback() {
+    refreshPageEntity();
     getArtWorkBaseInfoData(getArtWorkBaseInfo);
     getArtWorkDetailData(getArtWorkDetail);
     getArtWorkCommentData(getArtWorkComment);
@@ -67,7 +62,7 @@ function getArtWorkBaseInfo() {
     $('[data-name=fansNum]').html(generateDOTTemplateResult(Template.artWorkMasterFansNum, artWorkInfo)); //大师粉丝总数
     $('[data-name=dataInfo]').html(generateDOTTemplateResult(Template.artWorkDataInfo, artWorkProject)); //项目投资截止时间和投资信息
 
-    getArtFollowMasterListData(checkArtFollowMaster);
+    // getArtFollowMasterListData(checkArtFollowMaster);
     // setTimeout("tabsHeight()", 1000);
     for (var i = 0; i < artWorkProject.messageList.length; i++) {
         var message = artWorkProject.messageList[i];
@@ -79,80 +74,86 @@ function getArtWorkBaseInfo() {
             }
         }
     }
-
     //弹出相册
-    var aImg = $('.creation .ui.comments .text .swiper-slide'),
-        oSwiper = $('.swiper2');
-    aImg.click(function () {
-        var index = $(this).index();
-        var d = document.body.clientWidth,  //获取屏幕宽度
-            oSwiperWrapper = oSwiper.find('.swiper-wrapper'),  //相册弹出层
-            oSwiperPagination = oSwiper.find('.swiper-pagination'),  //圆点
-            html = $(this).parents('.text').html();  //追加的元素
+        var aImg = $('.creation .ui.comments .text .swiper-slide'),
+            oSwiper = $('.swiper2');
+        aImg.click(function () {
+            var index = $(this).index();
+            var d = document.body.clientWidth,  //获取屏幕宽度
+                oSwiperWrapper = oSwiper.find('.swiper-wrapper'),  //相册弹出层
+                oSwiperPagination = oSwiper.find('.swiper-pagination'),  //圆点
+                html = $(this).parents('.text').html();  //追加的元素
 
-        //显示相册弹出层
-        oSwiper.fadeIn();
-        //控制相册弹出层的位置大小
-        oSwiperWrapper.append(html).css({'width': d + 'px', 'height': d + 'px', 'margin-top': -d / 2 + 'px'});
+            //显示相册弹出层
+            oSwiper.fadeIn();
+            //控制相册弹出层的位置大小
+            oSwiperWrapper.append(html).css({'width': d + 'px', 'height': d + 'px', 'margin-top': -d / 2 + 'px'});
 
-        //点击黑色背景
-        oSwiper.find('.overbg').click(function () {
-            oSwiper.fadeOut();  //隐藏相册弹出层
-            oSwiperWrapper.html('').attr('style', '');  //去掉swiper初始化的属性
-            oSwiperPagination.html('');  //去掉生成的元素
-            swiper2.detachEvents(); //移除所有slide监听事件
+            //点击黑色背景
+            oSwiper.find('.overbg').click(function () {
+                oSwiper.fadeOut();  //隐藏相册弹出层
+                oSwiperWrapper.html('').attr('style', '');  //去掉swiper初始化的属性
+                oSwiperPagination.html('');  //去掉生成的元素
+                swiper2.detachEvents(); //移除所有slide监听事件
+            });
+
+                   //点击图片
+                   oSwiper.find('.swiper-slide').click(function() {
+                                                       oSwiper.fadeOut();  //隐藏相册弹出层
+                                                       oSwiperWrapper.html('').attr('style', '');  //去掉swiper初始化的属性
+                                                       oSwiperPagination.html('');  //去掉生成的元素
+                                                       swiper2.detachEvents(); //移除所有slide监听事件
+                                                       });
+
+            var swiper2 = new Swiper('.swiper2', {
+                speed: 500,
+                pagination: '.swiper-pagination',
+                onSlideChangeStart: function () {
+                    oSwiperPagination.find('span').eq(swiper2.activeIndex).addClass('active').siblings('span').removeClass('active');
+                },
+            });
+            swiper2.slideTo(index, 0, false);
+            //如果是一张图片则隐藏下面的圆点
+            if (oSwiper.find('.swiper-slide').length > 2) {
+                oSwiper.find('.swiper-pagination').show();
+            } else {
+                oSwiper.find('.swiper-pagination').hide();
+            }
+
+
         });
-
-
-        var swiper2 = new Swiper('.swiper2', {
-            speed: 500,
-            pagination: '.swiper-pagination',
-            onSlideChangeStart: function () {
-                oSwiperPagination.find('span').eq(swiper2.activeIndex).addClass('active').siblings('span').removeClass('active');
-            },
-        });
-        swiper2.slideTo(index, 0, false);
-        //如果是一张图片则隐藏下面的圆点
-        if (oSwiper.find('.swiper-slide').length > 2) {
-            oSwiper.find('.swiper-pagination').show();
-        } else {
-            oSwiper.find('.swiper-pagination').hide();
-        }
-
-
-    });
 
     //点赞和评论
     var actions = $('.creation .ui.comments .actions');
     actions.each(function () {
         var reply = $(this).find('.reply'), //按钮
             layer = $(this).find('.layer');//内容
-        
+
         //初始化
-        reply.click(function(){
-        
+        reply.click(function () {
+
             var a = $(this)
             if (a.hasClass('current')) {
                 //hide
-                setTimeout(function() {
+                setTimeout(function () {
                     a.siblings('.horizontal').find(".layer").css({Transform: "translate(110%,0)"});
-                },500);
+                }, 500);
                 a.removeClass('current');
             } else {
                 //show
                 $('.reply').removeClass('current');
                 $('.layer').css({Transform: "translate(110%,0)"});
                 a.addClass('current');
-                setTimeout(function() {
+                setTimeout(function () {
                     a.siblings('.horizontal').find(".layer").css({Transform: "translate(0,0)"});
-                },500);
+                }, 500);
             }
 
 
-            $('.layer').on('click',function() {
-                setTimeout(function() {
+            $('.layer').on('click', function () {
+                setTimeout(function () {
                     a.siblings('.horizontal').find(".layer").css({Transform: "translate(110%,0)"});
-                },500);
+                }, 500);
                 a.removeClass('current');
                 return false;
             });
@@ -161,12 +162,8 @@ function getArtWorkBaseInfo() {
 
         });
 
-            
-
 
     });
-
-    
 
 
     //圆环进度
@@ -248,8 +245,7 @@ function getArtFollowMasterListData(callback) {
             PageVariable.artFollowMasterList = dataTemp["artUserFollowedList"];
         }, data, callback);
     }
-    ajaxRequest(hostName + RequestUrl.artFollowMasterList, getParamObject(), window.artFollowMasterListSuccess, function () {
-    }, "artFollowMasterListSuccess");
+    ajaxRequest(hostName + RequestUrl.artFollowMasterList, getParamObject(), window.artFollowMasterListSuccess, false, "artFollowMasterListSuccess");
 }
 //添加对当前大师的关注
 function newArtFollowMasterData(callback) {
@@ -319,7 +315,7 @@ function getArtWorkBaseInfoData(callback) {
                     masterLevel = "县级";
                     break;
             }
-            PageVariable.artWorkInfo = new ArtWorkInfo(artWork.picture_url, artWork.author.name, artWork.brief, auctionStartDatetimeStr, artWork.step, artWork.title, artWork.author.master.title, artWork.author.pictureUrl, artWork.author.id, artWork.author.masterWorkNum, artWork.author.fansNum,artWork.author);
+            PageVariable.artWorkInfo = new ArtWorkInfo(artWork.picture_url, artWork.author.name, artWork.brief, auctionStartDatetimeStr, artWork.step, artWork.title, artWork.author.master.title, artWork.author.pictureUrl, artWork.author.id, artWork.author.masterWorkNum, artWork.author.fansNum, artWork.author);
             PageVariable.artWorkProject = new ArtWorkProject(artWork.investEndDatetime, artWork.step, artWork.investNum, artWork.investStartDatetime, msgList, artWork.auctionStartDatetime, artWork.investGoalMoney, artWork.investsMoney, artWork.createDatetime);
 
         }, data, callback);
@@ -422,7 +418,7 @@ function newArtWorkPraise(messageId, action) {
             var message = dataTemp.artworkMessage;
             $("#" + message.id + "praise").html(getPraiseList(message));
             $("#" + message.id + "buttons").html(getMessageButtons(message));
-            if (action == "0" && message.artWorkPraiseList.length==0) {
+            if (action == "0" && message.artWorkPraiseList.length == 0) {
                 $("#" + message.id + "praiseIcon").hide();
             } else {
                 $("#" + message.id + "praiseIcon").show();
@@ -433,8 +429,8 @@ function newArtWorkPraise(messageId, action) {
     param["action"] = action;
     param["messageId"] = messageId;
     param["artworkId"] = getParamObject().artWorkId;
-    ajaxRequest(hostName + RequestUrl.newArtWorkPraise, param, window.newArtWorkPraiseSuccess, function (request,textStatus,exception) {
-        alert("数据获取失败 status:"+request.readyState);
+    ajaxRequest(hostName + RequestUrl.newArtWorkPraise, param, window.newArtWorkPraiseSuccess, function (request, textStatus, exception) {
+        alert("数据获取失败 status:" + request.readyState);
         alert(textStatus);
     }, "newArtWorkPraiseSuccess");
 }

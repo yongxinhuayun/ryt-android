@@ -50,12 +50,14 @@ public class FinanceSummaryActivity extends BaseActivity implements View.OnClick
         pager.setOffscreenPageLimit(3);
         pager.setAdapter(rZAdapter);
         //实例化TabPageIndicator然后设置ViewPager与之关联
-        final TabPageIndicator mindicator = (TabPageIndicator) findViewById(R.id.indicator);
+        TabPageIndicator mindicator = (TabPageIndicator) findViewById(R.id.indicator);
         mindicator.setViewPager(pager);
 
 
     }
 
+    public FinanceSummaryActivity() {
+    }
 
     @Override
     public void onClick(View v) {

@@ -14,6 +14,9 @@ public abstract class ScrollTabHolderFragment extends BaseFragment implements Sc
 		this.scrollTabHolder = scrollTabHolder;
 	}
 
+	public ScrollTabHolderFragment() {
+	}
+
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount,
 			int pagePosition) {

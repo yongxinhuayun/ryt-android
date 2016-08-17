@@ -18,7 +18,7 @@ public  abstract  class RongZiListCallBack extends Callback<Map<String,Object>> 
     @Override
     public Map<String,Object> parseNetworkResponse(Response response) throws Exception {
         String string = response.body().string();
-        System.out.println(string);
+        //System.out.println(string);
         Map<String, Object> resultMap = AppApplication.getSingleGson().fromJson(string, new TypeToken<Map<String,Object>>() {
         }.getType());
         return resultMap;

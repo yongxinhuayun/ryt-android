@@ -55,6 +55,9 @@ public class TabFragment03 extends  BaseFragment {
         return view;
     }
 
+    public TabFragment03() {
+    }
+
     @Override
     public void onResume() {
         super.onResume();

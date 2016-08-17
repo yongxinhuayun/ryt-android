@@ -95,6 +95,9 @@ public class PaiHangItemFragment01 extends BaseFragment implements AutoListView.
 		});
 	}
 
+	public PaiHangItemFragment01() {
+	}
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
