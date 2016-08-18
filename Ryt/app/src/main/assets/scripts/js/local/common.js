@@ -16,9 +16,10 @@ function ajaxRequest(url, param, success, error, callback) {
         jsonpCallback: callback,
         data: param,
         success: function (data) {
+            console.log(JSON.stringify(data)+"klajflsjflsjflsjlgjslgjslgjlsjglsjfl");
             if (error != false) {
-                if (data["resultCode"] == "000000") {
-                console.log(url);
+                if (data["resultCode"] == "10004" || data["resultCode"] == "000000") {
+                console.log(url+"kljljlsjglksjdfljs");
                     redirectLogin(url, param, success, error, callback);
                 }
             }

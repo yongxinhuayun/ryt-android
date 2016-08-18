@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#ffffff">
     <FrameLayout
+        android:id="@+id/fl_pic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -62,9 +63,11 @@
         </LinearLayout>
     </FrameLayout>
     <RelativeLayout
+        android:id="@+id/rl_person"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="17dp"
+        android:layout_below="@+id/fl_pic"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp">
         <com.yxh.ryt.custemview.CircleImageView
@@ -143,5 +146,34 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </RelativeLayout>
+    <ImageView
+        android:id="@+id/iv_praise_red"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/fl_pic"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="17dp"
+        android:src="@mipmap/after_praise"
+        android:visibility="invisible" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/iv_xin_hui_left"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/rl_person"
+        android:layout_marginRight="33dp"
+        android:src="@mipmap/icon_xin_hui_left"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/iv_xin_hui_right"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/rl_person"
+        android:layout_marginRight="16dp"
+        android:src="@mipmap/icon_xin_hui_right"
+        android:visibility="invisible" />
+</RelativeLayout>

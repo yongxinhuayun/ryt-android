@@ -845,17 +845,23 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
                 investorDatas.add(investList.get(i));
             }
             iListview.showFooterView();
-            Intent intent = new Intent(getActivity(), InvestorActivity.class);
-            clickMore(iListview, intent);
+            clickMore(iListview, 2);
         }
     }
 
-    private void clickMore(ListViewForScrollView myListview, final Intent intent) {
+    private void clickMore(ListViewForScrollView myListview, final int  i) {
         myListview.footerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent.putExtra("artWorkId", artWorkId);
-                getActivity().startActivity(intent);
+                if (1==i){
+                    Intent intent = new Intent(getActivity(), CommentListActivity.class);
+                    intent.putExtra("artWorkId", artWorkId);
+                    getActivity().startActivity(intent);
+                }else {
+                    Intent intent = new Intent(getActivity(), InvestorActivity.class);
+                    intent.putExtra("artWorkId", artWorkId);
+                    getActivity().startActivity(intent);
+                }
             }
         });
     }
@@ -906,8 +912,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
             listView.showFooterView();
 
         }
-        Intent intent = new Intent(getActivity(), CommentListActivity.class);
-        clickMore(listView, intent);
+        clickMore(listView, 1);
     }
 
     @Override

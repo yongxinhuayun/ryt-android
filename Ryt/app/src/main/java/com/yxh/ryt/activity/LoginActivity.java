@@ -66,6 +66,7 @@ public class LoginActivity extends BaseActivity {
     private boolean isPassword;
     private String guide;
     private WxUser wxUser1;
+    private String callBackStr;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, LoginActivity.class));
@@ -78,6 +79,7 @@ public class LoginActivity extends BaseActivity {
         btnLogin.setEnabled(false);
         clickable();
         guide = getIntent().getStringExtra("guide");
+        callBackStr = getIntent().getStringExtra("callBackStr");
     }
 
     private void clickable() {
@@ -211,7 +213,10 @@ public class LoginActivity extends BaseActivity {
                                             //ToastUtil.showLong(LoginActivity.this,"成功");
                                             finish();
                                         }else {
-                                            //ToastUtil.showLong(LoginActivity.this,"登录失败");
+                                            Intent intent = new Intent();
+                                            intent.setAction("android.intent.action.H5_LOGINSUCCESS_BROADCAST");
+                                            intent.putExtra("callBackStr",callBackStr);
+                                            LoginActivity.this.sendBroadcast(intent);
                                             finish();
                                         }
                                     }
