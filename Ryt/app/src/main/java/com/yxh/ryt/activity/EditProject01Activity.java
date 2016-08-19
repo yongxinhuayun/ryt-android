@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.InputFilter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.custemview.CustomDialogView;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -98,6 +100,10 @@ public class EditProject01Activity extends  BaseActivity {
         ButterKnife.bind(this);
         artWorkId = getIntent().getStringExtra("artWorkId");
         currentUserId = getIntent().getStringExtra("currentUserId");
+        evTitle.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evDes.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evDuration.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evMenoy.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
         loadData();
     }
     private void loadData() {
@@ -442,7 +448,7 @@ public class EditProject01Activity extends  BaseActivity {
         }
         Bitmap bitmap1=compressImage(bm);
         File file = new File(Environment.getExternalStorageDirectory()
-                + "/pushArtFirst"+Utils.getImageFormat(filePath1));
+                + "/editArtFirst"+Utils.getImageFormat(filePath1));
         try {
             filePath=file.getPath();
             FileOutputStream fos = new FileOutputStream(file);
@@ -452,6 +458,16 @@ public class EditProject01Activity extends  BaseActivity {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            file = new File(getFilesDir(), "editArtFirst"+Utils.getImageFormat(filePath1));
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(file);
+                bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
         return bitmap1;
     }

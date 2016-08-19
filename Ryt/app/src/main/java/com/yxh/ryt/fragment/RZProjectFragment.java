@@ -10,10 +10,13 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.InputFilter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -58,6 +61,7 @@ import com.yxh.ryt.custemview.ListViewForScrollView;
 import com.yxh.ryt.custemview.RoundProgressBar;
 import com.yxh.ryt.util.AnimPraiseCancel;
 import com.yxh.ryt.util.DateUtil;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -82,6 +86,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 
@@ -103,7 +109,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private ImageView redPraise;
     private boolean flag1 = true;
     private boolean isPraise1;
-    private LinearLayout ll_invester;
+    //private LinearLayout ll_invester;
     private TextView tv_project_name;
     private TextView tv_project_brief;
     private TextView tv_price;
@@ -299,7 +305,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         praiseHLV = (HorizontalListView) view.findViewById(R.id.hlv_praise);
         attention.setOnClickListener(this);
         comment.setOnClickListener(this);
-        invest = ((LinearLayout) view.findViewById(R.id.rzp_ll_invest));
+        //invest = ((LinearLayout) view.findViewById(R.id.rzp_ll_invest));
         llpraise = (LinearLayout) view.findViewById(R.id.ll_praise);
         //llinvester = (LinearLayout) view.findViewById(R.id.ll_invester);
         mExpandView = (ExpandView) view.findViewById(R.id.expandView);
@@ -327,7 +333,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         iListview = (ListViewForScrollView) view.findViewById(R.id.lv_invester);
         iTopListview = (ListViewForScrollView) view.findViewById(R.id.lv_invester_top);
         iTopListview.hideFooterView();
-        invest.setOnClickListener(this);
+        //invest.setOnClickListener(this);
         praiseHLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -344,9 +350,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         setInvesterAdapter();
         setCommentAdapter();
         setPraiseHeadAdapter();
+        etComment.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
         return view;
     }
-
     private void showHeadNum() {
         //测量箭头的宽高
         int heightArrow = go.getMeasuredHeight();
@@ -640,7 +646,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     System.out.println(progress);
                     mRoundProgressBar.setProgress(progress);
                     try {
-                        Thread.sleep(250 / temp);
+                        if (temp!=0){
+                            Thread.sleep(250 / temp);
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -912,7 +920,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         Intent intent = new Intent(getActivity(), CommentListActivity.class);
         clickMore(listView, intent);
     }
-
+    public int getRemainMoney(){
+        return remainMoney;
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -934,7 +944,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 intent.putExtra("artWorkId", artWorkId);
                 startActivity(intent);
                 break;
-            case R.id.rzp_ll_invest:
+            /*case R.id.rzp_ll_invest:
                 if ("".equals(AppApplication.gUser.getId())) {
                     Intent intent2 = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent2);
@@ -944,7 +954,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     intent1.putExtra("artWorkId", artWorkId);
                     startActivity(intent1);
                 }
-                break;
+                break;*/
             case R.id.rl_progress:
                 if (mExpandView.isExpand()) {
                     mExpandView.collapse();

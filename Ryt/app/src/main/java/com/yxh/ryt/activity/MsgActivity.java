@@ -1,6 +1,7 @@
 package com.yxh.ryt.activity;
 
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -17,6 +18,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.ChatMsgViewAdapter;
 import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.callback.NotifaicationCallBack;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -62,6 +64,7 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
         currentName = getIntent().getStringExtra("currentName");
         EventBus.getDefault().register(this);
         initView();
+        mEditTextContent.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
 
     public void initView() {

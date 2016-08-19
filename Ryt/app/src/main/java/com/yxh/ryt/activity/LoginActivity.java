@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.webkit.CookieManager;
@@ -22,6 +23,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.receiver.WxLoginBroadcastReciver;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
@@ -80,6 +82,8 @@ public class LoginActivity extends BaseActivity {
         clickable();
         guide = getIntent().getStringExtra("guide");
         callBackStr = getIntent().getStringExtra("callBackStr");
+        etUsername.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        etPassword.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
 
     private void clickable() {
@@ -219,6 +223,9 @@ public class LoginActivity extends BaseActivity {
                                             LoginActivity.this.sendBroadcast(intent);
                                             finish();
                                         }
+                                        Intent intent = new Intent();
+                                        intent.setAction("android.intent.action.LOGIN_SUC_BROADCAST");
+                                        LoginActivity.this.sendBroadcast(intent);
                                     }
                                 });
 
@@ -300,6 +307,10 @@ public class LoginActivity extends BaseActivity {
                             startActivity(intent);
                             finish();
                         }else {
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.H5_LOGINSUCCESS_BROADCAST");
+                            intent.putExtra("callBackStr",callBackStr);
+                            LoginActivity.this.sendBroadcast(intent);
                             finish();
                         }
                         Intent intent = new Intent();

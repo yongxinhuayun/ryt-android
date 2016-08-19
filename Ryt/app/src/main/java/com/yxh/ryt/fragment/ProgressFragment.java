@@ -73,7 +73,6 @@ public class ProgressFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View contextView = inflater.inflate(R.layout.fragment_createprogress, container, false);
         webView = (WebView) contextView.findViewById(R.id.acs_wb_all);
-        webView.getSettings().setJavaScriptEnabled(true);
         receiver = new AttentionReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.intent.action.H5_LOGINSUCCESS_BROADCAST");
@@ -111,6 +110,7 @@ public class ProgressFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new JieWewViewClient());
         webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo");
         CookieManager manager=CookieManager.getInstance();
@@ -135,8 +135,14 @@ public class ProgressFragment extends BaseFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String callBackStr = intent.getStringExtra("callBackStr");
-            String call = "javascript:loginFunction(\"" + id+ "\",\""+AppApplication.gUser.getId()+"\",\""+AppApplication.gUser.getUsername()+"\",\""+AppApplication.gUser.getPassword()+"\",\""+ callBackStr +"\")";
-            webView.loadUrl(call);
+            System.out.println("(((((((((((((((((((((((((((("+callBackStr);
+            final String call = "javascript:loginFunction(\"" + id+ "\",\""+AppApplication.gUser.getId()+"\",\""+AppApplication.gUser.getUsername()+"\",\""+AppApplication.gUser.getPassword()+"\",\""+ callBackStr +"\")";
+            webView.post(new Runnable() {
+                @Override
+                public void run() {
+                    webView.loadUrl(call);
+                }
+            });
         }
     }
     public class JavaInterfaceDemo {
@@ -158,8 +164,13 @@ public class ProgressFragment extends BaseFragment {
                 intent.putExtra("callBackStr",callBackStr);
                 startActivity(intent);
             }else {
-                String call = "javascript:loginFunction(\"" + id+ "\",\""+AppApplication.gUser.getId()+"\",\""+AppApplication.gUser.getUsername()+"\",\""+AppApplication.gUser.getPassword()+"\",\""+callBackStr+"\")";
-                webView.loadUrl(call);
+                final String call = "javascript:loginFunction(\"" + id+ "\",\""+AppApplication.gUser.getId()+"\",\""+AppApplication.gUser.getUsername()+"\",\""+AppApplication.gUser.getPassword()+"\",\""+callBackStr+"\")";
+                webView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        webView.loadUrl(call);
+                    }
+                });
             }
 
         }

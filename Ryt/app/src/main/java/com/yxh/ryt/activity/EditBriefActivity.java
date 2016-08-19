@@ -1,6 +1,7 @@
 package com.yxh.ryt.activity;
 
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.fragment.UserJianJieFragment;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -34,6 +36,7 @@ public class EditBriefActivity extends BaseActivity implements View.OnClickListe
         back = (TextView) findViewById(R.id.tv_back);
         save = (TextView) findViewById(R.id.tv_save);
         et_brief = (EditText) findViewById(R.id.et_brief);
+        et_brief.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
         if (content!=null){
             et_brief.setText(content);
         }

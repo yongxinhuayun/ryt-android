@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputFilter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -58,6 +59,7 @@ import com.yxh.ryt.custemview.ListViewForScrollView;
 import com.yxh.ryt.custemview.RoundProgressBar;
 import com.yxh.ryt.util.AnimPraiseCancel;
 import com.yxh.ryt.util.DateUtil;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -341,6 +343,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
         setInvesterAdapter();
         setCommentAdapter();
         setPraiseHeadAdapter();
+        etComment.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
         return view;
     }
 

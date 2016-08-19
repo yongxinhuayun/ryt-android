@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputFilter;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.custemview.WheelSheetDialog;
 import com.yxh.ryt.util.DisplayUtil;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -301,6 +303,11 @@ public class YsjRzActivity extends BaseActivity {
             }
         });
         btnSubmit.setBackgroundResource(R.mipmap.anniu_kedianji);
+        evName.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evPhone.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evAddress.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evType.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evTitle.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
 
     private void callMulImageSelector(int sum,int id) {
@@ -420,6 +427,16 @@ public class YsjRzActivity extends BaseActivity {
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
+                            file = new File(getFilesDir(), "identityFront"+Utils.getImageFormat(s));
+                            FileOutputStream fos = null;
+                            try {
+                                fos = new FileOutputStream(file);
+                                bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                                fos.flush();
+                                fos.close();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
                         }
                         fileMap1.put(file.getName(),file);
                     }else{
@@ -435,6 +452,16 @@ public class YsjRzActivity extends BaseActivity {
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
+                            file = new File(getFilesDir(), "identityBack"+Utils.getImageFormat(s));
+                            FileOutputStream fos = null;
+                            try {
+                                fos = new FileOutputStream(file);
+                                bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                                fos.flush();
+                                fos.close();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
                         }
                         fileMap2.put(file.getName(),file);
                     }
@@ -465,6 +492,16 @@ public class YsjRzActivity extends BaseActivity {
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        file = new File(getFilesDir(), "work"+i+Utils.getImageFormat(s));
+                        FileOutputStream fos = null;
+                        try {
+                            fos = new FileOutputStream(file);
+                            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     fileMap3.put(file.getName(),file);
                     String fileName = String.valueOf(System.currentTimeMillis());
@@ -494,6 +531,16 @@ public class YsjRzActivity extends BaseActivity {
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        file = new File(getFilesDir(), "workPlace"+i+Utils.getImageFormat(s));
+                        FileOutputStream fos = null;
+                        try {
+                            fos = new FileOutputStream(file);
+                            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     fileMap4.put(file.getName(),file);
                     String fileName = String.valueOf(System.currentTimeMillis());
@@ -523,6 +570,16 @@ public class YsjRzActivity extends BaseActivity {
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        file = new File(getFilesDir(), "award"+i+Utils.getImageFormat(s));
+                        FileOutputStream fos = null;
+                        try {
+                            fos = new FileOutputStream(file);
+                            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     fileMap5.put(file.getName(),file);
                     String fileName = String.valueOf(System.currentTimeMillis());

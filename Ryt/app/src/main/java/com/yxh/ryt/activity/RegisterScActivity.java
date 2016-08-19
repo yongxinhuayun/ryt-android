@@ -17,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +38,7 @@ import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.fragment.PictureSelectFragment;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -116,6 +118,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         onEnabled();
         mDestinationUri = Uri.fromFile(new File(getCacheDir(), "cropImage.jpeg"));
         mTempPhotoPath = Environment.getExternalStorageDirectory() + File.separator + "photo.jpeg";
+        nickName.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
 
     private void onEnabled() {
@@ -657,6 +660,16 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            file = new File(getFilesDir(), "upLoad"+Utils.getImageFormat(filePath1));
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(file);
+                bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
         return bm;
     }

@@ -152,6 +152,16 @@ public class CreateSuccessActivity extends BaseActivity implements View.OnClickL
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        file = new File(getFilesDir(), "createSuccess"+i+Utils.getImageFormat(s));
+                        FileOutputStream fos = null;
+                        try {
+                            fos = new FileOutputStream(file);
+                            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     fileMap3.put(file.getName(),file);
                     String fileName = String.valueOf(System.currentTimeMillis());

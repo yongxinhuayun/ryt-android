@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.InputFilter;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.custemview.CustomDialogView;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -77,6 +79,10 @@ public class PublicProject01Activity extends  BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.public_project_01);
         ButterKnife.bind(this);
+        evTitle.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evDes.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evDuration.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evMenoy.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
     @OnClick(R.id.btn_next)
     public void next(View v){
@@ -274,6 +280,16 @@ public class PublicProject01Activity extends  BaseActivity {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            file = new File(getFilesDir(), "pushArtFirst"+Utils.getImageFormat(filePath1));
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(file);
+                bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
         return bitmap1;
     }

@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.custemview.CustomDialogView;
 import com.yxh.ryt.custemview.CustomGridView;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetImageTask;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -235,6 +237,9 @@ public class EditProject02Activity extends  BaseActivity {
         make_instru = getIntent().getStringExtra("make_instru");
         financing_aq = getIntent().getStringExtra("financing_aq");
         initData();
+        evShuoming.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evZhizuo.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evJieHuo.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
 
     private void initData() {
@@ -378,6 +383,16 @@ public class EditProject02Activity extends  BaseActivity {
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        file = new File(getFilesDir(), "editArtSecond"+i+Utils.getImageFormat(s));
+                        FileOutputStream fos = null;
+                        try {
+                            fos = new FileOutputStream(file);
+                            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     fileMap.put(file.getName(),file);
                     String fileName = String.valueOf(System.currentTimeMillis());

@@ -3,6 +3,7 @@ package com.yxh.ryt.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.LoginCallBack;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -51,6 +53,7 @@ public class PublicBriefActivity extends BaseActivity {
         setContentView(R.layout.public_brief);
         ButterKnife.bind(this);
         if (getIntent()!=null)userBrief=(UserBrief)getIntent().getSerializableExtra("userbrief");
+        tvContent.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
 
     @Override

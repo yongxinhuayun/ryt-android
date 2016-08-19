@@ -3,6 +3,7 @@ package com.yxh.ryt.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -13,6 +14,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.NotifaicationCallBack;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -56,6 +58,8 @@ public class UserYiJianActivity extends BaseActivity{
                 finish();
             }
         });
+        suggestion.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        et_email.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
     /*public static boolean isEmail(String strEmail) {
         String strPattern = "^[a-zA-Z][\\w\\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]$";

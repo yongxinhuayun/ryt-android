@@ -250,6 +250,16 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            file = new File(getFilesDir(), "upLoad"+Utils.getImageFormat(filePath1));
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(file);
+                bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
         return bm;
     }

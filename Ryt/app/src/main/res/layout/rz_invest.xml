@@ -10,24 +10,4 @@
         android:divider="@null"
         android:layout_weight="1"></com.yxh.ryt.custemview.AutoListView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:background="#EF5B71"
-        android:gravity="center">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/invest_button"/>
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="投资"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            />
-    </LinearLayout>
 </LinearLayout>

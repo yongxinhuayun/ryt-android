@@ -16,6 +16,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.activity.ArtistIndexActivity;
 import com.yxh.ryt.activity.AuctionOrderActivity;
 import com.yxh.ryt.activity.LoginActivity;
+import com.yxh.ryt.activity.MyProjectActivity;
 import com.yxh.ryt.activity.PublicProject01Activity;
 import com.yxh.ryt.activity.UserEditZiLiaoActivity;
 import com.yxh.ryt.activity.UserIndexActivity;
@@ -115,6 +116,18 @@ public class TabFragment04 extends BaseFragment {
             getActivity().startActivity(intent);
         }else {
             UserQianBaoActivity.openActivity(getActivity());
+        }
+    }
+    @OnClick(R.id.rl_user_project)
+    void userProjectClick() {
+        if ("".equals(AppApplication.gUser.getId())){
+            Intent intent=new Intent(getActivity(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(intent);
+        }else {
+            Intent intent=new Intent(getActivity(),MyProjectActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(intent);
         }
     }
     //意见点击事件

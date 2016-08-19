@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -158,6 +160,7 @@ public class PublicDongtaiImageActivity extends  BaseActivity {
                 }
             }
         });
+        evShuoming.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
     public class GridAdapter extends BaseAdapter {
         private LayoutInflater inflater;
@@ -306,6 +309,16 @@ public class PublicDongtaiImageActivity extends  BaseActivity {
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        file = new File(getFilesDir(), "dynamicImage"+i+Utils.getImageFormat(s));
+                        FileOutputStream fos = null;
+                        try {
+                            fos = new FileOutputStream(file);
+                            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     fileMap.put(file.getName(),file);
                     String fileName = String.valueOf(System.currentTimeMillis());

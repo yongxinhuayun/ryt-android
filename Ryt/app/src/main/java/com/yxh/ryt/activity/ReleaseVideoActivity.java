@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,6 +23,7 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.callback.RelesaseVideoCallBack;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -62,6 +64,7 @@ public class ReleaseVideoActivity extends  BaseActivity {
         file = bundle.getString("text");//获得拍摄的短视频保存地址
         artWorkId = bundle.getString("artWorkId");
         setValue();
+        content.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
     private void setValue() {
 
