@@ -223,9 +223,9 @@ public class LoginActivity extends BaseActivity {
                                             LoginActivity.this.sendBroadcast(intent);
                                             finish();
                                         }
-                                        Intent intent = new Intent();
+                                        /*Intent intent = new Intent();
                                         intent.setAction("android.intent.action.LOGIN_SUC_BROADCAST");
-                                        LoginActivity.this.sendBroadcast(intent);
+                                        LoginActivity.this.sendBroadcast(intent);*/
                                     }
                                 });
 
@@ -313,9 +313,9 @@ public class LoginActivity extends BaseActivity {
                             LoginActivity.this.sendBroadcast(intent);
                             finish();
                         }
-                        Intent intent = new Intent();
+                        /*Intent intent = new Intent();
                         intent.setAction("android.intent.action.LOGIN_SUC_BROADCAST");
-                        LoginActivity.this.sendBroadcast(intent);
+                        LoginActivity.this.sendBroadcast(intent);*/
                     }
                 });
             }

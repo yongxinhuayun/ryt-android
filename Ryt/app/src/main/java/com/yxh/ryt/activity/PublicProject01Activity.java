@@ -28,6 +28,7 @@ import com.yxh.ryt.custemview.CustomDialogView;
 import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
+import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
@@ -50,10 +51,9 @@ import okhttp3.Call;
  * Created by 吴洪杰 on 2016/4/11.
  */
 public class PublicProject01Activity extends  BaseActivity {
-    private AlertDialog dialog;
-    private CustomDialogView customDialogView;
-    private RedrawCustomDialogViewThread redrawCdvRunnable;
 
+    private LoadingUtil loadingUtil;
+    private boolean isImage=false;
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, PublicProject01Activity.class));
     }
@@ -122,6 +122,33 @@ public class PublicProject01Activity extends  BaseActivity {
 
     //艺术家发布项目第一步接口一网络请求
     private void oneStepRequst() {
+        if (!isImage){
+            ToastUtil.showShort(PublicProject01Activity.this,"没有选择图片!");
+            return;
+        }
+        if ("".equals(evTitle.getText().toString())){
+            ToastUtil.showShort(PublicProject01Activity.this,"项目标题不能为空!");
+            return;
+        }
+        if ("".equals(evDes.getText().toString())){
+            ToastUtil.showShort(PublicProject01Activity.this,"项目简介不能为空!");
+            return;
+        }
+        if (evDes.getText().toString().length()>30){
+            ToastUtil.showShort(PublicProject01Activity.this,"项目简介不能超过30!");
+            return;
+        }
+        if ("".equals(evDuration.getText().toString())){
+            ToastUtil.showShort(PublicProject01Activity.this,"创作时长不能为空");
+            return;
+        }
+        if ("".equals(evMenoy.getText().toString())){
+            ToastUtil.showShort(PublicProject01Activity.this,"融资金额不能为空");
+            return;
+        }
+
+        loadingUtil = new LoadingUtil(PublicProject01Activity.this, PublicProject01Activity.this);
+        loadingUtil.show();
         Map<String,File> fileMap=new HashMap<>();
         File file = new File(filePath);
         fileMap.put(file.getName(),file);
@@ -151,6 +178,7 @@ public class PublicProject01Activity extends  BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                if ("0".equals(response.get("resultCode"))){
+                   loadingUtil.dismiss();
                    Intent intent=new Intent(PublicProject01Activity.this,PublicProject02Activity.class);
                    intent.putExtra("artworkId", (String)response.get("artworkId")+"");
                    startActivity(intent);
@@ -168,34 +196,6 @@ public class PublicProject01Activity extends  BaseActivity {
                }
             }
         });
-    }
-     class RedrawCustomDialogViewThread implements Runnable {
-
-        private boolean isRun = true;
-
-        @Override
-        public void run() {
-
-            while (isRun && dialog != null) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // 通知重绘
-                customDialogView.postInvalidate();
-            }
-
-        }
-
-        public boolean isRun() {
-            return isRun;
-        }
-
-        public void setRun(boolean isRun) {
-            this.isRun = isRun;
-        }
-
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -217,6 +217,7 @@ public class PublicProject01Activity extends  BaseActivity {
                 params1.setMargins(left1,top1,right1,bottom1);
                 ivImage.setLayoutParams(params1);
                 Bitmap bitmap = getBitmap(data.getData());
+                isImage=true;
                 int bmpWidth1  = bitmap.getWidth();
                 int bmpHeight1  = bitmap.getHeight();
                 float scaleWidth1  = (float) widthzong / bmpWidth1;     //按固定大小缩放  sWidth 写多大就多大
@@ -240,6 +241,7 @@ public class PublicProject01Activity extends  BaseActivity {
                 int bottom=Utils.dip2px(PublicProject01Activity.this,0);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthzong,height);
                 params.setMargins(left,top,right,bottom);
+                isImage=true;
                 ivImage.setLayoutParams(params);
                 int bmpWidth  = bitmap1.getWidth();
                 int bmpHeight  = bitmap1.getHeight();
@@ -292,41 +294,6 @@ public class PublicProject01Activity extends  BaseActivity {
             }
         }
         return bitmap1;
-    }
-    private Bitmap comp(Bitmap response) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap.CompressFormat format= Bitmap.CompressFormat.JPEG;
-        response.compress(format, 100, baos);
-        if( baos.toByteArray().length / 1024>1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
-            baos.reset();//重置baos即清空baos
-            response.compress(format, 50, baos);//这里压缩50%，把压缩后的数据存放到baos中
-        }
-        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
-        BitmapFactory.Options newOpts = new BitmapFactory.Options();
-        //开始读入图片，此时把options.inJustDecodeBounds 设回true了
-        newOpts.inJustDecodeBounds = true;
-        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
-        newOpts.inJustDecodeBounds = false;
-        int w = newOpts.outWidth;
-        int h = newOpts.outHeight;
-        //现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
-        float hh = 800f;//这里设置高度为800f
-        float ww = 480f;//这里设置宽度为480f
-        //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;//be=1表示不缩放
-        if (w > h && w > ww) {//如果宽度大的话根据宽度固定大小缩放
-            be = (int) (newOpts.outWidth / ww);
-        } else if (w < h && h > hh) {//如果高度高的话根据宽度固定大小缩放
-            be = (int) (newOpts.outHeight / hh);
-        }
-        if (be <= 0)
-            be = 1;
-        newOpts.inSampleSize = be;//设置缩放比例
-        newOpts.inPreferredConfig = Bitmap.Config.RGB_565;//降低图片从ARGB888到RGB565
-        //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
-        isBm = new ByteArrayInputStream(baos.toByteArray());
-        bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
-        return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
     }
     private Bitmap compressImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -233,8 +233,9 @@ public class TabFragment04 extends BaseFragment {
                 }
             });
         }else {
-            btnLf.setText("申请为艺术家");
-            AppApplication.displayImage(AppApplication.gUser.getPictureUrl(),rsIvHeadPortrait);
+            btnLf.setVisibility(View.GONE);
+            rsIvHeadPortrait.setImageResource(R.mipmap.jibenziliao_touxiang);
+            //AppApplication.displayImage(AppApplication.gUser.getPictureUrl(),rsIvHeadPortrait);
             tvUserHeaderName.setText("游客");
             topName.setText("游客");
         }

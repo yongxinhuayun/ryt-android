@@ -32,6 +32,7 @@ import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.custemview.CustomDialogView;
 import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
+import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
@@ -77,9 +78,29 @@ public class PublicProject02Activity extends  BaseActivity {
     EditText evZhizuo;
     @Bind(R.id.ev_jiehuo)
     EditText evJieHuo;
+    private LoadingUtil loadingUtil;
 
     //艺术家发布项目第一步接口一网络请求
     private void twoStepRequst() {
+        /*if (!isImage){
+            ToastUtil.showShort(PublicProject02Activity.this,"没有选择图片!");
+            return;
+        }*/
+        if ("".equals(evShuoming.getText().toString())){
+            ToastUtil.showShort(PublicProject02Activity.this,"项目说明不能为空!");
+            return;
+        }
+        if ("".equals(evZhizuo.getText().toString())){
+            ToastUtil.showShort(PublicProject02Activity.this,"制作说明不能为空!");
+            return;
+        }
+        if ("".equals(evJieHuo.getText().toString())){
+            ToastUtil.showShort(PublicProject02Activity.this,"融资解惑不能为空!");
+            return;
+        }
+
+        loadingUtil = new LoadingUtil(PublicProject02Activity.this, PublicProject02Activity.this);
+        loadingUtil.show();
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("artworkId",artworkId);
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
@@ -106,6 +127,7 @@ public class PublicProject02Activity extends  BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))){
+                    loadingUtil.dismiss();
                     ToastUtil.showLong(PublicProject02Activity.this,"项目发布成功");
                     finish();
                 }else if ("000000".equals(response.get("resultCode"))){

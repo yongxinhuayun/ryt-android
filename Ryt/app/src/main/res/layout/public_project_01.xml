@@ -113,6 +113,7 @@
                 <EditText
                     android:layout_marginTop="10dp"
                     android:id="@+id/ev_menoy"
+                    android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/new_project_biankuang"
@@ -140,7 +141,7 @@
                         android:textSize="@dimen/item_edit_font"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="(创作这件作品大概花多久，默认为30天)" />
+                        android:text="(创作这件作品大概花多久)" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -151,12 +152,16 @@
                     android:background="@drawable/new_project_biankuang">
                     <EditText
                         android:id="@+id/ev_duration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:inputType="number"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent"
                         android:background="#FFFFFF"
                         android:hint="30"
                         android:textSize="@dimen/item_edit_font"/>
                     <TextView
+                        android:layout_gravity="right"
                         android:layout_marginLeft="14dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

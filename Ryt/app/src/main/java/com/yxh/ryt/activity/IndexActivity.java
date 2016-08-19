@@ -204,14 +204,14 @@ public class IndexActivity extends BaseActivity {
 //                    tabFragment04 = new TabFragment04();
 //                }
 //                transaction.replace(R.id.fl_tab, tabFragment04);
-                if ("".equals(AppApplication.gUser.getId())){
+                /*if ("".equals(AppApplication.gUser.getId())){
                     Intent intent=new Intent(this,LoginActivity.class);
                     startActivity(intent);
-                }else {
+                }else {*/
                     indexPager.setCurrentItem(3,false);
                     ButterKnife.apply(tabTvs, SETCOLOR, 3);
                     ButterKnife.apply(tabIvs, SETIMAGE, 3);
-                }
+                /*}*/
                 break;
         }
         // transaction.addToBackStack();

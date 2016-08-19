@@ -31,6 +31,7 @@ import com.yxh.ryt.custemview.CustomDialogView;
 import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
+import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
@@ -67,9 +68,8 @@ public class EditProject01Activity extends  BaseActivity {
     private String currentUserId;
     private Artworkdirection artworkDirection;
     private String description;
-    private AlertDialog dialog;
-    private CustomDialogView customDialogView;
-    private RedrawCustomDialogViewThread redrawCdvRunnable;
+    private LoadingUtil loadingUtil;
+    private boolean isImage=false;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, EditProject01Activity.class));
@@ -275,6 +275,31 @@ public class EditProject01Activity extends  BaseActivity {
     }
     //艺术家发布项目第一步接口一网络请求
     private void oneStepRequst() {
+        if (!isImage){
+            ToastUtil.showShort(EditProject01Activity.this,"没有选择图片!");
+            return;
+        }
+        if ("".equals(evTitle.getText().toString())){
+            ToastUtil.showShort(EditProject01Activity.this,"项目标题不能为空!");
+            return;
+        }
+        if ("".equals(evDes.getText().toString())){
+            ToastUtil.showShort(EditProject01Activity.this,"项目简介不能为空!");
+            return;
+        }
+        if (evDes.getText().toString().length()>30){
+            ToastUtil.showShort(EditProject01Activity.this,"项目简介不能超过30!");
+            return;
+        }
+        if ("".equals(evDuration.getText().toString())){
+            ToastUtil.showShort(EditProject01Activity.this,"创作时长不能为空");
+            return;
+        }
+        if ("".equals(evMenoy.getText().toString())){
+            ToastUtil.showShort(EditProject01Activity.this,"融资金额不能为空");
+            return;
+        }
+        loadingUtil = new LoadingUtil(EditProject01Activity.this, EditProject01Activity.this);
         /*View view = LayoutInflater.from(this).inflate(
                 R.layout.dilog_withwait, null);
 
@@ -284,6 +309,7 @@ public class EditProject01Activity extends  BaseActivity {
         customDialogView = (CustomDialogView) view.findViewById(R.id.view_customdialog);
         redrawCdvRunnable = new RedrawCustomDialogViewThread();
         new Thread(redrawCdvRunnable).start();*/
+        loadingUtil.show();
         Map<String,File> fileMap=new HashMap<>();
         File file = new File(filePath);
         fileMap.put(file.getName(),file);
@@ -317,6 +343,7 @@ public class EditProject01Activity extends  BaseActivity {
                 if ("0".equals(response.get("resultCode"))){
                     if (size==ImageList.size()){
                         /*redrawCdvRunnable.setRun(false);*/
+                        loadingUtil.dismiss();
                         Intent intent=new Intent(EditProject01Activity.this,EditProject02Activity.class);
                         intent.putExtra("artworkId", (String)response.get("artworkId")+"");
                         intent.putExtra("description",description);
@@ -341,34 +368,6 @@ public class EditProject01Activity extends  BaseActivity {
             }
         });
     }
-    class RedrawCustomDialogViewThread implements Runnable {
-
-        private boolean isRun = true;
-
-        @Override
-        public void run() {
-
-            while (isRun && dialog != null) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // 通知重绘
-                customDialogView.postInvalidate();
-            }
-
-        }
-
-        public boolean isRun() {
-            return isRun;
-        }
-
-        public void setRun(boolean isRun) {
-            this.isRun = isRun;
-        }
-
-    }
 
     @Override
     protected void onDestroy() {
@@ -392,6 +391,7 @@ public class EditProject01Activity extends  BaseActivity {
                 params1.setMargins(left1,0,right1,0);
                 ivImage.setLayoutParams(params1);
                 Bitmap bitmap = getBitmap(data.getData());
+                isImage=true;
                 /*Bitmap btm2=Bitmap.createScaledBitmap(bitmap, widthzong, height1, false); //自定义
                 bitmap.recycle();*/
                 int bmpWidth1  = bitmap.getWidth();
@@ -410,6 +410,7 @@ public class EditProject01Activity extends  BaseActivity {
                 if (bitmap1==null){
                     break;
                 }
+                isImage=true;
                 int height=Utils.dip2px(EditProject01Activity.this,224);
                 int left=Utils.dip2px(EditProject01Activity.this,14);
                 int right=Utils.dip2px(EditProject01Activity.this,14);

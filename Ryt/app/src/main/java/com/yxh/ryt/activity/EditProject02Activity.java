@@ -39,6 +39,7 @@ import com.yxh.ryt.custemview.CustomGridView;
 import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetImageTask;
+import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.Sha1;
@@ -92,21 +93,24 @@ public class EditProject02Activity extends  BaseActivity {
     private String description;
     private String financing_aq;
     private String make_instru;
-    private AlertDialog dialog;
-    private CustomDialogView customDialogView;
-    private RedrawCustomDialogViewThread redrawCdvRunnable;
+    private LoadingUtil loadingUtil;
 
     //艺术家发布项目第一步接口一网络请求
     private void twoStepRequst() {
-        View view = LayoutInflater.from(this).inflate(
-                R.layout.dilog_withwait, null);
-
-        dialog = new AlertDialog.Builder(this).create();
-        dialog.show();
-        dialog.getWindow().setContentView(view);
-        customDialogView = (CustomDialogView) view.findViewById(R.id.view_customdialog);
-        redrawCdvRunnable = new RedrawCustomDialogViewThread();
-        new Thread(redrawCdvRunnable).start();
+        if ("".equals(evShuoming.getText().toString())){
+            ToastUtil.showShort(EditProject02Activity.this,"项目说明不能为空!");
+            return;
+        }
+        if ("".equals(evZhizuo.getText().toString())){
+            ToastUtil.showShort(EditProject02Activity.this,"制作说明不能为空!");
+            return;
+        }
+        if ("".equals(evJieHuo.getText().toString())){
+            ToastUtil.showShort(EditProject02Activity.this,"融资解惑不能为空!");
+            return;
+        }
+        loadingUtil = new LoadingUtil(EditProject02Activity.this, EditProject02Activity.this);
+        loadingUtil.show();
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("artworkId",artworkId);
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
@@ -133,7 +137,7 @@ public class EditProject02Activity extends  BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))){
-                    redrawCdvRunnable.setRun(false);
+                    loadingUtil.dismiss();
                    ToastUtil.showLong(EditProject02Activity.this,"编辑成功");
                     finish();
                 }else if ("000000".equals(response.get("resultCode"))){
@@ -150,34 +154,6 @@ public class EditProject02Activity extends  BaseActivity {
 
             }
         });
-    }
-    class RedrawCustomDialogViewThread implements Runnable {
-
-        private boolean isRun = true;
-
-        @Override
-        public void run() {
-
-            while (isRun && dialog != null) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // 通知重绘
-                customDialogView.postInvalidate();
-            }
-
-        }
-
-        public boolean isRun() {
-            return isRun;
-        }
-
-        public void setRun(boolean isRun) {
-            this.isRun = isRun;
-        }
-
     }
 
     @Override

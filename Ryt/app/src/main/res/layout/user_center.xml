@@ -60,7 +60,7 @@
                     android:layout_height="56dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
-                    android:src="@mipmap/wodezhye"/>
+                    android:src="@mipmap/jibenziliao_touxiang"/>
                 <TextView
                     android:id="@+id/uc_tv_name"
                     android:layout_width="wrap_content"
