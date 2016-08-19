@@ -302,8 +302,8 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                                 @Override
                                 public void onClick(int which) {
                                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
-                                            getExternalStorageDirectory(), "pushWork.jpg")));
+                                    /*intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
+                                            getExternalStorageDirectory(), "pushWork.jpg")));*/
                                     startActivityForResult(intent, CAMERA_REQUEST_CODE);
                                 }
                             })
@@ -332,17 +332,17 @@ public class UserYsjIndexActivity extends BaseActivity implements StickHeaderVie
                 circleImageView.setImageBitmap(bitmap);*/
 //                saveFile(bitmap);
                 Intent intent=new Intent(this,PushWoraActivity.class);
-                intent.putExtra("intent",data.getData());
+                intent.putExtra("intent",data);
                 startActivity(intent);
                 break;
             case CAMERA_REQUEST_CODE:
                 if (data==null){
                     return;
                 }
-                File picture = new File(Environment.getExternalStorageDirectory()
-                        + "/pushWork.jpg");
+                /*File picture = new File(Environment.getExternalStorageDirectory()
+                        + "/pushWork.jpg");*/
                 Intent intent1=new Intent(this,PushWoraActivity.class);
-                intent1.putExtra("intent",Uri.fromFile(picture));
+                intent1.putExtra("intent",data);
                 startActivity(intent1);
                 break;
             case CROP_REQUEST_CODE:

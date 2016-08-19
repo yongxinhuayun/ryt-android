@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.reflect.TypeToken;
 import com.kevin.crop.UCrop;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
@@ -33,6 +34,7 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
+import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
@@ -41,6 +43,7 @@ import com.yxh.ryt.util.SPUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
+import com.yxh.ryt.vo.FollowUserUtil;
 import com.yxh.ryt.vo.User;
 
 import java.io.ByteArrayInputStream;
@@ -49,12 +52,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
 
 /**
- * Created by 吴洪杰 on 2016/4/21.
+ *
  */
 public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClickListener {
 
@@ -88,6 +92,8 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
      */
     private ActionSheetDialog dialog;
     private AlertDialog mAlertDialog;
+    private TextView userName;
+
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, UserEditZiLiaoActivity.class));
     }
@@ -105,6 +111,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         tv_nickname = (TextView) findViewById(R.id.tv_nickname);
         tv_sex = (TextView) findViewById(R.id.tv_sex);
         address = (RelativeLayout) findViewById(R.id.rl_address);
+        userName = (TextView) findViewById(R.id.tv_number);
         //给控件设置内容
         //AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
 
@@ -251,6 +258,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
             // TODO Auto-generated catch block
             e.printStackTrace();
             file = new File(getFilesDir(), "upLoad"+Utils.getImageFormat(filePath1));
+            filePath=file.getPath();
             FileOutputStream fos = null;
             try {
                 fos = new FileOutputStream(file);
@@ -262,18 +270,6 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
             }
         }
         return bm;
-    }
-    private Bitmap getBitmapFromUri(Uri uri) {
-        try {
-            filePath = GetPathFromUri4kitkat.getPath(uri);
-            System.out.println(filePath);
-            // 读取uri所在的图片
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-            return bitmap;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private void getUser(Map<String, Object> response) {
@@ -348,6 +344,9 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                                     @Override
                                     public void onClick(int which) {
                                         tv_sex.setText("男");
+                                        if(sex.intValue()==1){
+                                            return;
+                                        }
                                         postSex("1");
                                     }
                                 })
@@ -356,6 +355,9 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                                     @Override
                                     public void onClick(int which) {
                                         tv_sex.setText("女");
+                                        if(sex.intValue()==2){
+                                            return;
+                                        }
                                         postSex("2");
                                     }
                                 })
@@ -364,6 +366,9 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                                     @Override
                                     public void onClick(int which) {
                                         tv_sex.setText("保密");
+                                        if(sex.intValue()==0){
+                                            return;
+                                        }
                                         postSex("0");
                                     }
                                 })
@@ -515,7 +520,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
             tempFile.delete();
         }
     }
-    public void postSex(String sex) {
+    public void postSex(final String sex) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("userId", AppApplication.gUser.getId());
         paramsMap.put("type", "14");
@@ -534,7 +539,20 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                //getUser(response);
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showShort(UserEditZiLiaoActivity.this,"性别修改成功");
+                    UserEditZiLiaoActivity.this.sex=Double.valueOf(sex);
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                postSex(sex);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
             }
         });
     }
@@ -575,7 +593,9 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                Map<String, Map<String, Map<String,String>>> map1 = (Map<String, Map<String, Map<String,String>>>) response.get("pageInfo");
+                Map<Object,Object> object= (Map<Object, Object>) response.get("pageInfo");
+                User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("user")), User.class);
+                /*Map<String, Map<String, Map<String,String>>> map1 = (Map<String, Map<String, Map<String,String>>>) response.get("pageInfo");
                 Map<String, Map<String,String>> map2 =null;
                 if (map1!=null){
                     map2 =  map1.get("user");
@@ -611,7 +631,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 String pictureUrl = "";
                 if (map222 != null){
                     pictureUrl = map222.get("pictureUrl");
-                }
+                }*/
                 //AppApplication.getSingleGson().toJson(response.get("followsNum"));
                 /*Map<String,Map<String,Double>> map11 = (Map<String, Map<String, Double>>) response.get("pageInfo");
                 Map<String,Double> map22 = map11.get("user");
@@ -621,17 +641,23 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 String name = map222.get("name");*/
                 /*User user = new User();
                 user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfo")), User.class);*/
-                if (sign == null) {
+                if (user.getUserBrief()!=null ){
+                    if (user.getUserBrief().getSigner()!=null){
+                        iv_sign.setText(user.getUserBrief().getSigner()+"");
+                    }
+                }else {
                     iv_sign.setText("");
-                }else{
-                iv_sign.setText(sign);
                 }
-                if (sex != null) {
+                if (user.getSex()!=null){
+                    sex=Double.valueOf(user.getSex());
                     tv_sex.setText(changSex(sex));
                 }else{
-                    tv_sex.setText(changSex(3.0));
+                    sex=Double.valueOf(user.getSex());
+                    tv_sex.setText(changSex(0.0));
                 }
+                String name=user.getName();
                 tv_nickname.setText(name);
+                userName.setText(user.getUsername());
                 AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
             }
         });

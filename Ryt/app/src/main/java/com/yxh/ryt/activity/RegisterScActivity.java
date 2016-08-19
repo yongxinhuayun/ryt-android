@@ -661,6 +661,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
             // TODO Auto-generated catch block
             e.printStackTrace();
             file = new File(getFilesDir(), "upLoad"+Utils.getImageFormat(filePath1));
+
             FileOutputStream fos = null;
             try {
                 fos = new FileOutputStream(file);

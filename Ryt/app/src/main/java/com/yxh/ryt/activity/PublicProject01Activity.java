@@ -103,8 +103,8 @@ public class PublicProject01Activity extends  BaseActivity {
                             @Override
                             public void onClick(int which) {
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
-                                        getExternalStorageDirectory(), "pushArtFirst.jpg")));
+                                /*intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
+                                        getExternalStorageDirectory(), "pushArtFirst.jpg")));*/
                                 startActivityForResult(intent, CAMERA_REQUEST_CODE);
                             }
                         })
@@ -228,9 +228,36 @@ public class PublicProject01Activity extends  BaseActivity {
                 ivImage.setImageBitmap(resizeBitmap1);
                 break;
             case CAMERA_REQUEST_CODE:
-                File picture = new File(Environment.getExternalStorageDirectory()
-                        + "/pushArtFirst.jpg");
-                Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
+                Bitmap bitmap1=null;
+                if (data.getData()==null){
+                    Bitmap bm = (Bitmap) data.getExtras().get("data");;
+                    bitmap1=compressImage(bm);
+                    File file = new File(Environment.getExternalStorageDirectory()
+                            + "/pushArtFirst.jpg");
+                    try {
+                        filePath=file.getPath();
+                        FileOutputStream fos = new FileOutputStream(file);
+                        bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        fos.flush();
+                        fos.close();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                        file = new File(getFilesDir(), "pushArtFirst.jpg");
+                        filePath=file.getPath();
+                        FileOutputStream fos = null;
+                        try {
+                            fos = new FileOutputStream(file);
+                            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }else {
+                    bitmap1 =getBitmap(data.getData());
+                }
                 if (bitmap1==null){
                     break;
                 }
@@ -283,6 +310,7 @@ public class PublicProject01Activity extends  BaseActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
             file = new File(getFilesDir(), "pushArtFirst"+Utils.getImageFormat(filePath1));
+            filePath=file.getPath();
             FileOutputStream fos = null;
             try {
                 fos = new FileOutputStream(file);

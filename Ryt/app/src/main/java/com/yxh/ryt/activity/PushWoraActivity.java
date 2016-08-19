@@ -75,16 +75,44 @@ public class PushWoraActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Intent intent=getIntent();
-        Uri uri=intent.getParcelableExtra("intent");
-        if (uri !=null){
-            Bitmap bitmap=getBitmap(uri);
-            if (bitmap==null){
-                return;
-            }
-            imageWork.setImageBitmap(bitmap);
-
+        Intent data=getIntent().getParcelableExtra("intent");
+        Bitmap bitmap1=null;
+        if (data==null){
+            return;
         }
+        if (data.getData()==null){
+            Bitmap bm = (Bitmap) data.getExtras().get("data");;
+            bitmap1=compressImage(bm);
+            File file = new File(Environment.getExternalStorageDirectory()
+                    + "/pushWork.jpg");
+            try {
+                filePath=file.getPath();
+                FileOutputStream fos = new FileOutputStream(file);
+                bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                file = new File(getFilesDir(), "pushWork.jpg");
+                filePath=file.getPath();
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(file);
+                    bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    fos.flush();
+                    fos.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }else {
+            bitmap1 =getBitmap(data.getData());
+        }
+        if (bitmap1==null){
+            return;
+        }
+        imageWork.setImageBitmap(bitmap1);
 
     }
     private Bitmap comp(Bitmap response) {
@@ -165,6 +193,7 @@ public class PushWoraActivity extends BaseActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
             file = new File(getFilesDir(), "pushWork"+Utils.getImageFormat(filePath1));
+            filePath=file.getPath();
             FileOutputStream fos = null;
             try {
                 fos = new FileOutputStream(file);

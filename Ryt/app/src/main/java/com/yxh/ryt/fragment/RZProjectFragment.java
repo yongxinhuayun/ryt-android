@@ -52,6 +52,7 @@ import com.yxh.ryt.activity.ProjectCommentReply;
 import com.yxh.ryt.activity.UserIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
+import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
@@ -174,6 +175,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private CommonAdapter<ArtWorkPraiseList> praiseHeadCommonAdapter;
     private HorizontalListView praiseHLV;
     private CircleImageView myPraise;
+    private boolean currentIsFollow;
 
     public RZProjectFragment(String artWorkId) {
         super();
@@ -548,6 +550,12 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     }.getType());
 
                     loadPraiseHeadData(artWorkPraiseList);
+                    currentIsFollow=Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isFollowed")));
+                    if (currentIsFollow){
+                        attention.setImageResource(R.mipmap.guanzhuhou);
+                    }else {
+                        attention.setImageResource(R.mipmap.guanzhuqian);
+                    }
                     isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
                     artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
                     deadTime = Long.parseLong(artwork.getInvestRestTime());
@@ -991,7 +999,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 commit();
                 break;
             case R.id.ib_attention:
-                if (AppApplication.gUser != null && !"".equals(AppApplication.gUser.getId())) {
+                /*if (AppApplication.gUser != null && !"".equals(AppApplication.gUser.getId())) {
                     Intent intent1 = new Intent(getActivity(), AttentionActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent1.putExtra("userId", AppApplication.gUser.getId());
@@ -1006,15 +1014,99 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     Intent intent2 = new Intent(getActivity(), LoginActivity.class);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent2);
+                }*/
+                if (currentIsFollow){
+                    attention.setEnabled(false);
+                    noAttention_user(attention,artwork.getAuthor().getId());
+                }else {
+                    attention.setEnabled(false);
+                    attention_user(attention,artwork.getAuthor().getId());
                 }
-
                 break;
             default:
                 break;
         }
 
     }
+    private void attention_user(final View v, final String followId) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("followId", followId);
+        paramsMap.put("identifier", "0");
+        paramsMap.put("followType", "2");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "changeFollowStatus.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+            }
 
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showShort(getActivity(),"关注成功");
+                    ((ImageView) v).setImageResource(R.mipmap.guanzhuhou);
+                    v.setEnabled(true);
+                    currentIsFollow=true;
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                attention_user(v,followId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+
+            }
+        });
+    }
+    private void noAttention_user(final View v, final String followId) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("followId", followId);
+        paramsMap.put("identifier", "0");
+        paramsMap.put("followType", "2");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "changeFollowStatus.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showShort(getActivity(),"取消关注");
+                    ((ImageView) v).setImageResource(R.mipmap.guanzhuqian);
+                    v.setEnabled(true);
+                    currentIsFollow=false;
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                noAttention_user(v,followId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
+    }
     private void commit() {
         AppApplication.getSingleEditTextValidator()
                 .add(new ValidationModel(etComment, new ContentValidation()))
