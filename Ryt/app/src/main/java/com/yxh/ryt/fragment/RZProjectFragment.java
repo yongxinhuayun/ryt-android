@@ -315,7 +315,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         mRoundProgressBar = (RoundProgressBar) view.findViewById(R.id.rpb_progress);
         iv_show = (ImageView) view.findViewById(R.id.iv_is_show);
         rl_progress.setOnClickListener(this);
-        mRoundProgressBar.setTextSize(28);
+        mRoundProgressBar.setTextSize(Utils.dip2px(getActivity(),11));
         cl_headPortrait = (CircleImageView) view.findViewById(R.id.cl_headPortrait);
         loadingUtil = new LoadingUtil(getActivity(), getContext());
         mExpandView.setLayoutId(R.layout.layout_expand);
