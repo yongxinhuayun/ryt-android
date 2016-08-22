@@ -31,7 +31,7 @@ public class PraiseListActivity extends BaseActivity implements AutoListView.OnL
     private ImageView back;
     private AutoListView lvPraise;
     private String artWorkId;
-    private List<ArtWorkPraiseList> artWorkPraiseList;
+    //private List<ArtWorkPraiseList> artWorkPraiseList;
     private List<ArtWorkPraiseList> praiseDatas;
     private CommonAdapter<ArtWorkPraiseList> praiseAdapter;
     private int currentPage = 1;
@@ -48,8 +48,9 @@ public class PraiseListActivity extends BaseActivity implements AutoListView.OnL
                 finish();
             }
         });
-
-        loadData(AutoListView.REFRESH, currentPage);
+        praiseDatas = new ArrayList<ArtWorkPraiseList>();
+        artWorkId = getIntent().getStringExtra("artWorkId");
+        lvPraise.setPageSize(Constants.pageSize);
         praiseAdapter = new CommonAdapter<ArtWorkPraiseList>(this, praiseDatas, R.layout.praise_list_item) {
             @Override
             public void convert(ViewHolder helper, ArtWorkPraiseList item) {
@@ -63,8 +64,6 @@ public class PraiseListActivity extends BaseActivity implements AutoListView.OnL
     }
 
     private void loadData(final int state, int pageNum) {
-        praiseDatas = new ArrayList<ArtWorkPraiseList>();
-        artWorkId = getIntent().getStringExtra("artWorkId");
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artWorkId);
         paramsMap.put("size", Constants.pageSize + "");
@@ -87,36 +86,38 @@ public class PraiseListActivity extends BaseActivity implements AutoListView.OnL
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                Map<String, Object> object = (Map<String, Object>) response.get("object");
-                if (response != null) {
-                    artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
-                            toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
-                    }.getType());
-                }
-                if (state == AutoListView.REFRESH) {
-                    lvPraise.onRefreshComplete();
-                    praiseDatas.clear();
-                    if (null == artWorkPraiseList || artWorkPraiseList.size() == 0) {
-                        lvPraise.setResultSize(0);
+                if ("0".equals(response.get("resultCode"))) {
+                    Map<String, Object> object = (Map<String, Object>) response.get("object");
+                    if (state == AutoListView.REFRESH) {
+                        lvPraise.onRefreshComplete();
+                        praiseDatas.clear();
+                        List<ArtWorkPraiseList> artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                                toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
+                        }.getType());
+                        if (null == artWorkPraiseList || artWorkPraiseList.size() == 0) {
+                            lvPraise.setResultSize(0);
+                        }
+                        if (null != artWorkPraiseList && artWorkPraiseList.size() > 0) {
+                            lvPraise.setResultSize(artWorkPraiseList.size());
+                            praiseDatas.addAll(artWorkPraiseList);
+                            praiseAdapter.notifyDataSetChanged();
+                        }
                     }
-                    if (null != artWorkPraiseList && artWorkPraiseList.size() > 0) {
-                        lvPraise.setResultSize(artWorkPraiseList.size());
-                        praiseDatas.addAll(artWorkPraiseList);
-                        praiseAdapter.notifyDataSetChanged();
-                    }
-                }
-                if (state == AutoListView.LOAD) {
-                    lvPraise.onLoadComplete();
-                    if (null == artWorkPraiseList || artWorkPraiseList.size() == 0) {
-                        lvPraise.setResultSize(1);
-                    }
-                    if (null != artWorkPraiseList && artWorkPraiseList.size() > 0) {
-                        lvPraise.setResultSize(artWorkPraiseList.size());
-                        praiseDatas.addAll(artWorkPraiseList);
-                        praiseAdapter.notifyDataSetChanged();
-                    }
+                    if (state == AutoListView.LOAD) {
+                        lvPraise.onLoadComplete();
+                        List<ArtWorkPraiseList> artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                                toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
+                        }.getType());
+                        if (null == artWorkPraiseList || artWorkPraiseList.size() == 0) {
+                            lvPraise.setResultSize(1);
+                        }
+                        if (null != artWorkPraiseList && artWorkPraiseList.size() > 0) {
+                            lvPraise.setResultSize(artWorkPraiseList.size());
+                            praiseDatas.addAll(artWorkPraiseList);
+                            praiseAdapter.notifyDataSetChanged();
+                        }
 
-
+                    }
                 }
             }
         });
