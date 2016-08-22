@@ -12,11 +12,17 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.RegisterCallBack;
+import com.yxh.ryt.custemview.WheelSheetDialog;
 import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
+import com.yxh.ryt.util.avalidations.ValidationModel;
+import com.yxh.ryt.validations.UserNameValidation;
+import com.yxh.ryt.vo.CityModel;
+import com.yxh.ryt.vo.DistrictModel;
+import com.yxh.ryt.vo.ProvinceModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +33,7 @@ public class EditRecAddressActivity extends BaseActivity implements View.OnClick
 
     private EditText reciever;
     private EditText phone;
-    private EditText local;
+    private TextView local;
     private EditText detail;
     private ImageButton selected;
     private TextView save;
@@ -40,7 +46,8 @@ public class EditRecAddressActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.activity_edit_rec_address);
         reciever = (EditText) findViewById(R.id.et_reciever);
         phone = (EditText) findViewById(R.id.et_phone);
-        local = (EditText) findViewById(R.id.et_local);
+        local = (TextView) findViewById(R.id.et_local);
+        local.setOnClickListener(this);
         detail = (EditText) findViewById(R.id.et_detail);
         selected = (ImageButton) findViewById(R.id.ib_selected);
         save = (TextView) findViewById(R.id.tv_save);
@@ -56,10 +63,9 @@ public class EditRecAddressActivity extends BaseActivity implements View.OnClick
     }
 
     private void loadData() {
-
         reciever.setText(getIntent().getStringExtra("consignee"));
         phone.setText(getIntent().getStringExtra("phone"));
-        local.setText(getIntent().getStringExtra("provinceStr") + getIntent().getStringExtra("districtStr"));
+        local.setText(getIntent().getStringExtra("provinceStr"));
         detail.setText(getIntent().getStringExtra("details"));
         unDefult = Integer.parseInt(getIntent().getStringExtra("status"));
         if (unDefult == 2) {
@@ -85,8 +91,36 @@ public class EditRecAddressActivity extends BaseActivity implements View.OnClick
                 }
                 break;
             case R.id.tv_save:
+                if ("".equals(reciever.getText().toString())){
+                    ToastUtil.showLong(this,"收货人不能为空");
+                    return;
+                }
+                AppApplication.getSingleEditTextValidator()
+                        .add(new ValidationModel(phone, new UserNameValidation()))
+                        .execute();
+                if ("".equals(detail.getText().toString())){
+                    ToastUtil.showLong(this,"详细地址不能为空");
+                    return;
+                }
+                //表单没有检验通过直接退出方法
+                if(!AppApplication.getSingleEditTextValidator().validate()){
+                    return;
+                }
                 saveRecAddress();
                 break;
+            case R.id.et_local:
+                WheelSheetDialog wheelSheetDialog = new WheelSheetDialog(this);
+                wheelSheetDialog
+                        .builder()
+                        .setCancelable(false)
+                        .setCanceledOnTouchOutside(true)
+                        .show();
+                wheelSheetDialog.setOkClickLinster(new WheelSheetDialog.OkClickLinster() {
+                    @Override
+                    public void click(ProvinceModel p, CityModel c, DistrictModel d) {
+                        local.setText(p.getName() + "-" + c.getName() + "-" + d.getName());
+                    }
+                });
             default:
                 break;
 

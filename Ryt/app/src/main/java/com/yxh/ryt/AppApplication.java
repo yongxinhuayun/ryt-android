@@ -245,7 +245,7 @@ public class AppApplication extends Application {
 	public static Gson getSingleGson(){
 		return  gson;
 	}
-	//获取全局Gson
+
 	public static EditTextValidator getSingleEditTextValidator(){
 		return  editTextValidator;
 	}
