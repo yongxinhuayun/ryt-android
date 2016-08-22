@@ -2,7 +2,7 @@ package com.yxh.ryt;
 
 public class Constants {
     //网络请求基地址
-    public static final String BASE_PATH="http://192.168.1.75:8080/app/";
+    public static final String BASE_PATH="http://192.168.1.60:8080/app/";
     //public static final String BASE_PATH="http://192.168.1.75:8080/app/";
     //public static final String BASE_PATH="http://craft.efeiyi.com/app-wikiServer/app/";
     //public static final String BASE_PATH="http://ryt.efeiyi.com/app/";

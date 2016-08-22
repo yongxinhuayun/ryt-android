@@ -296,7 +296,6 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
         } else {
             AppApplication.gUser.setMaster1("");
         }
-        finish();
     }
 
     @Override
@@ -451,7 +450,6 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 case CAMERA_REQUEST_CODE:   // 调用相机拍照
                     File temp = new File(mTempPhotoPath);
                     startCropActivity(Uri.fromFile(temp));
-
                     break;
                 case GALLERY_REQUEST_CODE:  // 直接从相册获取
                     startCropActivity(data.getData());
