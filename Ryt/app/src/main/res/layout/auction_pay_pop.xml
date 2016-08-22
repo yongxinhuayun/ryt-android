@@ -5,6 +5,12 @@
     android:background="#4D000000"
     >
     <LinearLayout
+        android:id="@+id/ll_finish"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        ></LinearLayout>
+    <LinearLayout
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

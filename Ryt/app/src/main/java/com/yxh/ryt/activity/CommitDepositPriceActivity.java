@@ -50,6 +50,7 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
     private String userId;
     private String depositNum;
     private boolean agree = false;
+    private LinearLayout ll_finish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,7 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
         userName = (TextView) findViewById(R.id.tv_name);
         userPhone = (TextView) findViewById(R.id.tv_phone);
         userAddress = (TextView) findViewById(R.id.tv_address);
+        ll_finish = (LinearLayout) findViewById(R.id.ll_finish);
 
         artWorkId = getIntent().getStringExtra("artWorkId");
         userId = getIntent().getStringExtra("userId");
@@ -76,6 +78,8 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
 
         selected.setOnClickListener(this);
         auctionProtocol.setOnClickListener(this);
+        address.setOnClickListener(this);
+        ll_finish.setOnClickListener(this);
 
         initData(artWorkId);
         initAddress();
@@ -165,6 +169,7 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
             case R.id.tv_auction_protocol:
                 startActivity(new Intent(this,AuctionProtocolActivity.class));
                 break;
+            //同意协议
             case R.id.iv_selected:
                 if (!agree){
                 selected.setImageResource(R.mipmap.commit_money);
@@ -176,7 +181,16 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
                     llPay.setEnabled(false);
                 }
                 break;
-
+            //编辑收货地址
+            case R.id.rl_address:
+                Intent intent = new Intent(this, ReceiverAdressActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ll_finish:
+                finish();
+                break;
+            default:
+                break;
         }
     }
 
@@ -278,5 +292,11 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initAddress();
     }
 }
