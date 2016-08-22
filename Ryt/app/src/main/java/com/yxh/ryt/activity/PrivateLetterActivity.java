@@ -57,14 +57,14 @@ public class PrivateLetterActivity extends BaseActivity implements AutoListView.
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.intent.action.Server_BROADCAST");
         registerReceiver(receiver, filter);
+        privateLetterDatas.clear();
+        currentPage=1;
+        LoadData(AutoListView.REFRESH, currentPage);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        privateLetterDatas.clear();
-        currentPage=1;
-        LoadData(AutoListView.REFRESH, currentPage);
     }
 
     private void initView() {

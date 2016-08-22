@@ -67,12 +67,12 @@ public class ReleaseVideoActivity extends  BaseActivity {
         content.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
     private void setValue() {
-
         videoView.setVideoPath(file);
         videoView.start();
         videoView.setOnPreparedListener(
                 new MediaPlayer.OnPreparedListener() {
                     public void onPrepared(MediaPlayer mp) {// TODO Auto-generated method stub
+                        mp.setVolume(0f, 0f);
                         mp.start();
                         mp.setLooping(true);
                     }

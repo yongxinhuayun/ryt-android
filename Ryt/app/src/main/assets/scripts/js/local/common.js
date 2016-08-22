@@ -441,6 +441,6 @@ var pageEntity = {
     pageIndex: 1
 };     //分页信息对象
 var swiperContainerOption = {};             //swiper插件使用的配置对象
-var hostName ="http://192.168.1.75:8080"; //域名对象
-//var hostName = "http://ryt.efeiyi.com";//服务器域名
+//var hostName ="http://192.168.1.75:8080"; //域名对象
+var hostName = "http://ryt.efeiyi.com";//服务器域名
 var RequestUrl = {};  //接口对象
