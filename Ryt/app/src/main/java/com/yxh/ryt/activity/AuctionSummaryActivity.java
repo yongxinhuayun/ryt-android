@@ -1,11 +1,14 @@
 package com.yxh.ryt.activity;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
@@ -14,10 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,21 +32,17 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.AuctionSummaryPageIndicatorAdapter;
-import com.yxh.ryt.adapter.CreateSummaryPageIndicatorAdapter;
 import com.yxh.ryt.callback.AttentionListCallBack;
+import com.yxh.ryt.custemview.CustomDialog;
 import com.yxh.ryt.fragment.AuctionSummaryFragment;
 import com.yxh.ryt.fragment.BaseFragment;
 import com.yxh.ryt.fragment.CAndAProjectFragment;
-import com.yxh.ryt.fragment.ProgressFragment;
 import com.yxh.ryt.fragment.RZDetailFragment;
-import com.yxh.ryt.fragment.RZProjectFragment;
 import com.yxh.ryt.util.EncryptUtil;
-import com.yxh.ryt.util.JsInterface;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.Artwork;
-import com.yxh.ryt.vo.User;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -75,9 +71,34 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
     private String depositNum;
     private TextView tvAdd;
     private TextView tvSubtraction;
-    private TextView bidPrice;
+    private TextView tvBidPrice;
     private LinearLayout llPayFinal;
     private String userId;
+    private TextView tvBid;
+    private final int MORE_BID = 101;
+    private final int LESS_BID = 102;
+    private int bidPriceNum;
+    private int bidOffset;
+    private String finalPrice;
+    private int temp;
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MORE_BID:
+                    temp = Integer.parseInt(tvBidPrice.getText().toString().substring(1)) + bidOffset;
+                    tvBidPrice.setText("￥" + temp);
+                    break;
+                case LESS_BID:
+                    temp = Integer.parseInt(tvBidPrice.getText().toString().substring(1)) - bidOffset;
+                    tvBidPrice.setText("￥" + temp);
+                    break;
+
+            }
+        }
+    } ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +110,11 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         share = (ImageView) findViewById(R.id.ib_top_rt);
         title = (TextView) findViewById(R.id.tv_top_ct);
         tvAdd = (TextView) findViewById(R.id.tv_add);
-        bidPrice = (TextView) findViewById(R.id.tv_bid_price);
+        //出价价格显示
+        tvBidPrice = (TextView) findViewById(R.id.tv_bid_price);
         tvSubtraction = (TextView) findViewById(R.id.tv_subtraction);
+        //出价按钮
+        tvBid = (TextView) findViewById(R.id.tv_bid);
         llPay = (LinearLayout) findViewById(R.id.ll_pay);
         llPayFinal = (LinearLayout) findViewById(R.id.ll_pay_final);
         llBid = (LinearLayout) findViewById(R.id.ll_bid);
@@ -101,6 +125,7 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         tvSubtraction.setOnClickListener(this);
         llPayFinal.setOnClickListener(this);
         llPay.setOnClickListener(this);
+        tvBid.setOnClickListener(this);
         id = getIntent().getStringExtra("id");
         userId = getIntent().getStringExtra("userId");
         name = getIntent().getStringExtra("title");
@@ -143,38 +168,48 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
                 Artwork artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
                         toJson(response.get("artwork")), Artwork.class);
                 depositNum = artwork.getInvestGoalMoney().divide(new BigDecimal(10),0, BigDecimal.ROUND_UP).toString();
+                bidOffset = getAuctionPrice(Long.parseLong(artwork.getInvestGoalMoney().toString()));
+                if (artwork.getNewBidingPrice() != null) {
+                    //出价金额
+                    bidPriceNum = Integer.parseInt(artwork.getNewBidingPrice().toString());
+                    tvBidPrice.setText(bidPriceNum + "");
+                }
                 String isSubmitDepositPrice = (String) response.get("isSubmitDepositPrice");
                 //拍卖预告
                 if ("30".equals(artwork.getStep())){
-                    llBid.setVisibility(View.VISIBLE);
-                    llPay.setVisibility(View.INVISIBLE);
+                    llBid.setVisibility(View.INVISIBLE);
+                    llPay.setVisibility(View.VISIBLE);
+                    llPayFinal.setVisibility(View.INVISIBLE);
                     llPay.setBackgroundColor(Color.GRAY);
                     llPay.setEnabled(false);
                 }else if ("31".equals(artwork.getStep())){
                     //拍卖中
                     if ("0".equals(isSubmitDepositPrice)) {
+                        //已缴纳保证金
                         llBid.setVisibility(View.VISIBLE);
                         llPay.setVisibility(View.INVISIBLE);
                         llPayFinal.setVisibility(View.INVISIBLE);
+                        tvBidPrice.setText("￥" + bidPriceNum);
                     } else {
+                        //未缴纳保证金
                         llBid.setVisibility(View.INVISIBLE);
                         llPay.setVisibility(View.VISIBLE);
                         llPayFinal.setVisibility(View.INVISIBLE);
                         llPay.setBackgroundColor(Color.rgb(205,55,56));
                         llPay.setEnabled(true);
                     }
-                }else if ("31".equals(artwork.getStep())){
+                }else if ("32".equals(artwork.getStep())){
                     //拍卖结束
                     if (artwork.getWinner().getId().equals(AppApplication.gUser.getId())){
                         llBid.setVisibility(View.INVISIBLE);
                         llPayFinal.setVisibility(View.VISIBLE);
-                        llPay.setVisibility(View.VISIBLE);
+                        llPay.setVisibility(View.INVISIBLE);
                         llPayFinal.setBackgroundColor(Color.rgb(205,55,56));
                         llPayFinal.setEnabled(true);
                     } else {
                         llBid.setVisibility(View.INVISIBLE);
                         llPayFinal.setVisibility(View.VISIBLE);
-                        llPay.setVisibility(View.VISIBLE);
+                        llPay.setVisibility(View.INVISIBLE);
                         llPayFinal.setBackgroundColor(Color.GRAY);
                         llPayFinal.setEnabled(false);
                     }
@@ -210,22 +245,6 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
     protected void onResume() {
         super.onResume();
     }
-
-    /*@Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ib_top_lf:
-                finish();
-                break;
-            //分享
-            case R.id.ib_top_rt:
-                showShareDialog();
-                break;
-            default:
-                break;
-            }
-        });
-    p*/
 
     private void showShareDialog() {
         View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_share_weixin_view, null);
@@ -315,12 +334,32 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
                 break;
             //出价+
             case R.id.tv_add:
+                Message msg = Message.obtain();
+                msg.what = MORE_BID;
+                handler.sendMessage(msg);
                 break;
             //出价-
             case R.id.tv_subtraction:
+                if(bidPriceNum < Integer.parseInt(tvBidPrice.getText().toString().substring(1))) {
+                    Message message = Message.obtain();
+                    message.what = LESS_BID;
+                    handler.sendMessage(message);
+                }
+                break;
+            //出价
+            case R.id.tv_bid:
+                bidPrice();
+                initbutton();
+               // investMoney(id,tvBidPrice.getText().toString().substring(1));
                 break;
             //支付尾款
             case R.id.ll_pay_final:
+                finalPrice = Integer.parseInt(tvBidPrice.getText().toString().substring(1)) - Integer.parseInt(depositNum) + "";
+                Intent intent = new Intent(this,CommitFinalPriceActivity.class);
+                intent.putExtra("artWorkId",id);
+                intent.putExtra("userId",userId);
+                intent.putExtra("finalPrice",finalPrice);
+                this.startActivity(intent);
                 break;
             default:
                 break;
@@ -328,6 +367,132 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         }
     }
 
+    private void bidPrice() {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("artWorkId", id);
+        paramsMap.put("price", tvBidPrice.getText().toString().substring(1));
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.get(Constants.BASE_PATH + "artworkBid.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+                ToastUtil.showLong(AuctionSummaryActivity.this, "网络连接超时,稍后重试!");
+            }
 
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                ToastUtil.showLong(AuctionSummaryActivity.this, "出价完成");
+            }
+
+
+
+        });
+    }
+
+    public void investMoney(final String artWorkId, final String price) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("money", price);
+        paramsMap.put("action", "investAccount");
+        paramsMap.put("type", "1");
+        paramsMap.put("artWorkId", artWorkId);
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "pay/main.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+                System.out.println("失败了");
+                ToastUtil.showLong(AuctionSummaryActivity.this,"网络连接超时,稍后重试!");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                investMoney(artWorkId,price);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }else if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showLong(AuctionSummaryActivity.this,"投资成功!");
+                }else if ("100015".equals(response.get("resultCode"))){
+                    CustomDialog.Builder builder = new CustomDialog.Builder(AuctionSummaryActivity.this);
+                    builder.setTitle("余额不足,确认要充值吗");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Map<String,String> paramsMap=new HashMap<>();
+                            //paramsMap.put("userId", AppApplication.gUser.getId());
+                            paramsMap.put("money", price);
+                            paramsMap.put("action", "invest");
+                            paramsMap.put("type", "1");
+                            paramsMap.put("artWorkId", artWorkId);
+                            paramsMap.put("timestamp", System.currentTimeMillis() + "");
+                            try {
+                                AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+                                paramsMap.put("signmsg", AppApplication.signmsg);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            NetRequestUtil.post(Constants.BASE_PATH + "pay/main.do", paramsMap, new AttentionListCallBack() {
+                                @Override
+                                public void onError(Call call, Exception e) {
+                                    e.printStackTrace();
+                                    System.out.println("失败了");
+                                    ToastUtil.showLong(AuctionSummaryActivity.this,"网络连接超时,稍后重试!");
+                                }
+
+                                @Override
+                                public void onResponse(Map<String, Object> response) {
+                                    if ("000000".equals(response.get("resultCode"))){
+                                        SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                                            @Override
+                                            public void getCode(String code) {
+                                                if ("0".equals(code)){
+                                                    investMoney(artWorkId,price);
+                                                }
+                                            }
+                                        });
+                                        sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                                    }else {
+                                        String url = response.get("url").toString();
+                                        Intent intent=new Intent(AuctionSummaryActivity.this,PayPageActivity.class);
+                                        intent.putExtra("url",url);
+                                        AuctionSummaryActivity.this.startActivity(intent);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    builder.setNegativeButton("取消",
+                            new android.content.DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    CustomDialog customDialog = builder.create();
+                    customDialog.setCanceledOnTouchOutside(false);
+                    // 设置点击屏幕Dialog不消失
+                    customDialog.show();
+                }
+            }
+        });
+    }
 
 }

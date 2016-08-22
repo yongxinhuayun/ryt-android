@@ -212,24 +212,24 @@
 
                 <ImageView
                     android:id="@+id/iv_xin_hui_left"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="6dp"
                     android:src="@mipmap/icon_xin_hui_left"
                     android:visibility="invisible" />
 
                 <ImageView
                     android:id="@+id/iv_xin_hui_right"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="21dp"
                     android:src="@mipmap/icon_xin_hui_right"
                     android:visibility="invisible" />
 
                 <ImageView
                     android:id="@+id/iv_praise_red"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="bottom"
                     android:layout_marginBottom="14dp"
                     android:layout_marginLeft="22dp"
