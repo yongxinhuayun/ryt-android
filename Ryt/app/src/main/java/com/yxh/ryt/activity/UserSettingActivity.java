@@ -37,7 +37,7 @@ public class UserSettingActivity extends BaseActivity {
     Button btnOut;
     @Bind(R.id.go3)
     TextView huanCun;
-    private SettingReceiver receiver;
+    /*private SettingReceiver receiver;*/
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -65,12 +65,10 @@ public class UserSettingActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         //注册这两个广播
-        receiver = new SettingReceiver();
+       /* receiver = new SettingReceiver();
         IntentFilter myFilter = new IntentFilter();
         myFilter.addAction("android.intent.action.LOGIN_SUC_BROADCAST");
-        registerReceiver(receiver, myFilter);
-
-
+        AppApplication.getSingleContext().registerReceiver(receiver, myFilter);*/
     }
 
     @Override
@@ -105,6 +103,7 @@ public class UserSettingActivity extends BaseActivity {
                 OkHttpUtils.getInstance().getCookieStore().getCookies().clear();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.rl_hc:
                 if ("0B".equals(huanCun.getText().toString())) {
@@ -126,26 +125,28 @@ public class UserSettingActivity extends BaseActivity {
         }
     }
 
-    public class SettingReceiver extends BroadcastReceiver {
+   /* public class SettingReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals("android.intent.action.LOGIN_SUC_BROADCAST")) {
-                btnOut.setVisibility(View.VISIBLE);
+                if (btnOut!=null){
+                    btnOut.setVisibility(View.VISIBLE);
+                }
             }
         }
 
-    }
+    }*/
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-        try {
-            unregisterReceiver(receiver);
+        /*try {
+            AppApplication.getSingleContext().unregisterReceiver(receiver);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @OnClick(R.id.us_ib_back)

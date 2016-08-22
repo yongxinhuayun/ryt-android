@@ -27,17 +27,6 @@
             android:text="铜雕"
             android:layout_centerInParent="true"/>
 
-        <ImageView
-            android:id="@+id/ib_top_rt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@null"
-            android:scaleType="center"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/share01" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -55,9 +44,7 @@
         <com.viewpagerindicator.TabPageIndicator
             android:id="@+id/indicator"
             android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"/>
+            android:layout_width="match_parent" />
     </FrameLayout>
 
     <android.support.v4.view.ViewPager
@@ -67,25 +54,5 @@
         android:layout_weight="1"
         />
 
-    <LinearLayout
-        android:id="@+id/rzp_ll_invest"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="#EF5B71"
-        android:gravity="center"
-        android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:src="@mipmap/invest_button" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
-            android:text="投资"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-    </LinearLayout>
 </LinearLayout>

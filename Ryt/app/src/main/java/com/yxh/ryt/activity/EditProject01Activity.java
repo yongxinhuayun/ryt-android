@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.InputFilter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +28,10 @@ import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.callback.LoginCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.custemview.CustomDialogView;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
+import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
@@ -65,9 +68,8 @@ public class EditProject01Activity extends  BaseActivity {
     private String currentUserId;
     private Artworkdirection artworkDirection;
     private String description;
-    private AlertDialog dialog;
-    private CustomDialogView customDialogView;
-    private RedrawCustomDialogViewThread redrawCdvRunnable;
+    private LoadingUtil loadingUtil;
+    private boolean isImage=false;
 
     public static void openActivity(Activity activity) {
         activity.startActivity(new Intent(activity, EditProject01Activity.class));
@@ -98,6 +100,10 @@ public class EditProject01Activity extends  BaseActivity {
         ButterKnife.bind(this);
         artWorkId = getIntent().getStringExtra("artWorkId");
         currentUserId = getIntent().getStringExtra("currentUserId");
+        evTitle.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evDes.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evDuration.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evMenoy.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
         loadData();
     }
     private void loadData() {
@@ -251,8 +257,8 @@ public class EditProject01Activity extends  BaseActivity {
                             @Override
                             public void onClick(int which) {
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
-                                        getExternalStorageDirectory(), "editArtFirst.jpg")));
+                                /*intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
+                                        getExternalStorageDirectory(), "editArtFirst.jpg")));*/
                                 startActivityForResult(intent, CAMERA_REQUEST_CODE);
                             }
                         })
@@ -269,6 +275,31 @@ public class EditProject01Activity extends  BaseActivity {
     }
     //艺术家发布项目第一步接口一网络请求
     private void oneStepRequst() {
+        if (!isImage){
+            ToastUtil.showShort(EditProject01Activity.this,"没有选择图片!");
+            return;
+        }
+        if ("".equals(evTitle.getText().toString())){
+            ToastUtil.showShort(EditProject01Activity.this,"项目标题不能为空!");
+            return;
+        }
+        if ("".equals(evDes.getText().toString())){
+            ToastUtil.showShort(EditProject01Activity.this,"项目简介不能为空!");
+            return;
+        }
+        if (evDes.getText().toString().length()>30){
+            ToastUtil.showShort(EditProject01Activity.this,"项目简介不能超过30!");
+            return;
+        }
+        if ("".equals(evDuration.getText().toString())){
+            ToastUtil.showShort(EditProject01Activity.this,"创作时长不能为空");
+            return;
+        }
+        if ("".equals(evMenoy.getText().toString())){
+            ToastUtil.showShort(EditProject01Activity.this,"融资金额不能为空");
+            return;
+        }
+        loadingUtil = new LoadingUtil(EditProject01Activity.this, EditProject01Activity.this);
         /*View view = LayoutInflater.from(this).inflate(
                 R.layout.dilog_withwait, null);
 
@@ -278,6 +309,7 @@ public class EditProject01Activity extends  BaseActivity {
         customDialogView = (CustomDialogView) view.findViewById(R.id.view_customdialog);
         redrawCdvRunnable = new RedrawCustomDialogViewThread();
         new Thread(redrawCdvRunnable).start();*/
+        loadingUtil.show();
         Map<String,File> fileMap=new HashMap<>();
         File file = new File(filePath);
         fileMap.put(file.getName(),file);
@@ -311,6 +343,7 @@ public class EditProject01Activity extends  BaseActivity {
                 if ("0".equals(response.get("resultCode"))){
                     if (size==ImageList.size()){
                         /*redrawCdvRunnable.setRun(false);*/
+                        loadingUtil.dismiss();
                         Intent intent=new Intent(EditProject01Activity.this,EditProject02Activity.class);
                         intent.putExtra("artworkId", (String)response.get("artworkId")+"");
                         intent.putExtra("description",description);
@@ -335,34 +368,6 @@ public class EditProject01Activity extends  BaseActivity {
             }
         });
     }
-    class RedrawCustomDialogViewThread implements Runnable {
-
-        private boolean isRun = true;
-
-        @Override
-        public void run() {
-
-            while (isRun && dialog != null) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // 通知重绘
-                customDialogView.postInvalidate();
-            }
-
-        }
-
-        public boolean isRun() {
-            return isRun;
-        }
-
-        public void setRun(boolean isRun) {
-            this.isRun = isRun;
-        }
-
-    }
 
     @Override
     protected void onDestroy() {
@@ -386,6 +391,7 @@ public class EditProject01Activity extends  BaseActivity {
                 params1.setMargins(left1,0,right1,0);
                 ivImage.setLayoutParams(params1);
                 Bitmap bitmap = getBitmap(data.getData());
+                isImage=true;
                 /*Bitmap btm2=Bitmap.createScaledBitmap(bitmap, widthzong, height1, false); //自定义
                 bitmap.recycle();*/
                 int bmpWidth1  = bitmap.getWidth();
@@ -398,12 +404,42 @@ public class EditProject01Activity extends  BaseActivity {
                 ivImage.setImageBitmap(resizeBitmap1);
                 break;
             case CAMERA_REQUEST_CODE:
-                File picture = new File(Environment.getExternalStorageDirectory()
-                        + "/editArtFirst.jpg");
-                Bitmap bitmap1 = getBitmap(Uri.fromFile(picture));
+                /*File picture = new File(Environment.getExternalStorageDirectory()
+                        + "/editArtFirst.jpg");*/
+                Bitmap bitmap1=null;
+                if (data.getData()==null){
+                    Bitmap bm = (Bitmap) data.getExtras().get("data");;
+                    bitmap1=compressImage(bm);
+                    File file = new File(Environment.getExternalStorageDirectory()
+                            + "/editArtFirst.jpg");
+                    try {
+                        filePath=file.getPath();
+                        FileOutputStream fos = new FileOutputStream(file);
+                        bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        fos.flush();
+                        fos.close();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                        file = new File(getFilesDir(), "editArtFirst.jpg");
+                        filePath=file.getPath();
+                        FileOutputStream fos = null;
+                        try {
+                            fos = new FileOutputStream(file);
+                            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }else {
+                    bitmap1 =getBitmap(data.getData());
+                }
                 if (bitmap1==null){
                     break;
                 }
+                isImage=true;
                 int height=Utils.dip2px(EditProject01Activity.this,224);
                 int left=Utils.dip2px(EditProject01Activity.this,14);
                 int right=Utils.dip2px(EditProject01Activity.this,14);
@@ -442,7 +478,7 @@ public class EditProject01Activity extends  BaseActivity {
         }
         Bitmap bitmap1=compressImage(bm);
         File file = new File(Environment.getExternalStorageDirectory()
-                + "/pushArtFirst"+Utils.getImageFormat(filePath1));
+                + "/editArtFirst"+Utils.getImageFormat(filePath1));
         try {
             filePath=file.getPath();
             FileOutputStream fos = new FileOutputStream(file);
@@ -452,6 +488,17 @@ public class EditProject01Activity extends  BaseActivity {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            file = new File(getFilesDir(), "editArtFirst"+Utils.getImageFormat(filePath1));
+            filePath=file.getPath();
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(file);
+                bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
         return bitmap1;
     }

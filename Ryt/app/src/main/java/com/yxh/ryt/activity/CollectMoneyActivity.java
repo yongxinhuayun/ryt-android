@@ -2,6 +2,7 @@ package com.yxh.ryt.activity;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.AttentionListCallBack;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -62,6 +64,9 @@ public class CollectMoneyActivity extends BaseActivity {
                 finish();
             }
         });
+        account.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        name.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        amount.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
     private void clickable() {
         account.addTextChangedListener(new TextWatcher() {

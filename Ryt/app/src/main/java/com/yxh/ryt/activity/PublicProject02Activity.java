@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -29,7 +30,9 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.custemview.CustomDialogView;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
+import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
@@ -42,8 +45,11 @@ import com.yxh.ryt.util.phote.util.Res;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,9 +78,29 @@ public class PublicProject02Activity extends  BaseActivity {
     EditText evZhizuo;
     @Bind(R.id.ev_jiehuo)
     EditText evJieHuo;
+    private LoadingUtil loadingUtil;
 
     //艺术家发布项目第一步接口一网络请求
     private void twoStepRequst() {
+        /*if (!isImage){
+            ToastUtil.showShort(PublicProject02Activity.this,"没有选择图片!");
+            return;
+        }*/
+        if ("".equals(evShuoming.getText().toString())){
+            ToastUtil.showShort(PublicProject02Activity.this,"项目说明不能为空!");
+            return;
+        }
+        if ("".equals(evZhizuo.getText().toString())){
+            ToastUtil.showShort(PublicProject02Activity.this,"制作说明不能为空!");
+            return;
+        }
+        if ("".equals(evJieHuo.getText().toString())){
+            ToastUtil.showShort(PublicProject02Activity.this,"融资解惑不能为空!");
+            return;
+        }
+
+        loadingUtil = new LoadingUtil(PublicProject02Activity.this, PublicProject02Activity.this);
+        loadingUtil.show();
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("artworkId",artworkId);
         paramsMap.put("timestamp",System.currentTimeMillis()+"");
@@ -101,6 +127,7 @@ public class PublicProject02Activity extends  BaseActivity {
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))){
+                    loadingUtil.dismiss();
                     ToastUtil.showLong(PublicProject02Activity.this,"项目发布成功");
                     finish();
                 }else if ("000000".equals(response.get("resultCode"))){
@@ -171,6 +198,9 @@ public class PublicProject02Activity extends  BaseActivity {
                 }
             }
         });
+        evShuoming.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evZhizuo.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        evJieHuo.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
     public class GridAdapter extends BaseAdapter {
             private LayoutInflater inflater;
@@ -285,8 +315,22 @@ public class PublicProject02Activity extends  BaseActivity {
         }
         private static final int TAKE_PICTURE = 0x000001;
 
+    public  void makeRootDirectory(String filePath) {
+        File file = null;
+        try {
+            file = new File(filePath);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            if(!file.isDirectory()){
+                file.delete();
+                file.mkdirs();
+            }
+        } catch (Exception e) {
 
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        }
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             if(requestCode == REQUEST_IMAGE){
             if(resultCode == RESULT_OK&&Bimp.tempSelectBitmap.size()<9){
                 // 获取返回的图片列表
@@ -297,8 +341,12 @@ public class PublicProject02Activity extends  BaseActivity {
                     i++;
                     Bitmap bitmap = BitmapFactory.decodeFile(s);
                     Bitmap bitmap1 = compressImage(bitmap, s);
-                    File file = new File(Environment.getExternalStorageDirectory()
-                            + "/pushArtSecond"+i+Utils.getImageFormat(s));
+                    File file = null;
+                    makeRootDirectory(Environment.getExternalStorageDirectory().getAbsoluteFile()
+                            + File.separator+ File.separator );
+                    file = new File(Environment.getExternalStorageDirectory().getAbsoluteFile()
+                            + File.separator+ File.separator,"pushArtSecond"+i+Utils.getImageFormat(s));
+
                     try {
                         FileOutputStream fos = new FileOutputStream(file);
                         bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -307,6 +355,16 @@ public class PublicProject02Activity extends  BaseActivity {
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        file = new File(getFilesDir(), "pushArtSecond"+i+Utils.getImageFormat(s));
+                        FileOutputStream fos = null;
+                        try {
+                            fos = new FileOutputStream(file);
+                            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     fileMap.put(file.getName(),file);
                     String fileName = String.valueOf(System.currentTimeMillis());

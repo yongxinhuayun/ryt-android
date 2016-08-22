@@ -1,6 +1,7 @@
 package com.yxh.ryt.custemview;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.TimerTask;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.media.MediaRecorder;
@@ -28,7 +30,9 @@ import android.view.SurfaceView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.R;
+import com.yxh.ryt.util.Utils;
 
 
 /**
@@ -190,6 +194,12 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
             try {
                 mRecordFile = File.createTempFile("recording"+System.currentTimeMillis(), ".mp4", sampleDir); //mp4格式
             } catch (IOException e) {
+                File sampleDir1 = new File(AppApplication.getSingleContext().getFilesDir() + File.separator + "im" + File.separator + "video" + File.separator);
+                try {
+                    mRecordFile = File.createTempFile("recording"+System.currentTimeMillis(), ".mp4", sampleDir1); //mp4格式
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
     }
 

@@ -24,9 +24,9 @@ import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.viewpagerindicator.TabPageIndicator;
-import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.adapter.MyProjectIndicatorAdapter;
 import com.yxh.ryt.adapter.RZTitlePageIndicatorAdapter;
 import com.yxh.ryt.fragment.BaseFragment;
 import com.yxh.ryt.fragment.RZDetailFragment;
@@ -40,60 +40,43 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/5.
  */
-public class FinanceSummaryActivity extends BaseActivity implements View.OnClickListener {
+public class MyProjectActivity extends BaseActivity implements View.OnClickListener {
     List<BaseFragment> rZFragments=new ArrayList<>();
     FragmentPagerAdapter rZAdapter;
     private ImageView back;
     private TextView title;
-    private ImageView share;
     IWXAPI api;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID); //初始化api
         api.registerApp(Constants.APP_ID); //将APP_ID注册到微信中
-        setContentView(R.layout.activity_financesummary);
+        setContentView(R.layout.activity_myproject);
         back = (ImageView) findViewById(R.id.ib_top_lf);
         title = ((TextView) findViewById(R.id.afs_tv_title));
-        share = (ImageView) findViewById(R.id.ib_top_rt);
-        LinearLayout invest = (LinearLayout) findViewById(R.id.rzp_ll_invest);
         back.setOnClickListener(this);
-        share.setOnClickListener(this);
         Intent intent = this.getIntent();
-        final String artWorkId = intent.getStringExtra("id");
+        String artWorkId = intent.getStringExtra("id");
         String name = intent.getStringExtra("name");
         String userId=intent.getStringExtra("userId");
-        final RZProjectFragment rzProjectFragment=new RZProjectFragment(artWorkId);
-        rZFragments.add(rzProjectFragment);
+        rZFragments.add(new RZProjectFragment(artWorkId));
         rZFragments.add(new RZDetailFragment(artWorkId));
         rZFragments.add(new RZInvestFragment(artWorkId));
         rZFragments.add(new WorksFragment(userId));
+        rZFragments.add(new WorksFragment(userId));
         title.setText(name);
-        rZAdapter = new RZTitlePageIndicatorAdapter(this.getSupportFragmentManager(),rZFragments);
+        rZAdapter = new MyProjectIndicatorAdapter(this.getSupportFragmentManager(),rZFragments);
         ViewPager pager = (ViewPager)findViewById(R.id.pager);
-        pager.setOffscreenPageLimit(3);
+        pager.setOffscreenPageLimit(5);
         pager.setAdapter(rZAdapter);
         //实例化TabPageIndicator然后设置ViewPager与之关联
         TabPageIndicator mindicator = (TabPageIndicator) findViewById(R.id.indicator);
         mindicator.setViewPager(pager);
-        invest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ("".equals(AppApplication.gUser.getId())) {
-                    Intent intent2 = new Intent(FinanceSummaryActivity.this, LoginActivity.class);
-                    startActivity(intent2);
-                } else {
-                    Intent intent1 = new Intent(FinanceSummaryActivity.this, InvestActivity.class);
-                    intent1.putExtra("allMoney", rzProjectFragment.getRemainMoney());
-                    intent1.putExtra("artWorkId", artWorkId);
-                    startActivity(intent1);
-                }
-            }
-        });
+
 
     }
 
-    public FinanceSummaryActivity() {
+    public MyProjectActivity() {
     }
 
     @Override
@@ -234,5 +217,4 @@ public class FinanceSummaryActivity extends BaseActivity implements View.OnClick
         });*/
 
     }
-
 }

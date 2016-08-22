@@ -10,10 +10,13 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.InputFilter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -49,6 +52,7 @@ import com.yxh.ryt.activity.ProjectCommentReply;
 import com.yxh.ryt.activity.UserIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
+import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
@@ -58,6 +62,7 @@ import com.yxh.ryt.custemview.ListViewForScrollView;
 import com.yxh.ryt.custemview.RoundProgressBar;
 import com.yxh.ryt.util.AnimPraiseCancel;
 import com.yxh.ryt.util.DateUtil;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -82,6 +87,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 
@@ -103,7 +110,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private ImageView redPraise;
     private boolean flag1 = true;
     private boolean isPraise1;
-    private LinearLayout ll_invester;
+    //private LinearLayout ll_invester;
     private TextView tv_project_name;
     private TextView tv_project_brief;
     private TextView tv_price;
@@ -168,6 +175,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private CommonAdapter<ArtWorkPraiseList> praiseHeadCommonAdapter;
     private HorizontalListView praiseHLV;
     private CircleImageView myPraise;
+    private boolean currentIsFollow;
 
     public RZProjectFragment(String artWorkId) {
         super();
@@ -299,7 +307,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         praiseHLV = (HorizontalListView) view.findViewById(R.id.hlv_praise);
         attention.setOnClickListener(this);
         comment.setOnClickListener(this);
-        invest = ((LinearLayout) view.findViewById(R.id.rzp_ll_invest));
+        //invest = ((LinearLayout) view.findViewById(R.id.rzp_ll_invest));
         llpraise = (LinearLayout) view.findViewById(R.id.ll_praise);
         //llinvester = (LinearLayout) view.findViewById(R.id.ll_invester);
         mExpandView = (ExpandView) view.findViewById(R.id.expandView);
@@ -307,7 +315,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         mRoundProgressBar = (RoundProgressBar) view.findViewById(R.id.rpb_progress);
         iv_show = (ImageView) view.findViewById(R.id.iv_is_show);
         rl_progress.setOnClickListener(this);
-        mRoundProgressBar.setTextSize(28);
+        mRoundProgressBar.setTextSize(Utils.dip2px(getActivity(),11));
         cl_headPortrait = (CircleImageView) view.findViewById(R.id.cl_headPortrait);
         loadingUtil = new LoadingUtil(getActivity(), getContext());
         mExpandView.setLayoutId(R.layout.layout_expand);
@@ -327,7 +335,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         iListview = (ListViewForScrollView) view.findViewById(R.id.lv_invester);
         iTopListview = (ListViewForScrollView) view.findViewById(R.id.lv_invester_top);
         iTopListview.hideFooterView();
-        invest.setOnClickListener(this);
+        //invest.setOnClickListener(this);
         praiseHLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -344,9 +352,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         setInvesterAdapter();
         setCommentAdapter();
         setPraiseHeadAdapter();
+        etComment.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
         return view;
     }
-
     private void showHeadNum() {
         //测量箭头的宽高
         int heightArrow = go.getMeasuredHeight();
@@ -542,6 +550,12 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     }.getType());
 
                     loadPraiseHeadData(artWorkPraiseList);
+                    currentIsFollow=Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isFollowed")));
+                    if (currentIsFollow){
+                        attention.setImageResource(R.mipmap.guanzhuhou);
+                    }else {
+                        attention.setImageResource(R.mipmap.guanzhuqian);
+                    }
                     isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
                     artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
                     deadTime = Long.parseLong(artwork.getInvestRestTime());
@@ -640,7 +654,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     System.out.println(progress);
                     mRoundProgressBar.setProgress(progress);
                     try {
-                        Thread.sleep(250 / temp);
+                        if (temp!=0){
+                            Thread.sleep(250 / temp);
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -912,7 +928,9 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
         Intent intent = new Intent(getActivity(), CommentListActivity.class);
         clickMore(listView, intent);
     }
-
+    public int getRemainMoney(){
+        return remainMoney;
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -934,7 +952,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 intent.putExtra("artWorkId", artWorkId);
                 startActivity(intent);
                 break;
-            case R.id.rzp_ll_invest:
+            /*case R.id.rzp_ll_invest:
                 if ("".equals(AppApplication.gUser.getId())) {
                     Intent intent2 = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent2);
@@ -944,7 +962,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     intent1.putExtra("artWorkId", artWorkId);
                     startActivity(intent1);
                 }
-                break;
+                break;*/
             case R.id.rl_progress:
                 if (mExpandView.isExpand()) {
                     mExpandView.collapse();
@@ -981,7 +999,7 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 commit();
                 break;
             case R.id.ib_attention:
-                if (AppApplication.gUser != null && !"".equals(AppApplication.gUser.getId())) {
+                /*if (AppApplication.gUser != null && !"".equals(AppApplication.gUser.getId())) {
                     Intent intent1 = new Intent(getActivity(), AttentionActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent1.putExtra("userId", AppApplication.gUser.getId());
@@ -996,15 +1014,99 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     Intent intent2 = new Intent(getActivity(), LoginActivity.class);
                     intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent2);
+                }*/
+                if (currentIsFollow){
+                    attention.setEnabled(false);
+                    noAttention_user(attention,artwork.getAuthor().getId());
+                }else {
+                    attention.setEnabled(false);
+                    attention_user(attention,artwork.getAuthor().getId());
                 }
-
                 break;
             default:
                 break;
         }
 
     }
+    private void attention_user(final View v, final String followId) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("followId", followId);
+        paramsMap.put("identifier", "0");
+        paramsMap.put("followType", "2");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "changeFollowStatus.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+            }
 
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showShort(getActivity(),"关注成功");
+                    ((ImageView) v).setImageResource(R.mipmap.guanzhuhou);
+                    v.setEnabled(true);
+                    currentIsFollow=true;
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                attention_user(v,followId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+
+            }
+        });
+    }
+    private void noAttention_user(final View v, final String followId) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("followId", followId);
+        paramsMap.put("identifier", "0");
+        paramsMap.put("followType", "2");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "changeFollowStatus.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showShort(getActivity(),"取消关注");
+                    ((ImageView) v).setImageResource(R.mipmap.guanzhuqian);
+                    v.setEnabled(true);
+                    currentIsFollow=false;
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                noAttention_user(v,followId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
+    }
     private void commit() {
         AppApplication.getSingleEditTextValidator()
                 .add(new ValidationModel(etComment, new ContentValidation()))

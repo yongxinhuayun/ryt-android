@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="#fafafa"
     android:orientation="vertical">
 
     <RelativeLayout
+        android:background="@android:color/white"
         android:id="@+id/rl_top"
         android:layout_width="match_parent"
         android:layout_height="48dp">
@@ -46,20 +47,21 @@
         <!--android:layout_centerVertical="true"-->
         <!--android:layout_height="match_parent"-->
         <!--/>-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:background="#E9E9E9"></View>
-    </RelativeLayout>
 
-    <LinearLayout
+    </RelativeLayout>
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:orientation="vertical">
+        android:layout_height="0.5dp"
+        android:background="#E9E9E9"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="@dimen/ui_10_dip"
+        android:background="#E9E9E9"/>
+
 
         <RelativeLayout
+            android:background="@android:color/white"
             android:id="@+id/rl_head"
             android:layout_width="match_parent"
             android:layout_height="62dp"
@@ -88,17 +90,16 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
             android:background="#E9E9E9" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
             android:layout_marginTop="10dp"
             android:background="#E9E9E9" />
 
         <RelativeLayout
+            android:background="@android:color/white"
             android:id="@+id/rl_nickName"
             android:layout_width="match_parent"
             android:layout_height="46dp"
@@ -139,8 +140,45 @@
                 android:layout_alignParentBottom="true"
                 android:background="#E9E9E9" />
         </RelativeLayout>
+    <RelativeLayout
+        android:background="@android:color/white"
+        android:id="@+id/rl_number"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="昵称"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="180000000"
+            android:layout_marginRight="20dp"
+            android:textColor="#808080"
+            android:textSize="12sp"
+            android:layout_alignParentRight="true"/>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#E9E9E9" />
+    </RelativeLayout>
 
         <RelativeLayout
+            android:background="@android:color/white"
             android:id="@+id/rl_sign"
             android:layout_width="match_parent"
             android:layout_height="46dp"
@@ -183,6 +221,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:background="@android:color/white"
             android:id="@+id/rl_sex"
             android:layout_width="match_parent"
             android:layout_height="46dp"
@@ -224,6 +263,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:background="@android:color/white"
             android:id="@+id/rl_address"
             android:layout_width="match_parent"
             android:layout_height="46dp"
@@ -253,5 +293,5 @@
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
             android:background="#E9E9E9" />
-    </LinearLayout>
+
 </LinearLayout>

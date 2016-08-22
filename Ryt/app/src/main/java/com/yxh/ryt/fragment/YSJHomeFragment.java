@@ -123,7 +123,11 @@ public class YSJHomeFragment extends StickHeaderBaseFragment{
 			public void convert(ViewHolder helper, final HomeYSJArtWork item) {
 				helper.setImageByUrl(R.id.mpi_iv_icon, item.getPicture_url());
 				helper.setText(R.id.mpi_tv_tilte, item.getTitle());
-				helper.setText(R.id.mpi_iv_project,"项目描述:"+item.getDescription());
+				if(item.getDescription()!=null){
+					helper.setText(R.id.mpi_iv_project,"项目描述:"+item.getDescription());
+				}else {
+					helper.setText(R.id.mpi_iv_project,"目前无项目描述");
+				}
 				helper.setText(R.id.mpi_tv_money,item.getInvestGoalMoney()+"元");
 				helper.setText(R.id.mpi_tv_stage,AppApplication.map.get(item.getStep()));
 				helper.getView(R.id.mpi_tv_left).setVisibility(View.GONE);

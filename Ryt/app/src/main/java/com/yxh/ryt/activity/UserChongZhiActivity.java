@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.AttentionListCallBack;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -84,6 +86,7 @@ public class UserChongZhiActivity extends BaseActivity{
                 return false;
             }
         });
+        edMoney.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
     @OnClick({R.id.ucz_ll_recharge,R.id.ib_top_lf})
     public void back(View view) {

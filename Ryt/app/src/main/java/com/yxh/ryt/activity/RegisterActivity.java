@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RegisterCallBack;
 import com.yxh.ryt.obsever.Smsobserver;
 import com.yxh.ryt.receiver.WxLoginBroadcastReciver;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
@@ -120,6 +122,9 @@ public class RegisterActivity extends BaseActivity {
         event();
         commit.setEnabled(false);
         clickable();
+        eTPhone.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        eTPassword.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        eTVerfyCode.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
 
     private void clickable() {

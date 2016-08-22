@@ -1,16 +1,21 @@
 package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,6 +25,7 @@ import android.widget.TextView;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.viewpagerindicator.IcsLinearLayout;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
@@ -56,6 +62,7 @@ public class ProgressFragment extends BaseFragment {
     private WebView webView;
     private JsInterface jsInterface = new JsInterface();
     private String id;
+    private AttentionReceiver receiver;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,12 +73,23 @@ public class ProgressFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View contextView = inflater.inflate(R.layout.fragment_createprogress, container, false);
         webView = (WebView) contextView.findViewById(R.id.acs_wb_all);
-        webView.getSettings().setJavaScriptEnabled(true);
+        receiver = new AttentionReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.intent.action.H5_LOGINSUCCESS_BROADCAST");
+        AppApplication.getSingleContext().registerReceiver(receiver, filter);
         return contextView;
     }
 
 
     public ProgressFragment() {
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (receiver!=null){
+            AppApplication.getSingleContext().unregisterReceiver(receiver);
+        }
     }
 
     public ProgressFragment(String id) {
@@ -92,15 +110,42 @@ public class ProgressFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new JieWewViewClient());
         webView.addJavascriptInterface(new JavaInterfaceDemo(), "demo");
         CookieManager manager=CookieManager.getInstance();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             manager.setAcceptThirdPartyCookies(webView, true);
         }
         webView.loadUrl("file:///android_asset/progress.html");
-
     }
-    class JavaInterfaceDemo {
+    class JieWewViewClient extends WebViewClient {
+        /**
+         *  如果紧跟着
+         *  webView.loadUrl(file:///android_asset/index.html);
+         *  调用Js中的方法是不起作用的，必须页面加载完成才可以
+         */
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+        }
+    }
+    public class AttentionReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String callBackStr = intent.getStringExtra("callBackStr");
+            System.out.println("(((((((((((((((((((((((((((("+callBackStr);
+            final String call = "javascript:loginFunction(\"" + id+ "\",\""+AppApplication.gUser.getId()+"\",\""+AppApplication.gUser.getUsername()+"\",\""+AppApplication.gUser.getPassword()+"\",\""+ callBackStr +"\")";
+            webView.post(new Runnable() {
+                @Override
+                public void run() {
+                    webView.loadUrl(call);
+                }
+            });
+        }
+    }
+    public class JavaInterfaceDemo {
         @JavascriptInterface
         public void clickOnAndroid(final  String id) {
             loadData(id);
@@ -111,6 +156,23 @@ public class ProgressFragment extends BaseFragment {
                 return false;
             }
             return  true;
+        }
+        @JavascriptInterface
+        public void isPraiseOrLogin(final String callBackStr){
+            if ("".equals(AppApplication.gUser.getId())){
+                Intent intent=new Intent(getActivity(),LoginActivity.class);
+                intent.putExtra("callBackStr",callBackStr);
+                startActivity(intent);
+            }else {
+                final String call = "javascript:loginFunction(\"" + id+ "\",\""+AppApplication.gUser.getId()+"\",\""+AppApplication.gUser.getUsername()+"\",\""+AppApplication.gUser.getPassword()+"\",\""+callBackStr+"\")";
+                webView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        webView.loadUrl(call);
+                    }
+                });
+            }
+
         }
         @JavascriptInterface
         public void loginSelf() {

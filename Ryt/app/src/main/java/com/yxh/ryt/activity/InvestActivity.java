@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.custemview.CustomDialog;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -74,6 +76,7 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
         allMoney = getIntent().getIntExtra("allMoney",0);
         artworkId = getIntent().getStringExtra("artWorkId");
         other.addTextChangedListener(this);
+        other.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
     @OnClick({R.id.imp_ll_2,R.id.imp_ll_5,R.id.imp_ll_10,R.id.imp_ll_28,R.id.imp_ll_88,R.id.imp_ll_all})
     public void click(View view){
@@ -177,12 +180,47 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                     ToastUtil.showShort(getApplicationContext(),"投资最低2元");
                 }else {*/
                 if ("".equals(other.getText().toString())){
-                    investMoney();
+                    CustomDialog.Builder builder = new CustomDialog.Builder(InvestActivity.this);
+                    builder.setTitle("确认要投资吗");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            investMoney();
+                        }
+                    });
+                    builder.setNegativeButton("取消",
+                            new android.content.DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    CustomDialog customDialog = builder.create();
+                    customDialog.setCanceledOnTouchOutside(false);
+                    // 设置点击屏幕Dialog不消失
+                    customDialog.show();
+
                 }else {
                     if (Integer.parseInt(other.getText().toString()) < 2) {
                         ToastUtil.showShort(getApplicationContext(),"投资最低2元");
                     }else {
-                        investMoney();
+                        CustomDialog.Builder builder = new CustomDialog.Builder(InvestActivity.this);
+                        builder.setTitle("确认要投资吗");
+                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                investMoney();
+                            }
+                        });
+                        builder.setNegativeButton("取消",
+                                new android.content.DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        CustomDialog customDialog = builder.create();
+                        customDialog.setCanceledOnTouchOutside(false);
+                        // 设置点击屏幕Dialog不消失
+                        customDialog.show();
                     }
                 }
                 /*}*/

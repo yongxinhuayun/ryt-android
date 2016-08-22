@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputFilter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -58,6 +59,7 @@ import com.yxh.ryt.custemview.ListViewForScrollView;
 import com.yxh.ryt.custemview.RoundProgressBar;
 import com.yxh.ryt.util.AnimPraiseCancel;
 import com.yxh.ryt.util.DateUtil;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -341,6 +343,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
         setInvesterAdapter();
         setCommentAdapter();
         setPraiseHeadAdapter();
+        etComment.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
         return view;
     }
 
@@ -845,17 +848,23 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
                 investorDatas.add(investList.get(i));
             }
             iListview.showFooterView();
-            Intent intent = new Intent(getActivity(), InvestorActivity.class);
-            clickMore(iListview, intent);
+            clickMore(iListview, 2);
         }
     }
 
-    private void clickMore(ListViewForScrollView myListview, final Intent intent) {
+    private void clickMore(ListViewForScrollView myListview, final int  i) {
         myListview.footerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent.putExtra("artWorkId", artWorkId);
-                getActivity().startActivity(intent);
+                if (1==i){
+                    Intent intent = new Intent(getActivity(), CommentListActivity.class);
+                    intent.putExtra("artWorkId", artWorkId);
+                    getActivity().startActivity(intent);
+                }else {
+                    Intent intent = new Intent(getActivity(), InvestorActivity.class);
+                    intent.putExtra("artWorkId", artWorkId);
+                    getActivity().startActivity(intent);
+                }
             }
         });
     }
@@ -906,8 +915,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
             listView.showFooterView();
 
         }
-        Intent intent = new Intent(getActivity(), CommentListActivity.class);
-        clickMore(listView, intent);
+        clickMore(listView, 1);
     }
 
     @Override

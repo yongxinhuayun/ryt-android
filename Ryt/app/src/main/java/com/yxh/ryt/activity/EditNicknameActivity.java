@@ -3,6 +3,7 @@ package com.yxh.ryt.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.RegisterCallBack;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SPUtil;
@@ -37,6 +39,7 @@ public class EditNicknameActivity extends Activity implements View.OnClickListen
         iv_back = (ImageView) findViewById(R.id.iv_back);
         tv_save = (TextView) findViewById(R.id.tv_save);
         nickName = (EditText) findViewById(R.id.et_nickName);
+        nickName.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
         iv_back.setOnClickListener(this);
         tv_save.setOnClickListener(this);
     }

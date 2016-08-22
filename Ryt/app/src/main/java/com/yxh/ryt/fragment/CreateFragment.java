@@ -22,6 +22,7 @@ import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.AutoListView;
+import com.yxh.ryt.util.AnimPraiseCancel;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.LoadingUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -220,34 +221,34 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 					}else{
 						helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.GONE);
 					}
-					if (selected.get(helper.getPosition())){
-						helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
-						((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255,255,255));
-						helper.setText(R.id.clh_tv_praiseNum,number.get(helper.getPosition())+"");
-						helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								cancelPraise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)),((TextView) helper.getView(R.id.clh_tv_praiseNum)),number.get(helper.getPosition()), helper);
-							}
-						});
-					}else {
-						helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_shape);
-						((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(199, 31, 33));
-						helper.setText(R.id.clh_tv_praiseNum,number.get(helper.getPosition())+"");
-						helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								if ("".equals(AppApplication.gUser.getId())){
-									Intent intent=new Intent(getActivity(), LoginActivity.class);
-									intent.putExtra("userId",item.getAuthor().getId());
-									intent.putExtra("currentId",AppApplication.gUser.getId());
+					helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							if (selected.get(helper.getPosition())) {
+								cancelPraise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)), ((TextView) helper.getView(R.id.clh_tv_praiseNum)), number.get(helper.getPosition()), helper);
+								helper.getView(R.id.clh_ll_praise).setEnabled(false);
+							}else {
+								if ("".equals(AppApplication.gUser.getId())) {
+									Intent intent = new Intent(getActivity(), LoginActivity.class);
+									intent.putExtra("userId", item.getAuthor().getId());
+									intent.putExtra("currentId", AppApplication.gUser.getId());
 									intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 									getActivity().startActivity(intent);
-								}else {
-									praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)),((TextView) helper.getView(R.id.clh_tv_praiseNum)),number.get(helper.getPosition()), helper);
+								} else {
+									praise(item.getId(), ((LinearLayout) helper.getView(R.id.clh_ll_praise)), ((TextView) helper.getView(R.id.clh_tv_praiseNum)), number.get(helper.getPosition()), helper);
+									helper.getView(R.id.clh_ll_praise).setEnabled(false);
 								}
 							}
-						});
+						}
+					});
+					if (selected.get(helper.getPosition())) {
+						helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
+						((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255, 255, 255));
+						helper.setText(R.id.clh_tv_praiseNum, number.get(helper.getPosition()) + "");
+					} else {
+						helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_shape);
+						((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(199, 31, 33));
+						helper.setText(R.id.clh_tv_praiseNum, number.get(helper.getPosition()) + "");
 
 					}
 				}
@@ -275,28 +276,29 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
 				System.out.println("失败了");
-				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
+				ToastUtil.showLong(getActivity(), "网络连接超时,稍后重试!");
 			}
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
 				if ("0".equals(response.get("resultCode"))) {
-					if (selected.get(helper.getPosition())){
-						ToastUtil.showLong(getActivity(), "取消点赞");
+					if (selected.get(helper.getPosition())) {
+						helper.getView(R.id.clh_ll_praise).setEnabled(true);
 						view.setBackgroundResource(R.drawable.praise_shape);
+						AnimPraiseCancel.animCancelPraise(helper.getView(R.id.iv_xin_hui_left),helper.getView(R.id.iv_xin_hui_right));
 						textView.setTextColor(Color.rgb(199, 31, 33));
-						String raw=textView.getText().toString();
-						number.put(helper.getPosition(),praiseNum - 1);
-						textView.setText(Integer.valueOf(raw)-1+"");
-						selected.put(helper.getPosition(),false);
-					}else {
+						String raw = textView.getText().toString();
+						number.put(helper.getPosition(), praiseNum - 1);
+						textView.setText(Integer.valueOf(raw) - 1 + "");
+						selected.put(helper.getPosition(), false);
+					} else {
 						praise(id, view, textView, praiseNum, helper);
 					}
-				}else if ("000000".equals(response.get("resultCode"))){
-					SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+				} else if ("000000".equals(response.get("resultCode"))) {
+					SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
 						@Override
 						public void getCode(String code) {
-							if ("0".equals(code)){
+							if ("0".equals(code)) {
 								cancelPraise(id, view, textView, praiseNum, helper);
 							}
 						}
@@ -307,6 +309,8 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 		});
 
 	}
+
+
 
 	private void praise(final String artworkId, final LinearLayout view, final TextView textView, final int praiseNum, final ViewHolder helper) {
 		Map<String, String> paramsMap = new HashMap<>();
@@ -324,28 +328,46 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 			public void onError(Call call, Exception e) {
 				e.printStackTrace();
 				System.out.println("失败了");
-				ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
+				ToastUtil.showLong(getActivity(), "网络连接超时,稍后重试!");
 			}
 
 			@Override
 			public void onResponse(Map<String, Object> response) {
 				if ("0".equals(response.get("resultCode"))) {
-					if (!selected.get(helper.getPosition())){
-						ToastUtil.showLong(getActivity(), "点赞成功");
+					if (!selected.get(helper.getPosition())) {
+						helper.getView(R.id.clh_ll_praise).setEnabled(true);
 						view.setBackgroundResource(R.drawable.praise_after_shape);
-						textView.setTextColor(Color.rgb(255,255,255));
+						AnimPraiseCancel.animPraise(helper.getView(R.id.iv_praise_red));
+						textView.setTextColor(Color.rgb(255, 255, 255));
 						textView.setText(praiseNum + 1 + "");
-						number.put(helper.getPosition(),praiseNum + 1);
-						selected.put(helper.getPosition(),true);
-					}else {
+						number.put(helper.getPosition(), praiseNum + 1);
+						selected.put(helper.getPosition(), true);
+						//向上平移
+                        /*Animator anim1 = ObjectAnimator.ofFloat(helper.getView(R.id.iv_praise_red),"translationY",0f,-150f);
+                        anim1.setDuration(2000);
+                        AnimatorSet animatorSet = new AnimatorSet();
+                        animatorSet.playSequentially(anim1);
+                        animatorSet.start();*/
+                       /* TranslateAnimation anim1 = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF,0f,TranslateAnimation.RELATIVE_TO_SELF,0f,
+                                TranslateAnimation.RELATIVE_TO_SELF,0f,TranslateAnimation.RELATIVE_TO_SELF,0f);
+                        anim1.setDuration(3000);
+                        anim1.setFillAfter(true);
+                        helper.getView(R.id.iv_praise).startAnimation(anim1);*/
+                        /*AnimationSet animatorSet = new AnimationSet(true);
+                        Animation translateAnimation= AnimationUtils.loadAnimation(getActivity(), R.anim.translate);//加载Xml文件中的动画
+                        Animation alphaAnimation = AnimationUtils.loadAnimation(getActivity(),R.anim.alpha);
+                        animatorSet.addAnimation(translateAnimation);*/
+						//animatorSet.setInterpolator(getActivity(), android.R.anim.anticipate_interpolator);
+						//animatorSet.addAnimation(animatorSet);
+					} else {
 						cancelPraise(artworkId, view, textView, praiseNum, helper);
 					}
-				}else if ("000000".equals(response.get("resultCode"))){
-					SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+				} else if ("000000".equals(response.get("resultCode"))) {
+					SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
 						@Override
 						public void getCode(String code) {
-							if ("0".equals(code)){
-								praise(artworkId, view, textView, praiseNum,helper);
+							if ("0".equals(code)) {
+								praise(artworkId, view, textView, praiseNum, helper);
 							}
 						}
 					});
@@ -355,6 +377,7 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 		});
 
 	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import com.yxh.ryt.DatePicker.DatePickerView;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.CompleteUserInfoCallBack;
 import com.yxh.ryt.custemview.ActionSheetDialog;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.GetPathFromUri4kitkat;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -63,21 +65,54 @@ public class PushWoraActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pushwork);
         ButterKnife.bind(this);/*启用注解绑定*/
+        workName.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        material.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
-
+    @OnClick(R.id.pw_ib_back)
+    public void back(){
+        finish();
+    }
     @Override
     protected void onResume() {
         super.onResume();
-        Intent intent=getIntent();
-        Uri uri=intent.getParcelableExtra("intent");
-        if (uri !=null){
-            Bitmap bitmap=getBitmap(uri);
-            if (bitmap==null){
-                return;
-            }
-            imageWork.setImageBitmap(bitmap);
-
+        Intent data=getIntent().getParcelableExtra("intent");
+        Bitmap bitmap1=null;
+        if (data==null){
+            return;
         }
+        if (data.getData()==null){
+            Bitmap bm = (Bitmap) data.getExtras().get("data");;
+            bitmap1=compressImage(bm);
+            File file = new File(Environment.getExternalStorageDirectory()
+                    + "/pushWork.jpg");
+            try {
+                filePath=file.getPath();
+                FileOutputStream fos = new FileOutputStream(file);
+                bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                file = new File(getFilesDir(), "pushWork.jpg");
+                filePath=file.getPath();
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(file);
+                    bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    fos.flush();
+                    fos.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }else {
+            bitmap1 =getBitmap(data.getData());
+        }
+        if (bitmap1==null){
+            return;
+        }
+        imageWork.setImageBitmap(bitmap1);
 
     }
     private Bitmap comp(Bitmap response) {
@@ -157,6 +192,17 @@ public class PushWoraActivity extends BaseActivity {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            file = new File(getFilesDir(), "pushWork"+Utils.getImageFormat(filePath1));
+            filePath=file.getPath();
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(file);
+                bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
         return bitmap1;
     }

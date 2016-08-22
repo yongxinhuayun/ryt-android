@@ -26,6 +26,7 @@ public class Constants {
     public static final String[] INDEX_TITLE = new String[] { "融资", "创作", "拍卖" };
     public static final String[] RZ_TITLE = new String[] { "项目", "详情", "投资","历史作品" };
     public static final String[] CS_TITLE = new String[] { "进度", "项目", "详情"};
+    public static final String[] MYPROJECT_TITLE = new String[] { "未审核", "融资", "创作", "拍卖", "已结束"};
     public static final String[] AS_TITLE = new String[] { "拍卖", "项目", "详情"};
     public static final String[] lottery_TITLE = new String[] { "抽奖", "项目", "详情" };
     public static  String[] ATTENTION_TITLE = new String[] { "艺术家(0)", "用户(0)" };

@@ -1,6 +1,7 @@
 package com.yxh.ryt.activity;
 
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -11,6 +12,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.RegisterCallBack;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -47,6 +49,10 @@ public class EditRecAddressActivity extends BaseActivity implements View.OnClick
         save.setOnClickListener(this);
         back.setOnClickListener(this);
         loadData();
+        reciever.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        phone.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        local.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        detail.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
     }
 
     private void loadData() {

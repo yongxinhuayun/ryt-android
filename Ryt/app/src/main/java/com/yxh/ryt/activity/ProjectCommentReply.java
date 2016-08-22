@@ -2,6 +2,7 @@ package com.yxh.ryt.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.RongZiListCallBack;
+import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -57,6 +59,7 @@ public class ProjectCommentReply extends BaseActivity {
             String name=intent.getStringExtra("name");
             title.setText(name);
         }
+        content.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
         fatherCommentId = intent.getStringExtra("fatherCommentId");
         artworkId = intent.getStringExtra("artworkId");
         messageId = intent.getStringExtra("messageId");
