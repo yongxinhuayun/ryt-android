@@ -74,7 +74,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
 
         cmAdapter = new CommonAdapter<ConsumerAddress>(AppApplication.getSingleContext(), addressDatas, R.layout.address_item) {
             @Override
-            public void convert(ViewHolder helper, final ConsumerAddress item) {
+            public void convert(final ViewHolder helper, final ConsumerAddress item) {
                 if (addressDatas == null) {
                     ll_add.setVisibility(View.INVISIBLE);
                     ll_new_add.setVisibility(View.VISIBLE);
@@ -105,15 +105,15 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                         @Override
                         public void onClick(View v) {
                             final Intent delIntent = new Intent();
-                           delIntent.putExtra("addressId", item.getId());
+                            delIntent.putExtra("addressId", item.getId());
                             CustomDialog.Builder builder = new CustomDialog.Builder(ReceiverAdressActivity.this);
                             builder.setMessage("确认要删除该收货地址吗？");
-                            builder.setPositiveButton("确定",new DialogInterface.OnClickListener(){
+                            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    delAddress(delIntent,addressDatas);
+                                    delAddress(delIntent, addressDatas);
                                 }
                             });
 
@@ -141,12 +141,50 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                     } else {
                         helper.setImageResource(R.id.iv_selected, R.mipmap.weixuanze);
                     }
+                    helper.getView(R.id.iv_selected).setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (unDefult == 1) {
+                                        unDefult = 2;
+                                        isDefult(item.getId(), "2");
+                                        helper.setImageResource(R.id.iv_selected, R.mipmap.yixuanze);
+                                        LoadData(AutoListView.REFRESH);
+                                    }
+                                }
+                            }
+                    );
                 }
             }
         };
         adListview.setAdapter(cmAdapter);
         adListview.setOnLoadListener(this);
         adListview.setOnRefreshListener(this);
+    }
+
+    private void isDefult(String id, String status) {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("consumerAddressId", id);
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "setDefaultAddress.do", paramsMap, new RegisterCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                ToastUtil.showShort(getApplicationContext(), "保存失败");
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))) {
+                    ToastUtil.showShort(getApplicationContext(), "设置成功");
+                    LoadData(AutoListView.REFRESH);
+                }
+            }
+        });
     }
 
     private void LoadData(final int state) {
@@ -161,12 +199,12 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
         NetRequestUtil.post(Constants.BASE_PATH + "listAddress.do", paramsMap, new RegisterCallBack() {
             @Override
             public void onError(Call call, Exception e) {
-                ToastUtil.showLong(ReceiverAdressActivity.this,"网络连接超时,稍后重试!");
+                ToastUtil.showLong(ReceiverAdressActivity.this, "网络连接超时,稍后重试!");
             }
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                if ("0".equals(response.get("resultCode"))){
+                if ("0".equals(response.get("resultCode"))) {
                     if (state == AutoListView.REFRESH) {
                         adListview.onRefreshComplete();
                         addressDatas.clear();
@@ -200,11 +238,11 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                         }
                         cmAdapter.notifyDataSetChanged();
                         return;
-                    }else if ("000000".equals(response.get("resultCode"))){
-                        SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                    } else if ("000000".equals(response.get("resultCode"))) {
+                        SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
                             @Override
                             public void getCode(String code) {
-                                if ("0".equals(code)){
+                                if ("0".equals(code)) {
                                     LoadData(state);
                                 }
                             }
@@ -258,6 +296,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                 break;
         }
     }
+
     private void delAddress(Intent intent, final List list) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("addressId", intent.getStringExtra("addressId"));
