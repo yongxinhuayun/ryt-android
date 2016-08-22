@@ -289,19 +289,19 @@ public class UserInvestFragment extends BaseFragment implements AutoListView.OnL
             @Override
             public void convert(final ViewHolder helper, final RongZi item) {
                 if (item != null) {
-                    helper.setText(R.id.clh1_tv_title, item.getTitle());
-                    helper.setText(R.id.clh1_tv_brief, item.getBrief());
+                    helper.setText(R.id.clh_tv_title, item.getTitle());
+                    helper.setText(R.id.clh_tv_brief, item.getBrief());
                     if (selected.size() < rongZiDatas.size()) {
                         for (int i = selected.size(); i < rongZiDatas.size(); i++) {
                             selected.put(i, false);
                         }
                     }
                     if (item.getAuthor() != null) {
-                        helper.setText(R.id.clh1_tv_artistName, item.getAuthor().getName() + "");
-                        helper.setImageByUrl(R.id.clh1_cv_headerImage, item.getAuthor().getPictureUrl());
-                        helper.setText(R.id.clh1_tv_totalWork, item.getAuthor().getMasterWorkNum() + "件作品");
-                        helper.setText(R.id.clh1_tv_totalFans, item.getAuthor().getFansNum() + "个粉丝");
-                        helper.getView(R.id.clh1_cv_headerImage).setOnClickListener(new View.OnClickListener() {
+                        helper.setText(R.id.clh_tv_artistName, item.getAuthor().getName() + "");
+                        helper.setImageByUrl(R.id.clh_cv_headerImage, item.getAuthor().getPictureUrl());
+                        helper.setText(R.id.clh_tv_totalWork, item.getAuthor().getMasterWorkNum() + "件作品");
+                        helper.setText(R.id.clh_tv_totalFans, item.getAuthor().getFansNum() + "个粉丝");
+                        helper.getView(R.id.clh_cv_headerImage).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
@@ -312,46 +312,46 @@ public class UserInvestFragment extends BaseFragment implements AutoListView.OnL
                             }
                         });
                     }
-                    helper.setImageByUrl(R.id.clh1_tv_prc, item.getPicture_url());
+                    helper.setImageByUrl(R.id.clh_tv_prc, item.getPicture_url());
                     if (null != item.getAuthor().getMaster() && !"".equals(item.getAuthor().getMaster().getTitle())) {
-                        helper.getView(R.id.clh1_tv_artistTitle).setVisibility(View.VISIBLE);
-                        helper.setText(R.id.clh1_tv_artistTitle, item.getAuthor().getMaster().getTitle());
+                        helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.VISIBLE);
+                        helper.setText(R.id.clh_tv_artistTitle, item.getAuthor().getMaster().getTitle());
                     } else {
-                        helper.getView(R.id.clh1_tv_artistTitle).setVisibility(View.GONE);
+                        helper.getView(R.id.clh_tv_artistTitle).setVisibility(View.GONE);
                     }
                     if ("1".equals(item.getType())) {
                         helper.getView(R.id.ll_finance).setVisibility(View.VISIBLE);
                         helper.getView(R.id.ll_creat).setVisibility(View.GONE);
                         helper.getView(R.id.ll_auction).setVisibility(View.GONE);
-                        helper.setText(R.id.fli1_tv_date, Utils.getJudgeDate(item.getInvestRestTime()) + "后截止");
-                        helper.setText(R.id.fli1_tv_money, item.getInvestsMoney() + "元/" + item.getInvestGoalMoney() + "元");
+                        helper.setText(R.id.fli_tv_date, Utils.getJudgeDate(item.getInvestRestTime()) + "后截止");
+                        helper.setText(R.id.fli_tv_money, item.getInvestsMoney() + "元/" + item.getInvestGoalMoney() + "元");
                         double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
                         helper.setProgress(R.id.fli1_pb_progress, (int) (value * 100));
                     } else if ("2".equals(item.getType())) {
                         helper.getView(R.id.ll_finance).setVisibility(View.GONE);
                         helper.getView(R.id.ll_creat).setVisibility(View.VISIBLE);
                         helper.getView(R.id.ll_auction).setVisibility(View.GONE);
-                        helper.setText(R.id.cli1_tv_update, Utils.timeAndIos(item.getNewCreationDate()) + "更新:");
-                        helper.setText(R.id.cli1_tv_finish, "预计" + Utils.timeAndIos(item.getCreationEndDatetime()) + "完工");
+                        helper.setText(R.id.cli_tv_update, Utils.timeAndIos(item.getNewCreationDate()) + "更新:");
+                        helper.setText(R.id.cli_tv_finish, "预计" + Utils.timeAndIos(item.getCreationEndDatetime()) + "完工");
                     } else if ("3".equals(item.getType())) {
                         helper.getView(R.id.ll_finance).setVisibility(View.GONE);
                         helper.getView(R.id.ll_creat).setVisibility(View.GONE);
                         helper.getView(R.id.ll_auction).setVisibility(View.VISIBLE);
                         if ("30".equals(item.getStep())) {
-                            helper.setText(R.id.ali1_tv_content, "拍卖时间 " + Utils.timeAuction(item.getAuctionStartDatetime()));
+                            helper.setText(R.id.ali_tv_content, "拍卖时间 " + Utils.timeAuction(item.getAuctionStartDatetime()));
                         } else if ("31".equals(item.getStep())) {
-                            helper.setText(R.id.ali1_tv_content, Utils.getJudgeDate1(item.getAuctionEndDatetime()) + "后截止");
+                            helper.setText(R.id.ali_tv_content, Utils.getJudgeDate1(item.getAuctionEndDatetime()) + "后截止");
                         } else {
-                            helper.setText(R.id.ali1_tv_content, "拍卖得主 " + item.getWinner().getName());
+                            helper.setText(R.id.ali_tv_content, "拍卖得主 " + item.getWinner().getName());
                         }
                     } else {
                         helper.getView(R.id.ll_finance).setVisibility(View.VISIBLE);
                         helper.getView(R.id.ll_creat).setVisibility(View.GONE);
                         helper.getView(R.id.ll_auction).setVisibility(View.GONE);
-                        helper.setText(R.id.fli1_tv_date, Utils.getJudgeDate(item.getInvestRestTime()) + "后截止");
-                        helper.setText(R.id.fli1_tv_money, item.getInvestsMoney() + "元/" + item.getInvestGoalMoney() + "元");
+                        helper.setText(R.id.fli_tv_date, Utils.getJudgeDate(item.getInvestRestTime()) + "后截止");
+                        helper.setText(R.id.fli_tv_money, item.getInvestsMoney() + "元/" + item.getInvestGoalMoney() + "元");
                         double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-                        helper.setProgress(R.id.fli1_pb_progress, (int) (value * 100));
+                        helper.setProgress(R.id.fli_pb_progress, (int) (value * 100));
                     }
                     if ("".equals(AppApplication.artWorkMap.get(item.getStep()))) {
                         helper.getView(R.id.ll_state_auction).setVisibility(View.GONE);
@@ -362,7 +362,7 @@ public class UserInvestFragment extends BaseFragment implements AutoListView.OnL
                     } else {
                         helper.getView(R.id.ll_state_auction).setVisibility(View.VISIBLE);
                         helper.getView(R.id.liah_iv_progress).setVisibility(View.GONE);
-                        helper.setText(R.id.clh1_tv_state, AppApplication.artWorkMap.get(item.getStep()));
+                        helper.setText(R.id.clh_tv_state, AppApplication.artWorkMap.get(item.getStep()));
                     }
                     helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -385,13 +385,13 @@ public class UserInvestFragment extends BaseFragment implements AutoListView.OnL
                         }
                     });
                     if (selected.get(helper.getPosition())) {
-                        helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
-                        ((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(255, 255, 255));
-                        helper.setText(R.id.clh1_tv_praiseNum, number.get(helper.getPosition()) + "");
+                        helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_after_shape);
+                        ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(255, 255, 255));
+                        helper.setText(R.id.clh_tv_praiseNum, number.get(helper.getPosition()) + "");
                     } else {
-                        helper.getView(R.id.clh1_ll_praise).setBackgroundResource(R.drawable.praise_shape);
-                        ((TextView) helper.getView(R.id.clh1_tv_praiseNum)).setTextColor(Color.rgb(199, 31, 33));
-                        helper.setText(R.id.clh1_tv_praiseNum, number.get(helper.getPosition()) + "");
+                        helper.getView(R.id.clh_ll_praise).setBackgroundResource(R.drawable.praise_shape);
+                        ((TextView) helper.getView(R.id.clh_tv_praiseNum)).setTextColor(Color.rgb(199, 31, 33));
+                        helper.setText(R.id.clh_tv_praiseNum, number.get(helper.getPosition()) + "");
                     }
                 }
             }

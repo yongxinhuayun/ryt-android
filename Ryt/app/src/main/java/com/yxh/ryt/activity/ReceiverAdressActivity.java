@@ -20,7 +20,6 @@ import com.yxh.ryt.custemview.AutoListView;
 import com.yxh.ryt.custemview.CustomDialog;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.vo.ConsumerAddress;
 
@@ -49,6 +48,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
     private LinearLayout ll_new_add;
     private LinearLayout ll_add;
     private Button btn_new_add;
+    private Map<Integer, String> defaultAddress;
 
 
     @Override
@@ -63,6 +63,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
         addressDatas = new ArrayList<ConsumerAddress>();
 
         back = (ImageView) findViewById(R.id.iv_back);
+        defaultAddress = new HashMap<>();
         addAddress.setOnClickListener(this);
         btn_new_add.setOnClickListener(this);
         initView();
@@ -87,6 +88,7 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                 } else if (addressDatas != null) {
                     ll_add.setVisibility(View.VISIBLE);
                     ll_new_add.setVisibility(View.INVISIBLE);
+                    //编辑
                     helper.getView(R.id.bt_edit).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -98,9 +100,11 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                             edIntent.putExtra("phone", item.getPhone());
                             edIntent.putExtra("provinceStr", item.getProvinceStr());
                             edIntent.putExtra("districtStr", item.getDistrictStr());
+                            edIntent.putExtra("cityStr", item.getCityStr());
                             startActivity(edIntent);
                         }
                     });
+                    //删除
                     helper.getView(R.id.bt_del).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -133,23 +137,19 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                     helper.setText(R.id.tv_name, item.getConsignee());
                     helper.setText(R.id.tv_phone, item.getPhone());
                     helper.setText(R.id.tv_adress, item.getDetails());
-
-                    unDefult = Integer.parseInt(item.getStatus());
-                    if (unDefult == 2) {
-                        helper.setImageResource(R.id.iv_selected, R.mipmap.yixuanze);
-
-                    } else {
-                        helper.setImageResource(R.id.iv_selected, R.mipmap.weixuanze);
+                    for (int i = 0; i < addressDatas.size(); i++) {
+                        defaultAddress.put(i, addressDatas.get(i).getStatus());
                     }
+                    unDefult = Integer.parseInt(item.getStatus());
+                    initDeAdd(helper);
                     helper.getView(R.id.iv_selected).setOnClickListener(
                             new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    if (unDefult == 1) {
-                                        unDefult = 2;
-                                        isDefult(item.getId(), "2");
-                                        helper.setImageResource(R.id.iv_selected, R.mipmap.yixuanze);
-                                        LoadData(AutoListView.REFRESH);
+                                    if ("1".equals(defaultAddress.get(helper.getPosition()))) {
+                                        isDefault(item.getId());
+                                        defaultAddress.put(helper.getPosition(), "2");
+                                         helper.setImageResource(R.id.iv_selected, R.mipmap.yixuanze);
                                     }
                                 }
                             }
@@ -162,7 +162,15 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
         adListview.setOnRefreshListener(this);
     }
 
-    private void isDefult(String id, String status) {
+    private void initDeAdd(ViewHolder helper) {
+        if ("2".equals(defaultAddress.get(helper.getPosition()))) {
+            helper.setImageResource(R.id.iv_selected, R.mipmap.yixuanze);
+        } else {
+            helper.setImageResource(R.id.iv_selected, R.mipmap.weixuanze);
+        }
+    }
+
+    private void isDefault(String id) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("consumerAddressId", id);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -238,16 +246,6 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
                         }
                         cmAdapter.notifyDataSetChanged();
                         return;
-                    } else if ("000000".equals(response.get("resultCode"))) {
-                        SessionLogin sessionLogin = new SessionLogin(new SessionLogin.CodeCallBack() {
-                            @Override
-                            public void getCode(String code) {
-                                if ("0".equals(code)) {
-                                    LoadData(state);
-                                }
-                            }
-                        });
-                        sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                     }
                 }
 
