@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    android:background="@android:color/white">
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingRight="14dp"
+    android:paddingLeft="14dp">
     <com.yxh.ryt.custemview.CircleImageView
         android:id="@+id/civ_head"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginBottom="8dp"/>
+        android:src="@mipmap/ic_launcher"/>
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_toRightOf="@+id/civ_head"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="姓名"
+        android:gravity="center"
         android:layout_marginLeft="8dp"
         android:textSize="@dimen/defult_font"
         android:textColor="@android:color/black"/>
-
-        <ImageButton
-            android:id="@+id/ib_attention"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_attention"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="14dp"
-            android:background="@drawable/praise_shape"
-            android:src="@mipmap/guanzhuqian" />
-
-
-</RelativeLayout>
+            android:gravity="right">
+            <ImageView
+                android:id="@+id/iv_attention"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/praise_shape"
+                android:src="@mipmap/guanzhuqian" />
+        </LinearLayout>
+</LinearLayout>

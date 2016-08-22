@@ -123,6 +123,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                         isFollowed=true;
                         fansNum=fansNum+1;
                         totalFans.setText(fansNum+"位粉丝");
+                        ll_attention.setEnabled(true);
                     }else {
                         noAttention_user(v,followId);
                     }
@@ -162,6 +163,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
                     if (isFollowed){
+                        ll_attention.setEnabled(true);
                         ((ImageView) v).setImageResource(R.mipmap.weiguanzhu);
                         isFollowed=false;
                         fansNum=fansNum-1;
@@ -333,6 +335,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                                                     @Override
                                                     public void onClick(View v) {
                                                         noAttention_user(attention,userId);
+                                                        ll_attention.setEnabled(false);
                                                     }
                                                 });
                                             }else {
@@ -341,6 +344,7 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                                                     @Override
                                                     public void onClick(View v) {
                                                         attention_user(attention,userId);
+                                                        ll_attention.setEnabled(false);
                                                     }
                                                 });
                                             }

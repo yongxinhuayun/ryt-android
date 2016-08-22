@@ -103,7 +103,6 @@ public class UserBriefFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View contextView = inflater.inflate(R.layout.fragment_userbrief, container, false);
         ButterKnife.bind(this, contextView);
-        LoadData();
         return contextView;
     }
     @Override
@@ -112,5 +111,11 @@ public class UserBriefFragment extends BaseFragment {
     }
     @Override
     protected void lazyLoad() {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LoadData();
     }
 }
