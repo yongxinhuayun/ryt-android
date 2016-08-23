@@ -29,13 +29,14 @@ public class ArtistIndexActivity extends BaseActivity {
     List<Fragment> indexChildFragments=new ArrayList<>();
     FragmentPagerAdapter indexChildAdapter;
     private TextView edit;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artistindex);
         edit = ((TextView) findViewById(R.id.aai_top_edit));
-        final String userId = getIntent().getStringExtra("userId");
+        userId = getIntent().getStringExtra("userId");
         String name=getIntent().getStringExtra("name");
         TextView textName = (TextView) findViewById(R.id.aai_tv_name);
         ((ImageView) findViewById(R.id.aai_top_lf)).setOnClickListener(new View.OnClickListener() {

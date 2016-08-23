@@ -75,7 +75,7 @@ public class BriefFragment extends BaseFragment {
                     if (userBrief!=null && userBrief.get("content")!=null){
                         content.setText(userBrief.get("content").toString());
                     }
-                    content.setVisibility(View.GONE);
+                    //content.setVisibility(View.GONE);
                     User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("user")), User.class);
                     if (user!=null && user.getPictureUrl()!=null){
                         AppApplication.displayImage(user.getPictureUrl(),imageView);
