@@ -274,7 +274,7 @@ public class UserInvestFragment extends BaseFragment implements AutoListView.OnL
                              Bundle savedInstanceState) {
         View contextView = inflater.inflate(R.layout.fragment_item, container, false);
         lstv = (AutoListView) contextView.findViewById(R.id.lstv);
-        header = LayoutInflater.from(getActivity()).inflate(R.layout.header_userInvest, null);
+        header = LayoutInflater.from(getActivity()).inflate(R.layout.header_userinvest, null);
         headerImage = ((CircleImageView) header.findViewById(R.id.hui_cv_headPortrait));
         name = ((TextView) header.findViewById(R.id.hui_tv_name));
         title = ((TextView) header.findViewById(R.id.hui_tv_title));
