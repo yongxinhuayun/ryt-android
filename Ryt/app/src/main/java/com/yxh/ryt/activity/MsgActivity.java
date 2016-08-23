@@ -65,6 +65,9 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
         EventBus.getDefault().register(this);
         initView();
         mEditTextContent.setFilters(new InputFilter[]{EditTextFilterUtil.getEmojiFilter()});
+        mDataArrays.clear();
+        mAdapter.notifyDataSetChanged();
+        LoadData();
     }
 
     public void initView() {
@@ -167,7 +170,6 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        LoadData();
     }
 
     @Override
@@ -195,6 +197,8 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))){
+                    mDataArrays.clear();
+                    mAdapter.notifyDataSetChanged();
                     List<PrivateLetter> notificationList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("objectList")), new TypeToken<List<PrivateLetter>>() {
                     }.getType());
                     if (notificationList != null) {
@@ -202,11 +206,10 @@ public class MsgActivity extends BaseActivity implements OnClickListener {
                         while (iterator.hasNext()) {
                             ChatMsgEntity entity = new ChatMsgEntity();
                             PrivateLetter next = iterator.next();
-                            entity.setDate(Utils.timeToFormatTemp("yyyy-MM-dd hh:mm:ss", next.getCreateDatetime()));
+                            entity.setDate(Utils.timeToFormatTemp("yyyy-MM-dd HH:mm:ss", next.getCreateDatetime()));
                             entity.setName(next.getFromUser().getName());
                             entity.setPicUrl(next.getFromUser().getPictureUrl());
                             entity.setText(next.getContent());
-
                             entity.setUserId(next.getFromUser().getId());
                             if (userId.equals(next.getFromUser().getId())) {
                                 entity.setMsgType(false);

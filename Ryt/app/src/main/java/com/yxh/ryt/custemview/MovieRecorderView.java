@@ -48,11 +48,11 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
     private SurfaceHolder mSurfaceHolder;
     private ProgressBar mProgressBar;
 
-    private MediaRecorder mMediaRecorder;
+    public MediaRecorder mMediaRecorder;
     private Camera mCamera;
     private Timer mTimer;// 计时器
     private OnRecordFinishListener mOnRecordFinishListener;// 录制完成回调接口
-
+    private Context context;
     private int mWidth;// 视频分辨率宽度
     private int mHeight;// 视频分辨率高度
     private boolean isOpenCamera;// 是否一开始就打开摄像头
@@ -71,6 +71,7 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
     public MovieRecorderView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         // 初始化各项组件
+        this.context=context;
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MovieRecorderView, defStyle, 0);
         mWidth = a.getInteger(R.styleable.MovieRecorderView_width, 320);// 默认320
         mHeight = a.getInteger(R.styleable.MovieRecorderView_height1, 240);// 默认240
@@ -194,15 +195,25 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
             try {
                 mRecordFile = File.createTempFile("recording"+System.currentTimeMillis(), ".mp4", sampleDir); //mp4格式
             } catch (IOException e) {
-                File sampleDir1 = new File(AppApplication.getSingleContext().getFilesDir() + File.separator + "im" + File.separator + "video" + File.separator);
-                try {
-                    mRecordFile = File.createTempFile("recording"+System.currentTimeMillis(), ".mp4", sampleDir1); //mp4格式
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+                e.printStackTrace();
+                //makeRootDirectory(AppApplication.getSingleContext().getFilesDir() + File.separator + "in" + File.separator + "video" + File.separator);
+                 File dir = new File(context.getFilesDir() + "in" + File.separator + "video" + File.separator);
+                dir.mkdirs(); //create folders where write files
+                mRecordFile= new File(dir,"recording"+System.currentTimeMillis()+".mp4");
+                //mRecordFile = new File(AppApplication.getSingleContext().getFilesDir() + File.separator + "in" + File.separator + "video" + File.separator+"recording"+System.currentTimeMillis()+".mp4"); //mp4格式
             }
     }
-
+    public  void makeRootDirectory(String filePath) {
+        File file = null;
+        try {
+            file = new File(filePath);
+            if (!file.exists()) {
+                file.mkdir();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 初始化
      *
@@ -227,7 +238,7 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
         mMediaRecorder.setOrientationHint(90);// 输出旋转90度，保持竖屏录制
         mMediaRecorder.setVideoEncoder(VideoEncoder.MPEG_4_SP);// 视频录制格式
         // mediaRecorder.setMaxDuration(Constant.MAXVEDIOTIME * 1000);
-        mMediaRecorder.setOutputFile(mRecordFile.getAbsolutePath());
+        mMediaRecorder.setOutputFile(mRecordFile.getPath());
         mMediaRecorder.prepare();
         try {
             mMediaRecorder.start();
