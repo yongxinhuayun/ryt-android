@@ -9,15 +9,10 @@ import android.widget.TextView;
 
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.R;
-import com.yxh.ryt.adapter.ArtistTabPageIndicatorAdapter;
 import com.yxh.ryt.adapter.UserTabPageIndicatorAdapter;
-import com.yxh.ryt.fragment.ArtistHomeFragment;
-import com.yxh.ryt.fragment.BriefFragment;
-import com.yxh.ryt.fragment.InvestedFragment;
 import com.yxh.ryt.fragment.UserBriefFragment;
 import com.yxh.ryt.fragment.UserInvestFragment;
 import com.yxh.ryt.fragment.UserPraiseFragment;
-import com.yxh.ryt.fragment.WorksFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +23,13 @@ import java.util.List;
 public class UserIndexActivity extends BaseActivity {
     List<Fragment> indexChildFragments=new ArrayList<>();
     FragmentPagerAdapter indexChildAdapter;
+    private String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userindex);
-        String userId = getIntent().getStringExtra("userId");
+        userId = getIntent().getStringExtra("userId");
         String name=getIntent().getStringExtra("name");
         TextView textName = (TextView) findViewById(R.id.aai_tv_name);
         textName.setText(name);

@@ -73,7 +73,6 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
     }
 
     private void loadData(final int state, final int pageNum) {
-        loadingUtil.show();
         final Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("userId", userId);
         paramsMap.put("action", "praise");
@@ -96,7 +95,6 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
 
             @Override
             public void onResponse(final Map<String, Object> response) {
-                loadingUtil.dismiss();
                 if ("".equals(AppApplication.gUser.getId())) {
                     if (state == AutoListView.REFRESH) {
                         lstv.onRefreshComplete();
@@ -449,14 +447,20 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
             if ("1".equals(getFirstLetter(rongZiDatas.get(position - 1).getStep()))) {
                 Intent intent = new Intent(getActivity(), FinanceSummaryActivity.class);
                 intent.putExtra("id", rongZiDatas.get(position - 1).getId());
+                intent.putExtra("name", rongZiDatas.get(position - 1).getTitle());
+                intent.putExtra("userId",rongZiDatas.get(position-1).getAuthor().getId());
                 startActivity(intent);
             } else if ("2".equals(getFirstLetter(rongZiDatas.get(position - 1).getStep()))) {
                 Intent intent = new Intent(getActivity(), CreateSummaryActivity.class);
                 intent.putExtra("id", rongZiDatas.get(position - 1).getId());
+                intent.putExtra("name", rongZiDatas.get(position - 1).getTitle());
+                intent.putExtra("userId",rongZiDatas.get(position-1).getAuthor().getId());
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(getActivity(), AuctionSummaryActivity.class);
                 intent.putExtra("id", rongZiDatas.get(position - 2).getId());
+                intent.putExtra("name", rongZiDatas.get(position - 1).getTitle());
+                intent.putExtra("userId",rongZiDatas.get(position-1).getAuthor().getId());
                 startActivity(intent);
             }
         }

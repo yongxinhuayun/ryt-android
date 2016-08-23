@@ -178,41 +178,41 @@ public class InvestedFragment extends BaseFragment implements AdapterView.OnItem
                         helper.getView(R.id.ll_state_auction).setVisibility(View.GONE);
                         helper.getView(R.id.ll_creat).setVisibility(View.GONE);
                         helper.getView(R.id.ll_auction).setVisibility(View.GONE);
-                        helper.setText(R.id.fli1_tv_date, Utils.getJudgeDate(item.getInvestRestTime())+"后截止");
-                        helper.setText(R.id.fli1_tv_money,item.getInvestsMoney()+"元/"+item.getInvestGoalMoney()+"元");
+                        helper.setText(R.id.fli_tv_date, Utils.getJudgeDate(item.getInvestRestTime())+"后截止");
+                        helper.setText(R.id.fli_tv_money,item.getInvestsMoney()+"元/"+item.getInvestGoalMoney()+"元");
                         double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-                        helper.setProgress(R.id.fli1_pb_progress, (int)(value*100));
+                        helper.setProgress(R.id.fli_pb_progress, (int)(value*100));
                     }else if ("2".equals(item.getType())){
                         helper.getView(R.id.ll_finance).setVisibility(View.GONE);
                         helper.getView(R.id.ll_state_auction).setVisibility(View.GONE);
                         helper.getView(R.id.ll_creat).setVisibility(View.VISIBLE);
                         helper.getView(R.id.ll_auction).setVisibility(View.GONE);
-                        helper.setText(R.id.cli1_tv_update,Utils.timeAndIos(item.getNewCreationDate())+"更新:");
-                        helper.setText(R.id.cli1_tv_finish,"预计"+Utils.timeAndIos(item.getCreationEndDatetime())+"完工");
+                        helper.setText(R.id.cli_tv_update,Utils.timeAndIos(item.getNewCreationDate())+"更新:");
+                        helper.setText(R.id.cli_tv_finish,"预计"+Utils.timeAndIos(item.getCreationEndDatetime())+"完工");
                     }else if ("3".equals(item.getType())){
                         helper.getView(R.id.ll_finance).setVisibility(View.GONE);
                         helper.getView(R.id.ll_state_auction).setVisibility(View.VISIBLE);
                         helper.getView(R.id.ll_creat).setVisibility(View.GONE);
                         helper.getView(R.id.ll_auction).setVisibility(View.VISIBLE);
                         if ("30".equals(item.getStep())){
-                            helper.setText(R.id.ali1_tv_content,"拍卖时间 "+Utils.timeAuction(item.getAuctionStartDatetime()));
-                            helper.setText(R.id.clh1_tv_state,"拍卖预告");
+                            helper.setText(R.id.ali_tv_content,"拍卖时间 "+Utils.timeAuction(item.getAuctionStartDatetime()));
+                            helper.setText(R.id.clh_tv_state,"拍卖预告");
                         }else if ("31".equals(item.getStep())){
-                            helper.setText(R.id.ali1_tv_content,Utils.getJudgeDate1(item.getAuctionEndDatetime())+"后截止");
-                            helper.setText(R.id.clh1_tv_state,"拍卖中");
+                            helper.setText(R.id.ali_tv_content,Utils.getJudgeDate1(item.getAuctionEndDatetime())+"后截止");
+                            helper.setText(R.id.clh_tv_state,"拍卖中");
                         }else {
-                            helper.setText(R.id.ali1_tv_content,"拍卖得主 "+item.getWinner().getName());
-                            helper.setText(R.id.clh1_tv_state,"拍卖结束");
+                            helper.setText(R.id.ali_tv_content,"拍卖得主 "+item.getWinner().getName());
+                            helper.setText(R.id.clh_tv_state,"拍卖结束");
                         }
                     }else {
                         helper.getView(R.id.ll_finance).setVisibility(View.VISIBLE);
                         helper.getView(R.id.ll_state_auction).setVisibility(View.GONE);
                         helper.getView(R.id.ll_creat).setVisibility(View.GONE);
                         helper.getView(R.id.ll_auction).setVisibility(View.GONE);
-                        helper.setText(R.id.fli1_tv_date, Utils.getJudgeDate(item.getInvestRestTime())+"后截止");
-                        helper.setText(R.id.fli1_tv_money,item.getInvestsMoney()+"元/"+item.getInvestGoalMoney()+"元");
+                        helper.setText(R.id.fli_tv_date, Utils.getJudgeDate(item.getInvestRestTime())+"后截止");
+                        helper.setText(R.id.fli_tv_money,item.getInvestsMoney()+"元/"+item.getInvestGoalMoney()+"元");
                         double value = item.getInvestsMoney().doubleValue() / item.getInvestGoalMoney().doubleValue();
-                        helper.setProgress(R.id.fli1_pb_progress, (int)(value*100));
+                        helper.setProgress(R.id.fli_pb_progress, (int)(value*100));
                     }
                     helper.getView(R.id.clh_ll_praise).setOnClickListener(new View.OnClickListener() {
                         @Override

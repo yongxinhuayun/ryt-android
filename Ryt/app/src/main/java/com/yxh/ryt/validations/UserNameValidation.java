@@ -16,13 +16,13 @@
  */
 package com.yxh.ryt.validations;
 
-import java.util.regex.Pattern;
-
 import android.content.Context;
 
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.avalidations.ValidationExecutor;
+
+import java.util.regex.Pattern;
 
 /**
  * @Description: 用户名校验
@@ -36,7 +36,7 @@ public class UserNameValidation extends ValidationExecutor {
 	@Override
 	public boolean doValidate(Context context, String text) {
 		if(text.isEmpty()){
-			ToastUtil.showShort(AppApplication.getSingleContext(), "账号不能为空！");
+			ToastUtil.showShort(AppApplication.getSingleContext(), "手机号不能为空！");
 			return false;
 		}
 		String regex = "^((13[0-9])|(15[^4,\\D])|(18[0,2,5-9]))\\d{8}$";

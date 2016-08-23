@@ -102,6 +102,10 @@ public class EditRecAddressActivity extends BaseActivity implements View.OnClick
                     ToastUtil.showLong(this,"详细地址不能为空");
                     return;
                 }
+                if ("".equals(local.getText().toString())){
+                    ToastUtil.showLong(this,"所在地区不能为空");
+                    return;
+                }
                 //表单没有检验通过直接退出方法
                 if(!AppApplication.getSingleEditTextValidator().validate()){
                     return;
