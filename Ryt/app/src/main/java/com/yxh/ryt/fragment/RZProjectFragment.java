@@ -393,42 +393,18 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
-                        if (item.getCreator() != null) {
-                            if ("1".equals(item.getCreator().getType())) {
-                                helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
-                            } else {
-                                helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
-                            }
-                            intent.putExtra("name", item.getCreator().getName());
-                        } else {
-                            intent.putExtra("name", "");
-                        }
                         intent.putExtra("currentUserId", AppApplication.gUser.getId());
                         intent.putExtra("fatherCommentId", item.getId());
                         intent.putExtra("artworkId", artWorkId);
                         intent.putExtra("flag", 0);
                         intent.putExtra("messageId", "");
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        if (!item.getId().equals(AppApplication.gUser.getId())) {
-                            AppApplication.getSingleContext().startActivity(intent);
+                        if (item.getCreator() != null) {
+                            intent.putExtra("name", item.getCreator().getName());
+                        }else {
+                            intent.putExtra("name", "");
                         }
-                    }
-                });
-
-                helper.getView(R.id.pdctci_tv_nickName).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (item.getCreator().getMaster() != null) {
-                            Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
-                            intent.putExtra("userId", item.getCreator().getId());
-                            intent.putExtra("name", item.getCreator().getName());
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            getActivity().startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(getActivity(), UserIndexActivity.class);
-                            intent.putExtra("userId", item.getCreator().getId());
-                            intent.putExtra("name", item.getCreator().getName());
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        if (!item.getId().equals(AppApplication.gUser.getId())) {
                             getActivity().startActivity(intent);
                         }
                     }
@@ -436,6 +412,29 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                 if (item.getCreator() != null) {
                     helper.setText(R.id.pdctci_tv_nickName, item.getCreator().getName());
                     helper.setImageByUrl(R.id.pdctci_iv_icon, item.getCreator().getPictureUrl());
+                    helper.getView(R.id.pdctci_iv_icon).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if ("1".equals(item.getCreator().getType())) {
+                                Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
+                                intent.putExtra("userId", item.getCreator().getId());
+                                intent.putExtra("name", item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(getActivity(), UserIndexActivity.class);
+                                intent.putExtra("userId", item.getCreator().getId());
+                                intent.putExtra("name", item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            }
+                        }
+                    });
+                    if ("1".equals(item.getCreator().getType())) {
+                        helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
+                    } else {
+                        helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
+                    }
                 }
                 helper.setText(R.id.pdctci_tv_date, DateUtil.millionToNearly(item.getCreateDatetime()));
                 if (item.getFatherComment() != null) {
@@ -588,6 +587,16 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                             tv_name.setText(artwork.getAuthor().getName());
                             tv_name2.setText(artwork.getAuthor().getName());
                             AppApplication.displayImage(artwork.getAuthor().getPictureUrl(), cl_headPortrait);
+                            cl_headPortrait.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent=new Intent(getActivity(),ArtistIndexActivity.class);
+                                    intent.putExtra("name",artwork.getAuthor().getName());
+                                    intent.putExtra("userId",artwork.getAuthor().getId());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    getActivity().startActivity(intent);
+                                }
+                            });
                             if ("1".equals(artwork.getType())) {
                                 headV.setVisibility(View.VISIBLE);
                             } else {
@@ -659,6 +668,16 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
                                                     tv_name.setText(artwork.getAuthor().getName());
                                                     tv_name2.setText(artwork.getAuthor().getName());
                                                     AppApplication.displayImage(artwork.getAuthor().getPictureUrl(), cl_headPortrait);
+                                                    cl_headPortrait.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            Intent intent=new Intent(getActivity(),ArtistIndexActivity.class);
+                                                            intent.putExtra("name",artwork.getAuthor().getName());
+                                                            intent.putExtra("userId",artwork.getAuthor().getId());
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                            getActivity().startActivity(intent);
+                                                        }
+                                                    });
                                                     if ("1".equals(artwork.getType())) {
                                                         headV.setVisibility(View.VISIBLE);
                                                     } else {
@@ -873,12 +892,30 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private void setInvesterAdapter() {
         investorRecordCommonAdapter = new CommonAdapter<ArtworkInvest>(getActivity(), investorDatas, R.layout.investorrecord_item) {
             @Override
-            public void convert(ViewHolder helper, ArtworkInvest item) {
+            public void convert(ViewHolder helper, final ArtworkInvest item) {
                 if (item.getCreator() != null) {
                     helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
                     if (item.getCreator().getName() != null) {
                         helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
                     }
+                    helper.getView(R.id.iri_rl_all).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if ("1".equals(item.getCreator().getType())) {
+                                Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
+                                intent.putExtra("userId", item.getCreator().getId());
+                                intent.putExtra("name", item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(getActivity(), UserIndexActivity.class);
+                                intent.putExtra("userId", item.getCreator().getId());
+                                intent.putExtra("name", item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            }
+                        }
+                    });
                 }
                 helper.getView(R.id.civ_top).setVisibility(View.GONE);
                 helper.getView(R.id.cl_01_civ_pm).setVisibility(View.VISIBLE);
@@ -969,12 +1006,30 @@ public class RZProjectFragment extends BaseFragment implements View.OnClickListe
     private void setInvestorTopAdapter() {
         investorTopAdapter = new CommonAdapter<ArtworkInvestTop>(getActivity(), investorTopDatas, R.layout.investorrecord_item) {
             @Override
-            public void convert(ViewHolder helper, ArtworkInvestTop item) {
+            public void convert(ViewHolder helper, final ArtworkInvestTop item) {
                 if (item.getCreator() != null) {
                     helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
                     if (item.getCreator().getName() != null) {
                             helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
                     }
+                    helper.getView(R.id.iri_rl_all).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if ("1".equals(item.getCreator().getType())) {
+                                Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
+                                intent.putExtra("userId", item.getCreator().getId());
+                                intent.putExtra("name", item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(getActivity(), UserIndexActivity.class);
+                                intent.putExtra("userId", item.getCreator().getId());
+                                intent.putExtra("name", item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            }
+                        }
+                    });
                 }
 
                 if (helper.getPosition() == 0) {
