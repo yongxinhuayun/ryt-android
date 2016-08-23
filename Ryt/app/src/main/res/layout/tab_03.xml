@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="#fafafa">
     <RelativeLayout
+        android:background="#fff"
         android:id="@+id/rg_rl_top"
         android:layout_width="match_parent"
         android:layout_height="46dp">
@@ -36,11 +37,12 @@
         android:layout_marginTop="10dp"
         android:background="#E9E9E9"/>
     <RelativeLayout
+        android:background="#fff"
         android:id="@+id/ft3_ll_notification"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp">
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
         <ImageView
             android:id="@+id/ft3_iv_notification"
             android:layout_width="22dp"
@@ -52,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="通知"
+            android:textColor="#666666"
             android:textSize="@dimen/item_text_font"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/ft3_iv_notification"
@@ -78,11 +81,12 @@
         android:layout_marginTop="10dp"
         android:background="#E9E9E9"/>
     <RelativeLayout
+        android:background="#fff"
         android:id="@+id/ft3_ll_comment"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp">
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
         <ImageView
             android:id="@+id/ft3_iv_comment"
             android:layout_width="22dp"
@@ -94,6 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="评论"
+            android:textColor="#666666"
             android:textSize="@dimen/item_text_font"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/ft3_iv_comment"
@@ -121,11 +126,12 @@
         android:layout_marginTop="10dp"
         android:background="#E9E9E9"/>
     <RelativeLayout
+        android:background="#fff"
         android:id="@+id/ft3_ll_privateLetter"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp">
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
         <ImageView
             android:id="@+id/ft3_iv_privateLetter"
             android:layout_width="22dp"
@@ -138,6 +144,7 @@
             android:layout_height="wrap_content"
             android:text="私信"
             android:textSize="@dimen/item_text_font"
+            android:textColor="#666666"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/ft3_iv_privateLetter"
             android:layout_centerVertical="true"/>

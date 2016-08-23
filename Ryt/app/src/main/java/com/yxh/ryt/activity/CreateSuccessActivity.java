@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -81,6 +82,12 @@ public class CreateSuccessActivity extends BaseActivity implements View.OnClickL
         Res.init(this);
         noScrollgridview_02 = (GridView) findViewById(R.id.noScrollgridview_02);
         commit = (TextView) findViewById(R.id.btn_center_login);
+        ((ImageButton) findViewById(R.id.ib_top_rt)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         getIntent().getStringExtra("artWorkId");
         noScrollgridview_02.setSelector(new ColorDrawable(Color.TRANSPARENT));
         adapter_02 = new GridAdapter02(this);

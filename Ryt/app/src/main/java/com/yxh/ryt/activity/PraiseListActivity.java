@@ -91,7 +91,7 @@ public class PraiseListActivity extends BaseActivity implements AutoListView.OnL
     private void noAttention_user(final View v, final View view, final String followId, final ViewHolder helper, final String followType) {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("followId", followId);
-        paramsMap.put("identifier", "0");
+        paramsMap.put("identifier", "1");
         paramsMap.put("followType", followType);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {

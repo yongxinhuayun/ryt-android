@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.CaptioningManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,7 +45,6 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
-import okhttp3.internal.framed.Variant;
 
 /**
  * Created by Administrator on 2016/7/8.
@@ -97,11 +95,11 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
         attentionDatas=new ArrayList<HomeYSJArtWork>();
         loadingUtil = new LoadingUtil(getActivity(),getContext());
     }
-    private void attention_user(final View v, final String followId) {
+    private void attention_user(final View v, final String followId, final String s) {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("followId", followId);
         paramsMap.put("identifier", "0");
-        paramsMap.put("followType", "2");
+        paramsMap.put("followType", s);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -125,14 +123,14 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                         totalFans.setText(fansNum+"位粉丝");
                         ll_attention.setEnabled(true);
                     }else {
-                        noAttention_user(v,followId);
+                        noAttention_user(v,followId, s);
                     }
                 }else if ("000000".equals(response.get("resultCode"))){
                     SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
                         @Override
                         public void getCode(String code) {
                             if ("0".equals(code)){
-                                attention_user(v,followId);
+                                attention_user(v,followId, s);
                             }
                         }
                     });
@@ -141,11 +139,11 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
             }
         });
     }
-    private void noAttention_user(final View v, final String followId) {
+    private void noAttention_user(final View v, final String followId, final String s) {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("followId", followId);
         paramsMap.put("identifier", "1");
-        paramsMap.put("followType", "2");
+        paramsMap.put("followType", s);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
             AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
@@ -169,14 +167,14 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                         fansNum=fansNum-1;
                         totalFans.setText(fansNum+"位粉丝");
                     }else {
-                        attention_user(v,followId);
+                        attention_user(v,followId, s);
                     }
                 }else if ("000000".equals(response.get("resultCode"))){
                     SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
                         @Override
                         public void getCode(String code) {
                             if ("0".equals(code)){
-                                noAttention_user(v,followId);
+                                noAttention_user(v,followId, s);
                             }
                         }
                     });
@@ -246,10 +244,12 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                         });
                         totalMoney.setText("¥"+sumInvestsMoney);
                         if ("0".equals(sumInvestsMoney)){
-                            premiumRate.setText("0%");
+                            premiumRate.setText("0.00%");
                         }else {
-                            float rate=Integer.valueOf(reward)/Integer.valueOf(sumInvestsMoney);
-                            premiumRate.setText((int)(rate*100)+"%");
+                            float rate=Float.valueOf(reward)/Float.valueOf(sumInvestsMoney);
+                            float f =Float.valueOf(rate*100);
+                            String s = String.format("%.2f", f);
+                            premiumRate.setText(s+"%");
                         }
                         totalWrok.setText(user.getMasterWorkNum()+"件作品");
                         totalFans.setText(user.getFansNum()+"位粉丝");
@@ -334,7 +334,11 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                                                 ll_attention.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        noAttention_user(attention,userId);
+                                                        if ("1".equals(user.getType())){
+                                                            noAttention_user(attention,userId,"1");
+                                                        }else if ("2".equals(user.getType())){
+                                                            noAttention_user(attention,userId,"2");
+                                                        }
                                                         ll_attention.setEnabled(false);
                                                     }
                                                 });
@@ -343,7 +347,12 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                                                 ll_attention.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        attention_user(attention,userId);
+                                                        if ("1".equals(user.getType())){
+                                                            attention_user(attention,userId,"1");
+                                                        }else if ("2".equals(user.getType())){
+                                                            attention_user(attention,userId,"2");
+                                                        }
+
                                                         ll_attention.setEnabled(false);
                                                     }
                                                 });
@@ -361,10 +370,12 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
                                             });
                                             totalMoney.setText("¥"+sumInvestsMoney);
                                             if ("0".equals(sumInvestsMoney)){
-                                                premiumRate.setText("0%");
+                                                premiumRate.setText("0.00%");
                                             }else {
-                                                float rate=Integer.valueOf(reward)/Integer.valueOf(sumInvestsMoney);
-                                                premiumRate.setText((int)(rate*100)+"%");
+                                                float rate=Float.valueOf(reward)/Float.valueOf(sumInvestsMoney);
+                                                float f =Float.valueOf(rate*100);
+                                                String s = String.format("%.2f", f);
+                                                premiumRate.setText(s+"%");
                                             }
                                             totalWrok.setText(user.getMasterWorkNum()+"件作品");
                                             fansNum=user.getFansNum();

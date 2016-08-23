@@ -136,7 +136,11 @@ public class YSJWorkFragment extends StickHeaderBaseFragment implements View.OnC
 			public void convert(ViewHolder helper, final MasterWork item) {
 				helper.setImageByUrl(R.id.mwi_iv_icon, item.getPictureUrl());
 				helper.setText(R.id.mwi_iv_title, item.getName());
-				helper.setText(R.id.mwi_tv_description, item.getMaterial() + "/" + Utils.timeToFormatTemp("yyyy", item.getCreateDatetime()) + "/" + judgeStaus(item.getType()));
+				if (item.getCreateYear()==null){
+					helper.setText(R.id.mwi_tv_description, item.getMaterial()  + "/" + judgeStaus(item.getType()));
+				}else {
+					helper.setText(R.id.mwi_tv_description, item.getMaterial() + "/" + item.getCreateYear() + "/" + judgeStaus(item.getType()));
+				}
 					helper.getView(R.id.mwi_iv_delete).setVisibility(View.VISIBLE);
 					helper.getView(R.id.mwi_iv_delete).setOnClickListener(new View.OnClickListener() {
 						@Override
