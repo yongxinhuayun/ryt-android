@@ -90,7 +90,7 @@ public class CommitFinalPriceActivity extends BaseActivity implements View.OnCli
 
         }
     }
-
+//支付尾款 待加地址
     public void investMoney(final String artWorkId, final String price) {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("money", price);

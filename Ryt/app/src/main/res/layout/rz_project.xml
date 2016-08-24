@@ -533,19 +533,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#FAFAFA" />
-            <!-- <LinearLayout
-                 android:id="@+id/ll_progress"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:orientation="vertical">
-                 <WebView
-                     android:id="@+id/wv_invest_process"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:visibility="visible"
-                     tools:ignore="WebViewLayout"></WebView>
-             </LinearLayout>-->
-
             <com.yxh.ryt.custemview.ExpandView
                 android:id="@+id/expandView"
                 android:layout_width="match_parent"
