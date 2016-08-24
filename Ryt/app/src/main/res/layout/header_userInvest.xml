@@ -83,7 +83,7 @@
                 android:id="@+id/hui_iv_privateLetter"
                 android:layout_width="17dp"
                 android:layout_height="12dp"
-                android:src="@mipmap/sixin"/>
+                android:src="@mipmap/sixin1"/>
         </LinearLayout>
 
 

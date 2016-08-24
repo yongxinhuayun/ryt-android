@@ -79,115 +79,122 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
                         }
 
                 });
-                helper.setImageByUrl(R.id.ci_iv_projectIcon,item.getArtwork().getPicture_url());
-                helper.setText(R.id.ci_tv_otherNickname,item.getCreator().getName());
-                helper.setText(R.id.ci_tv_date,Utils.timeTrans(item.getCreateDatetime()));
-                helper.setImageByUrl(R.id.ci_iv_otherIcon, item.getCreator().getPictureUrl());
-                helper.getView(R.id.ll_name).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (item.getCreator().getMaster()!=null){
-                            Intent intent=new Intent(CommentActivity.this, ArtistIndexActivity.class);
-                            intent.putExtra("userId",item.getCreator().getId());
-                            intent.putExtra("name",item.getCreator().getName());
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }else {
-                            Intent intent=new Intent(CommentActivity.this, UserIndexActivity.class);
-                            intent.putExtra("userId",item.getCreator().getId());
-                            intent.putExtra("name",item.getCreator().getName());
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
+                if (item.getArtwork()!=null){
+                    if (item.getArtwork().getPicture_url()!=null){
+                        helper.setImageByUrl(R.id.ci_iv_projectIcon,item.getArtwork().getPicture_url());
                     }
-                });
-                helper.getView(R.id.ci_tv_reply).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent=new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
-                        intent.putExtra("name", item.getCreator().getName());
-                        intent.putExtra("fatherCommentId", item.getId());
-                        intent.putExtra("currentUserId",AppApplication.gUser.getId());
-                        intent.putExtra("artworkId", item.getArtwork().getId());
-                        intent.putExtra("flag", 0);
-                        intent.putExtra("messageId", "");
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        AppApplication.getSingleContext().startActivity(intent);
+                    helper.setText(R.id.ci_tv_otherNickname,item.getCreator().getName());
+                    helper.setText(R.id.ci_tv_date,Utils.timeTrans(item.getCreateDatetime()));
+                    if (item.getCreator().getPictureUrl()!=null){
+                        helper.setImageByUrl(R.id.ci_iv_otherIcon, item.getCreator().getPictureUrl());
                     }
-                });
-                if (item.getFatherArtworkCommentBean()!=null){
-                    TextView textView=helper.getView(R.id.ci_tv_content);
-                    String fatherUser = item.getFatherArtworkCommentBean().getCreator().getName();
-                    SpannableString spanFatherUser = new SpannableString(fatherUser);
-                    ClickableSpan click= new ShuoMClickableSpan(fatherUser, AppApplication.getSingleContext()) {
+
+                    helper.getView(R.id.ll_name).setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View widget) {
+                        public void onClick(View v) {
+                            if (item.getCreator().getMaster()!=null){
+                                Intent intent=new Intent(CommentActivity.this, ArtistIndexActivity.class);
+                                intent.putExtra("userId",item.getCreator().getId());
+                                intent.putExtra("name",item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }else {
+                                Intent intent=new Intent(CommentActivity.this, UserIndexActivity.class);
+                                intent.putExtra("userId",item.getCreator().getId());
+                                intent.putExtra("name",item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                    helper.getView(R.id.ci_tv_reply).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent=new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
+                            intent.putExtra("name", item.getCreator().getName());
+                            intent.putExtra("fatherCommentId", item.getId());
+                            intent.putExtra("currentUserId",AppApplication.gUser.getId());
+                            intent.putExtra("artworkId", item.getArtwork().getId());
+                            intent.putExtra("flag", 0);
+                            intent.putExtra("messageId", "");
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            AppApplication.getSingleContext().startActivity(intent);
+                        }
+                    });
+                    if (item.getFatherArtworkCommentBean()!=null){
+                        TextView textView=helper.getView(R.id.ci_tv_content);
+                        String fatherUser = item.getFatherArtworkCommentBean().getCreator().getName();
+                        SpannableString spanFatherUser = new SpannableString(fatherUser);
+                        ClickableSpan click= new ShuoMClickableSpan(fatherUser, AppApplication.getSingleContext()) {
+                            @Override
+                            public void onClick(View widget) {
                             /*Intent intent=new Intent(AppApplication.getSingleContext(), LoginActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             AppApplication.getSingleContext().startActivity(intent);*/
-                            if ("".equals(AppApplication.gUser.getId())) {
-                                LoginActivity.openActivity(CommentActivity.this);
-                                return;
+                                if ("".equals(AppApplication.gUser.getId())) {
+                                    LoginActivity.openActivity(CommentActivity.this);
+                                    return;
+                                }
+                                if (AppApplication.gUser != null&&"master".equals(AppApplication.gUser.getMaster1())) {
+                                    Intent intent=new Intent(AppApplication.getSingleContext(),ArtistIndexActivity.class);
+                                    intent.putExtra("userId", item.getFatherArtworkCommentBean().getCreator().getId());
+                                    intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getName());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }else if (AppApplication.gUser != null&&"".equals(AppApplication.gUser.getMaster1())){
+                                    Intent intent=new Intent(AppApplication.getSingleContext(),UserIndexActivity.class);
+                                    intent.putExtra("userId", item.getFatherArtworkCommentBean().getCreator().getId());
+                                    intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getName());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
                             }
-                            if (AppApplication.gUser != null&&"master".equals(AppApplication.gUser.getMaster1())) {
-                                Intent intent=new Intent(AppApplication.getSingleContext(),ArtistIndexActivity.class);
-                                intent.putExtra("userId", item.getFatherArtworkCommentBean().getCreator().getId());
-                                intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getName());
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }else if (AppApplication.gUser != null&&"".equals(AppApplication.gUser.getMaster1())){
-                                Intent intent=new Intent(AppApplication.getSingleContext(),UserIndexActivity.class);
-                                intent.putExtra("userId", item.getFatherArtworkCommentBean().getCreator().getId());
-                                intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getName());
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                        }
-                    };
-                    spanFatherUser.setSpan(click, 0, fatherUser.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    textView.setText("回复");
-                    textView.append(spanFatherUser);
-                    textView.append(":");
-                    textView.append(item.getContent());
-                    textView.setMovementMethod(LinkMovementMethod.getInstance());
-                    TextView textView1=helper.getView(R.id.ci_tv_preName);
-                    String fatherUser1 = "@"+item.getFatherArtworkCommentBean().getCreator().getName();
-                    SpannableString spanFatherUser1 = new SpannableString(fatherUser1);
-                    ClickableSpan click1= new ShuoMClickableSpan(fatherUser1, AppApplication.getSingleContext()) {
-                        @Override
-                        public void onClick(View widget) {
+                        };
+                        spanFatherUser.setSpan(click, 0, fatherUser.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                        textView.setText("回复");
+                        textView.append(spanFatherUser);
+                        textView.append(":");
+                        textView.append(item.getContent());
+                        textView.setMovementMethod(LinkMovementMethod.getInstance());
+                        TextView textView1=helper.getView(R.id.ci_tv_preName);
+                        String fatherUser1 = "@"+item.getFatherArtworkCommentBean().getCreator().getName();
+                        SpannableString spanFatherUser1 = new SpannableString(fatherUser1);
+                        ClickableSpan click1= new ShuoMClickableSpan(fatherUser1, AppApplication.getSingleContext()) {
+                            @Override
+                            public void onClick(View widget) {
                             /*Intent intent=new Intent(AppApplication.getSingleContext(), LoginActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             AppApplication.getSingleContext().startActivity(intent);*/
-                            if ("".equals(AppApplication.gUser.getId())) {
-                                LoginActivity.openActivity(CommentActivity.this);
-                                return;
+                                if ("".equals(AppApplication.gUser.getId())) {
+                                    LoginActivity.openActivity(CommentActivity.this);
+                                    return;
+                                }
+                                if (AppApplication.gUser != null&&"master".equals(AppApplication.gUser.getMaster1())) {
+                                    Intent intent=new Intent(AppApplication.getSingleContext(),ArtistIndexActivity.class);
+                                    intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getId());
+                                    intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getName());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }else if (AppApplication.gUser != null&&"".equals(AppApplication.gUser.getMaster1())){
+                                    Intent intent=new Intent(AppApplication.getSingleContext(),UserIndexActivity.class);
+                                    intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getId());
+                                    intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getName());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
                             }
-                            if (AppApplication.gUser != null&&"master".equals(AppApplication.gUser.getMaster1())) {
-                                Intent intent=new Intent(AppApplication.getSingleContext(),ArtistIndexActivity.class);
-                                intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getId());
-                                intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getName());
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }else if (AppApplication.gUser != null&&"".equals(AppApplication.gUser.getMaster1())){
-                                Intent intent=new Intent(AppApplication.getSingleContext(),UserIndexActivity.class);
-                                intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getId());
-                                intent.putExtra("name", item.getFatherArtworkCommentBean().getCreator().getName());
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                        }
-                    };
-                    spanFatherUser1.setSpan(click1, 0, fatherUser1.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    textView1.setText(spanFatherUser1);
-                    textView1.setMovementMethod(LinkMovementMethod.getInstance());
-                    helper.setText(R.id.ci_tv_preContent,":"+item.getFatherArtworkCommentBean().getContent());
-                }else {
-                    helper.setText(R.id.ci_tv_content, item.getContent());
-                    helper.getView(R.id.ci_ll_pre).setVisibility(View.GONE);
+                        };
+                        spanFatherUser1.setSpan(click1, 0, fatherUser1.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                        textView1.setText(spanFatherUser1);
+                        textView1.setMovementMethod(LinkMovementMethod.getInstance());
+                        helper.setText(R.id.ci_tv_preContent,":"+item.getFatherArtworkCommentBean().getContent());
+                    }else {
+                        helper.setText(R.id.ci_tv_content, item.getContent());
+                        helper.getView(R.id.ci_ll_pre).setVisibility(View.GONE);
+                    }
+                    helper.setText(R.id.ci_tv_projectTitle, item.getArtwork().getTitle());
+                    helper.setText(R.id.ci_tv_projectBrief, item.getArtwork().getBrief());
                 }
-                helper.setText(R.id.ci_tv_projectTitle, item.getArtwork().getTitle());
-                helper.setText(R.id.ci_tv_projectBrief, item.getArtwork().getBrief());
             }
         };
         cmlistview.setAdapter(cmAdapter);

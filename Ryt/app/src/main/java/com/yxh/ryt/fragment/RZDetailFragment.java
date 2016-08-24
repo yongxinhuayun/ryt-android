@@ -97,7 +97,11 @@ public class RZDetailFragment extends BaseFragment {
 						count++;
 					}
 				}
-				tvContent.setText("\u3000\u3000" + artwork.getDescription());
+				if (artwork.getDescription()==null){
+					tvContent.setVisibility(View.GONE);
+				}else {
+					tvContent.setText("\u3000\u3000" + artwork.getDescription());
+				}
 				if (artworkdirection!=null){
 					tvGuocheng.setText(artworkdirection.getMake_instru());
 					tvJiehuo.setText(artworkdirection.getFinancing_aq());

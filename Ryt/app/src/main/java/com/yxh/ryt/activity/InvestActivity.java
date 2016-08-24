@@ -17,6 +17,7 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.custemview.CustomDialog;
+import com.yxh.ryt.custemview.CustomDialog1;
 import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -67,6 +68,7 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
     EditText other;
     private int allMoney;
     private String artworkId;
+    private CustomDialog1 customDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,45 +84,66 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
     public void click(View view){
         switch (view.getId()){
             case R.id.imp_ll_2:
-                ButterKnife.apply(tabTvs, SETCOLOR,0);
-                ButterKnife.apply(tabTvs1, SETCOLOR1,0);
-                money=2+"";
-                //other.setText(money);
-                invest.setText("投资"+2+"元");
+                if (2< allMoney){
+                    ButterKnife.apply(tabTvs, SETCOLOR,0);
+                    ButterKnife.apply(tabTvs1, SETCOLOR1,0);
+                    money=2+"";
+                    //other.setText(money);
+                    invest.setText("投资"+2+"元");
+                }else {
+                    ToastUtil.showShort(InvestActivity.this,"只剩余"+allMoney+"元钱,投资不能超过"+allMoney+"元钱");
+                }
                 break;
             case R.id.imp_ll_5:
-                ButterKnife.apply(tabTvs, SETCOLOR,1);
-                ButterKnife.apply(tabTvs1, SETCOLOR1,1);
-                money=5+"";
-                //other.setText(money);
-                invest.setText("投资" + 5 + "元");
+                if (5< allMoney){
+                    ButterKnife.apply(tabTvs, SETCOLOR,1);
+                    ButterKnife.apply(tabTvs1, SETCOLOR1,1);
+                    money=5+"";
+                    //other.setText(money);
+                    invest.setText("投资" + 5 + "元");
+                }else {
+                    ToastUtil.showShort(InvestActivity.this,"只剩余"+allMoney+"元钱,投资不能超过"+allMoney+"元钱");
+                }
                 break;
             case R.id.imp_ll_10:
-                ButterKnife.apply(tabTvs, SETCOLOR,2);
-                ButterKnife.apply(tabTvs1, SETCOLOR1,2);
-                money=10+"";
-                //other.setText(money);
-                invest.setText("投资" + 10 + "元");
+                if (10< allMoney){
+                    ButterKnife.apply(tabTvs, SETCOLOR,2);
+                    ButterKnife.apply(tabTvs1, SETCOLOR1,2);
+                    money=10+"";
+                    //other.setText(money);
+                    invest.setText("投资" + 10 + "元");
+                }else {
+                    ToastUtil.showShort(InvestActivity.this,"只剩余"+allMoney+"元钱,投资不能超过"+allMoney+"元钱");
+                }
                 break;
             case R.id.imp_ll_28:
-                ButterKnife.apply(tabTvs, SETCOLOR,3);
-                ButterKnife.apply(tabTvs1, SETCOLOR1,3);
-                money=28+"";
-                //other.setText(money);
-                invest.setText("投资" + 28 + "元");
+                if (28< allMoney){
+                    ButterKnife.apply(tabTvs, SETCOLOR,3);
+                    ButterKnife.apply(tabTvs1, SETCOLOR1,3);
+                    money=28+"";
+                    //other.setText(money);
+                    invest.setText("投资" + 28 + "元");
+                }else {
+                    ToastUtil.showShort(InvestActivity.this,"只剩余"+allMoney+"元钱,投资不能超过"+allMoney+"元钱");
+                }
                 break;
             case R.id.imp_ll_88:
-                ButterKnife.apply(tabTvs, SETCOLOR,4);
-                ButterKnife.apply(tabTvs1, SETCOLOR1,4);
-                money=88+"";
-                //other.setText(money);
-                invest.setText("投资" + 88 + "元");
+                if (88< allMoney){
+                    ButterKnife.apply(tabTvs, SETCOLOR,4);
+                    ButterKnife.apply(tabTvs1, SETCOLOR1,4);
+                    money=88+"";
+                    //other.setText(money);
+                    invest.setText("投资" + 88 + "元");
+                }else {
+                    ToastUtil.showShort(InvestActivity.this,"只剩余"+allMoney+"元钱,投资不能超过"+allMoney+"元钱");
+                }
                 break;
             case R.id.imp_ll_all:
                 ButterKnife.apply(tabTvs, SETCOLOR, 5);
                 ButterKnife.apply(tabTvs1, SETCOLOR1, 5);
                 //other.setText(money);
-                invest.setText("投资" + allMoney + "元");
+                money="-1";
+                invest.setText("投资剩余所有的钱");
                 break;
         }
 
@@ -231,7 +254,11 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
     private void investMoney() {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("money", money);
-        paramsMap.put("action", "investAccount");
+        if (!"-1".equals(money)){
+            paramsMap.put("action", "investAccount");
+        }else {
+            paramsMap.put("action", "invest");
+        }
         paramsMap.put("type", "1");
         paramsMap.put("artWorkId", artworkId);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -265,15 +292,14 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                     ToastUtil.showLong(InvestActivity.this,"投资成功!");
                     finish();
                 }else if ("100015".equals(response.get("resultCode"))){
-                    CustomDialog.Builder builder = new CustomDialog.Builder(InvestActivity.this);
-                    builder.setTitle("余额不足,确认要充值吗");
+                    CustomDialog1.Builder builder = new CustomDialog1.Builder(InvestActivity.this);
+                    builder.setTitle("余额不足,请输入充值金额");
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             Map<String,String> paramsMap=new HashMap<>();
-                            //paramsMap.put("userId", AppApplication.gUser.getId());
-                            paramsMap.put("money", money);
-                            paramsMap.put("action", "invest");
+                            paramsMap.put("money", ((EditText) customDialog.findViewById(R.id.dnl_et_money)).getText().toString());
+                            paramsMap.put("action", "account");
                             paramsMap.put("type", "1");
                             paramsMap.put("artWorkId", artworkId);
                             paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -303,7 +329,7 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                                             }
                                         });
                                         sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
-                                    }else {
+                                    }else if ("0".equals(response.get("resultCode"))){
                                         String url = response.get("url").toString();
                                         Intent intent=new Intent(InvestActivity.this,PayPageActivity.class);
                                         intent.putExtra("url",url);
@@ -319,7 +345,8 @@ public class InvestActivity extends BaseActivity implements TextWatcher {
                                     dialog.dismiss();
                                 }
                             });
-                    CustomDialog customDialog = builder.create();
+                    customDialog = builder.create();
+
                     customDialog.setCanceledOnTouchOutside(false);
                     // 设置点击屏幕Dialog不消失
                     customDialog.show();

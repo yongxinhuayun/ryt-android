@@ -1,7 +1,9 @@
 package com.yxh.ryt.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.google.gson.reflect.TypeToken;
@@ -29,7 +31,7 @@ import okhttp3.Call;
 /**
  * Created by YangZhenjie on 2016/8/1.
  */
-public class PraiseListActivity extends BaseActivity implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener {
+public class PraiseListActivity extends BaseActivity implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener, AdapterView.OnItemClickListener {
 
     private ImageView back;
     private AutoListView lvPraise;
@@ -65,10 +67,10 @@ public class PraiseListActivity extends BaseActivity implements AutoListView.OnL
                 }else {
                     ((ImageView) helper.getView(R.id.iv_attention)).setImageResource(R.mipmap.guanzhuqian);
                 }
-                helper.getView(R.id.ll_attention).setOnClickListener(new View.OnClickListener() {
+                helper.getView(R.id.iv_attention).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        helper.getView(R.id.ll_attention).setEnabled(false);
+                        helper.getView(R.id.iv_attention).setEnabled(false);
                         String followType="0";
                         if ("1".equals(item.getUser().getType())){
                             followType ="1";
@@ -76,14 +78,15 @@ public class PraiseListActivity extends BaseActivity implements AutoListView.OnL
                             followType ="2";
                         }
                         if (selected.get(helper.getPosition())){
-                            noAttention_user(helper.getView(R.id.ll_attention),helper.getView(R.id.iv_attention),item.getUser().getId(),helper,followType);
+                            noAttention_user(helper.getView(R.id.iv_attention),helper.getView(R.id.iv_attention),item.getUser().getId(),helper,followType);
                         }else {
-                            attention_user(helper.getView(R.id.ll_attention),helper.getView(R.id.iv_attention),item.getUser().getId(),helper,followType);
+                            attention_user(helper.getView(R.id.iv_attention),helper.getView(R.id.iv_attention),item.getUser().getId(),helper,followType);
                         }
                     }
                 });
             }
         };
+        lvPraise.setOnItemClickListener(this);
         lvPraise.setAdapter(praiseAdapter);
         lvPraise.setOnRefreshListener(this);
         lvPraise.setOnLoadListener(this);
@@ -91,7 +94,7 @@ public class PraiseListActivity extends BaseActivity implements AutoListView.OnL
     private void noAttention_user(final View v, final View view, final String followId, final ViewHolder helper, final String followType) {
         Map<String,String> paramsMap=new HashMap<>();
         paramsMap.put("followId", followId);
-        paramsMap.put("identifier", "0");
+        paramsMap.put("identifier", "1");
         paramsMap.put("followType", followType);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -313,4 +316,20 @@ public class PraiseListActivity extends BaseActivity implements AutoListView.OnL
         loadData(AutoListView.REFRESH, currentPage);
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position <= praiseDatas.size()) {
+            if ("1".equals(praiseDatas.get(position-1).getUser().getType())){
+                Intent intent = new Intent(this, ArtistIndexActivity.class);
+                intent.putExtra("userId", praiseDatas.get(position - 1).getUser().getId());
+                intent.putExtra("name", praiseDatas.get(position - 1).getUser().getName());
+                startActivity(intent);
+            }else {
+                Intent intent = new Intent(this, UserIndexActivity.class);
+                intent.putExtra("userId", praiseDatas.get(position - 1).getUser().getId());
+                intent.putExtra("name", praiseDatas.get(position - 1).getUser().getName());
+                startActivity(intent);
+            }
+        }
+    }
 }

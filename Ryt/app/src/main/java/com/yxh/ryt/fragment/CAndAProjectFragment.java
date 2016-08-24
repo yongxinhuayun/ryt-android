@@ -50,6 +50,7 @@ import com.yxh.ryt.activity.ProjectCommentReply;
 import com.yxh.ryt.activity.UserIndexActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
+import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.CircleImageView;
@@ -112,8 +113,8 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
     private TextView tv_name;
     private TextView tv_name2;
     private TextView praiseNum;
-    private TextView deadline;
-    private TextView tvInvestor;
+    /*private TextView deadline;*/
+    //private TextView tvInvestor;
     private CircleImageView cl_headPortrait;
     private CommonAdapter<ArtworkInvest> investorRecordCommonAdapter;
     private CommonAdapter<ArtworkInvestTop> investorTopAdapter;
@@ -133,7 +134,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
     private int time = 0;
     private int padding;
     private ImageButton go;
-    private RoundProgressBar mRoundProgressBar;
+    //private RoundProgressBar mRoundProgressBar;
     private int progress = 0;
     private int max = 0;
     private int screenWidth;
@@ -158,7 +159,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
     private int remainMoney;
     private List<ArtworkInvestTop> investorTopDatas;
     private long deadTime;
-    private TextView tvInvestMoney;
+    //private TextView tvInvestMoney;
     private TextView creatTime;
     private LoadingUtil loadingUtil;
     private ImageView iMaster;
@@ -169,6 +170,8 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
     private CommonAdapter<ArtWorkPraiseList> praiseHeadCommonAdapter;
     private HorizontalListView praiseHLV;
     private CircleImageView myPraise;
+    private boolean currentIsFollow;
+    private TextView line1;
 
     public CAndAProjectFragment(String artWorkId) {
         super();
@@ -224,8 +227,8 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
                     }
                     praiseHeadCommonAdapter.notifyDataSetChanged();
                     break;
-                case COUNT_DOWN:
-                    deadTime -= 1000;
+                /*case COUNT_DOWN:*/
+                    /*deadTime -= 1000;
                     String time = DateUtil.millisToStringShort(deadTime, false, false).toString();
                     SpannableStringBuilder builder = new SpannableStringBuilder(time);
 
@@ -244,14 +247,14 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
                     }
                     if (time.contains("秒")) {
                         builder.setSpan(redSpan4, time.indexOf("秒"), time.indexOf("秒") + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    }
-                    deadline.setText(builder);
-                    if (deadTime > 0) {
+                    }*/
+                    /*deadline.setText(builder);*/
+                    /*if (deadTime > 0) {
                         Message message = handler.obtainMessage(COUNT_DOWN);
                         handler.sendMessageDelayed(message, 1000);
                     } else {
                         deadline.setText("已截止");
-                    }
+                    }*/
             }
 
         }
@@ -277,13 +280,14 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
         creatTime = (TextView) view.findViewById(R.id.tv_creat_time);
         headV = (ImageView) view.findViewById(R.id.iv_master);
         myPraise = (CircleImageView) view.findViewById(R.id.civ_pic);
+        line1 = ((TextView) view.findViewById(R.id.rp1_line1));
         // ll_invester = (LinearLayout) view.findViewById(R.id.ll_invester);
         ll_project = (LinearLayout) view.findViewById(R.id.ll_project);
         rl_progress = (RelativeLayout) view.findViewById(R.id.rl_progress);
         tv_project_name = (TextView) view.findViewById(R.id.tv_project_name);
-        deadline = (TextView) view.findViewById(R.id.tv_deadline);
-        tvInvestor = (TextView) view.findViewById(R.id.tv_investor);
-        tvInvestMoney = (TextView) view.findViewById(R.id.tv_invest_money);
+        /*deadline = (TextView) view.findViewById(R.id.tv_deadline);*/
+        //tvInvestor = (TextView) view.findViewById(R.id.tv_investor);
+        //tvInvestMoney = (TextView) view.findViewById(R.id.tv_invest_money);
         reader = (TextView) view.findViewById(R.id.tv_reader);
         tv_project_brief = (TextView) view.findViewById(R.id.tv_project_brief);
         tv_name = (TextView) view.findViewById(R.id.tv_name);
@@ -304,10 +308,10 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
         //llinvester = (LinearLayout) view.findViewById(R.id.ll_invester);
         mExpandView = (ExpandView) view.findViewById(R.id.expandView);
         sv = (ScrollView) view.findViewById(R.id.sv_sv);
-        mRoundProgressBar = (RoundProgressBar) view.findViewById(R.id.rpb_progress);
+        //mRoundProgressBar = (RoundProgressBar) view.findViewById(R.id.rpb_progress);
         iv_show = (ImageView) view.findViewById(R.id.iv_is_show);
         rl_progress.setOnClickListener(this);
-        mRoundProgressBar.setTextSize(28);
+        //mRoundProgressBar.setTextSize(28);
         cl_headPortrait = (CircleImageView) view.findViewById(R.id.cl_headPortrait);
         loadingUtil = new LoadingUtil(getActivity(), getContext());
         mExpandView.setLayoutId(R.layout.layout_expand);
@@ -379,42 +383,18 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(AppApplication.getSingleContext(), ProjectCommentReply.class);
-                        if (item.getCreator() != null) {
-                            if ("1".equals(item.getCreator().getType())) {
-                                helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
-                            } else {
-                                helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
-                            }
-                            intent.putExtra("name", item.getCreator().getName());
-                        } else {
-                            intent.putExtra("name", "");
-                        }
                         intent.putExtra("currentUserId", AppApplication.gUser.getId());
                         intent.putExtra("fatherCommentId", item.getId());
                         intent.putExtra("artworkId", artWorkId);
                         intent.putExtra("flag", 0);
                         intent.putExtra("messageId", "");
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        if (!item.getId().equals(AppApplication.gUser.getId())) {
-                            AppApplication.getSingleContext().startActivity(intent);
+                        if (item.getCreator() != null) {
+                            intent.putExtra("name", item.getCreator().getName());
+                        }else {
+                            intent.putExtra("name", "");
                         }
-                    }
-                });
-
-                helper.getView(R.id.pdctci_tv_nickName).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (item.getCreator().getMaster() != null) {
-                            Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
-                            intent.putExtra("userId", item.getCreator().getId());
-                            intent.putExtra("name", item.getCreator().getName());
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            getActivity().startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(getActivity(), UserIndexActivity.class);
-                            intent.putExtra("userId", item.getCreator().getId());
-                            intent.putExtra("name", item.getCreator().getName());
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        if (!item.getId().equals(AppApplication.gUser.getId())) {
                             getActivity().startActivity(intent);
                         }
                     }
@@ -422,7 +402,31 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
                 if (item.getCreator() != null) {
                     helper.setText(R.id.pdctci_tv_nickName, item.getCreator().getName());
                     helper.setImageByUrl(R.id.pdctci_iv_icon, item.getCreator().getPictureUrl());
+                    helper.getView(R.id.pdctci_iv_icon).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if ("1".equals(item.getCreator().getType())) {
+                                Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
+                                intent.putExtra("userId", item.getCreator().getId());
+                                intent.putExtra("name", item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(getActivity(), UserIndexActivity.class);
+                                intent.putExtra("userId", item.getCreator().getId());
+                                intent.putExtra("name", item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            }
+                        }
+                    });
+                    if ("1".equals(item.getCreator().getType())) {
+                        helper.getView(R.id.iv_master).setVisibility(View.VISIBLE);
+                    } else {
+                        helper.getView(R.id.iv_master).setVisibility(View.INVISIBLE);
+                    }
                 }
+
                 helper.setText(R.id.pdctci_tv_date, DateUtil.millionToNearly(item.getCreateDatetime()));
                 if (item.getFatherComment() != null) {
                     TextView textView = helper.getView(R.id.pdctci_tv_content);
@@ -514,7 +518,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
 
     private void showOther() {
         loadingUtil.show();
-        Map<String, String> paramsMap = new HashMap<>();
+        final Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artWorkId);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -534,61 +538,167 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                loadingUtil.dismiss();
-                Map<String, Object> object = (Map<String, Object>) response.get("object");
-                if (object != null) {
-                    artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
-                            toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
-                    }.getType());
+                if ("".equals(AppApplication.gUser.getId())){
+                    loadingUtil.dismiss();
+                    Map<String, Object> object = (Map<String, Object>) response.get("object");
+                    if (object != null) {
+                        artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                                toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
+                        }.getType());
 
-                    loadPraiseHeadData(artWorkPraiseList);
-                    isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
-                    artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
-                    deadTime = Long.parseLong(artwork.getInvestRestTime());
-                    creatTime.setText(DateUtil.millionToNearly(artwork.getCreateDatetime()));
-                    tv_project_name.setText(artwork.getTitle());
-                    tv_project_brief.setText(artwork.getBrief());
-                    tvWorksNum.setText(artwork.getAuthor().getMasterWorkNum() + "件作品");
-                    tvFansNum.setText(artwork.getAuthor().getFansNum() + "个粉丝");
-                    tv_price.setText("￥ " + artwork.getInvestGoalMoney() + ".00");
-                    tvInvestor.setText(artwork.getInvestNum() + "人投资 ");
-                    tvInvestMoney.setText("￥" + artwork.getInvestsMoney() + "/" + artwork.getInvestGoalMoney());
-                    remainMoney = artwork.getInvestGoalMoney().subtract(artwork.getInvestsMoney()).intValue();
-                    Message msg = Message.obtain();
-                    msg.what = COUNT_DOWN;
-                    handler.sendMessageDelayed(msg, 1000);
-
-                    //进度显示
-                    progressCurrent = artwork.getInvestsMoney().doubleValue() / artwork.getInvestGoalMoney().doubleValue();
-                    max = artwork.getInvestGoalMoney().intValue();
-                    isVisibleBar();
-
-                    if (artwork.getAuthor() != null) {
-                        tv_name.setText(artwork.getAuthor().getName());
-                        tv_name2.setText(artwork.getAuthor().getName());
-                        AppApplication.displayImage(artwork.getAuthor().getPictureUrl(), cl_headPortrait);
-                        if ("1".equals(artwork.getType())) {
-                            headV.setVisibility(View.VISIBLE);
-                        } else {
-                            headV.setVisibility(View.INVISIBLE);
+                        loadPraiseHeadData(artWorkPraiseList);
+                        currentIsFollow=Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isFollowed")));
+                        if (currentIsFollow){
+                            attention.setImageResource(R.mipmap.guanzhuhou);
+                        }else {
+                            attention.setImageResource(R.mipmap.guanzhuqian);
                         }
+                        isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
+                        artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
+                        deadTime = Long.parseLong(artwork.getInvestRestTime());
+                        creatTime.setText(DateUtil.millionToNearly(artwork.getCreateDatetime()));
+                        tv_project_name.setText(artwork.getTitle());
+                        tv_project_brief.setText(artwork.getBrief());
+                        tvWorksNum.setText(artwork.getAuthor().getMasterWorkNum() + "件作品");
+                        tvFansNum.setText(artwork.getAuthor().getFansNum() + "个粉丝");
+                        tv_price.setText("￥ " + artwork.getInvestGoalMoney() + ".00");
+                        //tvInvestor.setText(artwork.getInvestNum() + "人投资 ");
+                        //tvInvestMoney.setText("￥" + artwork.getInvestsMoney() + "/" + artwork.getInvestGoalMoney());
+                        remainMoney = artwork.getInvestGoalMoney().subtract(artwork.getInvestsMoney()).intValue();
+                       /* Message msg = Message.obtain();
+                        msg.what = COUNT_DOWN;
+                        handler.sendMessageDelayed(msg, 1000);*/
+                        //deadline.setText("融资已结束");
+                        //进度显示
+                        progressCurrent = artwork.getInvestsMoney().doubleValue() / artwork.getInvestGoalMoney().doubleValue();
+                        max = artwork.getInvestGoalMoney().intValue();
+                        //isVisibleBar();
+
+                        if (artwork.getAuthor() != null) {
+                            tv_name.setText(artwork.getAuthor().getName());
+                            tv_name2.setText(artwork.getAuthor().getName());
+                            AppApplication.displayImage(artwork.getAuthor().getPictureUrl(), cl_headPortrait);
+                            cl_headPortrait.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent=new Intent(getActivity(),ArtistIndexActivity.class);
+                                    intent.putExtra("name",artwork.getAuthor().getName());
+                                    intent.putExtra("userId",artwork.getAuthor().getId());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    getActivity().startActivity(intent);
+                                }
+                            });
+                            if ("1".equals(artwork.getType())) {
+                                headV.setVisibility(View.VISIBLE);
+                            } else {
+                                headV.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                        if (isPraise1) {
+                            llpraise.setBackgroundResource(R.drawable.praise_after_shape);
+                            praiseNum.setTextColor(Color.rgb(255, 255, 255));
+                        } else {
+                            llpraise.setBackgroundResource(R.drawable.praise_shape);
+                            praiseNum.setTextColor(Color.rgb(199, 31, 33));
+                        }
+                        praiseNum.setText(artwork.getPraiseNUm() + "");
+                        reader.setText(artwork.getViewNum() + "");
+                        AppApplication.displayImage(artwork.getPicture_url(), imageTitle);
                     }
-                    if (isPraise1) {
-                        llpraise.setBackgroundResource(R.drawable.praise_after_shape);
-                        praiseNum.setTextColor(Color.rgb(255, 255, 255));
-                    } else {
-                        llpraise.setBackgroundResource(R.drawable.praise_shape);
-                        praiseNum.setTextColor(Color.rgb(199, 31, 33));
-                    }
-                    praiseNum.setText(artwork.getPraiseNUm() + "");
-                    reader.setText(artwork.getViewNum() + "");
-                    AppApplication.displayImage(artwork.getPicture_url(), imageTitle);
+                }else {
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+
+                                NetRequestUtil.post(Constants.BASE_PATH + "investorArtWorkView.do", paramsMap, new RongZiListCallBack() {
+                                    @Override
+                                    public void onError(Call call, Exception e) {
+                                        ToastUtil.showLong(getActivity(),"网络连接超时,稍后重试!");
+                                    }
+
+                                    @Override
+                                    public void onResponse(Map<String, Object> response) {
+                                        if ("0".equals(response.get("resultCode"))){
+                                            loadingUtil.dismiss();
+                                            Map<String, Object> object = (Map<String, Object>) response.get("object");
+                                            if (object != null) {
+                                                artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                                                        toJson(object.get("artWorkPraiseList")), new TypeToken<List<ArtWorkPraiseList>>() {
+                                                }.getType());
+
+                                                loadPraiseHeadData(artWorkPraiseList);
+                                                currentIsFollow=Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isFollowed")));
+                                                if (currentIsFollow){
+                                                    attention.setImageResource(R.mipmap.guanzhuhou);
+                                                }else {
+                                                    attention.setImageResource(R.mipmap.guanzhuqian);
+                                                }
+                                                isPraise1 = Boolean.parseBoolean(AppApplication.getSingleGson().toJson(object.get("isPraise")));
+                                                artwork = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("artWork")), Artwork.class);
+                                                deadTime = Long.parseLong(artwork.getInvestRestTime());
+                                                creatTime.setText(DateUtil.millionToNearly(artwork.getCreateDatetime()));
+                                                tv_project_name.setText(artwork.getTitle());
+                                                tv_project_brief.setText(artwork.getBrief());
+                                                tvWorksNum.setText(artwork.getAuthor().getMasterWorkNum() + "件作品");
+                                                tvFansNum.setText(artwork.getAuthor().getFansNum() + "个粉丝");
+                                                tv_price.setText("￥ " + artwork.getInvestGoalMoney() + ".00");
+                                                //tvInvestor.setText(artwork.getInvestNum() + "人投资 ");
+                                                //tvInvestMoney.setText("￥" + artwork.getInvestsMoney() + "/" + artwork.getInvestGoalMoney());
+                                                remainMoney = artwork.getInvestGoalMoney().subtract(artwork.getInvestsMoney()).intValue();
+                                                /*Message msg = Message.obtain();
+                                                msg.what = COUNT_DOWN;
+                                                handler.sendMessageDelayed(msg, 1000);*/
+                                                //deadline.setText("融资已结束");
+                                                //进度显示
+                                                progressCurrent = artwork.getInvestsMoney().doubleValue() / artwork.getInvestGoalMoney().doubleValue();
+                                                max = artwork.getInvestGoalMoney().intValue();
+                                                //isVisibleBar();
+
+                                                if (artwork.getAuthor() != null) {
+                                                    tv_name.setText(artwork.getAuthor().getName());
+                                                    tv_name2.setText(artwork.getAuthor().getName());
+                                                    AppApplication.displayImage(artwork.getAuthor().getPictureUrl(), cl_headPortrait);
+                                                    cl_headPortrait.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            Intent intent=new Intent(getActivity(),ArtistIndexActivity.class);
+                                                            intent.putExtra("name",artwork.getAuthor().getName());
+                                                            intent.putExtra("userId",artwork.getAuthor().getId());
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                            getActivity().startActivity(intent);
+                                                        }
+                                                    });
+                                                    if ("1".equals(artwork.getType())) {
+                                                        headV.setVisibility(View.VISIBLE);
+                                                    } else {
+                                                        headV.setVisibility(View.INVISIBLE);
+                                                    }
+                                                }
+                                                if (isPraise1) {
+                                                    llpraise.setBackgroundResource(R.drawable.praise_after_shape);
+                                                    praiseNum.setTextColor(Color.rgb(255, 255, 255));
+                                                } else {
+                                                    llpraise.setBackgroundResource(R.drawable.praise_shape);
+                                                    praiseNum.setTextColor(Color.rgb(199, 31, 33));
+                                                }
+                                                praiseNum.setText(artwork.getPraiseNUm() + "");
+                                                reader.setText(artwork.getViewNum() + "");
+                                                AppApplication.displayImage(artwork.getPicture_url(), imageTitle);
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
             }
         });
     }
 
-    private void isVisibleBar() {
+    /*private void isVisibleBar() {
         Point p = new Point();
         getActivity().getWindowManager().getDefaultDisplay().getSize(p);
         screenWidth = p.x;
@@ -603,7 +713,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
 
-                    if (mRoundProgressBar.getLocalVisibleRect(rect)) {/*rect.contains(ivRect)*/
+                    if (mRoundProgressBar.getLocalVisibleRect(rect)) {*//*rect.contains(ivRect)*//*
                         if (progress == 0 && progressCurrent != 0) {
                             initProgressBar((int) (progressCurrent * 100));
                         }
@@ -613,7 +723,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
 
                 } else if (event.getAction() == MotionEvent.ACTION_POINTER_UP) {
 
-                    if (mRoundProgressBar.getLocalVisibleRect(rect)) {/*rect.contains(ivRect)*/
+                    if (mRoundProgressBar.getLocalVisibleRect(rect)) {*//*rect.contains(ivRect)*//*
                         if (progress == 0) {
                             initProgressBar((int) (progressCurrent * 100));
                         }
@@ -628,9 +738,9 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
         });
 
 
-    }
+    }*/
 
-    private void initProgressBar(final int temp) {
+    /*private void initProgressBar(final int temp) {
         new Thread(new Runnable() {
 
             @Override
@@ -647,7 +757,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
                 }
             }
         }).start();
-    }
+    }*/
 
     private void loadPraiseHeadData(final List<ArtWorkPraiseList> artWorkPraiseList) {
         if (count == 0) {
@@ -771,12 +881,30 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
     private void setInvesterAdapter() {
         investorRecordCommonAdapter = new CommonAdapter<ArtworkInvest>(getActivity(), investorDatas, R.layout.investorrecord_item) {
             @Override
-            public void convert(ViewHolder helper, ArtworkInvest item) {
+            public void convert(ViewHolder helper, final ArtworkInvest item) {
                 if (item.getCreator() != null) {
                     helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
                     if (item.getCreator().getName() != null) {
                         helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
                     }
+                    helper.getView(R.id.iri_rl_all).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if ("1".equals(item.getCreator().getType())) {
+                                Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
+                                intent.putExtra("userId", item.getCreator().getId());
+                                intent.putExtra("name", item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(getActivity(), UserIndexActivity.class);
+                                intent.putExtra("userId", item.getCreator().getId());
+                                intent.putExtra("name", item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            }
+                        }
+                    });
                 }
                 helper.getView(R.id.civ_top).setVisibility(View.GONE);
                 helper.getView(R.id.cl_01_civ_pm).setVisibility(View.VISIBLE);
@@ -823,6 +951,11 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
                             investorTopDatas.addAll(investTopList);
                             investorTopAdapter.notifyDataSetChanged();
                             investTopList.clear();
+                        }
+                        if (investTopList.size()==0){
+                            iTopListview.setVisibility(View.GONE);
+                            iListview.setVisibility(View.GONE);
+                            line1.setVisibility(View.GONE);
                         }
                         if (investList != null) {
                             // loadNum5(iListview, investorDatas, investList);
@@ -872,12 +1005,30 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
     private void setInvestorTopAdapter() {
         investorTopAdapter = new CommonAdapter<ArtworkInvestTop>(getActivity(), investorTopDatas, R.layout.investorrecord_item) {
             @Override
-            public void convert(ViewHolder helper, ArtworkInvestTop item) {
+            public void convert(ViewHolder helper, final ArtworkInvestTop item) {
                 if (item.getCreator() != null) {
                     helper.setImageByUrl(R.id.iri_iv_icon, item.getCreator().getPictureUrl());
                     if (item.getCreator().getName() != null) {
                             helper.setText(R.id.iri_tv_nickname, item.getCreator().getName());
                     }
+                    helper.getView(R.id.iri_rl_all).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if ("1".equals(item.getCreator().getType())) {
+                                Intent intent = new Intent(getActivity(), ArtistIndexActivity.class);
+                                intent.putExtra("userId", item.getCreator().getId());
+                                intent.putExtra("name", item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(getActivity(), UserIndexActivity.class);
+                                intent.putExtra("userId", item.getCreator().getId());
+                                intent.putExtra("name", item.getCreator().getName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getActivity().startActivity(intent);
+                            }
+                        }
+                    });
                 }
 
                 if (helper.getPosition() == 0) {
@@ -975,30 +1126,107 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
                 commit();
                 break;
             case R.id.ib_attention:
-                if (AppApplication.gUser != null && !"".equals(AppApplication.gUser.getId())) {
-                    Intent intent1 = new Intent(getActivity(), AttentionActivity.class);
-                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent1.putExtra("userId", AppApplication.gUser.getId());
-                    intent1.putExtra("otherUserId", artwork.getAuthor().getId());
-                    if (AppApplication.gUser.getId().equals(artwork.getAuthor().getId())) {
-                        intent1.putExtra("flag", "1");
-                    } else {
-                        intent1.putExtra("flag", "2");
-                    }
+                if ("".equals(AppApplication.gUser.getId())){
+                    Intent intent1=new Intent(getActivity(),LoginActivity.class);
                     startActivity(intent1);
-                } else {
-                    Intent intent2 = new Intent(getActivity(), LoginActivity.class);
-                    intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent2);
+                    break;
                 }
-
+                if (AppApplication.gUser.getId().equals(artwork.getAuthor().getId())){
+                    attention.setVisibility(View.GONE);
+                    break;
+                }
+                if (currentIsFollow){
+                    attention.setEnabled(false);
+                    noAttention_user(attention,artwork.getAuthor().getId());
+                }else {
+                    attention.setEnabled(false);
+                    attention_user(attention,artwork.getAuthor().getId());
+                }
                 break;
             default:
                 break;
         }
 
     }
+    private void attention_user(final View v, final String followId) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("followId", followId);
+        paramsMap.put("identifier", "0");
+        paramsMap.put("followType", "1");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "changeFollowStatus.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+            }
 
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showShort(getActivity(),"关注成功");
+                    ((ImageView) v).setImageResource(R.mipmap.guanzhuhou);
+                    v.setEnabled(true);
+                    currentIsFollow=true;
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                attention_user(v,followId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+
+            }
+        });
+    }
+    private void noAttention_user(final View v, final String followId) {
+        Map<String,String> paramsMap=new HashMap<>();
+        paramsMap.put("followId", followId);
+        paramsMap.put("identifier", "1");
+        paramsMap.put("followType", "1");
+        paramsMap.put("timestamp", System.currentTimeMillis() + "");
+        try {
+            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+            paramsMap.put("signmsg", AppApplication.signmsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        NetRequestUtil.post(Constants.BASE_PATH + "changeFollowStatus.do", paramsMap, new AttentionListCallBack() {
+            @Override
+            public void onError(Call call, Exception e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Map<String, Object> response) {
+                if ("0".equals(response.get("resultCode"))){
+                    ToastUtil.showShort(getActivity(),"取消关注");
+                    ((ImageView) v).setImageResource(R.mipmap.guanzhuqian);
+                    v.setEnabled(true);
+                    currentIsFollow=false;
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                noAttention_user(v,followId);
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
+                }
+            }
+        });
+    }
     private void commit() {
         AppApplication.getSingleEditTextValidator()
                 .add(new ValidationModel(etComment, new ContentValidation()))

@@ -16,6 +16,7 @@ import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.Utils;
 import com.yxh.ryt.vo.MasterWork;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,10 +118,24 @@ public class WorksFragment extends BaseFragment {
             public void convert(ViewHolder helper, MasterWork item) {
                 helper.setText(R.id.tv_title,item.getName());
                 helper.setImageByUrl(R.id.iv_works,item.getPictureUrl());
+                if (item.getCreateYear()==null){
+                    helper.setText(R.id.tv_detail, item.getMaterial()  + "/" + judgeStaus(item.getType()));
+                }else {
+                    helper.setText(R.id.tv_detail,item.getMaterial() + "/" + item.getCreateYear() + "/" + judgeStaus(item.getType()));
+                }
             }
         };
         gridView.setAdapter(imageAdapter);
 
+    }
+    private String judgeStaus(String type){
+        if (type.equals("0")){
+            return "非卖品";
+        }else if(type.equals("1")){
+            return "可售";
+        }else {
+            return "已售";
+        }
     }
 }
 

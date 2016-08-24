@@ -16,9 +16,17 @@ public class MasterWork implements Serializable{
     private long createDatetime;//创建时间
     private UserMaster creator;//大师
     private String pictureUrl;//作品图片
-
+    private String createYear;//作品年代
     public String getId() {
         return id;
+    }
+
+    public String getCreateYear() {
+        return createYear;
+    }
+
+    public void setCreateYear(String createYear) {
+        this.createYear = createYear;
     }
 
     public void setId(String id) {

@@ -200,7 +200,11 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
                     helper.setText(R.id.clh_tv_title, item.getTitle());
                     helper.setText(R.id.clh_tv_brief, item.getBrief());
                     if (item.getAuthor() != null) {
-                        helper.setText(R.id.clh_tv_artistName, item.getAuthor().getName() + "");
+                        if (item.getAuthor().getName()==null){
+                            helper.setText(R.id.clh_tv_artistName, "");
+                        }else {
+                            helper.setText(R.id.clh_tv_artistName, item.getAuthor().getName() + "");
+                        }
                         helper.setImageByUrl(R.id.clh_cv_headerImage, item.getAuthor().getPictureUrl());
                         helper.setText(R.id.clh_tv_totalWork, item.getAuthor().getMasterWorkNum() + "件作品");
                         helper.setText(R.id.clh_tv_totalFans, item.getAuthor().getFansNum() + "个粉丝");
