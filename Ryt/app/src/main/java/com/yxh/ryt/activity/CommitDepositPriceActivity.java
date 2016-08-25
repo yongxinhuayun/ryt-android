@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,6 +17,7 @@ import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.custemview.CustomDialog;
+import com.yxh.ryt.custemview.CustomDialog1;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.SessionLogin;
@@ -40,23 +42,21 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
     private ImageView add;
     private ImageView selected;
     private TextView depositPrice;
-    private RelativeLayout address;
     private LinearLayout llAdd;
-    private TextView userName;
-    private TextView userPhone;
-    private TextView userAddress;
+
     private TextView auctionProtocol;
     private String artWorkId;
     private String userId;
     private String depositNum;
     private boolean agree = false;
     private LinearLayout ll_finish;
+    private CustomDialog1 customDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.auction_pay_pop);
+        setContentView(R.layout.auction_pay_pop1);
 
         llPay = (LinearLayout) findViewById(R.id.ll_pay);
         tvPay = (TextView) findViewById(R.id.tv_pay);
@@ -65,11 +65,6 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
         depositPrice = (TextView) findViewById(R.id.tv_price);
         auctionProtocol = (TextView) findViewById(R.id.tv_auction_protocol);
         selected = (ImageView) findViewById(R.id.iv_selected);
-        address = (RelativeLayout) findViewById(R.id.rl_address);
-        llAdd = (LinearLayout) findViewById(R.id.ll_add_address);
-        userName = (TextView) findViewById(R.id.tv_name);
-        userPhone = (TextView) findViewById(R.id.tv_phone);
-        userAddress = (TextView) findViewById(R.id.tv_address);
         ll_finish = (LinearLayout) findViewById(R.id.ll_finish);
 
         artWorkId = getIntent().getStringExtra("artWorkId");
@@ -78,11 +73,10 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
 
         selected.setOnClickListener(this);
         auctionProtocol.setOnClickListener(this);
-        address.setOnClickListener(this);
         ll_finish.setOnClickListener(this);
 
         initData(artWorkId);
-        initAddress();
+
     }
 
     //获取并加载保证金金额
@@ -117,48 +111,7 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
         });
     }
     //加载收货地址
-    private void initAddress() {
-        Map<String,String> paramsMap=new HashMap<>();
-        paramsMap.put("timestamp", System.currentTimeMillis() + "");
-        try {
-            AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
-            paramsMap.put("signmsg", AppApplication.signmsg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        NetRequestUtil.post(Constants.BASE_PATH + "listAddress.do", paramsMap, new AttentionListCallBack() {
-            @Override
-            public void onError(Call call, Exception e) {
-                e.printStackTrace();
-                System.out.println("失败了");
-                ToastUtil.showLong(CommitDepositPriceActivity.this,"网络连接超时,稍后重试!");
-            }
 
-            @Override
-            public void onResponse(Map<String, Object> response) {
-                System.out.println(response);
-                List<ConsumerAddress> addressComment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(
-                        response.get("consumerAddressList")), new TypeToken<List<ConsumerAddress>>() {}.getType());
-                if ( addressComment != null && addressComment.size() == 0) {
-                    address.setVisibility(View.INVISIBLE);
-                    llAdd.setVisibility(View.VISIBLE);
-                    add.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivity(new Intent(getApplicationContext(),ReceiverAdressActivity.class));
-                        }
-                    });
-                }else {
-                    llAdd.setVisibility(View.INVISIBLE);
-                    address.setVisibility(View.VISIBLE);
-                    userName.setText(addressComment.get(0).getConsignee());
-                    userPhone.setText(addressComment.get(0).getPhone());
-                    userAddress.setText(addressComment.get(0).getDetails());
-                }
-            }
-        });
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -231,15 +184,14 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
                     ToastUtil.showLong(CommitDepositPriceActivity.this,"投资成功!");
                     finish();
                 }else if ("100015".equals(response.get("resultCode"))){
-                    CustomDialog.Builder builder = new CustomDialog.Builder(CommitDepositPriceActivity.this);
-                    builder.setTitle("余额不足,确认要充值吗");
+                    CustomDialog1.Builder builder = new CustomDialog1.Builder(CommitDepositPriceActivity.this);
+                    builder.setTitle("余额不足,请输入充值金额");
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             Map<String,String> paramsMap=new HashMap<>();
-                            //paramsMap.put("userId", AppApplication.gUser.getId());
-                            paramsMap.put("money", price);
-                            paramsMap.put("action", "invest");
+                            paramsMap.put("money", ((EditText) customDialog.findViewById(R.id.dnl_et_money)).getText().toString());
+                            paramsMap.put("action", "account");
                             paramsMap.put("type", "1");
                             paramsMap.put("artWorkId", artWorkId);
                             paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -269,7 +221,7 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
                                             }
                                         });
                                         sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
-                                    }else {
+                                    }else if ("0".equals(response.get("resultCode"))){
                                         String url = response.get("url").toString();
                                         Intent intent=new Intent(CommitDepositPriceActivity.this,PayPageActivity.class);
                                         intent.putExtra("url",url);
@@ -285,7 +237,8 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
                                     dialog.dismiss();
                                 }
                             });
-                    CustomDialog customDialog = builder.create();
+                    customDialog = builder.create();
+
                     customDialog.setCanceledOnTouchOutside(false);
                     // 设置点击屏幕Dialog不消失
                     customDialog.show();
@@ -297,6 +250,5 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
     @Override
     protected void onResume() {
         super.onResume();
-        initAddress();
     }
 }

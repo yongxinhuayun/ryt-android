@@ -71,7 +71,7 @@ public class AuctionSummaryFragment extends BaseFragment{
 	public AuctionSummaryFragment() {
 	}
 
-	public AuctionSummaryFragment(String id) {
+	public AuctionSummaryFragment(String id, String step) {
 		this.id = id;
 	}
 

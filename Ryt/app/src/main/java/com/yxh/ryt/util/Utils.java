@@ -556,7 +556,18 @@ public class Utils {
 			return s;
 		}
 	}
-
+	public static String getJudgeDate2(long millions){
+		long currentTime= System.currentTimeMillis();
+		String s=null;
+		if ((millions-currentTime)>=1000*60*60*24){
+			s=(millions-currentTime)/1000/60/60/24+"天";
+		}else if ((millions-currentTime)>=1000*60*60){
+			s+=(millions-currentTime)/1000/60/60+"时";
+		}else if ((millions-currentTime)>=1000*60) {
+			s += (millions - currentTime) / 1000 / 60 + "分";
+		}
+		return s;
+	}
 	/**
 	 * 动态测量listview 指定item个数高度
 	 */

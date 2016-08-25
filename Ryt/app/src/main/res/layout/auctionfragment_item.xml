@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:paddingLeft="14dp"
+    android:paddingRight="14dp"
+    android:paddingBottom="32dp"
+    android:id="@+id/afi_rl_all">
+
+    <com.yxh.ryt.custemview.CircleImageView
+        android:id="@+id/fsl_ci_currentHeader"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:src="@mipmap/default_icon"/>
+    <TextView
+        android:id="@+id/fsl_tv_currentName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:textSize="15sp"
+        android:layout_gravity="center_vertical"
+        android:textColor="#000000"
+        android:text="三毛"/>
+    <TextView
+        android:id="@+id/fsl_tv_currentDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="9dp"
+        android:textSize="15sp"
+        android:layout_gravity="center_vertical"
+        android:textColor="#999999"
+        android:text="07.14 11:47:30"/>
+    <TextView
+        android:id="@+id/fsl_tv_currentNumber"
+        android:gravity="right"
+        android:layout_gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="#000000"
+        android:text="成交 ￥3600"/>
+</LinearLayout>

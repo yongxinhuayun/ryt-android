@@ -12,7 +12,7 @@
         android:orientation="vertical"
         />
     <LinearLayout
-        android:layout_gravity="bottom"
+        android:gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="尾款"
+                android:text="保证金"
                 android:textSize="@dimen/defult_font"
                 android:textColor="@android:color/black"/>
             <TextView
@@ -36,20 +36,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                android:layout_marginBottom="14dp"
                 android:text="￥100"
-                android:textSize="20sp"
+                android:textSize="@dimen/title"
                 android:textColor="@android:color/holo_red_dark"/>
         </LinearLayout>
-
-
-        <View
+        <TextView
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:textColor="#999999"
+            android:layout_marginBottom="16dp"
+            android:text="保证金将被冻结，若竞拍不成功将退回您所选的支付方式的账户中。"/>
+        <!--<View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
-            android:background="#E9E9E9"></View>
-        <RelativeLayout
+            android:background="#E9E9E9"></View>-->
+       <!-- <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
@@ -76,7 +82,7 @@
                     android:textColor="#999999"
                     />
             </LinearLayout>
-            <RelativeLayout
+           &lt;!&ndash; <RelativeLayout
                 android:id="@+id/rl_address"
                 android:layout_width="match_parent"
                 android:visibility="invisible"
@@ -121,17 +127,17 @@
                     android:src="@mipmap/arrow"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"/>
-            </RelativeLayout>
+            </RelativeLayout>&ndash;&gt;
 
 
-        </RelativeLayout>
+        </RelativeLayout>-->
 
-        <View
+        <!--<View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
-            android:background="#E9E9E9"></View>
+            android:background="#E9E9E9"></View>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -183,7 +189,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="确认支付"
+                android:text="提交保证金"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/defult_font" />
         </LinearLayout>

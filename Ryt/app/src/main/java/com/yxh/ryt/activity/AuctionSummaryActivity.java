@@ -35,6 +35,7 @@ import com.yxh.ryt.adapter.AuctionSummaryPageIndicatorAdapter;
 import com.yxh.ryt.callback.AttentionListCallBack;
 import com.yxh.ryt.custemview.CustomDialog;
 import com.yxh.ryt.fragment.AuctionSummaryFragment;
+import com.yxh.ryt.fragment.AuctionSummaryFragment1;
 import com.yxh.ryt.fragment.BaseFragment;
 import com.yxh.ryt.fragment.CAndAProjectFragment;
 import com.yxh.ryt.fragment.RZDetailFragment;
@@ -129,8 +130,9 @@ public class AuctionSummaryActivity extends BaseActivity implements View.OnClick
         id = getIntent().getStringExtra("id");
         userId = getIntent().getStringExtra("userId");
         name = getIntent().getStringExtra("title");
+        String step = getIntent().getStringExtra("step");
         top.setText(name);
-        csFragments.add(new AuctionSummaryFragment(id));
+        csFragments.add(new AuctionSummaryFragment1(id,step));
         csFragments.add(new CAndAProjectFragment(id));
         csFragments.add(new RZDetailFragment(id));
         csAdapter = new AuctionSummaryPageIndicatorAdapter(this.getSupportFragmentManager(),csFragments);

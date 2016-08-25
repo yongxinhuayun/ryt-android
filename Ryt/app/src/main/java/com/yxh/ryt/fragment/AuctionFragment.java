@@ -423,6 +423,7 @@ public class AuctionFragment extends BaseFragment implements AutoListView.OnRefr
 			intent.putExtra("title", rongZiDatas.get(position-1).getTitle());
 			intent.putExtra("name", rongZiDatas.get(position-1).getAuthor().getName());
 			intent.putExtra("userId", rongZiDatas.get(position-1).getAuthor().getId());
+			intent.putExtra("step", rongZiDatas.get(position-1).getStep());
 			startActivity(intent);
 		}
 	}
