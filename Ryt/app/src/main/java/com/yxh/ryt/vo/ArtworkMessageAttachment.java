@@ -1,13 +1,12 @@
 package com.yxh.ryt.vo;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class ArtworkMessageAttachment implements Serializable{//项目和动态附件
     private String id;
     private ArtworkMessage artworkMessage;
-    private String FileUri;
-    private String FileType;
+    private String fileUri;
+    private String fileType; //0图片，1视频
 
     public String getId() {
         return id;
@@ -26,19 +25,19 @@ public class ArtworkMessageAttachment implements Serializable{//项目和动态�
     }
 
     public String getFileUri() {
-        return FileUri;
+        return fileUri;
     }
 
     public void setFileUri(String fileUri) {
-        FileUri = fileUri;
+        fileUri = fileUri;
     }
 
     public String getFileType() {
-        return FileType;
+        return fileType;
     }
 
     public void setFileType(String fileType) {
-        FileType = fileType;
+        fileType = fileType;
     }
 }
 

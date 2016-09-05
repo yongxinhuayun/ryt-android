@@ -1,19 +1,43 @@
 package com.yxh.ryt.vo;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 public class ArtworkMessage implements Serializable{//项目动态
+
     private String id;
     private String content;
     private User creator;
-    private Date createDatetime;
+    private long  createDatetime;
     private Artwork artwork;
     private String status;
     private List<ArtworkMessageAttachment> artworkMessageAttachments;
     private List<ArtWorkPraise> artWorkPraiseList; //点赞
     private List<ArtworkComment> artworkCommentList;//评论
+    private Integer commentNum = 0;//评论数
+    private Integer praiseNum = 0; //点赞数
+    private String praiseIsOrNot;//0是；1否
+
+    public void setCommentNum(Integer commentNum) {
+        this.commentNum = commentNum;
+    }
+    public Integer getCommentNum() {
+        return commentNum;
+    }
+    public Integer getPraiseNum() {
+        return praiseNum;
+    }
+    public void setPraiseNum(Integer praiseNum) {
+        this.praiseNum = praiseNum;
+    }
+
+    public String getPraiseIsOrNot() {
+        return praiseIsOrNot;
+    }
+
+    public void setPraiseIsOrNot(String praiseIsOrNot) {
+        this.praiseIsOrNot = praiseIsOrNot;
+    }
 
     public String getId() {
         return id;
@@ -39,11 +63,11 @@ public class ArtworkMessage implements Serializable{//项目动态
         this.creator = creator;
     }
 
-    public Date getCreateDatetime() {
+    public long getCreateDatetime() {
         return createDatetime;
     }
 
-    public void setCreateDatetime(Date createDatetime) {
+    public void setCreateDatetime(long createDatetime) {
         this.createDatetime = createDatetime;
     }
 

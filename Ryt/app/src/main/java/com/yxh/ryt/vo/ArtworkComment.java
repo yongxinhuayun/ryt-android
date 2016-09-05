@@ -1,7 +1,6 @@
 package com.yxh.ryt.vo;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ public class ArtworkComment implements Serializable{
     private String isWatch;
     private ArtworkComment fatherComment;
     private List<ArtworkComment> subComment;
-
+/*
     public ArtworkComment(String id, Artwork artwork, String content, User creator, long createDatetime, String isWatch, String status, ArtworkComment fatherComment, List<ArtworkComment> subComment) {
         this.id = id;
         this.artwork = artwork;
@@ -28,7 +27,7 @@ public class ArtworkComment implements Serializable{
         this.status = status;
         this.fatherComment = fatherComment;
         this.subComment = subComment;
-    }
+    }*/
 
     public String getId() {
         return id;

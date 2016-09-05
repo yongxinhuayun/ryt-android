@@ -26,15 +26,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="#676767"/>
+                android:textColor="#676767"
+                android:text="下拉刷新"/>
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/lastUpdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#676767"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:text="2016"/>-->
         </LinearLayout>
         <ProgressBar
             android:id="@+id/refreshing"

@@ -1,8 +1,6 @@
 package com.yxh.ryt.vo;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 
 
 public class ArtWorkPraise implements Serializable{
@@ -13,7 +11,7 @@ public class ArtWorkPraise implements Serializable{
 
     private User user;//点赞用户
 
-    private Date createDateTime;//点赞时间
+    private long  createDateTime;//点赞时间
 
     private String status;// 0 删除  1使用
 
@@ -43,11 +41,11 @@ public class ArtWorkPraise implements Serializable{
         this.user = user;
     }
 
-    public Date getCreateDateTime() {
+    public long getCreateDateTime() {
         return createDateTime;
     }
 
-    public void setCreateDateTime(Date createDateTime) {
+    public void setCreateDateTime(long createDateTime) {
         this.createDateTime = createDateTime;
     }
 

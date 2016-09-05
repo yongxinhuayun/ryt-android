@@ -11,6 +11,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.1"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -34,17 +35,24 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile files('src/main/libs/jpush-android-2.1.0.jar')
     compile project(':multi-image-selector')
-    compile files('src/main/libs/nineoldandroids.jar')
+    //compile files('src/main/libs/nineoldandroids.jar')
     compile project(':mylibrary')
     compile 'in.srain.cube:ultra-ptr:1.0.11'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile 'com.mylhyl:acp:1.0.0'
     compile 'com.google.code.gson:gson:2.2.4'
-
-
     compile 'com.android.support:design:23.0.0'
     compile('com.kevin:crop:1.0.2') {
         // 如果已经引入 support:appcompat-v7 可以加上这句话
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
+    compile 'com.malinskiy:superrecyclerview:1.1.3'
+    compile 'com.mikhaellopez:circularprogressbar:1.1.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile('com.github.bumptech.glide:okhttp3-integration:1.4.0') {
+        exclude group: 'glide-parent'
+    }
+    //debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    compile 'com.github.chrisbanes.photoview:library:1.2.4'
 }

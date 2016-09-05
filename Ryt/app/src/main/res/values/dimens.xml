@@ -25,4 +25,8 @@
     //注释字体
     <dimen name="little_font">12sp</dimen>title
 
+    //朋友圈
+    <dimen name="gudieview_width">6dp</dimen>
+    <dimen name="gudieview_heigh">6dp</dimen>
+
 </resources>

@@ -44,7 +44,6 @@ public class AutoListView extends ListView implements OnScrollListener {
 	private View header;
 	private View footer;
 	private TextView tip;
-	private TextView lastUpdate;
 	private ImageView arrow;
 	private ProgressBar refreshing;
 
@@ -143,7 +142,6 @@ public class AutoListView extends ListView implements OnScrollListener {
 		header = inflater.inflate(R.layout.pull_to_refresh_header, null);
 		arrow = (ImageView) header.findViewById(R.id.arrow);
 		tip = (TextView) header.findViewById(R.id.tip);
-		lastUpdate = (TextView) header.findViewById(R.id.lastUpdate);
 		refreshing = (ProgressBar) header.findViewById(R.id.refreshing);
 
 		// 为listview添加头部和尾部，并进行初始化
@@ -170,8 +168,6 @@ public class AutoListView extends ListView implements OnScrollListener {
 	}
 
 	public void onRefreshComplete(String updateTime) {
-		lastUpdate.setText(this.getContext().getString(R.string.lastUpdateTime,
-				Utils.getCurrentTime()));
 		state = NONE;
 		refreshHeaderViewByState();
 	}
@@ -335,7 +331,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 			case PULL:
 				arrow.setVisibility(View.VISIBLE);
 				tip.setVisibility(View.VISIBLE);
-				lastUpdate.setVisibility(View.VISIBLE);
+				//lastUpdate.setVisibility(View.VISIBLE);
 				refreshing.setVisibility(View.INVISIBLE);
 				tip.setText(R.string.pull_to_refresh);
 				//arrow.clearAnimation();
@@ -345,7 +341,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 			case RELEASE:
 				arrow.setVisibility(View.VISIBLE);
 				tip.setVisibility(View.VISIBLE);
-				lastUpdate.setVisibility(View.VISIBLE);
+				//lastUpdate.setVisibility(View.VISIBLE);
 				refreshing.setVisibility(View.INVISIBLE);
 				tip.setText(R.string.release_to_refresh);
 				//arrow.clearAnimation();
@@ -359,7 +355,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 				arrow.setVisibility(View.INVISIBLE);
 				tip.setVisibility(View.VISIBLE);
 				tip.setText("正在刷新");
-				lastUpdate.setVisibility(View.VISIBLE);
+				//lastUpdate.setVisibility(View.VISIBLE);
 				break;
 		}
 	}

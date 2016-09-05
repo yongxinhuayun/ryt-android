@@ -16,8 +16,6 @@
 
 package com.yxh.ryt.custemview.refreash;
 
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -42,6 +40,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yxh.ryt.R;
+
+import java.util.Locale;
 
 public class PagerSlidingTabStrip extends HorizontalScrollView implements OnPageChangeListener {
 
@@ -105,6 +105,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView implements OnPage
 		this(context, attrs, 0);
 	}
 
+	@SuppressWarnings("ResourceType")
 	public PagerSlidingTabStrip(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 
