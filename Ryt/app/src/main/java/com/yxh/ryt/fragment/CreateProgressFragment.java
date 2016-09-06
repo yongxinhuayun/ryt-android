@@ -28,7 +28,6 @@ import com.yxh.ryt.R;
 import com.yxh.ryt.activity.BaseActivity;
 import com.yxh.ryt.activity.CreateSummaryActivity;
 import com.yxh.ryt.adapter.circledemoadapter.CircleAdapter;
-import com.yxh.ryt.bean.CircleItem;
 import com.yxh.ryt.custemview.OnMoreListener;
 import com.yxh.ryt.custemview.SuperRecyclerView;
 import com.yxh.ryt.custemview.SuperSwipeRefreshLayout;

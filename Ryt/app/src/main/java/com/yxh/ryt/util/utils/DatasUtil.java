@@ -1,10 +1,8 @@
 package com.yxh.ryt.util.utils;
 
 
-import com.yxh.ryt.bean.CircleItem;
 import com.yxh.ryt.bean.CommentItem;
 import com.yxh.ryt.bean.FavortItem;
-import com.yxh.ryt.bean.User;
 
 import java.util.ArrayList;
 import java.util.List;
