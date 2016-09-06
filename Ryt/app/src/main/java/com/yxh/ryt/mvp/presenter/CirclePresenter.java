@@ -1,6 +1,5 @@
 package com.yxh.ryt.mvp.presenter;
 
-import android.util.Log;
 import android.view.View;
 
 import com.yxh.ryt.listener.IDataRequestListener;
@@ -36,14 +35,13 @@ public class CirclePresenter implements CircleContract.Presenter {
         this.view = view;
     }
 
-    public void loadData(String str, final int loadType) {
+    public void loadData(int pageNum, String str, final int loadType) {
 
         //List<CircleItem> datas = DatasUtil.createCircleDatas(str);
 
-        circleModel.loadData(new IDataRequestListener() {
+        circleModel.loadData(pageNum, new IDataRequestListener() {
             @Override
             public void loadSuccess(Object circleDatas) {
-                Log.e("....kjdlkfjslkdjflsd.", "hahahahahahahahah");
                 /*if (view != null) {
                 }*/
                 view.update2loadData(loadType, (List<ArtworkMessage>) circleDatas);
@@ -63,8 +61,8 @@ public class CirclePresenter implements CircleContract.Presenter {
      * @Title: deleteCircle
      * @Description: 删除动态
      */
-    public void deleteCircle(final String circleId) {
-        circleModel.deleteCircle(new IDataRequestListener() {
+    public void deleteCircle(int pageNum, final String circleId) {
+        circleModel.deleteCircle(pageNum, new IDataRequestListener() {
 
             @Override
             public void loadSuccess(Object object) {
@@ -127,32 +125,49 @@ public class CirclePresenter implements CircleContract.Presenter {
         if (config == null) {
             return;
         }
-        circleModel.addComment(content, artworkMessage,new IDataRequestListener() {
 
-            @Override
-            public void loadSuccess(Object comment) {
+        if (config.commentType == CommentConfig.Type.PUBLIC) {
+            circleModel.addComment(content, artworkMessage,new IDataRequestListener() {
+
+                @Override
+                public void loadSuccess(Object comment) {
               /*  CommentItem newItem = null;
                 if (config.commentType == CommentConfig.Type.PUBLIC) {
                     newItem = DatasUtil.createPublicComment(content);
                 } else if (config.commentType == CommentConfig.Type.REPLY) {
                     newItem = DatasUtil.createReplyComment(config.replyUser, content);
                 } */
-                ArtworkComment newItem = null;
-                if (config.commentType == CommentConfig.Type.PUBLIC) {
-                    newItem = (ArtworkComment) comment;
-                } else if (config.commentType == CommentConfig.Type.REPLY) {
-                    newItem = ((ArtworkComment)comment).getFatherComment();
+                  /*  else if (config.commentType == CommentConfig.Type.REPLY) {
+                        newItem = (ArtworkComment) comment;
+                    }*/
+                    ArtworkComment newItem = (ArtworkComment) comment;
+                    if (view != null) {
+                        view.update2AddComment(config.circlePosition, (ArtworkComment) comment);
+                    }
+
+
+
                 }
 
-                        if (view != null) {
-                            view.update2AddComment(config.circlePosition, (ArtworkComment) comment);
-                        }
+            });
+
+        }else if (config.commentType == CommentConfig.Type.REPLY) {
+            circleModel.addReplyComment(content, artworkMessage, config, new IDataRequestListener() {
+
+                @Override
+                public void loadSuccess(Object replyComment) {
+                    ArtworkComment newItem = (ArtworkComment) replyComment;
+                    if (view != null) {
+                        view.update2AddComment(config.circlePosition, (ArtworkComment) replyComment);
+                    }
 
 
 
-            }
+                }
 
-        });
+            });
+        }
+
     }
 
     /**
@@ -163,7 +178,7 @@ public class CirclePresenter implements CircleContract.Presenter {
      * @Title: deleteComment
      * @Description: 删除评论
      */
-    public void deleteComment(final int circlePosition, final String commentId) {
+   /* public void deleteComment(final int circlePosition, final String commentId) {
         circleModel.deleteComment(new IDataRequestListener() {
 
             @Override
@@ -175,7 +190,7 @@ public class CirclePresenter implements CircleContract.Presenter {
 
         });
     }
-
+*/
     /**
      * @param commentConfig
      */

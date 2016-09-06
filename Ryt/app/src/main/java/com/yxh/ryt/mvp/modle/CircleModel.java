@@ -12,6 +12,7 @@ import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.vo.ArtWorkPraise;
 import com.yxh.ryt.vo.ArtworkComment;
 import com.yxh.ryt.vo.ArtworkMessage;
+import com.yxh.ryt.vo.CommentConfig;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,12 +37,12 @@ public class CircleModel {
 		this.artWorkId = artWorkId;
 	}
 
-	public void loadData(final IDataRequestListener listener){
-		requestServer(listener);
+	public void loadData(int pageNum, final IDataRequestListener listener){
+		requestServer(pageNum, listener);
 	}
 	
-	public void deleteCircle( final IDataRequestListener listener) {
-		requestServer(listener);
+	public void deleteCircle(int pageNum, final IDataRequestListener listener) {
+		requestServer(pageNum, listener);
 	}
 
 	public void addFavort(ArtworkMessage artworkMessage, int circlePosition, final IDataRequestListener listener) {
@@ -154,10 +155,48 @@ public class CircleModel {
 		});
 	}
 
-	public void deleteComment( final IDataRequestListener listener) {
+	public void addReplyComment(final String content, ArtworkMessage artworkMessage, final CommentConfig config, final IDataRequestListener listener) {
+		requestAddReplyComment(content, artworkMessage, config, listener);
+	}
+
+	private void requestAddReplyComment(String content, ArtworkMessage artworkMessage, final CommentConfig config, final IDataRequestListener listener) {
+		Map<String,String> paramsMap=new HashMap<>();
+		paramsMap.put("artworkId",artWorkId);
+		paramsMap.put("currentUserId", AppApplication.gUser.getId());
+		paramsMap.put("content", content);
+		paramsMap.put("messageId", artworkMessage.getId() + "");
+		paramsMap.put("fatherCommentId", artworkMessage.getArtworkCommentList().get(config.commentPosition).getId() + "");
+		paramsMap.put("timestamp", System.currentTimeMillis() + "");
+		try {
+			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);
+			paramsMap.put("signmsg", AppApplication.signmsg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		NetRequestUtil.post(Constants.BASE_PATH + "artworkComment.do", paramsMap, new RZCommentCallBack() {
+			@Override
+			public void onError(Call call, Exception e) {
+				e.printStackTrace();
+				System.out.println("失败了");
+			}
+
+			@Override
+			public void onResponse(Map<String, Object> response) {
+				if ("0".equals(response.get("resultCode"))) {
+
+					ArtworkComment comment = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("artworkComment")), ArtworkComment.class);
+
+					listener.loadSuccess(comment);
+				}
+
+			}
+		});
+	}
+
+	/*public void deleteComment(final IDataRequestListener listener) {
 		requestServer(listener);
 	}
-	
+	*/
 	/**
 	 * 
 	* @Title: requestServer 
@@ -166,7 +205,7 @@ public class CircleModel {
 	* @return void    返回类型 
 	* @throws
 	 */
-	private void requestServer(final IDataRequestListener listener) {
+	private void requestServer(int pageNum, final IDataRequestListener listener) {
 		/*new AsyncTask<Object, Integer, Object>(){
 			@Override
 			protected Object doInBackground(Object... params) {
@@ -182,7 +221,7 @@ public class CircleModel {
 		Map<String,String> paramsMap=new HashMap<>();
 		paramsMap.put("artWorkId",artWorkId);
 		paramsMap.put("pageSize", Constants.pageSize+"");
-		paramsMap.put("pageIndex", "1");
+		paramsMap.put("pageIndex", pageNum + "");
 		paramsMap.put("timestamp", System.currentTimeMillis() + "");
 		try {
 			AppApplication.signmsg= EncryptUtil.encrypt(paramsMap);

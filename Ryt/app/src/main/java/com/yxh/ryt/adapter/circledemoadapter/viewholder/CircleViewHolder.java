@@ -46,6 +46,9 @@ public abstract class CircleViewHolder extends RecyclerView.ViewHolder implement
     public CommentListView commentList;
     // ===========================
     public SnsPopupWindow snsPopupWindow;
+    public TextView timeDay;
+    public TextView timeMonth;
+    public TextView timeToday;
 
     public CircleViewHolder(View itemView, int viewType) {
         super(itemView);
@@ -60,6 +63,9 @@ public abstract class CircleViewHolder extends RecyclerView.ViewHolder implement
         contentTv = (ExpandTextView) itemView.findViewById(R.id.contentTv);
         urlTipTv = (TextView) itemView.findViewById(R.id.urlTipTv);
         timeTv = (TextView) itemView.findViewById(R.id.timeTv);
+        timeDay = (TextView) itemView.findViewById(R.id.tv_day);
+        timeMonth = (TextView) itemView.findViewById(R.id.tv_month);
+        timeToday = (TextView) itemView.findViewById(R.id.tv_today);
         deleteBtn = (TextView) itemView.findViewById(R.id.deleteBtn);
         snsBtn = (ImageView) itemView.findViewById(R.id.snsBtn);
         praiseListView = (PraiseListView) itemView.findViewById(R.id.praiseListView);

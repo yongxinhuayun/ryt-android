@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -121,18 +122,18 @@ public class CommentListView extends LinearLayout {
         String name = bean.getCreator().getName();
         String id = bean.getId();
         String toReplyName = "";
-        /*if (bean.get() != null) {
-            toReplyName = bean.getToReplyUser().getName();
-        }*/
+        if (bean.getFatherComment()!= null) {
+            toReplyName = bean.getFatherComment().getCreator().getName();
+        }
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
         builder.append(setClickableSpan(name, bean.getCreator().getId()));
 
-       /* if (!TextUtils.isEmpty(toReplyName)) {
+        if (!TextUtils.isEmpty(toReplyName)) {
 
             builder.append(" 回复 ");
-            builder.append(setClickableSpan(toReplyName, bean.getToReplyUser().getId()));
-        }*/
+            builder.append(setClickableSpan(toReplyName, bean.getCreator().getId()));
+        }
         builder.append(": ");
         //转换表情字符
         String contentBodyStr = bean.getContent();

@@ -88,9 +88,9 @@ public class CommentDialog extends Dialog implements
 			dismiss();
 			break;
 		case R.id.deleteTv:
-			if (mPresenter != null && mCommentItem != null) {
+			/*if (mPresenter != null && mCommentItem != null) {
 				mPresenter.deleteComment(mCirclePosition, mCommentItem.getId());
-			}
+			}*/
 			dismiss();
 			break;
 		default:

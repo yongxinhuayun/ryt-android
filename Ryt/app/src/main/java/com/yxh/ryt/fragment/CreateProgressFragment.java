@@ -29,7 +29,6 @@ import com.yxh.ryt.activity.BaseActivity;
 import com.yxh.ryt.activity.CreateSummaryActivity;
 import com.yxh.ryt.adapter.circledemoadapter.CircleAdapter;
 import com.yxh.ryt.bean.CircleItem;
-import com.yxh.ryt.bean.CommentItem;
 import com.yxh.ryt.custemview.OnMoreListener;
 import com.yxh.ryt.custemview.SuperRecyclerView;
 import com.yxh.ryt.custemview.SuperSwipeRefreshLayout;
@@ -51,6 +50,7 @@ import java.util.List;
 
 public class CreateProgressFragment extends BaseFragment implements CircleContract.View {
     protected static final String TAG = AppApplication.getSingleContext().getClass().getSimpleName();
+    private int pageNum = 1;
     private CircleAdapter circleAdapter;
     private LinearLayout edittextbody;
     private EditText editText;
@@ -85,6 +85,7 @@ public class CreateProgressFragment extends BaseFragment implements CircleContra
     private String name;
     private String picUrl;
     private ArtworkMessage artworkMessage;
+    private int lastVisibleItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,7 +106,7 @@ public class CreateProgressFragment extends BaseFragment implements CircleContra
         bodyLayout = (RelativeLayout) contextView.findViewById(R.id.bodyLayout);
         presenter = new CirclePresenter(this, artWorkId);
         initView();
-        presenter.loadData(artWorkId, TYPE_PULLREFRESH);
+        presenter.loadData(1, artWorkId, TYPE_PULLREFRESH);
 
         return contextView;
     }
@@ -154,7 +155,7 @@ public class CreateProgressFragment extends BaseFragment implements CircleContra
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        presenter.loadData(artWorkId, TYPE_PULLREFRESH);
+                        presenter.loadData(1, artWorkId, TYPE_PULLREFRESH);
                         recyclerView.setRefreshing(false);
                         mPtrLayout.setRefreshing(false);
                         progressBar.setVisibility(View.GONE);
@@ -385,7 +386,7 @@ public class CreateProgressFragment extends BaseFragment implements CircleContra
         //清空评论文本
         editText.setText("");
     }
-
+/*
     @Override
     public void update2DeleteComment(int circlePosition, String commentId) {
         CircleItem item = (CircleItem) circleAdapter.getDatas().get(circlePosition);
@@ -398,7 +399,7 @@ public class CreateProgressFragment extends BaseFragment implements CircleContra
                 return;
             }
         }
-    }
+    }*/
 
     @Override
     public void updateEditTextBodyVisible(int visibility, CommentConfig commentConfig, ArtworkMessage artworkMessage) {
@@ -429,7 +430,7 @@ public class CreateProgressFragment extends BaseFragment implements CircleContra
         }
         circleAdapter.notifyDataSetChanged();
 
-        if(circleAdapter.getDatas().size()<45 + CircleAdapter.HEADVIEW_SIZE){
+        if(circleAdapter.getDatas().size()<datas.size()){
             recyclerView.setupMoreListener(new OnMoreListener() {
                 @Override
                 public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
@@ -437,7 +438,7 @@ public class CreateProgressFragment extends BaseFragment implements CircleContra
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            presenter.loadData(artWorkId, TYPE_UPLOADREFRESH);
+                            presenter.loadData(pageNum++, artWorkId, TYPE_UPLOADREFRESH);
                         }
                     }, 2000);
 

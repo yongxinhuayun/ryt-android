@@ -30,9 +30,10 @@ import com.yxh.ryt.widgets.CommentListView;
 import com.yxh.ryt.widgets.MultiImageView;
 import com.yxh.ryt.widgets.PraiseListView;
 import com.yxh.ryt.widgets.SnsPopupWindow;
-import com.yxh.ryt.widgets.dialog.CommentDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,7 +63,7 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
         this.presenter = presenter;
     }
 
-    public CircleAdapter(Context context,String name,String picUrl) {
+    public CircleAdapter(Context context, String name, String picUrl) {
         this.picUrl = picUrl;
         this.context = context;
         this.name = name;
@@ -116,7 +117,7 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
         if (getItemViewType(position) == TYPE_HEAD) {
             HeaderViewHolder holder = (HeaderViewHolder) viewHolder;
             holder.title.setText(name);
-            AppApplication.displayImage(picUrl,holder.headPic);
+            AppApplication.displayImage(picUrl, holder.headPic);
 
         } else {
             final int circlePosition = position - HEADVIEW_SIZE;
@@ -125,6 +126,7 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
             final String circleId = artworkMessage.getId();
             final String content = artworkMessage.getContent();
             String createTime = DateUtil.millionToNearly(artworkMessage.getCreateDatetime());
+            long createDatetime = artworkMessage.getCreateDatetime();
             final List<ArtWorkPraise> favortDatas = artworkMessage.getArtWorkPraiseList();
             final List<ArtworkComment> commentsDatas = artworkMessage.getArtworkCommentList();
             hasFavort = favortDatas.size();
@@ -133,7 +135,10 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
             // Glide.with(context).load(headImg).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.color.bg_no_photo).transform(new GlideCircleTransform(context)).into(holder.headIv);
 
             //holder.nameTv.setText(name);
-             holder.timeTv.setText(createTime);
+            //初始化时间轴
+            iniTime(holder.timeToday, holder.timeDay, holder.timeMonth, createDatetime);
+
+            holder.timeTv.setText(createTime);
 
             if (!TextUtils.isEmpty(content)) {
                 holder.contentTv.setText(UrlUtils.formatUrlString(content));
@@ -145,7 +150,7 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
             } else {
                 holder.deleteBtn.setVisibility(View.GONE);
             }
-            holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+          /*  holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //删除
@@ -153,7 +158,7 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
                         presenter.deleteCircle(circleId);
                     }
                 }
-            });
+            });*/
             if (hasFavort != 0 || hasComment != 0) {
                 if (hasFavort != 0) {//处理点赞列表
                     holder.praiseListView.setOnItemClickListener(new PraiseListView.OnItemClickListener() {
@@ -180,21 +185,22 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
                                 CommentDialog dialog = new CommentDialog(context, presenter, commentItem, circlePosition);
                                 dialog.show();*/
                            /* } else {//回复别人的评论*/
-                                if(presenter != null){
-                                    CommentConfig config = new CommentConfig();
-                                    config.circlePosition = circlePosition;
-                                    config.commentPosition = commentPosition;
-                                    config.commentType = CommentConfig.Type.REPLY;
-                                    if ( commentItem.getFatherComment()!= null){
-                                    config.replyUser = commentItem.getFatherComment().getCreator();}else {
-                                        config.replyUser = commentItem.getCreator();
-                                    }
-                                    presenter.showEditTextBody(config,artworkMessage);
+                            if (presenter != null) {
+                                CommentConfig config = new CommentConfig();
+                                config.circlePosition = circlePosition;
+                                config.commentPosition = commentPosition;
+                                config.commentType = CommentConfig.Type.REPLY;
+                                if (commentItem.getFatherComment() != null) {
+                                    config.replyUser = commentItem.getFatherComment().getCreator();
+                                } else {
+                                    config.replyUser = commentItem.getCreator();
+                                }
+                                presenter.showEditTextBody(config, artworkMessage);
 //                                }
                             }
                         }
                     });
-                    holder.commentList.setOnItemLongClickListener(new CommentListView.OnItemLongClickListener() {
+        /*            holder.commentList.setOnItemLongClickListener(new CommentListView.OnItemLongClickListener() {
                         @Override
                         public void onItemLongClick(int commentPosition) {
                             //长按进行复制或者删除
@@ -202,7 +208,7 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
                             CommentDialog dialog = new CommentDialog(context, presenter, commentItem, circlePosition);
                             dialog.show();
                         }
-                    });
+                    });*/
                     holder.commentList.setDatas(commentsDatas);
                     holder.commentList.setVisibility(View.VISIBLE);
 
@@ -218,12 +224,12 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
 
             final SnsPopupWindow snsPopupWindow = holder.snsPopupWindow;
             //判断是否已点赞
-            String curUserFavortId = getCurUserFavortId(artworkMessage.getArtWorkPraiseList(),AppApplication.gUser.getId());
-                if (!TextUtils.isEmpty(curUserFavortId)) {
-                    snsPopupWindow.getmActionItems().get(0).mTitle = "取消";
-                } else {
-                    snsPopupWindow.getmActionItems().get(0).mTitle = "赞";
-                }
+            String curUserFavortId = getCurUserFavortId(artworkMessage.getArtWorkPraiseList(), AppApplication.gUser.getId());
+            if (!TextUtils.isEmpty(curUserFavortId)) {
+                snsPopupWindow.getmActionItems().get(0).mTitle = "取消";
+            } else {
+                snsPopupWindow.getmActionItems().get(0).mTitle = "赞";
+            }
 
             snsPopupWindow.update();
             snsPopupWindow.setmItemClickListener(new PopupItemClickListener(circlePosition, artworkMessage,
@@ -232,7 +238,7 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
                 @Override
                 public void onClick(View view) {
                     //弹出popupwindow
-                    snsPopupWindow.showPopupWindow(view,artworkMessage);
+                    snsPopupWindow.showPopupWindow(view, artworkMessage);
                 }
             });
 
@@ -273,11 +279,11 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
 
                     break;
                 case CircleViewHolder.TYPE_VIDEO:
-                    if(holder instanceof VideoViewHolder){
-                        ((VideoViewHolder)holder).videoView.setVideoUrl(artworkMessage.getArtworkMessageAttachments().get(0).getFileUri());
-                       // ((VideoViewHolder)holder).videoView.setVideoImgUrl(circleItem.getVideoImgUrl());//视频封面图片
-                        ((VideoViewHolder)holder).videoView.setPostion(position);
-                        ((VideoViewHolder)holder).videoView.setOnPlayClickListener(new CircleVideoView.OnPlayClickListener() {
+                    if (holder instanceof VideoViewHolder) {
+                        ((VideoViewHolder) holder).videoView.setVideoUrl(artworkMessage.getArtworkMessageAttachments().get(0).getFileUri());
+                        // ((VideoViewHolder)holder).videoView.setVideoImgUrl(circleItem.getVideoImgUrl());//视频封面图片
+                        ((VideoViewHolder) holder).videoView.setPostion(position);
+                        ((VideoViewHolder) holder).videoView.setOnPlayClickListener(new CircleVideoView.OnPlayClickListener() {
                             @Override
                             public void onPlayClick(int pos) {
                                 curPlayIndex = pos;
@@ -290,6 +296,45 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
                     break;
             }
         }
+    }
+
+    private void iniTime(TextView to, TextView d, TextView m, long ts) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(ts));
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTime(new Date(System.currentTimeMillis()));
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        int curYear = calendar2.get(Calendar.YEAR);
+        int curMonth = calendar2.get(Calendar.MONTH) + 1;
+        int curDay = calendar2.get(Calendar.DAY_OF_MONTH);
+
+        if (curYear == year && curMonth == month && curDay == day) {
+            to.setVisibility(View.VISIBLE);
+            d.setVisibility(View.INVISIBLE);
+            m.setVisibility(View.INVISIBLE);
+            to.setText("今天");
+        }else if (curYear == year && curMonth == month && curDay == (day + 1)) {
+            to.setVisibility(View.VISIBLE);
+            d.setVisibility(View.INVISIBLE);
+            m.setVisibility(View.INVISIBLE);
+            to.setText("昨天");
+        }else {
+            if (0 < day && day < 10) {
+                d.setText("0" + day + "");
+            } else {
+                d.setText(day + "");
+            }
+            if (0 < month && month < 10) {
+                m.setText("0" + month + "");
+            } else {
+                m.setText(month + "月");
+            }
+        }
+
     }
 
     @Override
@@ -353,11 +398,12 @@ public class CircleAdapter extends BaseRecycleViewAdapter {
             }
         }
     }
-    public String getCurUserFavortId(List<ArtWorkPraise> artWorkPraise, String curUserId){
+
+    public String getCurUserFavortId(List<ArtWorkPraise> artWorkPraise, String curUserId) {
         String favortid = "";
-        if(!TextUtils.isEmpty(curUserId) && hasFavort != 0){
-            for(ArtWorkPraise item : artWorkPraise){
-                if(curUserId.equals(item.getUser().getId())){
+        if (!TextUtils.isEmpty(curUserId) && hasFavort != 0) {
+            for (ArtWorkPraise item : artWorkPraise) {
+                if (curUserId.equals(item.getUser().getId())) {
                     favortid = item.getId();
                     return favortid;
                 }
