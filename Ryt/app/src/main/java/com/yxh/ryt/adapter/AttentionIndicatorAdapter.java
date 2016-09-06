@@ -12,7 +12,7 @@ import com.yxh.ryt.fragment.BaseFragment;
 import java.util.List;
 
 /**
- * Created by 吴洪杰 on 2016/4/5.
+ *
  */
 public class AttentionIndicatorAdapter extends FragmentPagerAdapter {
 

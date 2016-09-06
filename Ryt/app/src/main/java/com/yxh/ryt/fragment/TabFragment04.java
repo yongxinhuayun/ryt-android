@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yxh.ryt.AppApplication;
@@ -52,6 +53,8 @@ public class TabFragment04 extends BaseFragment {
     TextView btnLf;
     @Bind(R.id.tv_top_ct)
     TextView topName;
+    @Bind(R.id.rl_user_project)
+    RelativeLayout myProject;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -198,7 +201,11 @@ public class TabFragment04 extends BaseFragment {
                         int a =(int)sa;
                         tvUserHeaderGzNum.setText(a+"");*/
                         if (user != null) {
-                            if ("2".equals(user.getType()) &&null!=btnLf) {
+                            AppApplication.displayImage(user.getPictureUrl(),rsIvHeadPortrait);
+                            //AppApplication.displayImage(AppApplication.gUser.getPictureUrl(),rsIvHeadPortrait);
+                            tvUserHeaderName.setText(user.getName());
+                            topName.setText(user.getName());
+                            if ("2".equals(user.getType()) &&null!=btnLf &&myProject!=null) {
                                 btnLf.setVisibility(View.VISIBLE);
                                 btnLf.setText("申请为艺术家");
                                 setLoginedViewValues(1, user);
@@ -208,19 +215,13 @@ public class TabFragment04 extends BaseFragment {
                                         YsjRzActivity.openActivity(getActivity());
                                     }
                                 });
+                                myProject.setVisibility(View.GONE);
                                 AppApplication.gUser.setMaster1("");
-                            } else if ("1".equals(user.getType()) &&null!=btnLf) {
-                                btnLf.setVisibility(View.VISIBLE);
-                                btnLf.setText("发起项目");
-                                setLoginedViewValues(2, user);
-                                btnLf.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        PublicProject01Activity.openActivity(getActivity());
-                                    }
-                                });
+                            } else if ("1".equals(user.getType()) &&null!=btnLf &&myProject!=null) {
+                                myProject.setVisibility(View.VISIBLE);
+                                btnLf.setVisibility(View.GONE);
                                 AppApplication.gUser.setMaster1("master");
-                            }else if ("0".equals(user.getType()) &&null!=btnLf) {
+                            }else if ("0".equals(user.getType()) &&null!=btnLf &&myProject!=null) {
                                 btnLf.setVisibility(View.VISIBLE);
                                 btnLf.setTextColor(Color.rgb(128,128,128));
                                 btnLf.setText("申请为艺术家中");

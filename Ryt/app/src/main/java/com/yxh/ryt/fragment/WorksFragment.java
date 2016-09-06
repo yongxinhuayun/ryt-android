@@ -1,19 +1,26 @@
 package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.TextView;
+
 import com.google.gson.reflect.TypeToken;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.PushWoraActivity;
 import com.yxh.ryt.adapter.CommonAdapter;
 import com.yxh.ryt.adapter.ViewHolder;
 import com.yxh.ryt.callback.RZCommentCallBack;
+import com.yxh.ryt.custemview.ActionSheetDialog;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
 import com.yxh.ryt.util.Utils;
@@ -35,7 +42,7 @@ public class WorksFragment extends BaseFragment {
     private int currentPage = 1;
     private CommonAdapter<MasterWork> imageAdapter;
     private GridView gridView;
-
+    private TextView pushWork;
     public WorksFragment(String userId) {
         this.userId = userId;
     }
@@ -52,6 +59,11 @@ public class WorksFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         workDatas = new ArrayList<MasterWork>();
+        if (savedInstanceState != null
+                && savedInstanceState.getString("userId")!=null) {
+            userId=savedInstanceState.getString("userId");
+
+        }
     }
 
     @Nullable
@@ -59,11 +71,29 @@ public class WorksFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_works, container,false);
         gridView = (GridView) view.findViewById(R.id.gridview);
-        loadData(true,currentPage);
+        pushWork = (TextView) view.findViewById(R.id.fub_tv_edit);
         setAdapter();
+        if (AppApplication.gUser.getId().equals(userId)){
+            pushWork.setVisibility(View.VISIBLE);
+            pushWork.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent("android.intent.action.FW_BROADCAST");
+                    AppApplication.getSingleContext().sendBroadcast(intent);
+                }
+            });
+        }else {
+            pushWork.setVisibility(View.GONE);
+        }
+
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("userId",userId);
+    }
 
     private void loadData(final boolean flag, int pageNum) {
         Map<String, String> paramsMap = new HashMap<>();
@@ -87,6 +117,7 @@ public class WorksFragment extends BaseFragment {
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("0".equals(response.get("resultCode"))) {
+                    workDatas.clear();
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
                     if (flag) {
                         List<MasterWork> imageList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("masterWorkList")), new TypeToken<List<MasterWork>>() {
@@ -136,6 +167,13 @@ public class WorksFragment extends BaseFragment {
         }else {
             return "已售";
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        currentPage=1;
+        loadData(true,currentPage);
     }
 }
 

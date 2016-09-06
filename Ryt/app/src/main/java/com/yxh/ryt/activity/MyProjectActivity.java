@@ -23,16 +23,24 @@ import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.viewpagerindicator.IcsLinearLayout;
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.MyProjectIndicatorAdapter;
 import com.yxh.ryt.adapter.RZTitlePageIndicatorAdapter;
+
+import com.yxh.ryt.fragment.ArtistAuctionFragment;
+import com.yxh.ryt.fragment.ArtistCheckFragment;
+import com.yxh.ryt.fragment.ArtistCompletedFragment;
+import com.yxh.ryt.fragment.ArtistCreateFragment;
+import com.yxh.ryt.fragment.ArtistFinanceFragment;
 import com.yxh.ryt.fragment.BaseFragment;
 import com.yxh.ryt.fragment.RZDetailFragment;
 import com.yxh.ryt.fragment.RZInvestFragment;
 import com.yxh.ryt.fragment.RZProjectFragment;
 import com.yxh.ryt.fragment.WorksFragment;
+import com.yxh.ryt.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +54,8 @@ public class MyProjectActivity extends BaseActivity implements View.OnClickListe
     private ImageView back;
     private TextView title;
     IWXAPI api;
+    private TextView newProject;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,17 +64,18 @@ public class MyProjectActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_myproject);
         back = (ImageView) findViewById(R.id.ib_top_lf);
         title = ((TextView) findViewById(R.id.afs_tv_title));
+        newProject = ((TextView) findViewById(R.id.amp_tv_newProject));
         back.setOnClickListener(this);
+        newProject.setOnClickListener(this);
         Intent intent = this.getIntent();
         String artWorkId = intent.getStringExtra("id");
         String name = intent.getStringExtra("name");
         String userId=intent.getStringExtra("userId");
-        rZFragments.add(new RZProjectFragment(artWorkId));
-        rZFragments.add(new RZDetailFragment(artWorkId));
-        rZFragments.add(new RZInvestFragment(artWorkId));
-        rZFragments.add(new WorksFragment(userId));
-        rZFragments.add(new WorksFragment(userId));
-        title.setText(name);
+        rZFragments.add(new ArtistCheckFragment(artWorkId));
+        rZFragments.add(new ArtistFinanceFragment(artWorkId));
+        rZFragments.add(new ArtistCreateFragment(artWorkId));
+        rZFragments.add(new ArtistAuctionFragment(userId));
+        rZFragments.add(new ArtistCompletedFragment(userId));
         rZAdapter = new MyProjectIndicatorAdapter(this.getSupportFragmentManager(),rZFragments);
         ViewPager pager = (ViewPager)findViewById(R.id.pager);
         pager.setOffscreenPageLimit(5);
@@ -72,10 +83,14 @@ public class MyProjectActivity extends BaseActivity implements View.OnClickListe
         //实例化TabPageIndicator然后设置ViewPager与之关联
         TabPageIndicator mindicator = (TabPageIndicator) findViewById(R.id.indicator);
         mindicator.setViewPager(pager);
+        ((IcsLinearLayout) mindicator.getChildAt(0)).getChildAt(0).setPadding(Utils.dip2px(this,28),0,Utils.dip2px(this,28),0);
+        ((IcsLinearLayout) mindicator.getChildAt(0)).getChildAt(1).setPadding(Utils.dip2px(this,28),0,Utils.dip2px(this,28),0);
+        ((IcsLinearLayout) mindicator.getChildAt(0)).getChildAt(2).setPadding(Utils.dip2px(this,28),0,Utils.dip2px(this,28),0);
+        ((IcsLinearLayout) mindicator.getChildAt(0)).getChildAt(3).setPadding(Utils.dip2px(this,28),0,Utils.dip2px(this,28),0);
+        ((IcsLinearLayout) mindicator.getChildAt(0)).getChildAt(4).setPadding(Utils.dip2px(this,28),0,Utils.dip2px(this,28),0);
 
 
     }
-
     public MyProjectActivity() {
     }
 
@@ -84,6 +99,10 @@ public class MyProjectActivity extends BaseActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.ib_top_lf:
                 finish();
+                break;
+            case R.id.amp_tv_newProject:
+                Intent intent=new Intent(MyProjectActivity.this,PublicProject01Activity.class);
+                startActivity(intent);
                 break;
             //分享
             case R.id.ib_top_rt:

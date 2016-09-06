@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by Administrator on 2016/7/8.
@@ -94,6 +95,11 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
         super.onCreate(savedInstanceState);
         attentionDatas=new ArrayList<HomeYSJArtWork>();
         loadingUtil = new LoadingUtil(getActivity(),getContext());
+        if (savedInstanceState != null
+                && savedInstanceState.getString("userId")!=null) {
+            userId=savedInstanceState.getString("userId");
+
+        }
     }
     private void attention_user(final View v, final String followId, final String s) {
         Map<String,String> paramsMap=new HashMap<>();
@@ -499,7 +505,11 @@ public class ArtistHomeFragment extends BaseFragment implements AutoListView.OnL
         currentPage++;
         LoadData(AutoListView.LOAD, currentPage);
     }
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("userId",userId);
+    }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position>=2 && position<=attentionDatas.size()+1){

@@ -2,6 +2,7 @@ package com.yxh.ryt.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -50,6 +51,8 @@ public class CommitFinalPriceActivity extends BaseActivity implements View.OnCli
     private TextView userAddress;
     private LinearLayout llAdd;
     private LinearLayout finishView;
+    private String consumerAddressId;
+    private boolean selecte=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,9 @@ public class CommitFinalPriceActivity extends BaseActivity implements View.OnCli
         auctionProtocol.setOnClickListener(this);
         finishView.setOnClickListener(this);
         initAddress();
+        selected.setImageResource(R.mipmap.commit_money);
+        llPay.setBackgroundColor(Color.rgb(202,203,205));
+        agree = true;
     }
 
 
@@ -99,14 +105,25 @@ public class CommitFinalPriceActivity extends BaseActivity implements View.OnCli
                 if (!agree){
                 selected.setImageResource(R.mipmap.commit_money);
                     agree = true;
-                    llPay.setEnabled(true);
+                    if (selecte){
+                        llPay.setEnabled(true);
+                        llPay.setBackgroundColor(Color.rgb(87,172,104));
+                    }else {
+                        llPay.setEnabled(false);
+                        llPay.setBackgroundColor(Color.rgb(202,203,205));
+                    }
                 } else {
                     selected.setImageResource(R.mipmap.before);
                     agree = false;
                     llPay.setEnabled(false);
+                    llPay.setBackgroundColor(Color.rgb(202,203,205));
                 }
                 break;
-
+            //编辑收货地址
+            case R.id.rl_address:
+                Intent intent = new Intent(this, ReceiverAdressActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -115,6 +132,7 @@ public class CommitFinalPriceActivity extends BaseActivity implements View.OnCli
         paramsMap.put("money", price);
         paramsMap.put("action", "auction");
         paramsMap.put("type", "1");
+        paramsMap.put("consumerAddressId",consumerAddressId);
         paramsMap.put("artWorkId", artWorkId);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
         try {
@@ -237,15 +255,27 @@ public class CommitFinalPriceActivity extends BaseActivity implements View.OnCli
                     add.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(new Intent(getApplicationContext(),ReceiverAdressActivity.class));
+                            startActivity(new Intent(getApplicationContext(),NewAddressActivity.class));
                         }
                     });
+                    selecte=false;
+                    llPay.setEnabled(false);
+                    llPay.setBackgroundColor(Color.rgb(202,203,205));
                 }else {
                     llAdd.setVisibility(View.INVISIBLE);
                     address.setVisibility(View.VISIBLE);
+                    consumerAddressId=addressComment.get(0).getId();
                     userName.setText(addressComment.get(0).getConsignee());
                     userPhone.setText(addressComment.get(0).getPhone());
                     userAddress.setText(addressComment.get(0).getDetails());
+                    selecte=true;
+                    if (agree){
+                        llPay.setBackgroundColor(Color.rgb(87,172,104));
+                        llPay.setEnabled(true);
+                    }else {
+                        llPay.setEnabled(false);
+                        llPay.setBackgroundColor(Color.rgb(202,203,205));
+                    }
                 }
             }
         });

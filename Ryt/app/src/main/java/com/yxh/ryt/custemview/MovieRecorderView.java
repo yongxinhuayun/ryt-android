@@ -193,26 +193,14 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
             sampleDir.mkdirs();
         }
             try {
-                mRecordFile = File.createTempFile("recording"+System.currentTimeMillis(), ".mp4", sampleDir); //mp4格式
+                mRecordFile = File.createTempFile("recording", ".mp4", sampleDir); //mp4格式
             } catch (IOException e) {
                 e.printStackTrace();
                 //makeRootDirectory(AppApplication.getSingleContext().getFilesDir() + File.separator + "in" + File.separator + "video" + File.separator);
                  File dir = new File(context.getFilesDir() + "in" + File.separator + "video" + File.separator);
                 dir.mkdirs(); //create folders where write files
-                mRecordFile= new File(dir,"recording"+System.currentTimeMillis()+".mp4");
-                //mRecordFile = new File(AppApplication.getSingleContext().getFilesDir() + File.separator + "in" + File.separator + "video" + File.separator+"recording"+System.currentTimeMillis()+".mp4"); //mp4格式
+                mRecordFile= new File(dir,"recording"+".mp4");
             }
-    }
-    public  void makeRootDirectory(String filePath) {
-        File file = null;
-        try {
-            file = new File(filePath);
-            if (!file.exists()) {
-                file.mkdir();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
     /**
      * 初始化
@@ -231,12 +219,16 @@ public class MovieRecorderView extends LinearLayout implements OnErrorListener {
         mMediaRecorder.setVideoSource(VideoSource.CAMERA);// 视频源
         mMediaRecorder.setAudioSource(AudioSource.MIC);// 音频源
         mMediaRecorder.setOutputFormat(OutputFormat.MPEG_4);// 视频输出格式
-        mMediaRecorder.setAudioEncoder(AudioEncoder.AMR_NB);// 音频格式
+        mMediaRecorder.setAudioEncoder(AudioEncoder.AAC);// 音频格式
         mMediaRecorder.setVideoSize(mWidth, mHeight);// 设置分辨率：
         // mMediaRecorder.setVideoFrameRate(16);// 这个我把它去掉了，感觉没什么用
-        mMediaRecorder.setVideoEncodingBitRate(1 * 1280 * 720);// 设置帧频率，然后就清晰了
+        //mMediaRecorder.setVideoEncodingBitRate(1 * 1280 * 720);// 设置帧频率，然后就清晰了
+        mMediaRecorder.setVideoSize(640, 480);
+        /* Encoding bit rate: 1 * 1024 * 1024*/
+        mMediaRecorder.setVideoEncodingBitRate(1 * 1024 * 1024);
         mMediaRecorder.setOrientationHint(90);// 输出旋转90度，保持竖屏录制
-        mMediaRecorder.setVideoEncoder(VideoEncoder.MPEG_4_SP);// 视频录制格式
+        //mMediaRecorder.setVideoEncoder(VideoEncoder.MPEG_4_SP);// 视频录制格式
+        mMediaRecorder.setVideoEncoder(VideoEncoder.H264);// 视频录制格式
         // mediaRecorder.setMaxDuration(Constant.MAXVEDIOTIME * 1000);
         mMediaRecorder.setOutputFile(mRecordFile.getPath());
         mMediaRecorder.prepare();

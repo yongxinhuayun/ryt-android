@@ -86,43 +86,45 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
             @Override
             public void onResponse(final Map<String, Object> response) {
                 if ("".equals(AppApplication.gUser.getId())) {
-                    if (state == AutoListView.REFRESH) {
-                        lstv.onRefreshComplete();
-                        rongZiDatas.clear();
-                        List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
-                                .toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
-                        }.getType());
-                        if (null == objectList || objectList.size() == 0) {
-                            lstv.setResultSize(0);
+                    if ("0".equals(response.get("resultCode"))){
+                        if (state == AutoListView.REFRESH) {
+                            lstv.onRefreshComplete();
+                            rongZiDatas.clear();
+                            List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
+                                    .toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+                            }.getType());
+                            if (null == objectList || objectList.size() == 0) {
+                                lstv.setResultSize(0);
+                            }
+                            if (null != objectList && objectList.size() > 0) {
+                                lstv.setResultSize(objectList.size());
+                                rongZiDatas.addAll(objectList);
+                                rongZiCommonAdapter.notifyDataSetChanged();
+                            }
                         }
-                        if (null != objectList && objectList.size() > 0) {
-                            lstv.setResultSize(objectList.size());
-                            rongZiDatas.addAll(objectList);
-                            rongZiCommonAdapter.notifyDataSetChanged();
+                        if (state == AutoListView.LOAD) {
+                            lstv.onLoadComplete();
+                            List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
+                                    .toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+                            }.getType());
+                            if (null == objectList || objectList.size() == 0) {
+                                lstv.setResultSize(1);
+                            }
+                            if (null != objectList && objectList.size() > 0) {
+                                lstv.setResultSize(objectList.size());
+                                rongZiDatas.addAll(objectList);
+                                rongZiCommonAdapter.notifyDataSetChanged();
+                            }
                         }
-                    }
-                    if (state == AutoListView.LOAD) {
-                        lstv.onLoadComplete();
-                        List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
-                                .toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
-                        }.getType());
-                        if (null == objectList || objectList.size() == 0) {
-                            lstv.setResultSize(1);
+                        if (pageNum == 1 && selected.size() > 0) {
+                            selected.clear();
+                            number.clear();
                         }
-                        if (null != objectList && objectList.size() > 0) {
-                            lstv.setResultSize(objectList.size());
-                            rongZiDatas.addAll(objectList);
-                            rongZiCommonAdapter.notifyDataSetChanged();
-                        }
-                    }
-                    if (pageNum == 1 && selected.size() > 0) {
-                        selected.clear();
-                        number.clear();
-                    }
-                    if (selected.size() <= rongZiDatas.size()) {
-                        for (int i = selected.size(); i < rongZiDatas.size(); i++) {
-                            selected.put(i, false);
-                            number.put(i, rongZiDatas.get(i).getPraiseNUm());
+                        if (selected.size() <= rongZiDatas.size()) {
+                            for (int i = selected.size(); i < rongZiDatas.size(); i++) {
+                                selected.put(i, false);
+                                number.put(i, rongZiDatas.get(i).getPraiseNUm());
+                            }
                         }
                     }
                 } else {
@@ -138,41 +140,43 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
 
                                     @Override
                                     public void onResponse(Map<String, Object> response) {
-                                        if (state == AutoListView.REFRESH) {
-                                            lstv.onRefreshComplete();
-                                            rongZiDatas.clear();
-                                            List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
-                                            }.getType());
-                                            if (null == objectList || objectList.size() == 0) {
-                                                lstv.setResultSize(0);
+                                        if ("0".equals(response.get("resultCode"))){
+                                            if (state == AutoListView.REFRESH) {
+                                                lstv.onRefreshComplete();
+                                                rongZiDatas.clear();
+                                                List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+                                                }.getType());
+                                                if (null == objectList || objectList.size() == 0) {
+                                                    lstv.setResultSize(0);
+                                                }
+                                                if (null != objectList && objectList.size() > 0) {
+                                                    lstv.setResultSize(objectList.size());
+                                                    rongZiDatas.addAll(objectList);
+                                                    rongZiCommonAdapter.notifyDataSetChanged();
+                                                }
                                             }
-                                            if (null != objectList && objectList.size() > 0) {
-                                                lstv.setResultSize(objectList.size());
-                                                rongZiDatas.addAll(objectList);
-                                                rongZiCommonAdapter.notifyDataSetChanged();
+                                            if (state == AutoListView.LOAD) {
+                                                lstv.onLoadComplete();
+                                                List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+                                                }.getType());
+                                                if (null == objectList || objectList.size() == 0) {
+                                                    lstv.setResultSize(1);
+                                                }
+                                                if (null != objectList && objectList.size() > 0) {
+                                                    lstv.setResultSize(objectList.size());
+                                                    rongZiDatas.addAll(objectList);
+                                                    rongZiCommonAdapter.notifyDataSetChanged();
+                                                }
                                             }
-                                        }
-                                        if (state == AutoListView.LOAD) {
-                                            lstv.onLoadComplete();
-                                            List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
-                                            }.getType());
-                                            if (null == objectList || objectList.size() == 0) {
-                                                lstv.setResultSize(1);
+                                            if (pageNum == 1 && selected.size() > 0) {
+                                                selected.clear();
+                                                number.clear();
                                             }
-                                            if (null != objectList && objectList.size() > 0) {
-                                                lstv.setResultSize(objectList.size());
-                                                rongZiDatas.addAll(objectList);
-                                                rongZiCommonAdapter.notifyDataSetChanged();
-                                            }
-                                        }
-                                        if (pageNum == 1 && selected.size() > 0) {
-                                            selected.clear();
-                                            number.clear();
-                                        }
-                                        if (selected.size() <= rongZiDatas.size()) {
-                                            for (int i = selected.size(); i < rongZiDatas.size(); i++) {
-                                                selected.put(i, rongZiDatas.get(i).isPraise());
-                                                number.put(i, rongZiDatas.get(i).getPraiseNUm());
+                                            if (selected.size() <= rongZiDatas.size()) {
+                                                for (int i = selected.size(); i < rongZiDatas.size(); i++) {
+                                                    selected.put(i, rongZiDatas.get(i).isPraise());
+                                                    number.put(i, rongZiDatas.get(i).getPraiseNUm());
+                                                }
                                             }
                                         }
                                     }
@@ -416,14 +420,6 @@ public class FinanceFragment extends BaseFragment implements AutoListView.OnRefr
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position <= rongZiDatas.size()) {
-            /*int[] location = new  int[2] ;
-            view1.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
-			view1.getLocationOnScreen(location);//获取在整个屏幕内的绝对坐标
-			System.out.println("view--->x坐标:"+location [0]+"view--->y坐标:"+location [1]);
-			int[] location1 = new  int[2] ;
-			view2.getLocationInWindow(location1); //获取在当前窗口内的绝对坐标
-			view2.getLocationOnScreen(location1);//获取在整个屏幕内的绝对坐标
-			System.out.println("view--->x坐标:"+location1 [0]+"view--->y坐标:"+location1 [1]);*/
             Intent intent = new Intent(getActivity(), FinanceSummaryActivity.class);
             intent.putExtra("id", rongZiDatas.get(position - 1).getId());
             intent.putExtra("name", rongZiDatas.get(position - 1).getTitle());

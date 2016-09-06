@@ -40,6 +40,9 @@ public class UserBriefFragment extends BaseFragment {
     public TextView name;
     @Bind(R.id.fb_jtv_content)
     public JustifyTextView content;
+    private User user;
+    @Bind(R.id.fub_tv_edit)
+    TextView edit;
     public UserBriefFragment(String userId) {
         super();
         this.userId=userId;
@@ -78,7 +81,7 @@ public class UserBriefFragment extends BaseFragment {
                     if (userBrief!=null && userBrief.get("content")!=null){
                         content.setText(userBrief.get("content").toString());
                     }
-                    User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("user")), User.class);
+                    user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("user")), User.class);
                     if (user!=null && user.getPictureUrl()!=null){
                         AppApplication.displayImage(user.getPictureUrl(),imageView);
                     }else {
@@ -87,10 +90,20 @@ public class UserBriefFragment extends BaseFragment {
                     if (user!=null){
                         name.setText(user.getName());
                     }
+                    if (AppApplication.gUser.getId().equals(user.getId())){
+                        edit.setVisibility(View.VISIBLE);
+                    }else {
+                        edit.setVisibility(View.GONE);
+                    }
                 }
 
             }
         });
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("userId",userId);
     }
     @OnClick(R.id.fub_tv_edit)
     public void edit(){

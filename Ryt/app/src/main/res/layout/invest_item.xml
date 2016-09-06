@@ -78,7 +78,7 @@
             <TextView
                 android:layout_marginLeft="4dp"
                 android:gravity="center_vertical"
-                android:id="@+id/cli1_tv_update"
+                android:id="@+id/cli_tv_update"
                 android:textSize="12sp"
                 android:textColor="#999999"
                 android:layout_width="wrap_content"

@@ -305,6 +305,18 @@ public class AuctionSummaryFragment1 extends BaseFragment implements View.OnClic
 							frequency.setText(artwork.getAuctionNum()+"");
 							range.setText(getAuctionPrice(artwork.getInvestGoalMoney().longValue())+"");
 							wenguanAfter.setText(artwork.getViewNum()+"");
+						}else {
+							beforeLayout.setVisibility(View.GONE);
+							afterLayout.setVisibility(View.VISIBLE);
+							stateName.setText("拍卖结束");
+							priceName.setText("成交价");
+							priceMoney.setText(artwork.getNewBidingPrice()+"");
+							if(artwork.getWinner()!=null){
+								finalPerson.setText("恭喜"+artwork.getWinner().getName()+"拍得此件作品");
+							}
+							frequency.setText(artwork.getAuctionNum()+"");
+							range.setText(getAuctionPrice(artwork.getInvestGoalMoney().longValue())+"");
+							wenguanAfter.setText(artwork.getViewNum()+"");
 						}
 					}
 				}else {

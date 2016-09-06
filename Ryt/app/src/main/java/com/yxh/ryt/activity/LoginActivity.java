@@ -206,6 +206,7 @@ public class LoginActivity extends BaseActivity {
                                 NetRequestUtil.post(Constants.BASE_PATH + "wxBinding.do", paramsMap, new LoginCallBack() {
                                     @Override
                                     public void onError(Call call, Exception e) {
+                                        e.printStackTrace();
                                         System.out.println("失败了");
                                     }
 
@@ -270,6 +271,7 @@ public class LoginActivity extends BaseActivity {
         NetRequestUtil.post(Constants.BASE_PATH + "j_spring_security_check", paramsMap, new LoginCallBack() {
             @Override
             public void onError(Call call, Exception e) {
+                e.printStackTrace();
                 System.out.println("失败了");
             }
 
@@ -301,7 +303,6 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(Map<String, Object> response) {
-                        syncCookie(Constants.BASE_PATH+"j_spring_security_check", OkHttpUtils.getInstance().getCookieStore().getCookies().get(0)+"");
                         if ("guide".equals(guide)){
                             Intent intent=new Intent(LoginActivity.this,IndexActivity.class);
                             startActivity(intent);
@@ -357,22 +358,6 @@ public class LoginActivity extends BaseActivity {
             unregisterReceiver(mReciver);
         }
 
-    }
-    /**
-     * 将cookie同步到WebView
-     * @param url WebView要加载的url
-     * @param cookie 要同步的cookie
-     * @return true 同步cookie成功，false同步cookie失败
-     * @Author JPH
-     */
-    public  boolean syncCookie(String url,String cookie) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            CookieSyncManager.createInstance(this);
-        }
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.setCookie(url, cookie);//如果没有特殊需求，这里只需要将session id以"key=value"形式作为cookie即可
-        String newCookie = cookieManager.getCookie(url);
-        return TextUtils.isEmpty(newCookie)?false:true;
     }
 
 }

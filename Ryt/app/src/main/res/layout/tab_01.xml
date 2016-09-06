@@ -29,9 +29,8 @@
         <com.viewpagerindicator.TabPageIndicator
             android:id="@+id/indicator"
             android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:paddingLeft="72dp"
-            android:paddingRight="72dp"/>
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"/>
         </FrameLayout>
     <!--</FrameLayout>
         <com.viewpagerindicator.TabPageIndicator

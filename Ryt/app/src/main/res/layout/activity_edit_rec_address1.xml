@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fafafa"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/ib_top_lf"
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:src="@mipmap/back" />
+
+        <TextView
+            android:id="@+id/tv_top_ct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="收货地址"
+            android:textColor="#000000"
+            android:textSize="@dimen/title" />
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:text="保存"
+            android:textSize="16sp"
+            android:layout_marginRight="14dp"
+            android:textColor="#57ad68"
+            android:clickable="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#E9E9E9"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingLeft="17dp"
+        android:paddingRight="17dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="68dp">
+
+            <TextView
+                android:id="@+id/tv_reciever"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:text="收货人："
+                android:gravity="center_vertical"
+                android:textColor="#808080"
+                android:textSize="16sp" />
+            <EditText
+                android:layout_marginLeft="17dp"
+                android:id="@+id/et_reciever"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_toRightOf="@+id/tv_reciever"
+                android:background="@null"
+                android:text="aaaa"
+                android:textColor="#333333"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#E9E9E9" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+         >
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
+                android:text="手机号："
+                android:textColor="#808080"
+                android:textSize="16sp" />
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/tv_phone"
+                android:background="@drawable/address_et_bg"
+                android:text="123456789"
+                android:gravity="center_vertical"
+                android:textColor="#333333"
+                android:layout_marginLeft="17dp"
+                android:inputType="number"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#E9E9E9" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+          >
+
+            <TextView
+                android:id="@+id/tv_local"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
+                android:text="所在地区："
+                android:textColor="#808080"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/et_local"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/tv_local"
+                android:background="@drawable/address_et_bg"
+                android:text="aaaa"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="17dp"
+                android:textColor="#333333"
+                android:textSize="@dimen/defult_font"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#E9E9E9" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_address"
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            >
+            <TextView
+                android:id="@+id/tv_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_alignParentLeft="true"
+                android:text="详细地址："
+                android:textColor="#808080"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/tv_detail"
+                android:background="@drawable/new_address_et_bg"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:gravity="center_vertical"
+                android:text=""
+                android:layout_marginLeft="17dp"/>
+
+
+        </RelativeLayout>
+        <!--<LinearLayout
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="14dp"
+            android:id="@+id/ll_defult_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/ib_selected"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@mipmap/weixuanze" />
+
+            <TextView
+
+                android:id="@+id/tv_defult"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:text="设为默认地址"
+                android:textColor="#666666"
+                android:textSize="@dimen/defult_font" />
+        </LinearLayout>-->
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E9E9E9" />
+</LinearLayout>

@@ -2,8 +2,9 @@ package com.yxh.ryt;
 
 public class Constants {
     //网络请求基地址
-    //public static final String BASE_PATH="http://192.168.1.60:8080/app/";
     public static final String BASE_PATH="http://192.168.1.75:8080/app/";
+    //public static final String BASE_PATH="http://192.168.1.80:8080/app/";
+    //public static final String BASE_PATH="http://192.168.1.75:8080/app/";
     //public static final String BASE_PATH="http://craft.efeiyi.com/app-wikiServer/app/";
     //public static final String BASE_PATH="http://ryt.efeiyi.com/app/";
     //融艺投APP_KEY
@@ -26,7 +27,8 @@ public class Constants {
     public static final String[] INDEX_TITLE = new String[] { "融资", "创作", "拍卖" };
     public static final String[] RZ_TITLE = new String[] { "项目", "详情", "投资","历史作品" };
     public static final String[] CS_TITLE = new String[] { "进度", "项目", "详情"};
-    public static final String[] MYPROJECT_TITLE = new String[] { "未审核", "融资", "创作", "拍卖", "已结束"};
+    public static final String[] MYPROJECT_TITLE = new String[] { "审核", "融资", "创作", "拍卖", "已结束"};
+    public static final String[] AUCTIONORDER_TITLE = new String[] { "全部", "待付款", "待发货", "待收货", "已完成"};
     public static final String[] AS_TITLE = new String[] { "拍卖", "项目", "详情"};
     public static final String[] lottery_TITLE = new String[] { "抽奖", "项目", "详情" };
     public static  String[] ATTENTION_TITLE = new String[] { "艺术家(0)", "用户(0)" };

@@ -9,9 +9,9 @@ import java.io.Serializable;
 
 public class ConsumerAddress implements Serializable {
     private String id;
-    private String province;//省
-    private String district;//地区
-    private String city;//城市
+    private AddressProvince province;//省
+    private AddressProvince district;//地区
+    private AddressProvince city;//城市
     private String details;//详细地址
     private String post;
     private String phone;//收货人手机号
@@ -33,20 +33,11 @@ public class ConsumerAddress implements Serializable {
     }
 
 
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-
-    public String getCity() {
+    public AddressProvince getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(AddressProvince city) {
         this.city = city;
     }
 
@@ -82,13 +73,22 @@ public class ConsumerAddress implements Serializable {
         this.email = email;
     }
 
-    public String getDistrict() {
+    public AddressProvince getProvince() {
+        return province;
+    }
+
+    public void setProvince(AddressProvince province) {
+        this.province = province;
+    }
+
+    public AddressProvince getDistrict() {
         return district;
     }
 
-    public void setDistrict(String district) {
+    public void setDistrict(AddressProvince district) {
         this.district = district;
     }
+
     public User getConsumer() {
         return consumer;
     }

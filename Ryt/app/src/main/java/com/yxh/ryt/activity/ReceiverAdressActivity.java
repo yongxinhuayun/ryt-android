@@ -4,7 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -31,23 +33,17 @@ import java.util.Map;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-public class ReceiverAdressActivity extends BaseActivity implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener, View.OnClickListener {
+public class ReceiverAdressActivity extends BaseActivity implements AutoListView.OnLoadListener, AutoListView.OnRefreshListener, View.OnClickListener, AdapterView.OnItemClickListener {
 
     private AutoListView adListview;
     private CommonAdapter<ConsumerAddress> cmAdapter;
     private List<ConsumerAddress> addressDatas;
     private int currentPage = 1;
-    private String details;
-    private String name;
-    private String phone;
-    private Button addAddress;
-    private Button edit;
-    private Button del;
+    private ImageButton addAddress;
     private int unDefult;
     private ImageView back;
     private LinearLayout ll_new_add;
     private LinearLayout ll_add;
-    private Button btn_new_add;
     private Map<Integer, String> defaultAddress;
 
 
@@ -58,17 +54,15 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
         adListview = (AutoListView) findViewById(R.id.pl_message_listView);
         ll_new_add = (LinearLayout) findViewById(R.id.ll_new_add);
         ll_add = (LinearLayout) findViewById(R.id.ll_add);
-        btn_new_add = (Button) findViewById(R.id.btn_new_add);
-        addAddress = (Button) findViewById(R.id.btn_add);
         addressDatas = new ArrayList<ConsumerAddress>();
-
+        addAddress= (ImageButton) findViewById(R.id.btn_add);
         back = (ImageView) findViewById(R.id.iv_back);
         defaultAddress = new HashMap<>();
         addAddress.setOnClickListener(this);
-        btn_new_add.setOnClickListener(this);
         initView();
         adListview.setPageSize(Constants.pageSize);
         back.setOnClickListener(this);
+        adListview.setOnItemClickListener(this);
     }
 
     private void initView() {
@@ -76,123 +70,25 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
         cmAdapter = new CommonAdapter<ConsumerAddress>(AppApplication.getSingleContext(), addressDatas, R.layout.address_item) {
             @Override
             public void convert(final ViewHolder helper, final ConsumerAddress item) {
-                if (addressDatas == null) {
+                if (addressDatas == null ||addressDatas.size()==0) {
                     ll_add.setVisibility(View.INVISIBLE);
                     ll_new_add.setVisibility(View.VISIBLE);
-                    btn_new_add.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivity(new Intent(ReceiverAdressActivity.this, NewAddressActivity.class));
-                        }
-                    });
-                } else if (addressDatas != null) {
+                } else {
                     ll_add.setVisibility(View.VISIBLE);
                     ll_new_add.setVisibility(View.INVISIBLE);
-                    //编辑
-                    helper.getView(R.id.bt_edit).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent edIntent = new Intent(ReceiverAdressActivity.this, EditRecAddressActivity.class);
-                            edIntent.putExtra("addressId", item.getId());
-                            edIntent.putExtra("status", item.getStatus());
-                            edIntent.putExtra("consignee", item.getConsignee());
-                            edIntent.putExtra("details", item.getDetails());
-                            edIntent.putExtra("phone", item.getPhone());
-                            edIntent.putExtra("provinceStr", item.getProvinceStr());
-                            edIntent.putExtra("districtStr", item.getDistrictStr());
-                            edIntent.putExtra("cityStr", item.getCityStr());
-                            startActivity(edIntent);
-                        }
-                    });
-                    //删除
-                    helper.getView(R.id.bt_del).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            final Intent delIntent = new Intent();
-                            delIntent.putExtra("addressId", item.getId());
-                            CustomDialog.Builder builder = new CustomDialog.Builder(ReceiverAdressActivity.this);
-                            builder.setMessage("确认要删除该收货地址吗？");
-                            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    delAddress(delIntent, addressDatas);
-                                }
-                            });
-
-
-                            builder.setNegativeButton("取消",
-                                    new android.content.DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-
-                            builder.create().show();
-                        }
-                    });
-
-                    // delIntent.putExtra("status", item.getStatus());
-                    helper.setText(R.id.tv_name, item.getConsignee());
-                    helper.setText(R.id.tv_phone, item.getPhone());
-                    helper.setText(R.id.tv_adress, item.getDetails());
-                    for (int i = 0; i < addressDatas.size(); i++) {
-                        defaultAddress.put(i, addressDatas.get(i).getStatus());
+                    helper.setText(R.id.aass_tv_addressName, item.getConsignee());
+                    helper.setText(R.id.aass_tv_addressPhone, item.getPhone());
+                    if ("2".equals(item.getStatus())){
+                        helper.setText(R.id.aass_tv_addressDetail, "[默认]"+item.getProvinceStr()+item.getDetails());
+                    }else {
+                        helper.setText(R.id.aass_tv_addressDetail, item.getProvinceStr()+item.getDetails());
                     }
-                    unDefult = Integer.parseInt(item.getStatus());
-                    initDeAdd(helper);
-                    helper.getView(R.id.iv_selected).setOnClickListener(
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if ("1".equals(defaultAddress.get(helper.getPosition()))) {
-                                        isDefault(item.getId());
-                                        defaultAddress.put(helper.getPosition(), "2");
-                                         helper.setImageResource(R.id.iv_selected, R.mipmap.yixuanze);
-                                    }
-                                }
-                            }
-                    );
                 }
             }
         };
         adListview.setAdapter(cmAdapter);
         adListview.setOnLoadListener(this);
         adListview.setOnRefreshListener(this);
-    }
-
-    private void initDeAdd(ViewHolder helper) {
-        if ("2".equals(defaultAddress.get(helper.getPosition()))) {
-            helper.setImageResource(R.id.iv_selected, R.mipmap.yixuanze);
-        } else {
-            helper.setImageResource(R.id.iv_selected, R.mipmap.weixuanze);
-        }
-    }
-
-    private void isDefault(String id) {
-        Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("consumerAddressId", id);
-        paramsMap.put("timestamp", System.currentTimeMillis() + "");
-        try {
-            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        NetRequestUtil.post(Constants.BASE_PATH + "setDefaultAddress.do", paramsMap, new RegisterCallBack() {
-            @Override
-            public void onError(Call call, Exception e) {
-                ToastUtil.showShort(getApplicationContext(), "保存失败");
-            }
-
-            @Override
-            public void onResponse(Map<String, Object> response) {
-                if ("0".equals(response.get("resultCode"))) {
-                    ToastUtil.showShort(getApplicationContext(), "设置成功");
-                    LoadData(AutoListView.REFRESH);
-                }
-            }
-        });
     }
 
     private void LoadData(final int state) {
@@ -282,10 +178,15 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_add:
-                startActivity(new Intent(ReceiverAdressActivity.this, NewAddressActivity.class));
-                break;
-            case R.id.btn_new_add:
-                startActivity(new Intent(ReceiverAdressActivity.this, NewAddressActivity.class));
+                if (addressDatas==null || addressDatas.size()==0){
+                    Intent edIntent = new Intent(ReceiverAdressActivity.this, ModifyRecAddressActivity.class);
+                    edIntent.putExtra("status","2");
+                    startActivity(edIntent);
+                }else {
+                    Intent edIntent = new Intent(ReceiverAdressActivity.this, ModifyRecAddressActivity.class);
+                    edIntent.putExtra("status","1");
+                    startActivity(edIntent);
+                }
                 break;
             case R.id.iv_back:
                 finish();
@@ -295,34 +196,19 @@ public class ReceiverAdressActivity extends BaseActivity implements AutoListView
         }
     }
 
-    private void delAddress(Intent intent, final List list) {
-        Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("addressId", intent.getStringExtra("addressId"));
-        paramsMap.put("timestamp", System.currentTimeMillis() + "");
-        try {
-            paramsMap.put("signmsg", EncryptUtil.encrypt(paramsMap));
-        } catch (Exception e) {
-            e.printStackTrace();
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position<=addressDatas.size()){
+            Intent edIntent = new Intent(ReceiverAdressActivity.this, EditRecAddressActivity.class);
+            edIntent.putExtra("addressId", addressDatas.get(position-1).getId());
+            edIntent.putExtra("status", addressDatas.get(position-1).getStatus());
+            edIntent.putExtra("consignee", addressDatas.get(position-1).getConsignee());
+            edIntent.putExtra("details", addressDatas.get(position-1).getDetails());
+            edIntent.putExtra("phone", addressDatas.get(position-1).getPhone());
+            edIntent.putExtra("provinceStr", addressDatas.get(position-1).getProvinceStr());
+            edIntent.putExtra("districtStr", addressDatas.get(position-1).getDistrictStr());
+            edIntent.putExtra("cityStr", addressDatas.get(position-1).getCityStr());
+            startActivity(edIntent);
         }
-        NetRequestUtil.post(Constants.BASE_PATH + "removeAddress.do", paramsMap, new RegisterCallBack() {
-            @Override
-            public void onError(Call call, Exception e) {
-                ToastUtil.showShort(getApplicationContext(), "删除失败");
-            }
-
-            @Override
-            public void onResponse(Map<String, Object> response) {
-                LoadData(AutoListView.REFRESH);
-                if (list.size() == 1) {
-                    ll_add.setVisibility(View.INVISIBLE);
-                    ll_new_add.setVisibility(View.VISIBLE);
-
-                } else if (addressDatas != null) {
-                    ll_add.setVisibility(View.VISIBLE);
-                    ll_new_add.setVisibility(View.INVISIBLE);
-                }
-                ToastUtil.showShort(getApplicationContext(), "删除成功");
-            }
-        });
     }
 }

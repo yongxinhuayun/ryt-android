@@ -591,8 +591,9 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
 
             @Override
             public void onResponse(Map<String, Object> response) {
-                Map<Object,Object> object= (Map<Object, Object>) response.get("pageInfo");
-                User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("user")), User.class);
+                if ("0".equals(response.get("resultCode"))){
+                    Map<Object,Object> object= (Map<Object, Object>) response.get("pageInfo");
+                    User user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(object.get("user")), User.class);
                 /*Map<String, Map<String, Map<String,String>>> map1 = (Map<String, Map<String, Map<String,String>>>) response.get("pageInfo");
                 Map<String, Map<String,String>> map2 =null;
                 if (map1!=null){
@@ -630,7 +631,7 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 if (map222 != null){
                     pictureUrl = map222.get("pictureUrl");
                 }*/
-                //AppApplication.getSingleGson().toJson(response.get("followsNum"));
+                    //AppApplication.getSingleGson().toJson(response.get("followsNum"));
                 /*Map<String,Map<String,Double>> map11 = (Map<String, Map<String, Double>>) response.get("pageInfo");
                 Map<String,Double> map22 = map11.get("user");
                 Double sex = map22.get("sex");
@@ -639,24 +640,35 @@ public class UserEditZiLiaoActivity extends BaseActivity implements View.OnClick
                 String name = map222.get("name");*/
                 /*User user = new User();
                 user = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().toJson(response.get("pageInfo")), User.class);*/
-                if (user.getUserBrief()!=null ){
-                    if (user.getUserBrief().getSigner()!=null){
-                        iv_sign.setText(user.getUserBrief().getSigner()+"");
+                    if (user.getUserBrief()!=null ){
+                        if (user.getUserBrief().getSigner()!=null){
+                            iv_sign.setText(user.getUserBrief().getSigner()+"");
+                        }
+                    }else {
+                        iv_sign.setText("");
                     }
-                }else {
-                    iv_sign.setText("");
+                    if (user.getSex()!=null){
+                        sex=Double.valueOf(user.getSex());
+                        tv_sex.setText(changSex(sex));
+                    }else{
+                        sex=Double.valueOf(user.getSex());
+                        tv_sex.setText(changSex(0.0));
+                    }
+                    String name=user.getName();
+                    tv_nickname.setText(name);
+                    userName.setText(user.getUsername());
+                    AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
+                }else if ("000000".equals(response.get("resultCode"))){
+                    SessionLogin sessionLogin=new SessionLogin(new SessionLogin.CodeCallBack() {
+                        @Override
+                        public void getCode(String code) {
+                            if ("0".equals(code)){
+                                inflatSign();
+                            }
+                        }
+                    });
+                    sessionLogin.resultCodeCallback(AppApplication.gUser.getLoginState());
                 }
-                if (user.getSex()!=null){
-                    sex=Double.valueOf(user.getSex());
-                    tv_sex.setText(changSex(sex));
-                }else{
-                    sex=Double.valueOf(user.getSex());
-                    tv_sex.setText(changSex(0.0));
-                }
-                String name=user.getName();
-                tv_nickname.setText(name);
-                userName.setText(user.getUsername());
-                AppApplication.displayImage(AppApplication.gUser.getPictureUrl(), circleImageView);
             }
         });
     }

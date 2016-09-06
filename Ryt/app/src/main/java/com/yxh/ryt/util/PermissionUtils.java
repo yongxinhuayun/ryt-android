@@ -80,7 +80,6 @@ public class PermissionUtils {
     public static void askExternalStorage(PermissionListener listener){
         askPermission(listener, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
-
     /**
      * group:android.permission-group.PHONE
      *

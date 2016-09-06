@@ -633,6 +633,10 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
         int options = 100;
         while ( baos.toByteArray().length / 1024>300) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
+            if (options-10<0){
+                image.compress(format, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+                break;
+            }
             options -= 10;//每次都减少10
             image.compress(format, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
         }
@@ -661,7 +665,7 @@ public class RegisterScActivity extends BaseActivity implements RadioGroup.OnChe
             // TODO Auto-generated catch block
             e.printStackTrace();
             file = new File(getFilesDir(), "upLoad"+Utils.getImageFormat(filePath1));
-
+            filePath=file.getPath();
             FileOutputStream fos = null;
             try {
                 fos = new FileOutputStream(file);

@@ -10,7 +10,7 @@ import com.yxh.ryt.Constants;
 import java.util.List;
 
 /**
- * Created by 吴洪杰 on 2016/4/5.
+ *
  */
 public class ArtistTabPageIndicatorAdapter extends FragmentPagerAdapter {
 

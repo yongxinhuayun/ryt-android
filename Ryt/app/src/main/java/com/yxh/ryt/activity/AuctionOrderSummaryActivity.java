@@ -26,16 +26,16 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016/6/6.
  */
-public class AuctionOrderSummaryActivity extends BaseActivity implements View.OnClickListener {
+public class AuctionOrderSummaryActivity extends BaseActivity /*implements View.OnClickListener*/ {
     private WebView webView;
     private JsInterface jsInterface = new JsInterface();
     private String id;
     private ImageView back;
 
-    @Override
+   /* @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_auctionordersummary);
+        setContentView(R.layout.activity_auctionordersummarysend);
         webView = (WebView) findViewById(R.id.aaos_wb_all);
         back = ((ImageView) findViewById(R.id.aaos_ib_back));
         id = getIntent().getStringExtra("artWorkOrderId");
@@ -62,7 +62,7 @@ public class AuctionOrderSummaryActivity extends BaseActivity implements View.On
         @JavascriptInterface
         public void payMoney( String price, String type) {
             loadData1(price,type);
-            /*Map<String,String> paramsMap=new HashMap<>();
+            *//*Map<String,String> paramsMap=new HashMap<>();
             //paramsMap.put("userId", AppApplication.gUser.getId());
             paramsMap.put("money", price);
             paramsMap.put("action", type);
@@ -89,7 +89,7 @@ public class AuctionOrderSummaryActivity extends BaseActivity implements View.On
                     intent.putExtra("url",url);
                     AuctionOrderSummaryActivity.this.startActivity(intent);
                 }
-            });*/
+            });*//*
         }
     }
 
@@ -183,5 +183,5 @@ public class AuctionOrderSummaryActivity extends BaseActivity implements View.On
                 }
             }
         });
-    }
+    }*/
 }

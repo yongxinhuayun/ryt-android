@@ -74,7 +74,8 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
         selected.setOnClickListener(this);
         auctionProtocol.setOnClickListener(this);
         ll_finish.setOnClickListener(this);
-
+        selected.setImageResource(R.mipmap.commit_money);
+        agree=true;
         initData(artWorkId);
 
     }
@@ -134,11 +135,7 @@ public class CommitDepositPriceActivity extends BaseActivity implements View.OnC
                     llPay.setEnabled(false);
                 }
                 break;
-            //编辑收货地址
-            case R.id.rl_address:
-                Intent intent = new Intent(this, ReceiverAdressActivity.class);
-                startActivity(intent);
-                break;
+
             case R.id.ll_finish:
                 finish();
                 break;

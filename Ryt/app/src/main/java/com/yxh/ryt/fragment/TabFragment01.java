@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.viewpagerindicator.IcsLinearLayout;
 import com.viewpagerindicator.TabPageIndicator;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.IndexTabPageIndicatorAdapter;
+import com.yxh.ryt.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +100,9 @@ public class TabFragment01 extends  BaseFragment {
         //实例化TabPageIndicator然后设置ViewPager与之关联
         final TabPageIndicator indicator = (TabPageIndicator)view.findViewById(R.id.indicator);
         indicator.setViewPager(pager);
+        ((IcsLinearLayout) indicator.getChildAt(0)).getChildAt(0).setPadding(Utils.dip2px(getActivity(),28),0,Utils.dip2px(getActivity(),28),0);
+        ((IcsLinearLayout) indicator.getChildAt(0)).getChildAt(1).setPadding(Utils.dip2px(getActivity(),28),0,Utils.dip2px(getActivity(),28),0);
+        ((IcsLinearLayout) indicator.getChildAt(0)).getChildAt(2).setPadding(Utils.dip2px(getActivity(),28),0,Utils.dip2px(getActivity(),28),0);
         /*ButterKnife.bind(this, view);
         indexChildAdapter = new TabPageAdapter(getActivity().getSupportFragmentManager(),indexChildFragments);
         pager = (CustomViewPager)view.findViewById(R.id.pager);

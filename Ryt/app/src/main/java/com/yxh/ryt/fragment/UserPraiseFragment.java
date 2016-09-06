@@ -70,8 +70,17 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
         selected = new HashMap<>();
         number = new HashMap<>();
         loadingUtil = new LoadingUtil(getActivity(), getContext());
-    }
+        if (savedInstanceState != null
+                && savedInstanceState.getString("userId")!=null) {
+            userId=savedInstanceState.getString("userId");
 
+        }
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("userId",userId);
+    }
     private void loadData(final int state, final int pageNum) {
         final Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("userId", userId);
@@ -96,43 +105,45 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
             @Override
             public void onResponse(final Map<String, Object> response) {
                 if ("".equals(AppApplication.gUser.getId())) {
-                    if (state == AutoListView.REFRESH) {
-                        lstv.onRefreshComplete();
-                        rongZiDatas.clear();
-                        List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
-                                .toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
-                        }.getType());
-                        if (null == objectList || objectList.size() == 0) {
-                            lstv.setResultSize(0);
+                    if ("0".equals(response.get("resultCode"))){
+                        if (state == AutoListView.REFRESH) {
+                            lstv.onRefreshComplete();
+                            rongZiDatas.clear();
+                            List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
+                                    .toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+                            }.getType());
+                            if (null == objectList || objectList.size() == 0) {
+                                lstv.setResultSize(0);
+                            }
+                            if (null != objectList && objectList.size() > 0) {
+                                lstv.setResultSize(objectList.size());
+                                rongZiDatas.addAll(objectList);
+                                rongZiCommonAdapter.notifyDataSetChanged();
+                            }
                         }
-                        if (null != objectList && objectList.size() > 0) {
-                            lstv.setResultSize(objectList.size());
-                            rongZiDatas.addAll(objectList);
-                            rongZiCommonAdapter.notifyDataSetChanged();
+                        if (state == AutoListView.LOAD) {
+                            lstv.onLoadComplete();
+                            List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
+                                    .toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+                            }.getType());
+                            if (null == objectList || objectList.size() == 0) {
+                                lstv.setResultSize(1);
+                            }
+                            if (null != objectList && objectList.size() > 0) {
+                                lstv.setResultSize(objectList.size());
+                                rongZiDatas.addAll(objectList);
+                                rongZiCommonAdapter.notifyDataSetChanged();
+                            }
                         }
-                    }
-                    if (state == AutoListView.LOAD) {
-                        lstv.onLoadComplete();
-                        List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
-                                .toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
-                        }.getType());
-                        if (null == objectList || objectList.size() == 0) {
-                            lstv.setResultSize(1);
+                        if (pageNum == 1 && selected.size() > 0) {
+                            selected.clear();
+                            rongZiDatas.clear();
                         }
-                        if (null != objectList && objectList.size() > 0) {
-                            lstv.setResultSize(objectList.size());
-                            rongZiDatas.addAll(objectList);
-                            rongZiCommonAdapter.notifyDataSetChanged();
-                        }
-                    }
-                    if (pageNum == 1 && selected.size() > 0) {
-                        selected.clear();
-                        rongZiDatas.clear();
-                    }
-                    if (selected.size() < rongZiDatas.size()) {
-                        for (int i = selected.size(); i < rongZiDatas.size(); i++) {
-                            selected.put(i, rongZiDatas.get(i).isPraise());
-                            number.put(i, rongZiDatas.get(i).getPraiseNUm());
+                        if (selected.size() < rongZiDatas.size()) {
+                            for (int i = selected.size(); i < rongZiDatas.size(); i++) {
+                                selected.put(i, rongZiDatas.get(i).isPraise());
+                                number.put(i, rongZiDatas.get(i).getPraiseNUm());
+                            }
                         }
                     }
                 } else {
@@ -149,45 +160,48 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
 
                                     @Override
                                     public void onResponse(Map<String, Object> response) {
-                                        if (state == AutoListView.REFRESH) {
-                                            lstv.onRefreshComplete();
-                                            rongZiDatas.clear();
-                                            List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
-                                                    .toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
-                                            }.getType());
-                                            if (null == objectList || objectList.size() == 0) {
-                                                lstv.setResultSize(0);
+                                        if ("0".equals(response.get("resultCode"))){
+                                            if (state == AutoListView.REFRESH) {
+                                                lstv.onRefreshComplete();
+                                                rongZiDatas.clear();
+                                                List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson()
+                                                        .toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+                                                }.getType());
+                                                if (null == objectList || objectList.size() == 0) {
+                                                    lstv.setResultSize(0);
+                                                }
+                                                if (null != objectList && objectList.size() > 0) {
+                                                    lstv.setResultSize(objectList.size());
+                                                    rongZiDatas.addAll(objectList);
+                                                    rongZiCommonAdapter.notifyDataSetChanged();
+                                                }
                                             }
-                                            if (null != objectList && objectList.size() > 0) {
-                                                lstv.setResultSize(objectList.size());
-                                                rongZiDatas.addAll(objectList);
-                                                rongZiCommonAdapter.notifyDataSetChanged();
+                                            if (state == AutoListView.LOAD) {
+                                                lstv.onLoadComplete();
+                                                List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
+                                                        toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
+                                                }.getType());
+                                                if (null == objectList || objectList.size() == 0) {
+                                                    lstv.setResultSize(1);
+                                                }
+                                                if (null != objectList && objectList.size() > 0) {
+                                                    lstv.setResultSize(objectList.size());
+                                                    rongZiDatas.addAll(objectList);
+                                                    rongZiCommonAdapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                            if (pageNum == 1 && selected.size() > 0) {
+                                                selected.clear();
+                                                number.clear();
+                                            }
+                                            if (selected.size() <= rongZiDatas.size()) {
+                                                for (int i = selected.size(); i < rongZiDatas.size(); i++) {
+                                                    selected.put(i, rongZiDatas.get(i).isPraise());
+                                                    number.put(i, rongZiDatas.get(i).getPraiseNUm());
+                                                }
                                             }
                                         }
-                                        if (state == AutoListView.LOAD) {
-                                            lstv.onLoadComplete();
-                                            List<RongZi> objectList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
-                                                    toJson(((Map<Object, Object>) response.get("data")).get("artworkList")), new TypeToken<List<RongZi>>() {
-                                            }.getType());
-                                            if (null == objectList || objectList.size() == 0) {
-                                                lstv.setResultSize(1);
-                                            }
-                                            if (null != objectList && objectList.size() > 0) {
-                                                lstv.setResultSize(objectList.size());
-                                                rongZiDatas.addAll(objectList);
-                                                rongZiCommonAdapter.notifyDataSetChanged();
-                                            }
-                                        }
-                                        if (pageNum == 1 && selected.size() > 0) {
-                                            selected.clear();
-                                            number.clear();
-                                        }
-                                        if (selected.size() <= rongZiDatas.size()) {
-                                            for (int i = selected.size(); i < rongZiDatas.size(); i++) {
-                                                selected.put(i, rongZiDatas.get(i).isPraise());
-                                                number.put(i, rongZiDatas.get(i).getPraiseNUm());
-                                            }
-                                        }
+
                                     }
                                 });
                             }
@@ -474,7 +488,6 @@ public class UserPraiseFragment extends BaseFragment implements AutoListView.OnL
     public void onResume() {
         super.onResume();
         currentPage = 1;
-        rongZiDatas.clear();
         loadData(AutoListView.REFRESH, currentPage);
     }
 

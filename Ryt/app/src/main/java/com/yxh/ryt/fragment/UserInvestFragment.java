@@ -459,7 +459,11 @@ public class UserInvestFragment extends BaseFragment implements AutoListView.OnL
 
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("userId",userId);
+    }
 
     private void praise(final String artworkId, final LinearLayout view, final TextView textView, final int praiseNum, final ViewHolder helper) {
         Map<String, String> paramsMap = new HashMap<>();

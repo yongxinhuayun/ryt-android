@@ -11,7 +11,7 @@ import com.yxh.ryt.fragment.BaseFragment;
 import java.util.List;
 
 /**
- * Created by 吴洪杰 on 2016/4/5.
+ *
  */
 public class IndexTabPageIndicatorAdapter extends FragmentPagerAdapter {
 
@@ -25,9 +25,9 @@ public class IndexTabPageIndicatorAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         //新建一个Fragment来展示ViewPager item的内容，并传递参数
         BaseFragment fragment = this.fragments.get(position);
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putString("arg", Constants.INDEX_TITLE[position]);
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 

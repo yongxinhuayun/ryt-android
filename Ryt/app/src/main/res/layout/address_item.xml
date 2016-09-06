@@ -2,109 +2,65 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     android:orientation="vertical">
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="14dp"
-        android:background="#e2e2e2" />
-
+        android:background="#e9e9e9"/>
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="12dp">
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="永新华韵"
-            android:textColor="#000000"
-            android:textSize="@dimen/title" />
-
-        <TextView
-            android:id="@+id/tv_phone"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="14dp"
-            android:text="186888888888"
-            android:textColor="#000000"
-            android:textSize="@dimen/title" />
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/tv_adress"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        android:text="jafkjaskjfkajsgkaskjmdgkljsmakgljms;lk
-        jmag;lksagllskmafl;ksadksdfm"
-        android:textColor="#000000"
-        android:textSize="@dimen/defult_font" />
-
-    <RelativeLayout
+        android:id="@+id/aass_tv_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="21dp">
-
+        android:background="@android:color/white"
+        android:padding="17dp"
+        >
         <LinearLayout
-            android:id="@+id/ll_defult_address"
-            android:layout_width="wrap_content"
+            android:id="@+id/aass_ll_address"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/iv_selected"
-                android:layout_width="25dp"
-                android:layout_height="18dp"
-                android:src="@mipmap/yixuanze" />
-
+            android:orientation="vertical"
+            android:layout_marginRight="33dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:textSize="17sp"
+                    android:text="温群英"
+                    android:textColor="#333333"
+                    android:id="@+id/aass_tv_addressName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:gravity="right"
+                    android:textSize="17sp"
+                    android:text="15110008479"
+                    android:textColor="#333333"
+                    android:id="@+id/aass_tv_addressPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
             <TextView
-                android:id="@+id/tv_defult"
+                android:layout_marginBottom="17dp"
+                android:layout_marginTop="17dp"
+                android:id="@+id/aass_tv_addressDetail"
+                android:text="地址地址"
+                android:textSize="16sp"
+                android:textColor="#808080"
                 android:layout_width="wrap_content"
-                android:layout_height="18dp"
-                android:text="默认地址"
-                android:textColor="#000000"
-                android:textSize="@dimen/defult_font" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
-
-
-        <Button
-            android:id="@+id/bt_del"
-            android:layout_width="60dp"
-            android:layout_height="25dp"
+        <ImageView
+            android:id="@+id/aass_iv_go"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="14dp"
-            android:background="@drawable/shape_address_edit"
-            android:focusable="false"
-            android:text="删除"
-            android:textColor="#EF5B70"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/bt_edit"
-            android:layout_width="60dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="12dp"
-            android:layout_toLeftOf="@+id/bt_del"
-            android:background="@drawable/shape_address_edit"
-            android:focusable="false"
-            android:text="编辑"
-            android:textColor="#EF5B70"
-            android:textSize="12sp" />
+            android:src="@mipmap/go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </RelativeLayout>
-
     <View
+        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#e2e2e2" />
+        android:background="#e9e9e9"/>
 </LinearLayout>

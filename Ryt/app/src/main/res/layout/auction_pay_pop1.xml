@@ -182,7 +182,7 @@
                 android:id="@+id/iv_pay"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:src="@mipmap/commit_money" />
+                android:src="@mipmap/icon_queren" />
 
             <TextView
                 android:id="@+id/tv_pay"

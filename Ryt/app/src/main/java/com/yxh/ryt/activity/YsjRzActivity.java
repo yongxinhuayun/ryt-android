@@ -37,6 +37,7 @@ import com.yxh.ryt.util.DisplayUtil;
 import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
+import com.yxh.ryt.util.PermissionUtils;
 import com.yxh.ryt.util.SessionLogin;
 import com.yxh.ryt.util.ToastUtil;
 import com.yxh.ryt.util.Utils;
@@ -137,11 +138,11 @@ public class YsjRzActivity extends BaseActivity {
         if(!AppApplication.getSingleEditTextValidator().validate()){
             return;
         }
-        if (fileMap1.size()!=1 || fileMap2.size()!=1){
+        if (fileMap1.keySet().size()==0 || fileMap2.keySet().size()==0){
             ToastUtil.showLong(YsjRzActivity.this,"身份证正反面必须都有");
             return;
         }
-        if(fileMap3.size()==0){
+        if(fileMap3.keySet().size()==0){
             ToastUtil.showLong(YsjRzActivity.this,"最满意的作品至少有一张");
             return;
         }
@@ -245,6 +246,17 @@ public class YsjRzActivity extends BaseActivity {
                                     long arg3) {
                 if (arg2 == Bimp.tempSelectBitmap.size()) {
                     callMulImageSelector(sum01, REQUEST_IMAGE_01);
+                    /*PermissionUtils.askExternalStorage(new PermissionUtils.PermissionListener() {
+                        @Override
+                        public void onGranted() {
+                            callMulImageSelector(sum01, REQUEST_IMAGE_01);
+                        }
+
+                        @Override
+                        public void onDenied(List<String> permissions) {
+
+                        }
+                    });*/
                 } else {
                     Intent intent = new Intent(YsjRzActivity.this,
                             GalleryActivity.class);
@@ -401,6 +413,10 @@ public class YsjRzActivity extends BaseActivity {
         int length = baos.toByteArray().length;
         while ( baos.toByteArray().length / 1024>300) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
+            if (options-10<0){
+                image.compress(format, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+                break;
+            }
             options -= 10;//每次都减少10
             image.compress(format, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
         }

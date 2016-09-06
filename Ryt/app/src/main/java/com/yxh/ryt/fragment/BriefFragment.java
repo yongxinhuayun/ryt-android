@@ -1,6 +1,7 @@
 package com.yxh.ryt.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
+import com.yxh.ryt.activity.EditBriefActivity;
 import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.custemview.JustifyTextView;
 import com.yxh.ryt.custemview.ScaleScreenImageView;
@@ -23,6 +25,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 /**
@@ -37,6 +40,8 @@ public class BriefFragment extends BaseFragment {
     public TextView name;
     @Bind(R.id.fb_jtv_content)
     public JustifyTextView content;
+    @Bind(R.id.fub_tv_edit)
+    TextView edit;
     public BriefFragment( String userId) {
         super();
         this.userId=userId;
@@ -44,11 +49,19 @@ public class BriefFragment extends BaseFragment {
 
     public BriefFragment() {
     }
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("userId",userId);
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null
+                && savedInstanceState.getString("userId")!=null) {
+            userId=savedInstanceState.getString("userId");
 
+        }
     }
 
     private void LoadData() {
@@ -85,12 +98,22 @@ public class BriefFragment extends BaseFragment {
                     if (user!=null){
                         name.setText(user.getName());
                     }
+                    if (AppApplication.gUser.getId().equals(user.getId())){
+                        edit.setVisibility(View.VISIBLE);
+                    }else {
+                        edit.setVisibility(View.GONE);
+                    }
                 }
 
             }
         });
     }
-
+    @OnClick(R.id.fub_tv_edit)
+    public void edit(){
+        Intent intent=new Intent(getActivity(),EditBriefActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

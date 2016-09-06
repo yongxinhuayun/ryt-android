@@ -1,13 +1,12 @@
 package com.yxh.ryt.vo;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/4/9.
  */
 public class Comment {
-    private String content;
-    private long createDatetime;
-    private int isWatch;
-    private FatherArtworkCommentBean fatherArtworkCommentBean;
-    private String creator;
+    private String id;
+    private String text;
 
 }

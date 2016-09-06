@@ -218,6 +218,7 @@ public class CommentActivity extends BaseActivity implements AutoListView.OnLoad
             @Override
             public void onError(Call call, Exception e) {
                 System.out.println("失败了");
+                e.printStackTrace();
                 ToastUtil.showLong(CommentActivity.this,"网络连接超时,稍后重试!");
             }
 

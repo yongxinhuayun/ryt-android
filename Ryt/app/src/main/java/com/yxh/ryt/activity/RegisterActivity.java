@@ -410,7 +410,6 @@ public class RegisterActivity extends BaseActivity {
     }
     @OnClick(R.id.rg_bt_verifyCode)
     public void sendCode(){
-
         AppApplication.getSingleEditTextValidator()
                 .add(new ValidationModel(eTPhone,new UserNameValidation()))
                 .execute();
