@@ -10,7 +10,6 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.callback.RegisterCallBack;
-import com.yxh.ryt.fragment.UserJianJieFragment;
 import com.yxh.ryt.util.EditTextFilterUtil;
 import com.yxh.ryt.util.EncryptUtil;
 import com.yxh.ryt.util.NetRequestUtil;
@@ -83,6 +82,8 @@ public class EditBriefActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.tv_save:
                 saveBrief();
+                break;
+            default:
                 break;
         }
     }

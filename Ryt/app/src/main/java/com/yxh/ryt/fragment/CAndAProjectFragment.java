@@ -5,19 +5,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.InputFilter;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -40,9 +36,7 @@ import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.activity.ArtistIndexActivity;
-import com.yxh.ryt.activity.AttentionActivity;
 import com.yxh.ryt.activity.CommentListActivity;
-import com.yxh.ryt.activity.InvestActivity;
 import com.yxh.ryt.activity.InvestorActivity;
 import com.yxh.ryt.activity.LoginActivity;
 import com.yxh.ryt.activity.PraiseListActivity;
@@ -57,7 +51,6 @@ import com.yxh.ryt.custemview.CircleImageView;
 import com.yxh.ryt.custemview.ExpandView;
 import com.yxh.ryt.custemview.HorizontalListView;
 import com.yxh.ryt.custemview.ListViewForScrollView;
-import com.yxh.ryt.custemview.RoundProgressBar;
 import com.yxh.ryt.util.AnimPraiseCancel;
 import com.yxh.ryt.util.DateUtil;
 import com.yxh.ryt.util.EditTextFilterUtil;
@@ -80,7 +73,6 @@ import com.yxh.ryt.vo.User;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -517,7 +509,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void showOther() {
-        loadingUtil.show();
+        //loadingUtil.show();
         final Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("artWorkId", artWorkId);
         paramsMap.put("timestamp", System.currentTimeMillis() + "");
@@ -539,7 +531,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
             @Override
             public void onResponse(Map<String, Object> response) {
                 if ("".equals(AppApplication.gUser.getId())){
-                    loadingUtil.dismiss();
+                    //loadingUtil.dismiss();
                     Map<String, Object> object = (Map<String, Object>) response.get("object");
                     if (object != null) {
                         artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().
@@ -620,7 +612,7 @@ public class CAndAProjectFragment extends BaseFragment implements View.OnClickLi
                                     @Override
                                     public void onResponse(Map<String, Object> response) {
                                         if ("0".equals(response.get("resultCode"))){
-                                            loadingUtil.dismiss();
+                                            //loadingUtil.dismiss();
                                             Map<String, Object> object = (Map<String, Object>) response.get("object");
                                             if (object != null) {
                                                 artWorkPraiseList = AppApplication.getSingleGson().fromJson(AppApplication.getSingleGson().

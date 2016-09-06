@@ -3,6 +3,7 @@ package com.yxh.ryt;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -27,6 +28,7 @@ import com.yxh.ryt.util.avalidations.EditTextValidator;
 import com.yxh.ryt.vo.User;
 import com.zhy.http.okhttp.OkHttpUtils;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,6 +41,9 @@ import cn.jpush.android.api.JPushInterface;
 
 public class AppApplication extends Application {
 
+	// 默认存放图片的路径
+	public final static String DEFAULT_SAVE_IMAGE_PATH = Environment.getExternalStorageDirectory() + File.separator + "CircleDemo" + File.separator + "Images"
+			+ File.separator;
 
 	public static BaseResp resp;
 	public static IWXAPI api;

@@ -406,6 +406,7 @@ public class CreateFragment extends BaseFragment implements AutoListView.OnRefre
 			Intent intent=new Intent(getActivity(), CreateSummaryActivity.class);
 			intent.putExtra("id", rongZiDatas.get(position - 1).getId());
 			intent.putExtra("name", rongZiDatas.get(position - 1).getTitle());
+			intent.putExtra("picUrl", rongZiDatas.get(position - 1).getPicture_url());
 			startActivity(intent);
 		}
 	}

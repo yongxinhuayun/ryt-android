@@ -1,15 +1,9 @@
 package com.yxh.ryt.activity;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
@@ -18,15 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
-import android.webkit.CookieManager;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,39 +23,16 @@ import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.viewpagerindicator.TabPageIndicator;
-import com.yxh.ryt.AppApplication;
 import com.yxh.ryt.Constants;
 import com.yxh.ryt.R;
 import com.yxh.ryt.adapter.CreateSummaryPageIndicatorAdapter;
-import com.yxh.ryt.adapter.RZTitlePageIndicatorAdapter;
-import com.yxh.ryt.callback.AttentionListCallBack;
-import com.yxh.ryt.callback.RongZiListCallBack;
 import com.yxh.ryt.fragment.BaseFragment;
 import com.yxh.ryt.fragment.CAndAProjectFragment;
-import com.yxh.ryt.fragment.ProgressFragment;
+import com.yxh.ryt.fragment.CreateProgressFragment;
 import com.yxh.ryt.fragment.RZDetailFragment;
-import com.yxh.ryt.fragment.RZInvestFragment;
-import com.yxh.ryt.fragment.RZProjectFragment;
-import com.yxh.ryt.fragment.WorksFragment;
-import com.yxh.ryt.util.EncryptUtil;
-import com.yxh.ryt.util.JsInterface;
-import com.yxh.ryt.util.NetRequestUtil;
-import com.yxh.ryt.util.SessionLogin;
-import com.yxh.ryt.util.ToastUtil;
-import com.yxh.ryt.vo.Artwork;
-import com.yxh.ryt.vo.User;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import okhttp3.Call;
 
 /**
  * Created by Administrator on 2016/6/6.
@@ -81,6 +44,7 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
     private TextView top;
     private String id;
     private String name;
+    private String picUrl;
     List<BaseFragment> csFragments=new ArrayList<>();
     FragmentPagerAdapter csAdapter;
     @Override
@@ -96,8 +60,9 @@ public class CreateSummaryActivity extends BaseActivity implements View.OnClickL
         top = (TextView) findViewById(R.id.csa_tv_title);
         id = getIntent().getStringExtra("id");
         name = getIntent().getStringExtra("name");
+        picUrl = getIntent().getStringExtra("picUrl");
         top.setText(name);
-        csFragments.add(new ProgressFragment(id));
+        csFragments.add(new CreateProgressFragment(id, name, picUrl, this));
         csFragments.add(new CAndAProjectFragment(id));
         csFragments.add(new RZDetailFragment(id));
         csAdapter = new CreateSummaryPageIndicatorAdapter(this.getSupportFragmentManager(),csFragments);
