@@ -845,7 +845,7 @@
                     "startOffset": 5399,
                     "endLine": 54,
                     "endColumn": 12,
-                    "endOffset": 5594
+                    "endOffset": 5601
                 },
                 "from": {
                     "file": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
@@ -855,7 +855,7 @@
                         "startOffset": 5399,
                         "endLine": 54,
                         "endColumn": 12,
-                        "endOffset": 5594
+                        "endOffset": 5601
                     }
                 }
             },
@@ -863,20 +863,20 @@
                 "to": {
                     "startLine": 55,
                     "startColumn": 4,
-                    "startOffset": 5599,
+                    "startOffset": 5606,
                     "endLine": 58,
                     "endColumn": 12,
-                    "endOffset": 5847
+                    "endOffset": 5854
                 },
                 "from": {
                     "file": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
                     "position": {
                         "startLine": 55,
                         "startColumn": 4,
-                        "startOffset": 5599,
+                        "startOffset": 5606,
                         "endLine": 58,
                         "endColumn": 12,
-                        "endOffset": 5847
+                        "endOffset": 5854
                     }
                 }
             },
@@ -884,20 +884,20 @@
                 "to": {
                     "startLine": 59,
                     "startColumn": 4,
-                    "startOffset": 5852,
+                    "startOffset": 5859,
                     "endLine": 60,
                     "endColumn": 12,
-                    "endOffset": 5886
+                    "endOffset": 5893
                 },
                 "from": {
                     "file": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
                     "position": {
                         "startLine": 59,
                         "startColumn": 4,
-                        "startOffset": 5852,
+                        "startOffset": 5859,
                         "endLine": 60,
                         "endColumn": 12,
-                        "endOffset": 5886
+                        "endOffset": 5893
                     }
                 }
             },
@@ -905,41 +905,41 @@
                 "to": {
                     "startLine": 61,
                     "startColumn": 4,
-                    "startOffset": 5891,
-                    "endLine": 64,
+                    "startOffset": 5898,
+                    "endLine": 65,
                     "endColumn": 12,
-                    "endOffset": 6076
+                    "endOffset": 6137
                 },
                 "from": {
                     "file": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
                     "position": {
                         "startLine": 61,
                         "startColumn": 4,
-                        "startOffset": 5891,
-                        "endLine": 64,
+                        "startOffset": 5898,
+                        "endLine": 65,
                         "endColumn": 12,
-                        "endOffset": 6076
+                        "endOffset": 6137
                     }
                 }
             },
             {
                 "to": {
-                    "startLine": 65,
+                    "startLine": 66,
                     "startColumn": 4,
-                    "startOffset": 6081,
-                    "endLine": 75,
+                    "startOffset": 6142,
+                    "endLine": 76,
                     "endColumn": 12,
-                    "endOffset": 6678
+                    "endOffset": 6739
                 },
                 "from": {
                     "file": "D:\\durui\\ryt-android\\Ryt\\library\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
                     "position": {
-                        "startLine": 65,
+                        "startLine": 66,
                         "startColumn": 4,
-                        "startOffset": 6081,
-                        "endLine": 75,
+                        "startOffset": 6142,
+                        "endLine": 76,
                         "endColumn": 12,
-                        "endOffset": 6678
+                        "endOffset": 6739
                     }
                 }
             }

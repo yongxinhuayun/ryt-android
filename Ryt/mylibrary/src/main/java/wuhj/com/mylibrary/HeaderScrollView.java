@@ -18,4 +18,9 @@ public class HeaderScrollView extends ScrollView {
     public boolean onTouchEvent(MotionEvent ev) {
         return false;
     }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
 }
