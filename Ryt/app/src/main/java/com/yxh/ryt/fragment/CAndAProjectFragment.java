@@ -82,7 +82,6 @@ import okhttp3.Call;
 
 @SuppressLint("ValidFragment")
 public class CAndAProjectFragment extends BaseFragment implements View.OnClickListener {
-
     private String artWorkId;
     private ListViewForScrollView mListview;
     private ListViewForScrollView iListview;
