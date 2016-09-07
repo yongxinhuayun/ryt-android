@@ -39,7 +39,6 @@ public class CommitFinalPriceActivity extends BaseActivity implements View.OnCli
     private ImageView add;
     private ImageView selected;
     private TextView tvFinalPrice;
-
     private TextView auctionProtocol;
     private String artWorkId;
     private String userId;
